@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(onOpenSlot()));
 	connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
 	connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
+	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 }
 
 MainWindow::~MainWindow()

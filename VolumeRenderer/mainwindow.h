@@ -56,6 +56,7 @@ private:
 
 	QString filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
+	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
 	
@@ -161,7 +162,8 @@ private slots:
 			volume->SetProperty(volumeProperty);
 
 			// add the volume into the renderer
-			auto renderer = vtkSmartPointer<vtkRenderer>::New();
+			//auto renderer = vtkSmartPointer<vtkRenderer>::New();
+			renderer = vtkSmartPointer<vtkRenderer>::New();
 			renderer->AddVolume(volume);
 			renderer->SetBackground(1, 1, 1);
 
@@ -175,6 +177,76 @@ private slots:
 				item = collection->GetNextItem();
 			}
 			window->AddRenderer(renderer);
+			window->Render();
+
+			// initialize the interactor
+			interactor->Initialize();
+			interactor->Start();
+		}
+
+		void onAppendVolumeSlot()
+		{
+			// show file dialog
+			QString filter;
+			filter = "Meta image file (*.mhd *.mha)";
+			filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename, filter); 
+			if (filename.isEmpty())
+				return;
+
+			// show filename on window title
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = filename.toLocal8Bit();  
+			const char *filename_str = ba.data();
+
+#if 1
+			// read Meta Image (.mhd or .mha) files
+			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+			reader->SetFileName(filename_str);
+#elif 1
+			// read a series of raw files in the specified folder
+			auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+			reader->SetDataDimensions (512, 512);
+			reader->SetImageRange (1, 361);
+			reader->SetDataByteOrderToBigEndian();
+			reader->SetFilePrefix(filename_str);
+			reader->SetFilePattern("%s%d");
+			reader->SetDataSpacing(1, 1, 1);
+#else
+			// read NRRD files
+			vtkNew<vtkNrrdReader> reader;
+			if (!reader->CanReadFile(filename_str))
+			{
+				std::cerr << "Reader reports " << filename_str << " cannot be read.";
+				exit(EXIT_FAILURE);
+			}
+			reader->SetFileName(filename_str);
+			reader->Update();
+#endif
+
+			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+			shiftScale->SetInputConnection(reader->GetOutputPort());
+			shiftScale->SetOutputScalarTypeToUnsignedChar();
+
+			// get existing volumeProperty from volumePropertywidget
+			auto volumeProperty = volumePropertywidget.volumeProperty();
+
+			// The mapper that renders the volume data.
+			auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+			volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+
+			// The volume holds the mapper and the property and can be used to position/orient the volume.
+			auto volume = vtkSmartPointer<vtkVolume>::New();
+			volume->SetMapper(volumeMapper);
+			volume->SetProperty(volumeProperty);
+
+			// add the volume into the renderer
+			renderer->AddVolume(volume);
+
+			auto window = widget.GetRenderWindow();
 			window->Render();
 
 			// initialize the interactor

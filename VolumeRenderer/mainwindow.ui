@@ -46,6 +46,7 @@
      <string>&amp;File</string>
     </property>
     <addaction name="action_Open"/>
+    <addaction name="action_Append_Volume"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -103,6 +104,11 @@
   <action name="action_About">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_Append_Volume">
+   <property name="text">
+    <string>&amp;Append Volume</string>
    </property>
   </action>
  </widget>
