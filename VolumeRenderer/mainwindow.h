@@ -63,7 +63,7 @@ private slots:
 		void onAboutSlot()
 		{
 			QMessageBox msgBox;
-			msgBox.setText("Volume Renderer");
+			msgBox.setText(QString::fromUtf8("Volume Renderer"));
 			msgBox.exec();
 		}
 
@@ -82,13 +82,12 @@ private slots:
 				return;
 
 			// show filename on window title
-			this->setWindowTitle("Volume Renderer - " + filename);
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 			QByteArray ba = filename.toLocal8Bit();  
 			const char *filename_str = ba.data();
 
-			// to read a .mhd file or a folder containing a set of raw files
 #if 1
 			// read Meta Image (.mhd or .mha) files
 			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
@@ -121,24 +120,24 @@ private slots:
 
 			// Create transfer mapping scalar value to opacity.
 			auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-			opacityTransferFunction->AddPoint(30.0,  0.0);
-			opacityTransferFunction->AddPoint(60.0,  0.1);
-			opacityTransferFunction->AddPoint(90.0,  0.2);
-			opacityTransferFunction->AddPoint(120.0, 0.3);
-			opacityTransferFunction->AddPoint(150.0, 0.4);
-			opacityTransferFunction->AddPoint(180.0, 0.5);
-			opacityTransferFunction->AddPoint(210.0, 0.6);
-			opacityTransferFunction->AddPoint(255.0, 0.7);
+			opacityTransferFunction->AddPoint(0.0,  0.0);
+			opacityTransferFunction->AddPoint(36.0,  0.125);
+			opacityTransferFunction->AddPoint(72.0,  0.25);
+			opacityTransferFunction->AddPoint(108.0, 0.375);
+			opacityTransferFunction->AddPoint(144.0, 0.5);
+			opacityTransferFunction->AddPoint(180.0, 0.625);
+			opacityTransferFunction->AddPoint(216.0, 0.75);
+			opacityTransferFunction->AddPoint(255.0, 0.875);
 
 			// Create transfer mapping scalar value to color.
 			auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-			colorTransferFunction->AddRGBPoint(30.0,  0.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(60.0, 1.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(90.0, 1.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(120.0, 0.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(150.0, 0.0, 1.0, 1.0);
+			colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+			colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+			colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+			colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+			colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
 			colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-			colorTransferFunction->AddRGBPoint(210.0, 1.0, 0.0, 1.0);
+			colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 			colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 			// set up volume property
