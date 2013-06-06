@@ -74,11 +74,15 @@ private slots:
 
 		void onOpenSlot()
 		{
+			// show file dialog
 			QString filter;
 			filter = "Meta image file (*.mhd *.mha)";
 			filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename, filter); 
 			if (filename.isEmpty())
 				return;
+
+			// show filename on window title
+			this->setWindowTitle("Volume Renderer - " + filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 			QByteArray ba = filename.toLocal8Bit();  
