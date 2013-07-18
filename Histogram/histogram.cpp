@@ -87,14 +87,13 @@ void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
 
 int main(int argc, char *argv[])
 {
-	if(argc < 2)
-	{
-		std::cerr << "Required arguments: volumeVTKFile" << std::endl;
-		return EXIT_FAILURE;
-	}
-
 	// This is the data that will be volume rendered.
-	std::string volumeFilename = argv[1]; // "/Data/ironProt.vtk";
+	std::string volumeFilename("../../data/nucleon.mhd");
+	if(argc >= 2)
+	{
+		volumeFilename = argv[1];
+	}
+	std::cout<<"volume file: "<<volumeFilename<<endl;
 
 	// to read a .mhd file or a folder containing a set of raw files
 	vtkSmartPointer<vtkMetaImageReader> reader = vtkMetaImageReader::New();
