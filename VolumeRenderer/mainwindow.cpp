@@ -47,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+
+	volume_filename = "../../data/nucleon.mhd";
+	transfer_function_filename = "../xml/nucleon2.tfi";
 }
 
 MainWindow::~MainWindow()

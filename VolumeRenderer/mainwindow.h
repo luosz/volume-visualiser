@@ -67,17 +67,83 @@ private:
 	std::vector<std::vector<int>> colour_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
+	double lower_bound;
+	double upper_bound;
+
+	void loadTransferFunction(const char *filename)
+	{
+		tinyxml2::XMLDocument doc;
+		doc.LoadFile(filename);
+
+		if (doc.Error())
+		{
+			cout<<"failed to open file"<<endl;
+			return;
+		}
+
+		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
+
+		intensity_list.clear();
+		colour_list.clear();
+
+		do 
+		{
+			double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+			intensity_list.push_back(intensity);
+			int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
+			int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
+			int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
+			int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
+			std::vector<int> colour;
+			colour.push_back(r);
+			colour.push_back(g);
+			colour.push_back(b);
+			colour.push_back(a);
+			colour_list.push_back(colour);
+
+			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
+
+			std::cout<<"intensity="<<intensity;
+			std::cout<<"\tsplit="<<(split?"true":"false");
+			std::cout<<"\tcolorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a;
+
+			if (split)
+			{
+				const double epsilon = 1e-16;
+				intensity_list.push_back(intensity + epsilon);
+				int r2 = atoi(key->FirstChildElement("colorR")->Attribute("r"));
+				int g2 = atoi(key->FirstChildElement("colorR")->Attribute("g"));
+				int b2 = atoi(key->FirstChildElement("colorR")->Attribute("b"));
+				int a2 = atoi(key->FirstChildElement("colorR")->Attribute("a"));
+				std::vector<int> colour2;
+				colour.push_back(r2);
+				colour.push_back(g2);
+				colour.push_back(b2);
+				colour.push_back(a2);
+				colour_list.push_back(colour2);
+
+				std::cout<<"\tcolorR r="<<r2<<" g="<<g2<<" b="<<b2<<" a="<<a2;
+			}
+			std::cout<<endl;
+
+			key = key->NextSiblingElement();
+		} while (key);
+
+		lower_bound = atof(doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("lower")->Attribute("value"));
+		upper_bound = atof(doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("upper")->Attribute("value"));
+	}
 
 	void updateTransferFunction()
 	{
-		if (intensity_list.size() > 0)
+		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
 			opacityTransferFunction->RemoveAllPoints();
 			colorTransferFunction->RemoveAllPoints();
+			const double MAX = 255;
 			for (unsigned int i=0; i<intensity_list.size(); i++)
 			{
-				opacityTransferFunction->AddPoint(intensity_list[i]*255, colour_list[i][3]/255.);
-				colorTransferFunction->AddRGBPoint(intensity_list[i]*255, colour_list[i][0]/255., colour_list[i][1]/255., colour_list[i][2]/255.);
+				opacityTransferFunction->AddPoint(intensity_list[i]*MAX, colour_list[i][3]/MAX);
+				colorTransferFunction->AddRGBPoint(intensity_list[i]*MAX, colour_list[i][0]/MAX, colour_list[i][1]/MAX, colour_list[i][2]/MAX);
 			}
 		}
 		else
@@ -314,49 +380,7 @@ private slots:
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
 
-			intensity_list.clear();
-			colour_list.clear();
-
-			// tinyxml2
-			tinyxml2::XMLDocument doc;
-			doc.LoadFile(filename_str);
-
-			if (doc.Error())
-			{
-				cout<<"failed to open file"<<endl;
-				return;
-			}
-
-			//cout<<doc.FirstChildElement()->Name()<<endl;
-			//cout<<doc.FirstChildElement()->FirstChildElement()->Name()<<endl;
-			//cout<<doc.FirstChildElement()->FirstChildElement()->FirstChildElement()->Name()<<endl;
-			//cout<<doc.FirstChildElement()->FirstChildElement()->FirstChildElement()->FirstChildElement()->Name()<<endl;
-
-			auto *key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
-
-			do 
-			{
-				double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-				intensity_list.push_back(intensity);
-				bool split = 0 == strcmp("false", key->FirstChildElement("split")->Attribute("value"));
-				int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
-				int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
-				int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
-				int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
-				std::vector<int> colour;
-				colour.push_back(r);
-				colour.push_back(g);
-				colour.push_back(b);
-				colour.push_back(a);
-				colour_list.push_back(colour);
-
-				cout<<"intensity="<<intensity<<"\t";
-				cout<<"split="<<(split?"true":"false")<<"\t";
-				cout<<"colorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a<<endl;
-
-				key = key->NextSiblingElement();
-			} while (key);
-
+			loadTransferFunction(filename_str);
 			updateTransferFunction();
 		}
 };
