@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	// add VTK widgets
 	ui->verticalLayout->addWidget(&widget);
 	ui->verticalLayout_2->addWidget(&volumePropertywidget);
+	ui->verticalLayout_3->addWidget(&histogramWidget);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -20,11 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	interactor->SetInteractorStyle(style);
 
 	// connect signals to slots
-	connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(onOpenSlot()));
+	connect(ui->action_Open_Volume, SIGNAL(triggered()), this, SLOT(onOpenVolumeSlot()));
 	connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
 	connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
 	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
-	connect(ui->action_Transfer_Function, SIGNAL(triggered()), this, SLOT(onTransferFunctionSlot()));
+	connect(ui->action_Load_Transfer_Function, SIGNAL(triggered()), this, SLOT(onLoadTransferFunctionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -49,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	volume_filename = "../../data/nucleon.mhd";
-	transfer_function_filename = "../xml/nucleon2.tfi";
+	transfer_function_filename = "../../data/nucleon2.tfi";
 }
 
 MainWindow::~MainWindow()

@@ -30,6 +30,14 @@
 #include <vtkImageShiftScale.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkRendererCollection.h>
+#include <vtkImageReader2.h>
+#include <vtkImageAccumulate.h>
+#include <vtkIntArray.h>
+#include <vtkBarChartActor.h>
+#include <vtkImageData.h>
+#include <vtkPointData.h>
+#include <vtkProperty2D.h>
+#include <vtkLegendBoxActor.h>
 
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
@@ -43,25 +51,26 @@
 #include "ui_mainwindow.h"
 
 namespace Ui {
-class MainWindow;
+	class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    
+	explicit MainWindow(QWidget *parent = 0);
+	~MainWindow();
+
 private:
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;
 
 	QString volume_filename;
 	QString transfer_function_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
+	QVTKWidget histogramWidget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
 	std::vector<double> intensity_list;
 	std::vector<std::vector<int>> colour_list;
@@ -170,8 +179,60 @@ private:
 			colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 		}
 	}
-	
-private slots:
+
+	void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
+	{
+		int bins = 16;
+		vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
+		histogram->SetInputConnection(reader->GetOutputPort());
+		histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
+		histogram->SetComponentOrigin(0, 0, 0);
+		histogram->SetComponentSpacing(256/bins, 0, 0);
+		histogram->Update();
+		vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
+		frequencies->SetNumberOfComponents(1);
+		frequencies->SetNumberOfTuples(bins);
+		int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+
+		for(int j = 0; j < bins; ++j)
+		{
+			frequencies->SetTuple1(j, *output++);
+		}
+
+		vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
+		dataObject->GetFieldData()->AddArray( frequencies );
+		vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
+
+		barChart->SetInput(dataObject);
+		barChart->SetTitle("Histogram");
+		barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
+		barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
+		barChart->GetProperty()->SetColor(1,1,1);
+		barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
+		barChart->LegendVisibilityOff();
+		barChart->LabelVisibilityOff();
+
+		double red[3] = {1, 0, 0 };
+		for(int i = 0; i < bins; ++i)
+		{
+			barChart->SetBarColor(i, red );
+		}
+
+		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->AddActor(barChart);
+		vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+		//auto renderWindow = histogramWidget.GetRenderWindow();
+		renderWindow->AddRenderer(renderer);
+		renderWindow->SetSize(640, 480);
+		vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+		interactor->SetRenderWindow(renderWindow);
+		//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
+		renderWindow->Render();
+		interactor->Initialize();
+		interactor->Start();
+	}
+
+	private slots:
 		void onAboutSlot()
 		{
 			QMessageBox msgBox;
@@ -184,7 +245,7 @@ private slots:
 			qApp->quit();
 		}
 
-		void onOpenSlot()
+		void onOpenVolumeSlot()
 		{
 			// show file dialog
 			QString filter("Meta image file (*.mhd *.mha)");
@@ -292,6 +353,8 @@ private slots:
 			// initialize the interactor
 			interactor->Initialize();
 			interactor->Start();
+
+			generateHistogram(reader);
 		}
 
 		void onAppendVolumeSlot()
@@ -363,7 +426,7 @@ private slots:
 			interactor->Start();
 		}
 
-		void onTransferFunctionSlot()
+		void onLoadTransferFunctionSlot()
 		{
 			// show file dialog
 			QString filter("transfer function file (*.tfi *.tfig)");
