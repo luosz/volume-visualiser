@@ -55,6 +55,9 @@ message(STATUS "CTK ui header files: " ${CTK_ui_header_files})
 QT4_ADD_RESOURCES(CTK_qrc_complied ${CTK_qrc_files})
 source_group(CTK_ui FILES ${CTK_ui_header_files} ${CTK_ui_files} ${CTK_qrc_files} ${CTK_qrc_complied})
 
+set(tinyxml2_files tinyxml2.h tinyxml2.cpp)
+source_group(tinyxml2 FILES ${tinyxml2_files})
+
 set(Project_source_files main.cpp mainwindow.cpp)
 set(Project_header_files mainwindow.h)
 QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})  
@@ -75,6 +78,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${Project_header_files} ${Project_moc_source_files}
 	#${Project_qrc_compiled}
 	${CTK_header_files} ${CTK_source_files} ${CTK_moc_source_files} ${CTK_ui_header_files} ${CTK_qrc_complied}
+	${tinyxml2_files}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})

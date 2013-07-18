@@ -10,6 +10,7 @@
 #include <iostream>
 #include <memory>
 #include <cstdlib>
+#include <vector>
 
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
@@ -37,6 +38,8 @@
 #include "ctkTransferFunctionControlPointsItem.h"
 #include "ctkVTKVolumePropertyWidget.h"
 
+#include "tinyxml2.h"
+
 #include "ui_mainwindow.h"
 
 namespace Ui {
@@ -54,11 +57,53 @@ public:
 private:
     Ui::MainWindow *ui;
 
-	QString filename;
+	QString volume_filename;
+	QString transfer_function_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
+	std::vector<double> intensity_list;
+	std::vector<std::vector<int>> colour_list;
+	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
+	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
+
+	void updateTransferFunction()
+	{
+		if (intensity_list.size() > 0)
+		{
+			opacityTransferFunction->RemoveAllPoints();
+			colorTransferFunction->RemoveAllPoints();
+			for (unsigned int i=0; i<intensity_list.size(); i++)
+			{
+				opacityTransferFunction->AddPoint(intensity_list[i]*255, colour_list[i][3]/255.);
+				colorTransferFunction->AddRGBPoint(intensity_list[i]*255, colour_list[i][0]/255., colour_list[i][1]/255., colour_list[i][2]/255.);
+			}
+		}
+		else
+		{
+			opacityTransferFunction->RemoveAllPoints();
+			colorTransferFunction->RemoveAllPoints();
+
+			opacityTransferFunction->AddPoint(0.0,  0.0);
+			opacityTransferFunction->AddPoint(36.0,  0.125);
+			opacityTransferFunction->AddPoint(72.0,  0.25);
+			opacityTransferFunction->AddPoint(108.0, 0.375);
+			opacityTransferFunction->AddPoint(144.0, 0.5);
+			opacityTransferFunction->AddPoint(180.0, 0.625);
+			opacityTransferFunction->AddPoint(216.0, 0.75);
+			opacityTransferFunction->AddPoint(255.0, 0.875);
+
+			colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+			colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+			colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+			colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+			colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+			colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+			colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+			colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+		}
+	}
 	
 private slots:
 		void onAboutSlot()
@@ -76,17 +121,16 @@ private slots:
 		void onOpenSlot()
 		{
 			// show file dialog
-			QString filter;
-			filter = "Meta image file (*.mhd *.mha)";
-			filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename, filter); 
-			if (filename.isEmpty())
+			QString filter("Meta image file (*.mhd *.mha)");
+			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
+			if (volume_filename.isEmpty())
 				return;
 
 			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename.toLocal8Bit();  
+			QByteArray ba = volume_filename.toLocal8Bit();  
 			const char *filename_str = ba.data();
 
 #if 1
@@ -119,27 +163,27 @@ private slots:
 			shiftScale->SetInputConnection(reader->GetOutputPort());
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
 
-			// Create transfer mapping scalar value to opacity.
-			auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-			opacityTransferFunction->AddPoint(0.0,  0.0);
-			opacityTransferFunction->AddPoint(36.0,  0.125);
-			opacityTransferFunction->AddPoint(72.0,  0.25);
-			opacityTransferFunction->AddPoint(108.0, 0.375);
-			opacityTransferFunction->AddPoint(144.0, 0.5);
-			opacityTransferFunction->AddPoint(180.0, 0.625);
-			opacityTransferFunction->AddPoint(216.0, 0.75);
-			opacityTransferFunction->AddPoint(255.0, 0.875);
+			//// Create transfer mapping scalar value to opacity.
+			//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+			//opacityTransferFunction->AddPoint(0.0,  0.0);
+			//opacityTransferFunction->AddPoint(36.0,  0.125);
+			//opacityTransferFunction->AddPoint(72.0,  0.25);
+			//opacityTransferFunction->AddPoint(108.0, 0.375);
+			//opacityTransferFunction->AddPoint(144.0, 0.5);
+			//opacityTransferFunction->AddPoint(180.0, 0.625);
+			//opacityTransferFunction->AddPoint(216.0, 0.75);
+			//opacityTransferFunction->AddPoint(255.0, 0.875);
 
-			// Create transfer mapping scalar value to color.
-			auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-			colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-			colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-			colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-			colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+			//// Create transfer mapping scalar value to color.
+			//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+			//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+			//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+			//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+			//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+			//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+			//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+			//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+			//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 			// set up volume property
 			auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
@@ -187,17 +231,16 @@ private slots:
 		void onAppendVolumeSlot()
 		{
 			// show file dialog
-			QString filter;
-			filter = "Meta image file (*.mhd *.mha)";
-			filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename, filter); 
-			if (filename.isEmpty())
+			QString filter("Meta image file (*.mhd *.mha)");
+			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
+			if (volume_filename.isEmpty())
 				return;
 
 			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename.toLocal8Bit();  
+			QByteArray ba = volume_filename.toLocal8Bit();  
 			const char *filename_str = ba.data();
 
 #if 1
@@ -252,6 +295,69 @@ private slots:
 			// initialize the interactor
 			interactor->Initialize();
 			interactor->Start();
+		}
+
+		void onTransferFunctionSlot()
+		{
+			// show file dialog
+			QString filter("transfer function file (*.tfi *.tfig)");
+			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
+			if (transfer_function_filename.isEmpty())
+				return;
+
+			//// show filename on window title
+			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = transfer_function_filename.toLocal8Bit();  
+			const char *filename_str = ba.data();
+
+			std::cout<<"transfer function file: "<<filename_str<<endl;
+
+			intensity_list.clear();
+			colour_list.clear();
+
+			// tinyxml2
+			tinyxml2::XMLDocument doc;
+			doc.LoadFile(filename_str);
+
+			if (doc.Error())
+			{
+				cout<<"failed to open file"<<endl;
+				return;
+			}
+
+			//cout<<doc.FirstChildElement()->Name()<<endl;
+			//cout<<doc.FirstChildElement()->FirstChildElement()->Name()<<endl;
+			//cout<<doc.FirstChildElement()->FirstChildElement()->FirstChildElement()->Name()<<endl;
+			//cout<<doc.FirstChildElement()->FirstChildElement()->FirstChildElement()->FirstChildElement()->Name()<<endl;
+
+			auto *key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
+
+			do 
+			{
+				double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+				intensity_list.push_back(intensity);
+				bool split = 0 == strcmp("false", key->FirstChildElement("split")->Attribute("value"));
+				int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
+				int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
+				int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
+				int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
+				std::vector<int> colour;
+				colour.push_back(r);
+				colour.push_back(g);
+				colour.push_back(b);
+				colour.push_back(a);
+				colour_list.push_back(colour);
+
+				cout<<"intensity="<<intensity<<"\t";
+				cout<<"split="<<(split?"true":"false")<<"\t";
+				cout<<"colorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a<<endl;
+
+				key = key->NextSiblingElement();
+			} while (key);
+
+			updateTransferFunction();
 		}
 };
 

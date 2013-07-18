@@ -24,6 +24,29 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
 	connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
 	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
+	connect(ui->action_Transfer_Function, SIGNAL(triggered()), this, SLOT(onTransferFunctionSlot()));
+
+	// Create transfer mapping scalar value to opacity.
+	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	opacityTransferFunction->AddPoint(0.0,  0.0);
+	opacityTransferFunction->AddPoint(36.0,  0.125);
+	opacityTransferFunction->AddPoint(72.0,  0.25);
+	opacityTransferFunction->AddPoint(108.0, 0.375);
+	opacityTransferFunction->AddPoint(144.0, 0.5);
+	opacityTransferFunction->AddPoint(180.0, 0.625);
+	opacityTransferFunction->AddPoint(216.0, 0.75);
+	opacityTransferFunction->AddPoint(255.0, 0.875);
+
+	// Create transfer mapping scalar value to color.
+	colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+	colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 }
 
 MainWindow::~MainWindow()
