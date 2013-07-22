@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
 	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	connect(ui->action_Load_Transfer_Function, SIGNAL(triggered()), this, SLOT(onLoadTransferFunctionSlot()));
+	connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();

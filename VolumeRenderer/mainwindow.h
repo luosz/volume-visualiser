@@ -79,14 +79,51 @@ private:
 	double lower_bound;
 	double upper_bound;
 
+	void saveTransferFunction(const char *filename)
+	{
+		tinyxml2::XMLDocument doc;
+
+		auto declaration = doc.NewDeclaration();
+		doc.InsertEndChild(declaration);
+		auto voreenData = doc.NewElement("VoreenData");
+		voreenData->SetAttribute("version", 1);
+		auto transFuncIntensity = doc.NewElement("TransFuncIntensity");
+		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
+		auto keys = doc.NewElement("Keys");
+		auto key = doc.NewElement("key");
+		key->SetAttribute("type", "TransFuncMappingKey");
+		auto intensity = doc.NewElement("intensity");
+		intensity->SetAttribute("value", 0.13521127);
+		auto split = doc.NewElement("split");
+		split->SetAttribute("value", false);
+		auto colorL = doc.NewElement("colorL");
+		colorL->SetAttribute("r", 255);
+		colorL->SetAttribute("g", 255);
+		colorL->SetAttribute("b", 255);
+		colorL->SetAttribute("a", 255);
+		key->InsertEndChild(intensity);
+		key->InsertEndChild(split);
+		key->InsertEndChild(colorL);
+		keys->InsertEndChild(key);
+		transFuncIntensity->InsertEndChild(keys);
+		voreenData->InsertEndChild(transFuncIntensity);
+		doc.InsertEndChild(voreenData);
+
+		auto r = doc.SaveFile(filename);
+		if (r != tinyxml2::XML_NO_ERROR)
+		{
+			std::cout<<"failed to save file"<<endl;
+		}
+	}
+
 	void loadTransferFunction(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
-		doc.LoadFile(filename);
+		auto r = doc.LoadFile(filename);
 
-		if (doc.Error())
+		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			cout<<"failed to open file"<<endl;
+			std::cout<<"failed to open file"<<endl;
 			return;
 		}
 
@@ -445,6 +482,27 @@ private:
 
 			loadTransferFunction(filename_str);
 			updateTransferFunction();
+		}
+
+		void onSaveTransferFunctionSlot()
+		{
+			// show file dialog
+			QString filter("transfer function file (*.tfi *.tfig)");
+			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
+			if (transfer_function_filename.isEmpty())
+				return;
+
+			//// show filename on window title
+			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = transfer_function_filename.toLocal8Bit();  
+			const char *filename_str = ba.data();
+
+			std::cout<<"transfer function file: "<<filename_str<<endl;
+
+			saveTransferFunction(filename_str);
+			//updateTransferFunction();
 		}
 };
 

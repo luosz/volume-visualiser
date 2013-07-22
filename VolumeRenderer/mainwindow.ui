@@ -48,6 +48,7 @@
     <addaction name="action_Open_Volume"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="action_Load_Transfer_Function"/>
+    <addaction name="action_Save_Transfer_Function"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -139,6 +140,11 @@
   <action name="action_Load_Transfer_Function">
    <property name="text">
     <string>&amp;Load Transfer Function</string>
+   </property>
+  </action>
+  <action name="action_Save_Transfer_Function">
+   <property name="text">
+    <string>&amp;Save Transfer Function</string>
    </property>
   </action>
  </widget>
