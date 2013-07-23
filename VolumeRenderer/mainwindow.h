@@ -90,22 +90,31 @@ private:
 		auto transFuncIntensity = doc.NewElement("TransFuncIntensity");
 		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
 		auto keys = doc.NewElement("Keys");
-		auto key = doc.NewElement("key");
-		key->SetAttribute("type", "TransFuncMappingKey");
-		auto intensity = doc.NewElement("intensity");
-		intensity->SetAttribute("value", 0.13521127);
-		auto split = doc.NewElement("split");
-		split->SetAttribute("value", false);
-		auto colorL = doc.NewElement("colorL");
-		colorL->SetAttribute("r", 255);
-		colorL->SetAttribute("g", 255);
-		colorL->SetAttribute("b", 255);
-		colorL->SetAttribute("a", 255);
-		key->InsertEndChild(intensity);
-		key->InsertEndChild(split);
-		key->InsertEndChild(colorL);
-		keys->InsertEndChild(key);
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			auto key = doc.NewElement("key");
+			key->SetAttribute("type", "TransFuncMappingKey");
+			auto intensity = doc.NewElement("intensity");
+			intensity->SetAttribute("value", intensity_list[i]);
+			auto split = doc.NewElement("split");
+			split->SetAttribute("value", false);
+			auto colorL = doc.NewElement("colorL");
+			colorL->SetAttribute("r", colour_list[i][0]);
+			colorL->SetAttribute("g", colour_list[i][1]);
+			colorL->SetAttribute("b", colour_list[i][2]);
+			colorL->SetAttribute("a", colour_list[i][3]);
+			key->InsertEndChild(intensity);
+			key->InsertEndChild(split);
+			key->InsertEndChild(colorL);
+			keys->InsertEndChild(key);
+		}
+		auto lower = doc.NewElement("lower");
+		lower->SetAttribute("value", lower_bound);
+		auto upper = doc.NewElement("upper");
+		upper->SetAttribute("value", upper_bound);
 		transFuncIntensity->InsertEndChild(keys);
+		transFuncIntensity->InsertEndChild(lower);
+		transFuncIntensity->InsertEndChild(upper);
 		voreenData->InsertEndChild(transFuncIntensity);
 		doc.InsertEndChild(voreenData);
 
@@ -116,7 +125,7 @@ private:
 		}
 	}
 
-	void loadTransferFunction(const char *filename)
+	void openTransferFunction(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
 		auto r = doc.LoadFile(filename);
@@ -148,26 +157,24 @@ private:
 			colour_list.push_back(colour);
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
-
 			std::cout<<"intensity="<<intensity;
 			std::cout<<"\tsplit="<<(split?"true":"false");
 			std::cout<<"\tcolorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a;
-
 			if (split)
 			{
-				const double epsilon = 1e-16;
+				const double epsilon = 1e-6;
 				intensity_list.push_back(intensity + epsilon);
-				int r2 = atoi(key->FirstChildElement("colorR")->Attribute("r"));
-				int g2 = atoi(key->FirstChildElement("colorR")->Attribute("g"));
-				int b2 = atoi(key->FirstChildElement("colorR")->Attribute("b"));
-				int a2 = atoi(key->FirstChildElement("colorR")->Attribute("a"));
+				auto colorR = key->FirstChildElement("colorR");
+				int r2 = atoi(colorR->Attribute("r"));
+				int g2 = atoi(colorR->Attribute("g"));
+				int b2 = atoi(colorR->Attribute("b"));
+				int a2 = atoi(colorR->Attribute("a"));
 				std::vector<int> colour2;
-				colour.push_back(r2);
-				colour.push_back(g2);
-				colour.push_back(b2);
-				colour.push_back(a2);
+				colour2.push_back(r2);
+				colour2.push_back(g2);
+				colour2.push_back(b2);
+				colour2.push_back(a2);
 				colour_list.push_back(colour2);
-
 				std::cout<<"\tcolorR r="<<r2<<" g="<<g2<<" b="<<b2<<" a="<<a2;
 			}
 			std::cout<<endl;
@@ -175,8 +182,9 @@ private:
 			key = key->NextSiblingElement();
 		} while (key);
 
-		lower_bound = atof(doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("lower")->Attribute("value"));
-		upper_bound = atof(doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("upper")->Attribute("value"));
+		auto transFuncIntensity = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity");
+		lower_bound = atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value"));
+		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
 	}
 
 	void updateTransferFunction()
@@ -463,7 +471,7 @@ private:
 			interactor->Start();
 		}
 
-		void onLoadTransferFunctionSlot()
+		void onOpenTransferFunctionSlot()
 		{
 			// show file dialog
 			QString filter("transfer function file (*.tfi *.tfig)");
@@ -480,7 +488,7 @@ private:
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
 
-			loadTransferFunction(filename_str);
+			openTransferFunction(filename_str);
 			updateTransferFunction();
 		}
 

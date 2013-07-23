@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
 	connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
 	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
-	connect(ui->action_Load_Transfer_Function, SIGNAL(triggered()), this, SLOT(onLoadTransferFunctionSlot()));
+	connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	volume_filename = "../../data/nucleon.mhd";
-	transfer_function_filename = "../../data/nucleon2.tfi";
+	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
 }
 
 MainWindow::~MainWindow()

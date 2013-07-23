@@ -47,7 +47,7 @@
     </property>
     <addaction name="action_Open_Volume"/>
     <addaction name="action_Append_Volume"/>
-    <addaction name="action_Load_Transfer_Function"/>
+    <addaction name="action_Open_Transfer_Function"/>
     <addaction name="action_Save_Transfer_Function"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -119,7 +119,13 @@
   </widget>
   <action name="action_Open_Volume">
    <property name="text">
-    <string>&amp;Open Volume</string>
+    <string>&amp;Open Volume...</string>
+   </property>
+   <property name="iconText">
+    <string>Open Volume</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Volume</string>
    </property>
   </action>
   <action name="action_Exit">
@@ -134,17 +140,29 @@
   </action>
   <action name="action_Append_Volume">
    <property name="text">
-    <string>&amp;Append Volume</string>
+    <string>&amp;Append Volume...</string>
+   </property>
+   <property name="iconText">
+    <string>Append Volume</string>
+   </property>
+   <property name="toolTip">
+    <string>Append Volume</string>
    </property>
   </action>
-  <action name="action_Load_Transfer_Function">
+  <action name="action_Open_Transfer_Function">
    <property name="text">
-    <string>&amp;Load Transfer Function</string>
+    <string>Open &amp;Transfer Function...</string>
+   </property>
+   <property name="iconText">
+    <string>Open Transfer Function</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Transfer Function</string>
    </property>
   </action>
   <action name="action_Save_Transfer_Function">
    <property name="text">
-    <string>&amp;Save Transfer Function</string>
+    <string>&amp;Save Transfer Function As...</string>
    </property>
   </action>
  </widget>
