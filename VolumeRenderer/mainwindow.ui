@@ -46,9 +46,9 @@
      <string>&amp;File</string>
     </property>
     <addaction name="action_Open_Volume"/>
-    <addaction name="action_Append_Volume"/>
     <addaction name="action_Open_Transfer_Function"/>
     <addaction name="action_Save_Transfer_Function"/>
+    <addaction name="action_Append_Volume"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -57,7 +57,14 @@
     </property>
     <addaction name="action_About"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_Optimise_Transfer_Function"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -163,6 +170,11 @@
   <action name="action_Save_Transfer_Function">
    <property name="text">
     <string>&amp;Save Transfer Function As...</string>
+   </property>
+  </action>
+  <action name="action_Optimise_Transfer_Function">
+   <property name="text">
+    <string>&amp;Optimise Transfer Function</string>
    </property>
   </action>
  </widget>

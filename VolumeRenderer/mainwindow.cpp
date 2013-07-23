@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
+	connect(ui->action_Optimise_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOptimiseTransferFunctionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -52,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	volume_filename = "../../data/nucleon.mhd";
 	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
+
+	epsilon = 1e-6;
 }
 
 MainWindow::~MainWindow()

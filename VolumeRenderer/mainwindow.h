@@ -78,6 +78,112 @@ private:
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
 	double lower_bound;
 	double upper_bound;
+	double epsilon;
+
+	double get_area(int i)
+	{
+		if (i >= 0 && i+1 < intensity_list.size())
+		{
+			double i_a = intensity_list[i]; // intensity of point a
+			double i_b = intensity_list[i+1]; // intensity of point b
+			double o_a = colour_list[i][3]; // opacity of point a
+			double o_b = colour_list[i+1][3]; // opacity of point b
+			return (o_a + o_b) * (i_b - i_a) / 2;
+		} 
+		else
+		{
+			return 0;
+		}
+	}
+
+	double get_neighbour_area(int i)
+	{
+		return get_area(i) + get_area(i-1);
+	}
+
+	double get_area_right_new(int i, double opacity_new)
+	{
+		if (i >= 0 && i+1 < intensity_list.size())
+		{
+			double i_a = intensity_list[i]; // intensity of point a
+			double i_b = intensity_list[i+1]; // intensity of point b
+			double o_a = opacity_new; // opacity of point a
+			double o_b = colour_list[i+1][3]; // opacity of point b
+			return (o_a + o_b) * (i_b - i_a) / 2;
+		} 
+		else
+		{
+			return 0;
+		}
+	}
+
+	double get_area_left_new(int i, double opacity_new)
+	{
+		if (i >= 0 && i+1 < intensity_list.size())
+		{
+			double i_a = intensity_list[i]; // intensity of point a
+			double i_b = intensity_list[i+1]; // intensity of point b
+			double o_a = colour_list[i][3]; // opacity of point a
+			double o_b = opacity_new; // opacity of point b
+			return (o_a + o_b) * (i_b - i_a) / 2;
+		} 
+		else
+		{
+			return 0;
+		}
+	}
+
+	double get_neighbour_area_new(int i, double opacity_new)
+	{
+		return get_area_right_new(i, opacity_new) + get_area_left_new(i-1, opacity_new);
+	}
+
+	void optimiseTransferFunction()
+	{
+		std::cout<<"list size="<<colour_list.size()<<endl;
+		std::vector<double> area_list;
+		for (unsigned int i=0; i<intensity_list.size()-1; i++)
+		{
+			double area = get_area(i);
+			std::cout<<"area"<<i<<"="<<area<<endl;
+			area_list.push_back(area);
+		}
+		if (area_list.size() > 0)
+		{
+			int max_index = 0;
+			double max_area = area_list[0];
+			int min_index = 0;
+			double min_area = area_list[0];
+			for (unsigned int i=1; i<area_list.size(); i++)
+			{
+				if (area_list[i] > max_area)
+				{
+					max_area = area_list[i];
+					max_index = i;
+				}
+				if (area_list[i] > 0 && area_list[i] < min_area)
+				{
+					min_area = area_list[i];
+					min_index = i;
+				}
+			}
+			std::cout<<"max index="<<max_index<<" area="<<max_area<<endl;
+			std::cout<<"min index="<<min_index<<" area="<<min_area<<endl;
+			if (min_area > 0 && max_area > min_area)
+			{
+				int a = min_index;
+				int b = min_index + 1;
+				int c = max_index;
+				int d = max_index + 1;
+				int min_point_index = colour_list[b][3] < colour_list[a][3] ? b : a;
+				int max_point_index = colour_list[d][3] > colour_list[c][3] ? d : c;
+				const int step = 1;
+				double new_max = colour_list[max_point_index][3] - step;
+				double area_decreased = get_neighbour_area(max_point_index) - get_neighbour_area_new(max_point_index, new_max);
+				std::cout<<"opacity="<<colour_list[max_point_index][3]<<" new opacity="<<new_max<<" area decreased="<<area_decreased<<endl;
+			}
+		}
+	}
 
 	void saveTransferFunction(const char *filename)
 	{
@@ -162,7 +268,6 @@ private:
 			std::cout<<"\tcolorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a;
 			if (split)
 			{
-				const double epsilon = 1e-6;
 				intensity_list.push_back(intensity + epsilon);
 				auto colorR = key->FirstChildElement("colorR");
 				int r2 = atoi(colorR->Attribute("r"));
@@ -511,6 +616,11 @@ private:
 
 			saveTransferFunction(filename_str);
 			//updateTransferFunction();
+		}
+
+		void onOptimiseTransferFunctionSlot()
+		{
+			optimiseTransferFunction();
 		}
 };
 
