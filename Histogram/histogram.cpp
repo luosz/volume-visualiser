@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <cstdio>
 #include <string>
 #include <cstdlib>
 using namespace std;
@@ -30,6 +32,9 @@ using namespace std;
 #include <vtkPointData.h>
 #include <vtkProperty2D.h>
 #include <vtkLegendBoxActor.h>
+#include <vtkPNGReader.h>
+#include <vtkXYPlotActor.h>
+#include <vtkImageExtractComponents.h>
 
 void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
 {
@@ -87,19 +92,191 @@ void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
 
 int main(int argc, char *argv[])
 {
-	// This is the data that will be volume rendered.
-	std::string volumeFilename("../../data/nucleon.mhd");
-	if(argc >= 2)
+	//// This is the data that will be volume rendered.
+	//std::string volumeFilename("../../data/nucleon.mhd");
+	//if(argc >= 2)
+	//{
+	//	volumeFilename = argv[1];
+	//}
+	//std::cout<<"volume file: "<<volumeFilename<<endl;
+
+	//// to read a .mhd file or a folder containing a set of raw files
+	//vtkSmartPointer<vtkMetaImageReader> reader = vtkMetaImageReader::New();
+	//reader->SetFileName(volumeFilename.c_str());
+
+	//generateHistogram(reader);
+
+	if( argc < 2 )
 	{
-		volumeFilename = argv[1];
+		std::cout << "Usage: " << argv[0] << " Filename.png, [optional ignore zero:] <y/n>" << std::endl;
+		return EXIT_FAILURE;
 	}
-	std::cout<<"volume file: "<<volumeFilename<<endl;
 
-	// to read a .mhd file or a folder containing a set of raw files
-	vtkSmartPointer<vtkMetaImageReader> reader = vtkMetaImageReader::New();
-	reader->SetFileName(volumeFilename.c_str());
+	int ignoreZero = 0;
 
-	generateHistogram(reader);
+	// Read a jpeg image
+	//auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+	auto reader = vtkSmartPointer<vtkPNGReader>::New();
+	if( !reader->CanReadFile( argv[1] ) )
+	{
+		std::cout << "Error: cannot read " << argv[1] << std::endl;
+		return EXIT_FAILURE;
+	}
+	reader->SetFileName( argv[1] );
+	reader->Update();
+
+	int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
+	std::cout<<"component number="<<numComponents<<endl;
+	if( numComponents > 3 )
+	{
+		std::cout << "Error: cannot process an image with " 
+			<< numComponents << " components!" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	// Create a vtkXYPlotActor
+	vtkSmartPointer<vtkXYPlotActor> plot = 
+		vtkSmartPointer<vtkXYPlotActor>::New();
+	plot->ExchangeAxesOff();
+	plot->SetLabelFormat( "%g" );
+	plot->SetXTitle( "Level" );
+	plot->SetYTitle( "Frequency" );
+	plot->SetXValuesToValue();
+
+	double xmax = 0.;
+	double ymax = 0.;
+
+	double colors[3][3] = {
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 } };
+
+	const char* labels[3] = {
+		"Red", "Green", "Blue" };
+
+	vtkSmartPointer<vtkIntArray> redFrequencies = 
+		vtkSmartPointer<vtkIntArray>::New();
+	vtkSmartPointer<vtkIntArray> greenFrequencies = 
+		vtkSmartPointer<vtkIntArray>::New();
+	vtkSmartPointer<vtkIntArray> blueFrequencies = 
+		vtkSmartPointer<vtkIntArray>::New();
+
+	// Process the image, extracting and plotting a histogram for each
+	// component
+	for( int i = 0; i < numComponents; ++i )
+	{
+		vtkSmartPointer<vtkImageExtractComponents> extract = 
+			vtkSmartPointer<vtkImageExtractComponents>::New();
+		extract->SetInputConnection( reader->GetOutputPort() );
+		extract->SetComponents( i );
+		extract->Update();
+
+		double range[2];
+		extract->GetOutput()->GetScalarRange( range );
+		std::cout<<"range "<<range[0]<<" "<<range[1]<<endl;
+
+		vtkSmartPointer<vtkImageAccumulate> histogram = 
+			vtkSmartPointer<vtkImageAccumulate>::New();
+		histogram->SetInputConnection( extract->GetOutputPort() );
+		histogram->SetComponentExtent(
+			0,
+			static_cast<int>(range[1])-static_cast<int>(range[0])-1,0,0,0,0 );
+		histogram->SetComponentOrigin( range[0],0,0 );
+		histogram->SetComponentSpacing( 1,0,0 );
+		histogram->SetIgnoreZero( ignoreZero );
+		histogram->Update();
+
+		vtkIntArray* currentArray = 0;
+		if( i == 0 )
+		{
+			currentArray = redFrequencies;
+		}
+		else if( i == 1 )
+		{
+			currentArray = greenFrequencies;
+		}
+		else
+		{
+			currentArray = blueFrequencies;
+		}
+
+		currentArray->SetNumberOfComponents(1);
+		currentArray->SetNumberOfTuples( 256 );
+		int* output = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+
+		for( int j = 0; j < 256; ++j )
+		{
+			currentArray->SetTuple1( j, *output++ );
+		}
+
+		if( range[1] > xmax ) 
+		{ 
+			xmax = range[1];
+		}
+		if( histogram->GetOutput()->GetScalarRange()[1] > ymax ) 
+		{
+			ymax = histogram->GetOutput()->GetScalarRange()[1];
+		}
+		std::cout<<"histogram range "<<histogram->GetOutput()->GetScalarRange()[0]<<" "<<histogram->GetOutput()->GetScalarRange()[1]<<endl;
+
+#if VTK_MAJOR_VERSION <= 5
+		plot->AddInput( histogram->GetOutput() );
+#else
+		plot->AddDataSetInputConnection( histogram->GetOutputPort() );
+#endif
+		if( numComponents > 1 )
+		{
+			plot->SetPlotColor(i,colors[i]);
+			plot->SetPlotLabel(i,labels[i]);
+			plot->LegendOn();
+		}
+
+		//if (i == 0)
+		{
+			double min = histogram->GetOutput()->GetScalarRange()[0];
+			double max = histogram->GetOutput()->GetScalarRange()[1];
+			std::cout<<"min="<<min<<" max="<<max<<endl;
+			char buffer[32];
+			itoa(i, buffer, 10);
+			char filename[32];
+			sprintf(filename, "../%s.csv", buffer);
+			std::cout<<"output file "<<filename<<std::endl;
+			ofstream myfile;
+			myfile.open(filename);
+			int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+			for (int j=0; j<256; j++)
+			{
+				int value = pixels[j];
+				if (value < min || value > max)
+				{
+					value = 0;
+				}
+				myfile<<j<<", "<<value<<std::endl;
+			}
+			myfile.close();
+		}
+	}
+
+	plot->SetXRange( 0, xmax );
+	plot->SetYRange( 0, ymax );
+
+	// Visualize the histogram(s)
+	vtkSmartPointer<vtkRenderer> renderer = 
+		vtkSmartPointer<vtkRenderer>::New();
+	renderer->AddActor(plot);
+
+	vtkSmartPointer<vtkRenderWindow> renderWindow = 
+		vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer( renderer );
+	renderWindow->SetSize(640, 480);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> interactor =
+		vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	interactor->SetRenderWindow( renderWindow );
+
+	// Initialize the event loop and then start it
+	interactor->Initialize();
+	interactor->Start(); 
 
 	return EXIT_SUCCESS;
 }
