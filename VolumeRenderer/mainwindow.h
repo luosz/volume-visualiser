@@ -11,6 +11,7 @@
 #include <memory>
 #include <cstdlib>
 #include <vector>
+#include <limits>
 
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
@@ -73,115 +74,155 @@ private:
 	QVTKWidget histogramWidget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
 	std::vector<double> intensity_list;
-	std::vector<std::vector<int>> colour_list;
+	std::vector<std::vector<double>> colour_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
 	double lower_bound;
 	double upper_bound;
-	double epsilon;
+
+	double normalise_intensity(double n)
+	{
+		double diff = upper_bound - lower_bound;
+		double normalised = (n - lower_bound) / diff;
+		const double max = 255;
+		return normalised * max;
+	}
+	
+	double normalise(int n)
+	{
+		const int max = 255;
+		double num = n > max ? max : n;
+		return num / max;
+	}
+
+	int denormalise(double n)
+	{
+		const int max = 255;
+		int r = (int)(n * max);
+		return r > max ? max : r;
+	}
+
+	double get_visibility(int i)
+	{
+		return colour_list[i][3];
+	}
 
 	double get_area(int i)
 	{
-		if (i >= 0 && i+1 < intensity_list.size())
+		if (i >= 0 && i < intensity_list.size() - 1)
 		{
-			double i_a = intensity_list[i]; // intensity of point a
-			double i_b = intensity_list[i+1]; // intensity of point b
-			double o_a = colour_list[i][3]; // opacity of point a
-			double o_b = colour_list[i+1][3]; // opacity of point b
-			return (o_a + o_b) * (i_b - i_a) / 2;
+			// area of a trapezoid
+			double h = intensity_list[i+1] - intensity_list[i];
+			double a = get_visibility(i);//colour_list[i][3];
+			double b = get_visibility(i+1);//colour_list[i+1][3];
+			return (a + b) * h / 2;
 		} 
 		else
 		{
-			return 0;
+			if (i == -1)
+			{
+				return (intensity_list[i+1] - lower_bound) * get_visibility(i+1);//colour_list[i+1][3];
+			} 
+			else
+			{
+				if (i == intensity_list.size() - 1)
+				{
+					return (upper_bound - intensity_list[i]) * get_visibility(i);//colour_list[i][3];
+				} 
+				else
+				{
+					std::cout<<"index out of range in get_area()"<<endl;
+					return 0;
+				}
+			}
 		}
 	}
 
 	double get_neighbour_area(int i)
 	{
-		return get_area(i) + get_area(i-1);
+		return get_area(i) + get_area(i - 1);
 	}
 
-	double get_area_right_new(int i, double opacity_new)
+	double get_height_given_area_increment(int i, double area_increment)
 	{
-		if (i >= 0 && i+1 < intensity_list.size())
+		double visibility_increment = -1;
+		if (i > 0  && i < intensity_list.size() - 1)
 		{
-			double i_a = intensity_list[i]; // intensity of point a
-			double i_b = intensity_list[i+1]; // intensity of point b
-			double o_a = opacity_new; // opacity of point a
-			double o_b = colour_list[i+1][3]; // opacity of point b
-			return (o_a + o_b) * (i_b - i_a) / 2;
-		} 
+			// area of two triangles
+			double a = intensity_list[i] - intensity_list[i-1];
+			double b = intensity_list[i+1] - intensity_list[i];
+			visibility_increment = 2 * area_increment / (a + b);
+		}
 		else
 		{
-			return 0;
+			if (i == 0)
+			{
+				// area of a rectangle (left) and a triangle (right)
+				double a = intensity_list[i] - lower_bound;
+				double b = intensity_list[i+1] - intensity_list[i];
+				visibility_increment = area_increment / (a + b/2);
+			} 
+			else
+			{
+				if (i == intensity_list.size() - 1)
+				{
+					// area of a triangle (left) and a rectangle (right)
+					double a = intensity_list[i] - intensity_list[i-1];
+					double b = upper_bound - intensity_list[i];
+					visibility_increment = area_increment / (a/2 + b);
+				} 
+				else
+				{
+					std::cout<<"index out of range in get_height_given_area_increment()"<<endl;
+					visibility_increment = 0;
+				}
+			}
 		}
-	}
-
-	double get_area_left_new(int i, double opacity_new)
-	{
-		if (i >= 0 && i+1 < intensity_list.size())
-		{
-			double i_a = intensity_list[i]; // intensity of point a
-			double i_b = intensity_list[i+1]; // intensity of point b
-			double o_a = colour_list[i][3]; // opacity of point a
-			double o_b = opacity_new; // opacity of point b
-			return (o_a + o_b) * (i_b - i_a) / 2;
-		} 
-		else
-		{
-			return 0;
-		}
-	}
-
-	double get_neighbour_area_new(int i, double opacity_new)
-	{
-		return get_area_right_new(i, opacity_new) + get_area_left_new(i-1, opacity_new);
+		double visibility = get_visibility(i);
+		double opacity = colour_list[i][3];
+		return visibility_increment * opacity / visibility;
 	}
 
 	void optimiseTransferFunction()
 	{
-		std::cout<<"list size="<<colour_list.size()<<endl;
-		std::vector<double> area_list;
-		for (unsigned int i=0; i<intensity_list.size()-1; i++)
+		std::cout<<"colour_list size="<<colour_list.size()<<endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
 		{
-			double area = get_area(i);
-			std::cout<<"area"<<i<<"="<<area<<endl;
-			area_list.push_back(area);
-		}
-		if (area_list.size() > 0)
-		{
-			int max_index = 0;
-			double max_area = area_list[0];
-			int min_index = 0;
-			double min_area = area_list[0];
-			for (unsigned int i=1; i<area_list.size(); i++)
+			if (colour_list[i][3] > epsilon)
 			{
-				if (area_list[i] > max_area)
+				double area = get_neighbour_area(i);
+				if (area > max_area)
 				{
-					max_area = area_list[i];
 					max_index = i;
+					max_area = area;
 				}
-				if (area_list[i] > 0 && area_list[i] < min_area)
+				if (area < min_area)
 				{
-					min_area = area_list[i];
 					min_index = i;
+					min_area = area;
 				}
 			}
-			std::cout<<"max index="<<max_index<<" area="<<max_area<<endl;
-			std::cout<<"min index="<<min_index<<" area="<<min_area<<endl;
-			if (min_area > 0 && max_area > min_area)
-			{
-				int a = min_index;
-				int b = min_index + 1;
-				int c = max_index;
-				int d = max_index + 1;
-				int min_point_index = colour_list[b][3] < colour_list[a][3] ? b : a;
-				int max_point_index = colour_list[d][3] > colour_list[c][3] ? d : c;
-				const int step = 1;
-				double new_max = colour_list[max_point_index][3] - step;
-				double area_decreased = get_neighbour_area(max_point_index) - get_neighbour_area_new(max_point_index, new_max);
-				std::cout<<"opacity="<<colour_list[max_point_index][3]<<" new opacity="<<new_max<<" area decreased="<<area_decreased<<endl;
-			}
+		}
+		if (min_index != max_index)
+		{
+			const double step_size = 1./255.;
+			double opacity = colour_list[max_index][3];
+			double new_opacity = opacity - step_size;
+			double area = get_neighbour_area(max_index);
+			colour_list[max_index][3] = new_opacity;
+			double new_area = get_neighbour_area(max_index);
+			double area_decreased = area - new_area;
+			double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height = colour_list[min_index][3];
+			colour_list[min_index][3] += height_increased;
+			double new_height = colour_list[min_index][3];
+			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<opacity<<" new opacity="<<new_opacity<<" area="<<area<<" new area="<<new_area<<" height="<<height<<" new height="<<new_height<<endl;
+			updateTransferFunction();
 		}
 	}
 
@@ -205,10 +246,10 @@ private:
 			auto split = doc.NewElement("split");
 			split->SetAttribute("value", false);
 			auto colorL = doc.NewElement("colorL");
-			colorL->SetAttribute("r", colour_list[i][0]);
-			colorL->SetAttribute("g", colour_list[i][1]);
-			colorL->SetAttribute("b", colour_list[i][2]);
-			colorL->SetAttribute("a", colour_list[i][3]);
+			colorL->SetAttribute("r", denormalise(colour_list[i][0]));
+			colorL->SetAttribute("g", denormalise(colour_list[i][1]));
+			colorL->SetAttribute("b", denormalise(colour_list[i][2]));
+			colorL->SetAttribute("a", denormalise(colour_list[i][3]));
 			key->InsertEndChild(intensity);
 			key->InsertEndChild(split);
 			key->InsertEndChild(colorL);
@@ -255,17 +296,18 @@ private:
 			int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
 			int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
 			int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
-			std::vector<int> colour;
-			colour.push_back(r);
-			colour.push_back(g);
-			colour.push_back(b);
-			colour.push_back(a);
+			std::vector<double> colour;
+			colour.push_back(normalise(r));
+			colour.push_back(normalise(g));
+			colour.push_back(normalise(b));
+			colour.push_back(normalise(a));
 			colour_list.push_back(colour);
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
 			std::cout<<"intensity="<<intensity;
 			std::cout<<"\tsplit="<<(split?"true":"false");
 			std::cout<<"\tcolorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a;
+			const double epsilon = 1e-6;
 			if (split)
 			{
 				intensity_list.push_back(intensity + epsilon);
@@ -274,11 +316,11 @@ private:
 				int g2 = atoi(colorR->Attribute("g"));
 				int b2 = atoi(colorR->Attribute("b"));
 				int a2 = atoi(colorR->Attribute("a"));
-				std::vector<int> colour2;
-				colour2.push_back(r2);
-				colour2.push_back(g2);
-				colour2.push_back(b2);
-				colour2.push_back(a2);
+				std::vector<double> colour2;
+				colour2.push_back(normalise(r2));
+				colour2.push_back(normalise(g2));
+				colour2.push_back(normalise(b2));
+				colour2.push_back(normalise(a2));
 				colour_list.push_back(colour2);
 				std::cout<<"\tcolorR r="<<r2<<" g="<<g2<<" b="<<b2<<" a="<<a2;
 			}
@@ -292,41 +334,124 @@ private:
 		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
 	}
 
+	void generateTransferFunction()
+	{
+		//// Create transfer mapping scalar value to opacity.
+		//opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+		//opacityTransferFunction->AddPoint(0.0,  0.0);
+		//opacityTransferFunction->AddPoint(36.0,  0.125);
+		//opacityTransferFunction->AddPoint(72.0,  0.25);
+		//opacityTransferFunction->AddPoint(108.0, 0.375);
+		//opacityTransferFunction->AddPoint(144.0, 0.5);
+		//opacityTransferFunction->AddPoint(180.0, 0.625);
+		//opacityTransferFunction->AddPoint(216.0, 0.75);
+		//opacityTransferFunction->AddPoint(255.0, 0.875);
+
+		//// Create transfer mapping scalar value to color.
+		//colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+		//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+
+		intensity_list.clear();
+		colour_list.clear();
+		lower_bound = 0;
+		upper_bound = 1;
+
+		intensity_list.push_back(0);
+		intensity_list.push_back(36);
+		intensity_list.push_back(72);
+		intensity_list.push_back(108);
+		intensity_list.push_back(144);
+		intensity_list.push_back(180);
+		intensity_list.push_back(216);
+		intensity_list.push_back(255);
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0.125);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(0);
+			v.push_back(0.25);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(1);
+			v.push_back(0);
+			v.push_back(0.375);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(0.5);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(1);
+			v.push_back(0.625);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(0);
+			v.push_back(1);
+			v.push_back(0.75);
+			colour_list.push_back(v);
+		}
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+	}
+
 	void updateTransferFunction()
 	{
+		if (intensity_list.size() == 0 || colour_list.size() == 0)
+		{
+			generateTransferFunction();
+		}
 		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
 			opacityTransferFunction->RemoveAllPoints();
 			colorTransferFunction->RemoveAllPoints();
-			const double MAX = 255;
 			for (unsigned int i=0; i<intensity_list.size(); i++)
 			{
-				opacityTransferFunction->AddPoint(intensity_list[i]*MAX, colour_list[i][3]/MAX);
-				colorTransferFunction->AddRGBPoint(intensity_list[i]*MAX, colour_list[i][0]/MAX, colour_list[i][1]/MAX, colour_list[i][2]/MAX);
+				opacityTransferFunction->AddPoint(normalise_intensity(intensity_list[i]), colour_list[i][3]);
+				colorTransferFunction->AddRGBPoint(normalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
 			}
-		}
-		else
-		{
-			opacityTransferFunction->RemoveAllPoints();
-			colorTransferFunction->RemoveAllPoints();
-
-			opacityTransferFunction->AddPoint(0.0,  0.0);
-			opacityTransferFunction->AddPoint(36.0,  0.125);
-			opacityTransferFunction->AddPoint(72.0,  0.25);
-			opacityTransferFunction->AddPoint(108.0, 0.375);
-			opacityTransferFunction->AddPoint(144.0, 0.5);
-			opacityTransferFunction->AddPoint(180.0, 0.625);
-			opacityTransferFunction->AddPoint(216.0, 0.75);
-			opacityTransferFunction->AddPoint(255.0, 0.875);
-
-			colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-			colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-			colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-			colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-			colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-			colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 		}
 	}
 

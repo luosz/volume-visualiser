@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	// allow the user to interactively manipulate (rotate, pan, etc.) the camera, the viewpoint of the scene.
 	auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
 	interactor->SetInteractorStyle(style);
+	interactor->SetStillUpdateRate(1);
 
 	// connect signals to slots
 	connect(ui->action_Open_Volume, SIGNAL(triggered()), this, SLOT(onOpenVolumeSlot()));
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
 	connect(ui->action_Optimise_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOptimiseTransferFunctionSlot()));
+	QObject::connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(onOptimiseTransferFunctionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -38,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	opacityTransferFunction->AddPoint(144.0, 0.5);
 	opacityTransferFunction->AddPoint(180.0, 0.625);
 	opacityTransferFunction->AddPoint(216.0, 0.75);
-	opacityTransferFunction->AddPoint(255.0, 0.875);
+	opacityTransferFunction->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
 	colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
@@ -51,10 +53,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
+	generateTransferFunction();
+
 	volume_filename = "../../data/nucleon.mhd";
 	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
-
-	epsilon = 1e-6;
 }
 
 MainWindow::~MainWindow()
