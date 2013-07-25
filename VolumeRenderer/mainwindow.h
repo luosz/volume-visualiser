@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <memory>
+#include <fstream>
 #include <cstdlib>
 #include <vector>
 #include <limits>
@@ -39,6 +40,7 @@
 #include <vtkPointData.h>
 #include <vtkProperty2D.h>
 #include <vtkLegendBoxActor.h>
+#include <vtkImageExtractComponents.h>
 
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
@@ -71,16 +73,17 @@ private:
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
-	QVTKWidget histogramWidget;
+	//QVTKWidget histogramWidget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
 	std::vector<double> intensity_list;
 	std::vector<std::vector<double>> colour_list;
+	std::vector<double> frequency_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
 	double lower_bound;
 	double upper_bound;
 
-	double normalise_intensity(double n)
+	double denormalise_intensity(double n)
 	{
 		double diff = upper_bound - lower_bound;
 		double normalised = (n - lower_bound) / diff;
@@ -105,6 +108,25 @@ private:
 	double get_visibility(int i)
 	{
 		return colour_list[i][3];
+	}
+
+	double get_visibility_for_real(int i)
+	{
+		const int max = 255;
+		double intensity = denormalise_intensity(intensity_list[i]);
+		int intensity_int = (int)intensity;
+		if (intensity_int < max)
+		{
+			// linear interpolation
+			double t = intensity - intensity_int;
+			double a = frequency_list[intensity_int];
+			double b = frequency_list[intensity_int+1];
+			return (a + (b - a) * t) * colour_list[i][3];
+		} 
+		else
+		{
+			return frequency_list[intensity_int] * colour_list[i][3];
+		}
 	}
 
 	double get_area(int i)
@@ -449,62 +471,184 @@ private:
 			colorTransferFunction->RemoveAllPoints();
 			for (unsigned int i=0; i<intensity_list.size(); i++)
 			{
-				opacityTransferFunction->AddPoint(normalise_intensity(intensity_list[i]), colour_list[i][3]);
-				colorTransferFunction->AddRGBPoint(normalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
+				opacityTransferFunction->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
+				colorTransferFunction->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
 			}
 		}
 	}
 
-	void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
+	//void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
+	//{
+	//	int bins = 16;
+	//	vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
+	//	histogram->SetInputConnection(reader->GetOutputPort());
+	//	histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
+	//	histogram->SetComponentOrigin(0, 0, 0);
+	//	histogram->SetComponentSpacing(256/bins, 0, 0);
+	//	histogram->Update();
+	//	vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
+	//	frequencies->SetNumberOfComponents(1);
+	//	frequencies->SetNumberOfTuples(bins);
+	//	int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+
+	//	for(int j = 0; j < bins; ++j)
+	//	{
+	//		frequencies->SetTuple1(j, *output++);
+	//	}
+
+	//	vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
+	//	dataObject->GetFieldData()->AddArray( frequencies );
+	//	vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
+
+	//	barChart->SetInput(dataObject);
+	//	barChart->SetTitle("Histogram");
+	//	barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
+	//	barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
+	//	barChart->GetProperty()->SetColor(1,1,1);
+	//	barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
+	//	barChart->LegendVisibilityOff();
+	//	barChart->LabelVisibilityOff();
+
+	//	double red[3] = {1, 0, 0 };
+	//	for(int i = 0; i < bins; ++i)
+	//	{
+	//		barChart->SetBarColor(i, red );
+	//	}
+
+	//	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	//	renderer->AddActor(barChart);
+	//	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	//	//auto renderWindow = histogramWidget.GetRenderWindow();
+	//	renderWindow->AddRenderer(renderer);
+	//	renderWindow->SetSize(640, 480);
+	//	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	//	interactor->SetRenderWindow(renderWindow);
+	//	//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
+	//	renderWindow->Render();
+	//	interactor->Initialize();
+	//	interactor->Start();
+	//}
+
+	void generateVisibilityFunction(vtkSmartPointer<vtkImageReader2> reader)
 	{
-		int bins = 16;
-		vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
-		histogram->SetInputConnection(reader->GetOutputPort());
-		histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
-		histogram->SetComponentOrigin(0, 0, 0);
-		histogram->SetComponentSpacing(256/bins, 0, 0);
-		histogram->Update();
-		vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
-		frequencies->SetNumberOfComponents(1);
-		frequencies->SetNumberOfTuples(bins);
-		int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
-
-		for(int j = 0; j < bins; ++j)
+		int ignoreZero = 0;
+		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
+		std::cout<<"component number="<<numComponents<<endl;
+		if( numComponents > 3 )
 		{
-			frequencies->SetTuple1(j, *output++);
+			std::cout << "Error: cannot process an image with " 
+				<< numComponents << " components!" << std::endl;
+			//return EXIT_FAILURE;
 		}
 
-		vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
-		dataObject->GetFieldData()->AddArray( frequencies );
-		vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
+		double xmax = 0.;
+		double ymax = 0.;
 
-		barChart->SetInput(dataObject);
-		barChart->SetTitle("Histogram");
-		barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
-		barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
-		barChart->GetProperty()->SetColor(1,1,1);
-		barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
-		barChart->LegendVisibilityOff();
-		barChart->LabelVisibilityOff();
+		//vtkSmartPointer<vtkIntArray> redFrequencies = 
+		//	vtkSmartPointer<vtkIntArray>::New();
+		//vtkSmartPointer<vtkIntArray> greenFrequencies = 
+		//	vtkSmartPointer<vtkIntArray>::New();
+		//vtkSmartPointer<vtkIntArray> blueFrequencies = 
+		//	vtkSmartPointer<vtkIntArray>::New();
 
-		double red[3] = {1, 0, 0 };
-		for(int i = 0; i < bins; ++i)
+		// Process the image, extracting and plotting a histogram for each
+		// component
+		for( int i = 0; i < numComponents; ++i )
 		{
-			barChart->SetBarColor(i, red );
-		}
+			vtkSmartPointer<vtkImageExtractComponents> extract = 
+				vtkSmartPointer<vtkImageExtractComponents>::New();
+			extract->SetInputConnection( reader->GetOutputPort() );
+			extract->SetComponents( i );
+			extract->Update();
 
-		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-		renderer->AddActor(barChart);
-		vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-		//auto renderWindow = histogramWidget.GetRenderWindow();
-		renderWindow->AddRenderer(renderer);
-		renderWindow->SetSize(640, 480);
-		vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-		interactor->SetRenderWindow(renderWindow);
-		//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
-		renderWindow->Render();
-		interactor->Initialize();
-		interactor->Start();
+			double range[2];
+			extract->GetOutput()->GetScalarRange( range );
+			std::cout<<"range "<<range[0]<<" "<<range[1]<<endl;
+
+			vtkSmartPointer<vtkImageAccumulate> histogram = 
+				vtkSmartPointer<vtkImageAccumulate>::New();
+			histogram->SetInputConnection( extract->GetOutputPort() );
+			histogram->SetComponentExtent(
+				0,
+				static_cast<int>(range[1])-static_cast<int>(range[0])-1,0,0,0,0 );
+			histogram->SetComponentOrigin( range[0],0,0 );
+			histogram->SetComponentSpacing( 1,0,0 );
+			histogram->SetIgnoreZero( ignoreZero );
+			histogram->Update();
+
+			//vtkIntArray* currentArray = 0;
+			//if( i == 0 )
+			//{
+			//	currentArray = redFrequencies;
+			//}
+			//else if( i == 1 )
+			//{
+			//	currentArray = greenFrequencies;
+			//}
+			//else
+			//{
+			//	currentArray = blueFrequencies;
+			//}
+
+			//currentArray->SetNumberOfComponents(1);
+			//currentArray->SetNumberOfTuples( 256 );
+			//int* output = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+
+			//for( int j = 0; j < 256; ++j )
+			//{
+			//	currentArray->SetTuple1( j, *output++ );
+			//}
+
+			if( range[1] > xmax ) 
+			{ 
+				xmax = range[1];
+			}
+			if( histogram->GetOutput()->GetScalarRange()[1] > ymax ) 
+			{
+				ymax = histogram->GetOutput()->GetScalarRange()[1];
+			}
+			std::cout<<"histogram range "<<histogram->GetOutput()->GetScalarRange()[0]<<" "<<histogram->GetOutput()->GetScalarRange()[1]<<endl;
+
+//#if VTK_MAJOR_VERSION <= 5
+//			plot->AddInput( histogram->GetOutput() );
+//#else
+//			plot->AddDataSetInputConnection( histogram->GetOutputPort() );
+//#endif
+//			if( numComponents > 1 )
+//			{
+//				plot->SetPlotColor(i,colors[i]);
+//				plot->SetPlotLabel(i,labels[i]);
+//				plot->LegendOn();
+//			}
+
+			//if (i == 0)
+			{
+				double min = histogram->GetOutput()->GetScalarRange()[0];
+				double max = histogram->GetOutput()->GetScalarRange()[1];
+				std::cout<<"min="<<min<<" max="<<max<<endl;
+				char buffer[32];
+				itoa(i, buffer, 10);
+				char filename[32];
+				sprintf(filename, "../%s.csv", buffer);
+				std::cout<<"output file "<<filename<<std::endl;
+				std::ofstream myfile;
+				myfile.open(filename);
+				frequency_list.clear();
+				frequency_list.reserve(256);
+				int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+				for (int j=0; j<256; j++)
+				{
+					int value = pixels[j];
+					if (value < min || value > max)
+					{
+						value = 0;
+					}
+					frequency_list.push_back(value);
+					myfile<<j<<", "<<value<<std::endl;
+				}
+				myfile.close();
+			}
+		}
 	}
 
 	private slots:
@@ -629,7 +773,8 @@ private:
 			interactor->Initialize();
 			interactor->Start();
 
-			generateHistogram(reader);
+			//generateHistogram(reader);
+			generateVisibilityFunction(reader);
 		}
 
 		void onAppendVolumeSlot()

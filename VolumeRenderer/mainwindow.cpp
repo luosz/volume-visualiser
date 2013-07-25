@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	// add VTK widgets
 	ui->verticalLayout->addWidget(&widget);
 	ui->verticalLayout_2->addWidget(&volumePropertywidget);
-	ui->verticalLayout_3->addWidget(&histogramWidget);
+	//ui->verticalLayout_3->addWidget(&histogramWidget);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
