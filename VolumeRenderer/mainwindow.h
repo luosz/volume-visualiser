@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <vector>
 #include <limits>
+#include <cmath>
 
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
@@ -73,15 +74,14 @@ private:
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
-	//QVTKWidget histogramWidget;
 	ctkVTKVolumePropertyWidget volumePropertywidget;
 	std::vector<double> intensity_list;
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
-	double lower_bound;
-	double upper_bound;
+	double lower_bound, upper_bound;
+	double x_max, x_min, y_max, y_min;
 
 	double denormalise_intensity(double n)
 	{
@@ -105,28 +105,38 @@ private:
 		return r > max ? max : r;
 	}
 
-	double get_visibility(int i)
+	double get_opacity(int i)
 	{
 		return colour_list[i][3];
 	}
 
-	double get_visibility_for_real(int i)
+	double get_frequency(double intensity) // intensity belongs to [0,255]
 	{
-		const int max = 255;
-		double intensity = denormalise_intensity(intensity_list[i]);
 		int intensity_int = (int)intensity;
+		const int max = 255;
 		if (intensity_int < max)
 		{
 			// linear interpolation
 			double t = intensity - intensity_int;
 			double a = frequency_list[intensity_int];
 			double b = frequency_list[intensity_int+1];
-			return (a + (b - a) * t) * colour_list[i][3];
+			return (a + (b - a) * t);
 		} 
 		else
 		{
-			return frequency_list[intensity_int] * colour_list[i][3];
+			return frequency_list[intensity_int];
 		}
+	}
+
+	double get_frequency_and_opacity(int i)
+	{
+		double intensity = denormalise_intensity(intensity_list[i]);
+		return get_frequency(intensity) * colour_list[i][3];
+	}
+
+	double get_visibility(int i)
+	{
+		return get_frequency_and_opacity(i);
 	}
 
 	double get_area(int i)
@@ -244,7 +254,6 @@ private:
 			colour_list[min_index][3] += height_increased;
 			double new_height = colour_list[min_index][3];
 			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<opacity<<" new opacity="<<new_opacity<<" area="<<area<<" new area="<<new_area<<" height="<<height<<" new height="<<new_height<<endl;
-			updateTransferFunction();
 		}
 	}
 
@@ -459,7 +468,7 @@ private:
 		}
 	}
 
-	void updateTransferFunction()
+	void updateTransferFunctionWidgetsFromArrays()
 	{
 		if (intensity_list.size() == 0 || colour_list.size() == 0)
 		{
@@ -477,57 +486,30 @@ private:
 		}
 	}
 
-	//void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
-	//{
-	//	int bins = 16;
-	//	vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
-	//	histogram->SetInputConnection(reader->GetOutputPort());
-	//	histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
-	//	histogram->SetComponentOrigin(0, 0, 0);
-	//	histogram->SetComponentSpacing(256/bins, 0, 0);
-	//	histogram->Update();
-	//	vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
-	//	frequencies->SetNumberOfComponents(1);
-	//	frequencies->SetNumberOfTuples(bins);
-	//	int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+	void updateTransferFunctionArraysFromWidgets()
+	{
+		if (colorTransferFunction->GetSize() != opacityTransferFunction->GetSize())
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
+			int ret = msgBox.exec();
+		}
 
-	//	for(int j = 0; j < bins; ++j)
-	//	{
-	//		frequencies->SetTuple1(j, *output++);
-	//	}
-
-	//	vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
-	//	dataObject->GetFieldData()->AddArray( frequencies );
-	//	vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
-
-	//	barChart->SetInput(dataObject);
-	//	barChart->SetTitle("Histogram");
-	//	barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
-	//	barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
-	//	barChart->GetProperty()->SetColor(1,1,1);
-	//	barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
-	//	barChart->LegendVisibilityOff();
-	//	barChart->LabelVisibilityOff();
-
-	//	double red[3] = {1, 0, 0 };
-	//	for(int i = 0; i < bins; ++i)
-	//	{
-	//		barChart->SetBarColor(i, red );
-	//	}
-
-	//	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	//	renderer->AddActor(barChart);
-	//	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-	//	//auto renderWindow = histogramWidget.GetRenderWindow();
-	//	renderWindow->AddRenderer(renderer);
-	//	renderWindow->SetSize(640, 480);
-	//	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	//	interactor->SetRenderWindow(renderWindow);
-	//	//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
-	//	renderWindow->Render();
-	//	interactor->Initialize();
-	//	interactor->Start();
-	//}
+		colour_list.clear();
+		intensity_list.clear();
+		for (unsigned int i=0; i<colorTransferFunction->GetSize(); i++)
+		{
+			double xrgb[6];
+			colorTransferFunction->GetNodeValue(i, xrgb);
+			std::vector<double> c;
+			c.push_back(xrgb[1]);
+			c.push_back(xrgb[2]);
+			c.push_back(xrgb[3]);
+			c.push_back(opacityTransferFunction->GetValue(xrgb[0]));
+			colour_list.push_back(c);
+			intensity_list.push_back(xrgb[0]);
+		}
+	}
 
 	void generateVisibilityFunction(vtkSmartPointer<vtkImageReader2> reader)
 	{
@@ -599,6 +581,8 @@ private:
 			//	currentArray->SetTuple1( j, *output++ );
 			//}
 
+			x_min = range[0];
+			x_max = range[1];
 			if( range[1] > xmax ) 
 			{ 
 				xmax = range[1];
@@ -623,9 +607,9 @@ private:
 
 			//if (i == 0)
 			{
-				double min = histogram->GetOutput()->GetScalarRange()[0];
-				double max = histogram->GetOutput()->GetScalarRange()[1];
-				std::cout<<"min="<<min<<" max="<<max<<endl;
+				y_min = histogram->GetOutput()->GetScalarRange()[0];
+				y_max = histogram->GetOutput()->GetScalarRange()[1];
+				std::cout<<"min="<<y_min<<" max="<<y_max<<endl;
 				char buffer[32];
 				itoa(i, buffer, 10);
 				char filename[32];
@@ -636,10 +620,11 @@ private:
 				frequency_list.clear();
 				frequency_list.reserve(256);
 				int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
-				for (int j=0; j<256; j++)
+				const int max = 256;
+				for (int j=0; j<max; j++)
 				{
 					int value = pixels[j];
-					if (value < min || value > max)
+					if (value < y_min || value > y_max)
 					{
 						value = 0;
 					}
@@ -703,6 +688,8 @@ private:
 			reader->SetFileName(filename_str);
 			reader->Update();
 #endif
+
+			generateVisibilityFunction(reader);
 
 			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
 			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
@@ -774,7 +761,6 @@ private:
 			interactor->Start();
 
 			//generateHistogram(reader);
-			generateVisibilityFunction(reader);
 		}
 
 		void onAppendVolumeSlot()
@@ -864,7 +850,7 @@ private:
 			std::cout<<"transfer function file: "<<filename_str<<endl;
 
 			openTransferFunction(filename_str);
-			updateTransferFunction();
+			updateTransferFunctionWidgetsFromArrays();
 		}
 
 		void onSaveTransferFunctionSlot()
@@ -888,10 +874,10 @@ private:
 			//updateTransferFunction();
 		}
 
-		void onOptimiseTransferFunctionSlot()
-		{
-			optimiseTransferFunction();
-		}
+        void on_optimiseButton_clicked();
+        void on_pushButton1_clicked();
+        void on_pushButton2_clicked();
+        void on_pushButton3_clicked();
 };
 
 #endif // MAINWINDOW_H

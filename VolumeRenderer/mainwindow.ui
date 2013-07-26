@@ -124,11 +124,48 @@
         <widget class="QLineEdit" name="lineEdit"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>PushButton</string>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="pushButton1">
+           <property name="text">
+            <string>&amp;Frequency</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton2">
+           <property name="text">
+            <string>&amp;Opacity</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton3">
+           <property name="text">
+            <string>&amp;Visibility</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="optimiseButton">
+           <property name="text">
+            <string>&amp;Optimise</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QGraphicsView" name="graphicsView"/>
@@ -194,22 +231,5 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEdit</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>71</x>
-     <y>471</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>38</x>
-     <y>264</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
