@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<VoreenData version="1">
+    <TransFunc2DPrimitives type="TransFuncIntensityGradient">
+        <ignoreAlpha value="false" />
+        <Primitives>
+            <Primitive type="TransFuncBanana">
+                <fuzzy value="0" />
+                <color r="0" g="0" b="255" a="255" />
+                <coords x="0.51612896" y="0.10619467" />
+                <coords x="0.81612933" y="0.50619465" />
+                <coords x="0.85612905" y="0.30619466" />
+                <coords x="1.01612973" y="0.10619467" />
+            </Primitive>
+            <Primitive type="TransFuncBanana">
+                <fuzzy value="0" />
+                <color r="0" g="255" b="0" a="174" />
+                <coords x="0.29493096" y="0.07079637" />
+                <coords x="0.70092171" y="0.51504415" />
+                <coords x="0.63493103" y="0.27079636" />
+                <coords x="0.79493076" y="0.07079637" />
+            </Primitive>
+            <Primitive type="TransFuncBanana">
+                <fuzzy value="0" />
+                <color r="255" g="0" b="0" a="255" />
+                <coords x="0.20276496" y="0.07522124" />
+                <coords x="0.50276506" y="0.47522122" />
+                <coords x="0.54276502" y="0.27522123" />
+                <coords x="0.70276487" y="0.07522124" />
+            </Primitive>
+            <Primitive type="TransFuncQuad">
+                <fuzzy value="0.66000003" />
+                <color r="85" g="0" b="255" a="174" />
+                <coords x="0.40000001" y="0.40000001" />
+                <coords x="0.60000002" y="0.40000001" />
+                <coords x="0.60000002" y="0.60000002" />
+                <coords x="0.40000001" y="0.60000002" />
+            </Primitive>
+        </Primitives>
+        <domainIntensity x="-0.30329379" y="0.11616077" />
+        <domainGradientMagnitude x="0" y="7.07095003" />
+    </TransFunc2DPrimitives>
+</VoreenData>

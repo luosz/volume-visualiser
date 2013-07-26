@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<VoreenData version="1">
+    <Property name="camera" projectionMode="1" maxValue="500" minValue="0.00724638" frustLeft="-0.00300155" frustRight="0.00300155" frustBottom="-0.00300155" frustTop="0.00300155" frustNear="0.00724638" frustFar="502" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true">
+        <MetaData>
+            <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="721" y="372" />
+        </MetaData>
+        <position x="2.34424376" y="0.68869781" z="-0.89149421" />
+        <focus x="0" y="0" z="0" />
+        <upVector x="-0.09121212" y="0.8896547" z="0.44743142" />
+        <trackball moveCenter="false">
+            <center x="0" y="0" z="0" />
+        </trackball>
+        <sceneLLF x="-0.54347825" y="-0.54347825" z="-1" />
+        <sceneURB x="0.54347825" y="0.54347825" z="1" />
+    </Property>
+</VoreenData>
