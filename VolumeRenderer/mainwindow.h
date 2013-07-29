@@ -84,11 +84,11 @@ private:
 	double x_max, x_min, y_max, y_min;
 
 	/// Re-maps a number from one range to another.
-	double map_to_range(double value, double current_lower, double current_upper, double target_lower, double target_upper)
+	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
 	{
-		value = value < current_lower ? current_lower : value;
-		value = value > current_upper ? current_upper : value;
-		double normalised = (value - current_lower) / (current_upper - current_lower);
+		n = n < lower ? lower : n;
+		n = n > upper ? upper : n;
+		double normalised = (n - lower) / (upper - lower);
 		return normalised * (target_upper - target_lower) + target_lower;
 	}
 
@@ -138,7 +138,7 @@ private:
 	double get_frequency_and_opacity(int i)
 	{
 		double intensity = denormalise_intensity(intensity_list[i]);
-		return get_frequency(intensity) * colour_list[i][3];
+		return get_frequency(intensity) * get_opacity(i);
 	}
 
 	double get_visibility(int i)
@@ -251,17 +251,19 @@ private:
 		if (min_index != max_index)
 		{
 			const double step_size = 1./255.;
-			double opacity = colour_list[max_index][3];
-			double new_opacity = opacity - step_size;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
 			double area = get_neighbour_area(max_index);
-			colour_list[max_index][3] = new_opacity;
+			colour_list[max_index][3] = height_max_new;
 			double new_area = get_neighbour_area(max_index);
 			double area_decreased = area - new_area;
 			double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height = colour_list[min_index][3];
-			colour_list[min_index][3] += height_increased;
-			double new_height = colour_list[min_index][3];
-			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<opacity<<" new opacity="<<new_opacity<<" area="<<area<<" new area="<<new_area<<" height="<<height<<" new height="<<new_height<<endl;
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + height_increased;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -373,7 +375,7 @@ private:
 		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
 	}
 
-	void generateTransferFunction()
+	void generateDefaultTransferFunction()
 	{
 		//// Create transfer mapping scalar value to opacity.
 		//opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -402,14 +404,14 @@ private:
 		lower_bound = 0;
 		upper_bound = 1;
 
-		intensity_list.push_back(0);
-		intensity_list.push_back(36);
-		intensity_list.push_back(72);
-		intensity_list.push_back(108);
-		intensity_list.push_back(144);
-		intensity_list.push_back(180);
-		intensity_list.push_back(216);
-		intensity_list.push_back(255);
+		intensity_list.push_back(normalise_intensity(0));
+		intensity_list.push_back(normalise_intensity(36));
+		intensity_list.push_back(normalise_intensity(72));
+		intensity_list.push_back(normalise_intensity(108));
+		intensity_list.push_back(normalise_intensity(144));
+		intensity_list.push_back(normalise_intensity(180));
+		intensity_list.push_back(normalise_intensity(216));
+		intensity_list.push_back(normalise_intensity(255));
 		{
 			std::vector<double> v;
 			v.push_back(0);
@@ -480,7 +482,7 @@ private:
 	{
 		if (intensity_list.size() == 0 || colour_list.size() == 0)
 		{
-			generateTransferFunction();
+			generateDefaultTransferFunction();
 		}
 		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
@@ -518,17 +520,19 @@ private:
 		{
 			double xrgb[6];
 			colorTransferFunction->GetNodeValue(i, xrgb);
-			double opacity = opacityTransferFunction->GetValue(xrgb[0]);
-			xrgb[0] = normalise_intensity(xrgb[0]);
+			double xa[4];
+			opacityTransferFunction->GetNodeValue(i, xa);
+			double opacity = xa[1];
+			double intensity = normalise_intensity(xrgb[0]);
 			std::vector<double> c;
 			c.push_back(xrgb[1]);
 			c.push_back(xrgb[2]);
 			c.push_back(xrgb[3]);
 			c.push_back(opacity);
 			colour_list.push_back(c);
-			intensity_list.push_back(xrgb[0]);
+			intensity_list.push_back(intensity);
 			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
-			std::cout<<"x & opacity "<<xrgb[0]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
+			std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
 	}
 
@@ -901,6 +905,7 @@ private:
         void on_pushButton2_clicked();
         void on_pushButton3_clicked();
         void on_updateButton_clicked();
+        void on_defaultButton_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
-	QObject::connect(ui->action_Optimise_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOptimiseTransferFunctionSlot()));
+	QObject::connect(ui->action_Optimise_Transfer_Function, SIGNAL(triggered()), this, SLOT(on_optimiseButton_clicked()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	generateTransferFunction();
+	generateDefaultTransferFunction();
 
 	volume_filename = "../../data/nucleon.mhd";
 	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
@@ -68,8 +68,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_optimiseButton_clicked()
 {
-	optimiseTransferFunction();
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 99)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		optimiseTransferFunction();
+	}
 	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }
 
 void MainWindow::on_pushButton1_clicked()
@@ -134,8 +144,9 @@ void MainWindow::on_pushButton3_clicked()
 		for (unsigned int i=0; i<intensity_list.size(); i++)
 		{
 			double intensity = denormalise_intensity(intensity_list[i]);
-			auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)/y_max)*height);
+			auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)/x_max)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
+			std::cout<<"visibility="<<get_visibility(i)<<" ymax="<<y_max<<std::endl;
 		}
 	}
 }
@@ -143,4 +154,11 @@ void MainWindow::on_pushButton3_clicked()
 void MainWindow::on_updateButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
+	updateTransferFunctionWidgetsFromArrays();
+}
+
+void MainWindow::on_defaultButton_clicked()
+{
+	generateDefaultTransferFunction();
+	updateTransferFunctionWidgetsFromArrays();
 }

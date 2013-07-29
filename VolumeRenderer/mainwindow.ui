@@ -121,9 +121,6 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
-       <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="topMargin">
           <number>0</number>
@@ -171,9 +168,33 @@
             <number>0</number>
            </property>
            <item>
+            <widget class="QPushButton" name="defaultButton">
+             <property name="text">
+              <string>&amp;Default TF</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="updateButton">
              <property name="text">
               <string>&amp;Update from widget</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QSpinBox" name="spinBox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>1</number>
              </property>
             </widget>
            </item>
