@@ -83,26 +83,33 @@ private:
 	double lower_bound, upper_bound;
 	double x_max, x_min, y_max, y_min;
 
-	double denormalise_intensity(double n)
+	/// Re-maps a number from one range to another.
+	double map_to_range(double value, double current_lower, double current_upper, double target_lower, double target_upper)
 	{
-		double diff = upper_bound - lower_bound;
-		double normalised = (n - lower_bound) / diff;
-		const double max = 255;
-		return normalised * max;
-	}
-	
-	double normalise(int n)
-	{
-		const int max = 255;
-		double num = n > max ? max : n;
-		return num / max;
+		value = value < current_lower ? current_lower : value;
+		value = value > current_upper ? current_upper : value;
+		double normalised = (value - current_lower) / (current_upper - current_lower);
+		return normalised * (target_upper - target_lower) + target_lower;
 	}
 
-	int denormalise(double n)
+	double denormalise_intensity(double n)
 	{
-		const int max = 255;
-		int r = (int)(n * max);
-		return r > max ? max : r;
+		return map_to_range(n, lower_bound, upper_bound, 0, 255);
+	}
+
+	double normalise_intensity(double n)
+	{
+		return map_to_range(n, 0, 255, lower_bound, upper_bound);
+	}
+	
+	double normalise_rgba(int n)
+	{
+		return map_to_range(n, 0, 255, 0, 1);
+	}
+
+	int denormalise_rgba(double n)
+	{
+		return map_to_range(n, 0, 1, 0, 255);
 	}
 
 	double get_opacity(int i)
@@ -217,7 +224,8 @@ private:
 
 	void optimiseTransferFunction()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()<<endl;
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -277,10 +285,10 @@ private:
 			auto split = doc.NewElement("split");
 			split->SetAttribute("value", false);
 			auto colorL = doc.NewElement("colorL");
-			colorL->SetAttribute("r", denormalise(colour_list[i][0]));
-			colorL->SetAttribute("g", denormalise(colour_list[i][1]));
-			colorL->SetAttribute("b", denormalise(colour_list[i][2]));
-			colorL->SetAttribute("a", denormalise(colour_list[i][3]));
+			colorL->SetAttribute("r", denormalise_rgba(colour_list[i][0]));
+			colorL->SetAttribute("g", denormalise_rgba(colour_list[i][1]));
+			colorL->SetAttribute("b", denormalise_rgba(colour_list[i][2]));
+			colorL->SetAttribute("a", denormalise_rgba(colour_list[i][3]));
 			key->InsertEndChild(intensity);
 			key->InsertEndChild(split);
 			key->InsertEndChild(colorL);
@@ -328,10 +336,10 @@ private:
 			int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
 			int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
 			std::vector<double> colour;
-			colour.push_back(normalise(r));
-			colour.push_back(normalise(g));
-			colour.push_back(normalise(b));
-			colour.push_back(normalise(a));
+			colour.push_back(normalise_rgba(r));
+			colour.push_back(normalise_rgba(g));
+			colour.push_back(normalise_rgba(b));
+			colour.push_back(normalise_rgba(a));
 			colour_list.push_back(colour);
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
@@ -348,10 +356,10 @@ private:
 				int b2 = atoi(colorR->Attribute("b"));
 				int a2 = atoi(colorR->Attribute("a"));
 				std::vector<double> colour2;
-				colour2.push_back(normalise(r2));
-				colour2.push_back(normalise(g2));
-				colour2.push_back(normalise(b2));
-				colour2.push_back(normalise(a2));
+				colour2.push_back(normalise_rgba(r2));
+				colour2.push_back(normalise_rgba(g2));
+				colour2.push_back(normalise_rgba(b2));
+				colour2.push_back(normalise_rgba(a2));
 				colour_list.push_back(colour2);
 				std::cout<<"\tcolorR r="<<r2<<" g="<<g2<<" b="<<b2<<" a="<<a2;
 			}
@@ -488,30 +496,43 @@ private:
 
 	void updateTransferFunctionArraysFromWidgets()
 	{
+		if (colorTransferFunction->GetSize() < 1)
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Error: vtkColorTransferFunction is empty.");
+			int ret = msgBox.exec();
+			return;
+		}
 		if (colorTransferFunction->GetSize() != opacityTransferFunction->GetSize())
 		{
 			QMessageBox msgBox;
 			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
 			int ret = msgBox.exec();
+			return;
 		}
 
+		std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
 		for (unsigned int i=0; i<colorTransferFunction->GetSize(); i++)
 		{
 			double xrgb[6];
 			colorTransferFunction->GetNodeValue(i, xrgb);
+			double opacity = opacityTransferFunction->GetValue(xrgb[0]);
+			xrgb[0] = normalise_intensity(xrgb[0]);
 			std::vector<double> c;
 			c.push_back(xrgb[1]);
 			c.push_back(xrgb[2]);
 			c.push_back(xrgb[3]);
-			c.push_back(opacityTransferFunction->GetValue(xrgb[0]));
+			c.push_back(opacity);
 			colour_list.push_back(c);
 			intensity_list.push_back(xrgb[0]);
+			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
+			std::cout<<"x & opacity "<<xrgb[0]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
 	}
 
-	void generateVisibilityFunction(vtkSmartPointer<vtkImageReader2> reader)
+	void generateVisibilityFunction(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
 		int ignoreZero = 0;
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
@@ -610,13 +631,14 @@ private:
 				y_min = histogram->GetOutput()->GetScalarRange()[0];
 				y_max = histogram->GetOutput()->GetScalarRange()[1];
 				std::cout<<"min="<<y_min<<" max="<<y_max<<endl;
+
 				char buffer[32];
 				itoa(i, buffer, 10);
 				char filename[32];
 				sprintf(filename, "../%s.csv", buffer);
 				std::cout<<"output file "<<filename<<std::endl;
-				std::ofstream myfile;
-				myfile.open(filename);
+				std::ofstream myfile(filename);
+
 				frequency_list.clear();
 				frequency_list.reserve(256);
 				int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
@@ -689,12 +711,12 @@ private:
 			reader->Update();
 #endif
 
-			generateVisibilityFunction(reader);
-
 			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
 			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
 			shiftScale->SetInputConnection(reader->GetOutputPort());
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
+
+			generateVisibilityFunction(shiftScale);
 
 			//// Create transfer mapping scalar value to opacity.
 			//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -835,7 +857,7 @@ private:
 		void onOpenTransferFunctionSlot()
 		{
 			// show file dialog
-			QString filter("transfer function file (*.tfi *.tfig)");
+			QString filter("Voreen transfer function (*.tfi)");
 			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
 				return;
@@ -856,7 +878,7 @@ private:
 		void onSaveTransferFunctionSlot()
 		{
 			// show file dialog
-			QString filter("transfer function file (*.tfi *.tfig)");
+			QString filter("transfer function file (*.tfi)");
 			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
 				return;
@@ -878,6 +900,7 @@ private:
         void on_pushButton1_clicked();
         void on_pushButton2_clicked();
         void on_pushButton3_clicked();
+        void on_updateButton_clicked();
 };
 
 #endif // MAINWINDOW_H
