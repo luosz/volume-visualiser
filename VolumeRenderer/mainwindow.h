@@ -51,8 +51,8 @@
 #include "ctkVTKVolumePropertyWidget.h"
 
 #include "tinyxml2.h"
-
 #include "ui_mainwindow.h"
+//#define OUTPUT_TO_FILE
 
 namespace Ui {
 	class MainWindow;
@@ -636,12 +636,14 @@ private:
 				y_max = histogram->GetOutput()->GetScalarRange()[1];
 				std::cout<<"min="<<y_min<<" max="<<y_max<<endl;
 
+#ifdef OUTPUT_TO_FILE
 				char buffer[32];
 				itoa(i, buffer, 10);
 				char filename[32];
 				sprintf(filename, "../%s.csv", buffer);
 				std::cout<<"output file "<<filename<<std::endl;
 				std::ofstream myfile(filename);
+#endif
 
 				frequency_list.clear();
 				frequency_list.reserve(256);
@@ -655,9 +657,13 @@ private:
 						value = 0;
 					}
 					frequency_list.push_back(value);
+#ifdef OUTPUT_TO_FILE
 					myfile<<j<<", "<<value<<std::endl;
+#endif
 				}
+#ifdef OUTPUT_TO_FILE
 				myfile.close();
+#endif
 			}
 		}
 	}
