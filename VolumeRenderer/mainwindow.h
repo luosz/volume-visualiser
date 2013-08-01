@@ -146,6 +146,11 @@ private:
 		return get_frequency_and_opacity(i);
 	}
 
+	double get_noteworthiness(int i)
+	{
+		return get_frequency_and_opacity(i);
+	}
+
 	double get_area(int i)
 	{
 		if (i >= 0 && i < intensity_list.size() - 1)
