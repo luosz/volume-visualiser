@@ -52,7 +52,7 @@
 
 #include "tinyxml2.h"
 #include "ui_mainwindow.h"
-//#define OUTPUT_TO_FILE
+#define OUTPUT_TO_FILE
 
 namespace Ui {
 	class MainWindow;
@@ -82,6 +82,7 @@ private:
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
 	double lower_bound, upper_bound;
 	double x_max, x_min, y_max, y_min;
+	int count_of_voxels;
 
 	/// Re-maps a number from one range to another.
 	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
@@ -141,14 +142,18 @@ private:
 		return get_frequency(intensity) * get_opacity(i);
 	}
 
-	double get_visibility(int i)
-	{
-		return get_frequency_and_opacity(i);
-	}
-
 	double get_noteworthiness(int i)
 	{
-		return get_frequency_and_opacity(i);
+		const double epsilon = 1e-6;
+		double intensity = denormalise_intensity(intensity_list[i]);
+		double probability = get_frequency(intensity) / count_of_voxels;
+		double information = probability < epsilon ? 0 : -log(probability);
+		return get_opacity(i) / information;
+	}
+
+	double get_visibility(int i)
+	{
+		return get_noteworthiness(i);
 	}
 
 	double get_area(int i)
@@ -653,6 +658,7 @@ private:
 				frequency_list.clear();
 				frequency_list.reserve(256);
 				int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+				count_of_voxels = 0;
 				const int max = 256;
 				for (int j=0; j<max; j++)
 				{
@@ -661,6 +667,7 @@ private:
 					{
 						value = 0;
 					}
+					count_of_voxels += value;
 					frequency_list.push_back(value);
 #ifdef OUTPUT_TO_FILE
 					myfile<<j<<", "<<value<<std::endl;
