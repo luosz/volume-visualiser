@@ -147,8 +147,14 @@ private:
 		const double epsilon = 1e-6;
 		double intensity = denormalise_intensity(intensity_list[i]);
 		double probability = get_frequency(intensity) / count_of_voxels;
-		double information = probability < epsilon ? 0 : -log(probability);
-		return get_opacity(i) / information;
+		if (probability < epsilon)
+		{
+			return 0;
+		} 
+		else
+		{
+			return get_opacity(i) * probability * (-log(probability));
+		}
 	}
 
 	double get_visibility(int i)
