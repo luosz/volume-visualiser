@@ -175,6 +175,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="entropyButton">
+             <property name="text">
+              <string>&amp;Entropy</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="updateButton">
              <property name="text">
               <string>&amp;Update from widget</string>

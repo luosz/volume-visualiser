@@ -84,6 +84,18 @@ private:
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 
+	QGraphicsScene * getGraphicsScene()
+	{
+		QGraphicsScene *scene = ui->graphicsView->scene();
+		if (scene == NULL)
+		{
+			scene = new QGraphicsScene();
+			ui->graphicsView->setScene(scene);
+			std::cout<<"create a new scene"<<std::endl;
+		}
+		return scene;
+	}
+
 	/// Re-maps a number from one range to another.
 	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
 	{
@@ -122,7 +134,7 @@ private:
 	{
 		int intensity_int = (int)intensity;
 		const int max = 255;
-		if (intensity_int < max)
+		if (intensity_int >= 0 && intensity_int < max)
 		{
 			// linear interpolation
 			double t = intensity - intensity_int;
@@ -132,7 +144,15 @@ private:
 		} 
 		else
 		{
-			return frequency_list[intensity_int];
+			if (intensity_int == max)
+			{
+				return frequency_list[intensity_int];
+			} 
+			else
+			{
+				std::cout<<"Errors occur in get_frequency()"<<std::endl;
+				return 0;
+			}
 		}
 	}
 
@@ -147,19 +167,172 @@ private:
 		const double epsilon = 1e-6;
 		double intensity = denormalise_intensity(intensity_list[i]);
 		double probability = get_frequency(intensity) / count_of_voxels;
-		if (probability < epsilon)
+		if (probability > epsilon)
 		{
-			return 0;
+			return get_opacity(i) * probability * (-log(probability));
 		} 
 		else
 		{
-			return get_opacity(i) * probability * (-log(probability));
+			return 0;
 		}
 	}
 
 	double get_visibility(int i)
 	{
 		return get_noteworthiness(i);
+	}
+
+	/// double intensity belongs to [0,1]
+	double get_opacity_interpolation_without_index(double intensity)
+	{
+		int index;
+		if (intensity < intensity_list[0])
+		{
+			index = -1;
+		} 
+		else
+		{
+			if (intensity > intensity_list[intensity_list.size()-1])
+			{
+				index = intensity_list.size() - 1;
+			} 
+			else
+			{
+				index = -2;
+				for (int i=0; i<intensity_list.size()-1; i++)
+				{
+					if (intensity_list[i] <= intensity && intensity_list[i+1] >= intensity)
+					{
+						index = i;
+						break;
+					}
+				}
+				if (index == -2)
+				{
+					std::cout<<"Errors occur in get_opacity_interpolation_without_index(double intensity)"<<std::endl;
+					return 0;
+				}
+			}
+		}
+
+		return get_opacity_interpolation(intensity, index);
+	}
+
+	/// double intensity belongs to [0,1]
+	/// int index >=0 && index < intensity_list.size()
+	double get_opacity_interpolation(double intensity, int index)
+	{
+		int i1 = index, i2 = index + 1;
+		if (i1 >= 0 && i2 < intensity_list.size())
+		{
+			// linear interpolation
+			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
+			double a = colour_list[i1][3];
+			double b = colour_list[i2][3];
+			return (a + (b - a) * t);
+		}
+		else
+		{
+			if (i1 == -1)
+			{
+				return intensity_list[i2];
+			} 
+			else
+			{
+				if (i1 == intensity_list.size() - 1)
+				{
+					return intensity_list[i1];
+				} 
+				else
+				{
+					std::cout<<"Errors occur in get_opacity_interpolation()"<<std::endl;
+					return 0;
+				}
+			}
+		}
+	}
+
+	double get_area_integral(int index)
+	{
+		double a, b;
+		if (index >= 0 && index < intensity_list.size() - 1)
+		{
+			a = intensity_list[index];
+			b = intensity_list[index+1];
+		} 
+		else
+		{
+			if (index == -1)
+			{
+				a = 0;
+				b = intensity_list[index+1];
+			} 
+			else
+			{
+				if (index == intensity_list.size() - 1)
+				{
+					a = intensity_list[index];
+					b = 1;
+				} 
+				else
+				{
+					std::cout<<"index out of range in get_area_integral()"<<endl;
+					return 0;
+				}
+			}
+		}
+
+		std::cout<<"intensity "<<a<<" "<<b;
+		a = denormalise_intensity(a);
+		b = denormalise_intensity(b);
+		std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
+
+		double sum = 0;
+		// int intensity belongs to [0,255]
+		for (int intensity=(int)a; intensity<b; intensity++)
+		{
+			if (intensity >= a)
+			{
+				std::cout<<intensity<<" ";
+				sum += get_entropy(intensity, index);
+			}
+		}
+		std::cout<<std::endl;
+		return sum;
+	}
+
+	// double intensity belongs to [0,255]
+	double get_entropy(double intensity, int index)
+	{
+		double frequency = get_frequency(intensity);
+		const double epsilon = 1e-6;
+		double probability = frequency / count_of_voxels;
+		if (probability > epsilon)
+		{
+			double normalised = normalise_intensity(intensity);
+			return get_opacity_interpolation(normalised, index) * probability * (-log(probability));
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	// double intensity belongs to [0,255]
+	double get_entropy(double intensity)
+	{
+		double frequency = get_frequency(intensity);
+		const double epsilon = 1e-6;
+		double probability = frequency / count_of_voxels;
+		if (probability > epsilon)
+		{
+			double normalised = normalise_intensity(intensity);
+			return get_opacity_interpolation_without_index(normalised) * probability * (-log(probability));
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	double get_area(int i)
@@ -930,6 +1103,7 @@ private:
         void on_pushButton3_clicked();
         void on_updateButton_clicked();
         void on_defaultButton_clicked();
+        void on_entropyButton_clicked();
 };
 
 #endif // MAINWINDOW_H

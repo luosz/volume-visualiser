@@ -59,6 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
+
+	// should not be used before initialization
+	count_of_voxels = 0;
 }
 
 MainWindow::~MainWindow()
@@ -85,13 +88,7 @@ void MainWindow::on_optimiseButton_clicked()
 void MainWindow::on_pushButton1_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = ui->graphicsView->scene();
-	if (scene == NULL)
-	{
-		scene = new QGraphicsScene();
-		ui->graphicsView->setScene(scene);
-		std::cout<<"create scene"<<std::endl;
-	}
+	QGraphicsScene *scene = getGraphicsScene();
 	scene->clear();
 	scene->addText("Frequency " + QTime::currentTime().toString());
 	if (frequency_list.size() > 0)
@@ -107,13 +104,7 @@ void MainWindow::on_pushButton1_clicked()
 void MainWindow::on_pushButton2_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = ui->graphicsView->scene();
-	if (scene == NULL)
-	{
-		scene = new QGraphicsScene();
-		ui->graphicsView->setScene(scene);
-		std::cout<<"create scene"<<std::endl;
-	}
+	QGraphicsScene *scene = getGraphicsScene();
 	scene->clear();
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list.size() > 0)
@@ -130,13 +121,7 @@ void MainWindow::on_pushButton2_clicked()
 void MainWindow::on_pushButton3_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = ui->graphicsView->scene();
-	if (scene == NULL)
-	{
-		scene = new QGraphicsScene();
-		ui->graphicsView->setScene(scene);
-		std::cout<<"create scene"<<std::endl;
-	}
+	QGraphicsScene *scene = getGraphicsScene();
 	scene->clear();
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list.size() > 0)
@@ -144,7 +129,7 @@ void MainWindow::on_pushButton3_clicked()
 		for (unsigned int i=0; i<intensity_list.size(); i++)
 		{
 			double intensity = denormalise_intensity(intensity_list[i]);
-			auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)/x_max)*height);
+			auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)*10)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
 			std::cout<<"visibility="<<get_visibility(i)<<" ymax="<<y_max<<std::endl;
 		}
@@ -155,10 +140,39 @@ void MainWindow::on_updateButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	updateTransferFunctionWidgetsFromArrays();
+	std::cout<<"area by integral "<<get_area_integral(0)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(1)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(2)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(3)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(4)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(5)<<std::endl;
+	std::cout<<"area by integral "<<get_area_integral(6)<<std::endl;
 }
 
 void MainWindow::on_defaultButton_clicked()
 {
 	generateDefaultTransferFunction();
 	updateTransferFunctionWidgetsFromArrays();
+}
+
+void MainWindow::on_entropyButton_clicked()
+{
+	double height = ui->graphicsView->height();
+	QGraphicsScene *scene = getGraphicsScene();
+	scene->clear();
+	scene->addText("Entropy " + QTime::currentTime().toString());
+	if (frequency_list.size() > 0)
+	{
+		unsigned int index = -1;
+		std::cout<<"entropy "<<get_entropy(10, 0);
+		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
+		{
+			double entropy = get_entropy(intensity);
+			std::cout<<" "<<entropy;
+			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*10)*height);
+			line->setFlag(QGraphicsItem::ItemIsMovable);
+	
+		}
+		std::cout<<std::endl;
+	}
 }
