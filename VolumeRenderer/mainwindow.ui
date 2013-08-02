@@ -137,21 +137,21 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="pushButton1">
+            <widget class="QPushButton" name="frequencyButton">
              <property name="text">
               <string>&amp;Frequency</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton2">
+            <widget class="QPushButton" name="opacityButton">
              <property name="text">
               <string>&amp;Opacity</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton3">
+            <widget class="QPushButton" name="visibilityButton">
              <property name="text">
               <string>&amp;Visibility</string>
              </property>
@@ -182,9 +182,9 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="updateButton">
+            <widget class="QPushButton" name="entropyOpacityButton">
              <property name="text">
-              <string>&amp;Update from widget</string>
+              <string>Entropy &amp;Opacity</string>
              </property>
             </widget>
            </item>
@@ -209,6 +209,13 @@
             <widget class="QPushButton" name="optimiseButton">
              <property name="text">
               <string>&amp;Optimise</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="optimiseEntropyButton">
+             <property name="text">
+              <string>Optimise &amp;Entropy</string>
              </property>
             </widget>
            </item>

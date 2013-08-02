@@ -69,6 +69,107 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_defaultButton_clicked()
+{
+	generateDefaultTransferFunction();
+	updateTransferFunctionWidgetsFromArrays();
+}
+
+void MainWindow::on_frequencyButton_clicked()
+{
+    double height = ui->graphicsView->height();
+    QGraphicsScene *scene = getGraphicsScene();
+    scene->clear();
+    scene->addText("Frequency " + QTime::currentTime().toString());
+    if (frequency_list.size() > 0)
+    {
+        for (unsigned int itensity=0; itensity<frequency_list.size(); itensity++) // 0 to 255
+        {
+            auto line = scene->addLine(itensity, height, itensity+1, (1-get_frequency(itensity)/y_max)*height);
+            line->setFlag(QGraphicsItem::ItemIsMovable);
+        }
+    }
+}
+
+void MainWindow::on_opacityButton_clicked()
+{
+    double height = ui->graphicsView->height();
+    QGraphicsScene *scene = getGraphicsScene();
+    scene->clear();
+    scene->addText("Visibility " + QTime::currentTime().toString());
+    if (intensity_list.size() > 0)
+    {
+        for (unsigned int i=0; i<intensity_list.size(); i++)
+        {
+            double intensity = denormalise_intensity(intensity_list[i]);
+            auto line = scene->addLine(intensity, height, intensity+1, (1-get_opacity(i))*height);
+            line->setFlag(QGraphicsItem::ItemIsMovable);
+        }
+    }
+}
+
+void MainWindow::on_visibilityButton_clicked()
+{
+    double height = ui->graphicsView->height();
+    QGraphicsScene *scene = getGraphicsScene();
+    scene->clear();
+    scene->addText("Visibility " + QTime::currentTime().toString());
+    if (intensity_list.size() > 0)
+    {
+        for (unsigned int i=0; i<intensity_list.size(); i++)
+        {
+            double intensity = denormalise_intensity(intensity_list[i]);
+            auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)*16)*height);
+            line->setFlag(QGraphicsItem::ItemIsMovable);
+            std::cout<<"visibility="<<get_visibility(i)<<" ymax="<<y_max<<std::endl;
+        }
+    }
+}
+
+void MainWindow::on_entropyButton_clicked()
+{
+	double height = ui->graphicsView->height();
+	QGraphicsScene *scene = getGraphicsScene();
+	scene->clear();
+	scene->addText("Entropy " + QTime::currentTime().toString());
+	if (frequency_list.size() > 0)
+	{
+		unsigned int index = -1;
+		std::cout<<"entropy ";
+		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
+		{
+			double entropy = get_entropy(intensity);
+			std::cout<<" "<<entropy;
+			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*10)*height);
+			line->setFlag(QGraphicsItem::ItemIsMovable);
+
+		}
+		std::cout<<std::endl;
+	}
+}
+
+void MainWindow::on_entropyOpacityButton_clicked()
+{
+	double height = ui->graphicsView->height();
+	QGraphicsScene *scene = getGraphicsScene();
+	scene->clear();
+	scene->addText("Entropy Opacity " + QTime::currentTime().toString());
+	if (frequency_list.size() > 0)
+	{
+		unsigned int index = -1;
+		std::cout<<"entropy ";
+		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
+		{
+			double entropy = get_entropy_opacity(intensity);
+			std::cout<<" "<<entropy;
+			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*16)*height);
+			line->setFlag(QGraphicsItem::ItemIsMovable);
+
+		}
+		std::cout<<std::endl;
+	}
+}
+
 void MainWindow::on_optimiseButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
@@ -85,94 +186,18 @@ void MainWindow::on_optimiseButton_clicked()
 	updateTransferFunctionArraysFromWidgets();
 }
 
-void MainWindow::on_pushButton1_clicked()
-{
-	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
-	scene->clear();
-	scene->addText("Frequency " + QTime::currentTime().toString());
-	if (frequency_list.size() > 0)
-	{
-		for (unsigned int itensity=0; itensity<frequency_list.size(); itensity++) // 0 to 255
-		{
-			auto line = scene->addLine(itensity, height, itensity+1, (1-get_frequency(itensity)/y_max)*height);
-			line->setFlag(QGraphicsItem::ItemIsMovable);
-		}
-	}
-}
-
-void MainWindow::on_pushButton2_clicked()
-{
-	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
-	scene->clear();
-	scene->addText("Visibility " + QTime::currentTime().toString());
-	if (intensity_list.size() > 0)
-	{
-		for (unsigned int i=0; i<intensity_list.size(); i++)
-		{
-			double intensity = denormalise_intensity(intensity_list[i]);
-			auto line = scene->addLine(intensity, height, intensity+1, (1-get_opacity(i))*height);
-			line->setFlag(QGraphicsItem::ItemIsMovable);
-		}
-	}
-}
-
-void MainWindow::on_pushButton3_clicked()
-{
-	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
-	scene->clear();
-	scene->addText("Visibility " + QTime::currentTime().toString());
-	if (intensity_list.size() > 0)
-	{
-		for (unsigned int i=0; i<intensity_list.size(); i++)
-		{
-			double intensity = denormalise_intensity(intensity_list[i]);
-			auto line = scene->addLine(intensity, height, intensity+1, (1-get_visibility(i)*10)*height);
-			line->setFlag(QGraphicsItem::ItemIsMovable);
-			std::cout<<"visibility="<<get_visibility(i)<<" ymax="<<y_max<<std::endl;
-		}
-	}
-}
-
-void MainWindow::on_updateButton_clicked()
+void MainWindow::on_optimiseEntropyButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
-	updateTransferFunctionWidgetsFromArrays();
-	std::cout<<"area by integral "<<get_area_integral(0)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(1)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(2)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(3)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(4)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(5)<<std::endl;
-	std::cout<<"area by integral "<<get_area_integral(6)<<std::endl;
-}
-
-void MainWindow::on_defaultButton_clicked()
-{
-	generateDefaultTransferFunction();
-	updateTransferFunctionWidgetsFromArrays();
-}
-
-void MainWindow::on_entropyButton_clicked()
-{
-	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
-	scene->clear();
-	scene->addText("Entropy " + QTime::currentTime().toString());
-	if (frequency_list.size() > 0)
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 99)
 	{
-		unsigned int index = -1;
-		std::cout<<"entropy "<<get_entropy(10, 0);
-		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
-		{
-			double entropy = get_entropy(intensity);
-			std::cout<<" "<<entropy;
-			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*10)*height);
-			line->setFlag(QGraphicsItem::ItemIsMovable);
-	
-		}
-		std::cout<<std::endl;
+		n = 1;
 	}
+	while (n-- > 0)
+	{
+		optimiseTransferFunctionByEntropy();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }

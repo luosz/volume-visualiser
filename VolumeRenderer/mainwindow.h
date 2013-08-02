@@ -252,7 +252,7 @@ private:
 		}
 	}
 
-	double get_area_integral(int index)
+	double get_area_entropy(int index)
 	{
 		double a, b;
 		if (index >= 0 && index < intensity_list.size() - 1)
@@ -282,10 +282,10 @@ private:
 			}
 		}
 
-		std::cout<<"intensity "<<a<<" "<<b;
+		//std::cout<<"intensity "<<a<<" "<<b;
 		a = denormalise_intensity(a);
 		b = denormalise_intensity(b);
-		std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
+		//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
 
 		double sum = 0;
 		// int intensity belongs to [0,255]
@@ -293,16 +293,22 @@ private:
 		{
 			if (intensity >= a)
 			{
-				std::cout<<intensity<<" ";
-				sum += get_entropy(intensity, index);
+				//std::cout<<intensity<<" ";
+				sum += get_entropy_opacity_by_index(intensity, index);
 			}
 		}
-		std::cout<<std::endl;
+		//std::cout<<std::endl;
 		return sum;
 	}
 
+	// int index is the index of control points
+	double get_neighbour_area_entropy(int index)
+	{
+		return get_area_entropy(index) + get_area_entropy(index-1);
+	}
+
 	// double intensity belongs to [0,255]
-	double get_entropy(double intensity, int index)
+	double get_entropy_opacity_by_index(double intensity, int index)
 	{
 		double frequency = get_frequency(intensity);
 		const double epsilon = 1e-6;
@@ -320,6 +326,24 @@ private:
 
 	// double intensity belongs to [0,255]
 	double get_entropy(double intensity)
+	{
+		double frequency = get_frequency(intensity);
+		const double epsilon = 1e-6;
+		double probability = frequency / count_of_voxels;
+		if (probability > epsilon)
+		{
+			double normalised = normalise_intensity(intensity);
+			return probability * (-log(probability));
+			//return get_opacity_interpolation_without_index(normalised) * probability * (-log(probability));
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	// double intensity belongs to [0,255]
+	double get_entropy_opacity(double intensity)
 	{
 		double frequency = get_frequency(intensity);
 		const double epsilon = 1e-6;
@@ -366,9 +390,10 @@ private:
 		}
 	}
 
-	double get_neighbour_area(int i)
+	// int index is the index of control points
+	double get_neighbour_area(int index)
 	{
-		return get_area(i) + get_area(i - 1);
+		return get_area(index) + get_area(index - 1);
 	}
 
 	double get_height_given_area_increment(int i, double area_increment)
@@ -430,7 +455,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area)
+				if (area < min_area && colour_list[i][3] < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -450,6 +475,51 @@ private:
 			double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = colour_list[min_index][3];
 			double height_min_new = height_min + height_increased;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	void optimiseTransferFunctionByEntropy()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != max_index)
+		{
+			const double step_size = 1./255.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			double area = get_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new;
+			double new_area = get_neighbour_area_entropy(max_index);
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
 			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
@@ -1098,12 +1168,13 @@ private:
 		}
 
         void on_optimiseButton_clicked();
-        void on_pushButton1_clicked();
-        void on_pushButton2_clicked();
-        void on_pushButton3_clicked();
-        void on_updateButton_clicked();
         void on_defaultButton_clicked();
         void on_entropyButton_clicked();
+        void on_frequencyButton_clicked();
+        void on_opacityButton_clicked();
+        void on_visibilityButton_clicked();
+        void on_entropyOpacityButton_clicked();
+        void on_optimiseEntropyButton_clicked();
 };
 
 #endif // MAINWINDOW_H
