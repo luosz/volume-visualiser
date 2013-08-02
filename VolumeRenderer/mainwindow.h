@@ -481,7 +481,7 @@ private:
 		}
 	}
 
-	void optimiseTransferFunctionByEntropy()
+	void optimiseTransferFunctionWithEntropy()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;

@@ -196,7 +196,7 @@ void MainWindow::on_optimiseEntropyButton_clicked()
 	}
 	while (n-- > 0)
 	{
-		optimiseTransferFunctionByEntropy();
+		optimiseTransferFunctionWithEntropy();
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
