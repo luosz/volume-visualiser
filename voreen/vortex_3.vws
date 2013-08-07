@@ -1,0 +1,656 @@
+<?xml version="1.0" ?>
+<VoreenData version="1">
+    <Workspace version="2" GlobalDescription="">
+        <ProcessorNetwork version="15">
+            <MetaData>
+                <MetaItem name="ZoomCenter" type="Vec2MetaData">
+                    <value x="-823.70135498" y="-408.24490356" />
+                </MetaItem>
+            </MetaData>
+            <Processors>
+                <Processor type="VolumeListSource" name="VolumeListSource" id="ref0">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-880" y="-703" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="volumeURLList" name="volumeURLList">
+                            <VolumeURLs>
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts1.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts2.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts3.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts4.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts5.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts6.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts7.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts8.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts9.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts10.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts11.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts12.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts13.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts14.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts15.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts16.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts17.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts18.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts19.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts20.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts21.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts22.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts23.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts25.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts26.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts27.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts28.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts29.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts30.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts31.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts32.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts33.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts34.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts35.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts36.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts37.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts38.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts39.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts40.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts41.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts42.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts43.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts44.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts45.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts46.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts47.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts48.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts49.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts50.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts51.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts52.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts53.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts54.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts55.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts56.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts57.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts58.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts59.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts60.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts61.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts62.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts63.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts64.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts65.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts66.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts67.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts68.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts69.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts70.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts71.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts72.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts73.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts74.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts75.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts76.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts77.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts78.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts79.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts80.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts81.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts82.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts83.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts84.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts85.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts86.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts87.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts88.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts89.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts90.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts91.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts92.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts93.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts94.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts95.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts96.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts97.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts98.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/Vortex/data/vorts99.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                            </VolumeURLs>
+                            <Selection>
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts1.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts10.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts11.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts12.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts13.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts14.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts15.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts16.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts17.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts18.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts19.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts2.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts20.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts21.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts22.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts23.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts25.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts26.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts27.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts28.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts29.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts3.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts30.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts31.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts32.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts33.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts34.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts35.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts36.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts37.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts38.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts39.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts4.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts40.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts41.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts42.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts43.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts44.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts45.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts46.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts47.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts48.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts49.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts5.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts50.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts51.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts52.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts53.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts54.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts55.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts56.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts57.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts58.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts59.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts6.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts60.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts61.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts62.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts63.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts64.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts65.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts66.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts67.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts68.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts69.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts7.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts70.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts71.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts72.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts73.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts74.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts75.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts76.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts77.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts78.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts79.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts8.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts80.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts81.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts82.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts83.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts84.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts85.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts86.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts87.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts88.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts89.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts9.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts90.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts91.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts92.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts93.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts94.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts95.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts96.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts97.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts98.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/Vortex/data/vorts99.data?bigEndian=1&amp;dim_x=128&amp;dim_y=128&amp;dim_z=128&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                            </Selection>
+                        </Property>
+                    </Properties>
+                    <Inports />
+                    <Outports>
+                        <Port name="volumecollection" direction="0" portID="volumecollection" guiName="VolumeList Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="VolumeSelector" name="VolumeSelector" id="ref1">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1040" y="-617" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="volumeID" name="volumeID" value="97" />
+                    </Properties>
+                    <Inports>
+                        <Port name="volumecollection" direction="1" portID="volumecollection" guiName="VolumeList Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties />
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="volumehandle.volumehandle" direction="0" portID="volumehandle.volumehandle" guiName="Volume Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="CubeProxyGeometry" name="CubeProxyGeometry" id="ref2">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-877" y="-590" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="127" />
+                        <Property mapKey="bottomClippingPlane" name="bottomClippingPlane" value="0" />
+                        <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="0" />
+                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="127" />
+                        <Property mapKey="resetClipPlanes" name="resetClipPlanes" />
+                        <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="0" />
+                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="127" />
+                        <Property mapKey="useClipping" name="useClipping" value="true" />
+                    </Properties>
+                    <Inports>
+                        <Port name="volumehandle.volumehandle" direction="1" portID="volumehandle.volumehandle" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
+                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
+                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
+                            </Properties>
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="proxygeometry.geometry" direction="0" portID="proxygeometry.geometry" guiName="Proxy Geometry Output" allowMultipleConnections="true" invalidationLevel="20">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="MeshEntryExitPoints" name="MeshEntryExitPoints" id="ref4">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-882" y="-503" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="500" minValue="0.01" frustLeft="-0.04142136" frustRight="0.04142136" frustBottom="-0.04142136" frustTop="0.04142136" frustNear="0.1" frustFar="502" fovy="45" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="619" y="295" />
+                            </MetaData>
+                            <position x="-1.10211134" y="-2.71446323" z="4.99483109" />
+                            <focus x="0" y="0" z="0" />
+                            <upVector x="-0.89364952" y="-0.28100404" z="-0.3498961" />
+                            <trackball moveCenter="false">
+                                <center x="0" y="0" z="0" />
+                            </trackball>
+                            <sceneLLF x="-1" y="-1" z="-1" />
+                            <sceneURB x="1" y="1" z="1" />
+                        </Property>
+                        <Property mapKey="cameraInsideVolumeTechnique" name="cameraInsideVolumeTechnique" value="gpu" />
+                        <Property mapKey="jitterEntryPoints" name="jitterEntryPoints" value="false" />
+                        <Property mapKey="jitterStepLength" name="jitterStepLength" value="0.005" />
+                        <Property mapKey="outputCoordinateSystem" name="outputCoordinateSystem" value="texture" />
+                        <Property mapKey="useCulling" name="useCulling" value="true" />
+                    </Properties>
+                    <Inports>
+                        <Port name="proxgeometry.geometry" direction="1" portID="proxgeometry.geometry" guiName="Proxy Geometry Input" allowMultipleConnections="false" invalidationLevel="20">
+                            <Properties />
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="image.entrypoints" direction="0" portID="image.entrypoints" guiName="Entry-points Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                                <Property mapKey="image.entrypoints.renderSizeReceive" name="image.entrypoints.renderSizeReceive" id="ref8">
+                                    <value x="512" y="512" />
+                                </Property>
+                            </Properties>
+                        </Port>
+                        <Port name="image.exitpoints" direction="0" portID="image.exitpoints" guiName="Exit-points Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                                <Property mapKey="image.exitpoints.renderSizeReceive" name="image.exitpoints.renderSizeReceive" id="ref9">
+                                    <value x="512" y="512" />
+                                </Property>
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers>
+                        <Handler name="cameraHandler">
+                            <Properties>
+                                <Property mapKey="cameraHandler.interactionMetaphor" name="cameraHandler.interactionMetaphor" value="trackball" />
+                                <Property mapKey="cameraHandler.moveBackward" name="cameraHandler.moveBackward" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="115" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.moveDown" name="cameraHandler.moveDown" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="102" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.moveForward" name="cameraHandler.moveForward" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="119" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.moveLeft" name="cameraHandler.moveLeft" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="97" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.moveRight" name="cameraHandler.moveRight" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="100" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.moveUp" name="cameraHandler.moveUp" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="114" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.multitouch" name="cameraHandler.multitouch" lod="1" enabled="true" mouseAction="0" mouseButtons="0" keyCode="0" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.rotate" name="cameraHandler.rotate" lod="1" enabled="true" mouseAction="127" mouseButtons="1" keyCode="0" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.shift" name="cameraHandler.shift" lod="1" enabled="true" mouseAction="127" mouseButtons="1" keyCode="0" modifier="1" shareEvents="false" />
+                                <Property mapKey="cameraHandler.wheelZoom" name="cameraHandler.wheelZoom" lod="1" enabled="true" mouseAction="16" mouseButtons="96" keyCode="0" modifier="0" shareEvents="false" />
+                                <Property mapKey="cameraHandler.zoom" name="cameraHandler.zoom" lod="1" enabled="true" mouseAction="127" mouseButtons="4" keyCode="0" modifier="0" shareEvents="false" />
+                            </Properties>
+                        </Handler>
+                    </InteractionHandlers>
+                </Processor>
+                <Processor type="SimpleRaycaster" name="SimpleRaycaster" id="ref3">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1009" y="-400" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="500" minValue="0.01" frustLeft="-0.04142136" frustRight="0.04142136" frustBottom="-0.04142136" frustTop="0.04142136" frustNear="0.1" frustFar="502" fovy="45" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="619" y="295" />
+                            </MetaData>
+                            <position x="-1.10211134" y="-2.71446323" z="4.99483109" />
+                            <focus x="0" y="0" z="0" />
+                            <upVector x="-0.89364952" y="-0.28100404" z="-0.3498961" />
+                            <trackball moveCenter="false">
+                                <center x="0" y="0" z="0" />
+                            </trackball>
+                            <sceneLLF x="-1" y="-1" z="-1" />
+                            <sceneURB x="1" y="1" z="1" />
+                        </Property>
+                        <Property mapKey="interactionCoarseness" name="interactionCoarseness" value="3" />
+                        <Property mapKey="interactionQuality" name="interactionQuality" value="1" />
+                        <Property mapKey="interpolation.coarseness" name="interpolation.coarseness" value="false" />
+                        <Property mapKey="samplingRate" name="samplingRate" value="2" />
+                        <Property mapKey="shader" name="shader" fragmentModified="false" fragmentIsExternal="false" vertexModified="false" vertexIsExternal="false" geometryModified="false" geometryIsExternal="false">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                            </MetaData>
+                        </Property>
+                        <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                            </MetaData>
+                            <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
+                                <Keys>
+                                    <key type="TransFuncMappingKey" intensity="0" split="false">
+                                        <colorL r="0" g="0" b="127" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.041666" split="false">
+                                        <colorL r="0" g="0" b="191" a="10" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.125" split="false">
+                                        <colorL r="0" g="0" b="255" a="31" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.208333" split="false">
+                                        <colorL r="0" g="85" b="255" a="53" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.291666" split="false">
+                                        <colorL r="0" g="170" b="255" a="74" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.375" split="false">
+                                        <colorL r="0" g="255" b="255" a="95" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.45833299" split="false">
+                                        <colorL r="85" g="255" b="170" a="116" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.54166597" split="false">
+                                        <colorL r="170" g="255" b="85" a="138" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.625" split="false">
+                                        <colorL r="255" g="255" b="0" a="159" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.70833302" split="false">
+                                        <colorL r="255" g="170" b="0" a="180" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.79166597" split="false">
+                                        <colorL r="255" g="85" b="0" a="201" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.875" split="false">
+                                        <colorL r="255" g="0" b="0" a="223" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.95833302" split="false">
+                                        <colorL r="191" g="0" b="0" a="244" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="1" split="false">
+                                        <colorL r="127" g="0" b="0" a="255" />
+                                    </key>
+                                </Keys>
+                                <domain x="6" y="10.96700954" />
+                            </TransferFunction>
+                        </Property>
+                    </Properties>
+                    <Inports>
+                        <Port name="image.entrypoints" direction="1" portID="image.entrypoints" guiName="Entry-points Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties />
+                        </Port>
+                        <Port name="image.exitpoints" direction="1" portID="image.exitpoints" guiName="Exit-points Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties />
+                        </Port>
+                        <Port name="volumehandle.volumehandle" direction="1" portID="volumehandle.volumehandle" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
+                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
+                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
+                            </Properties>
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="image.output" direction="0" portID="image.output" guiName="Image Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="Background" name="Background 3" id="ref5">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-994" y="-300" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="angle" name="angle" value="159" />
+                        <Property mapKey="backgroundModeAsString" name="backgroundModeAsString" value="monochrome" />
+                        <Property mapKey="color1" name="color1">
+                            <value x="1" y="1" z="1" w="1" />
+                        </Property>
+                        <Property mapKey="color2" name="color2">
+                            <value x="0.31372601" y="0.31372601" z="0.31372601" w="1" />
+                        </Property>
+                        <Property mapKey="repeat" name="repeat" value="1" />
+                        <Property mapKey="shader.program" name="shader.program" fragmentModified="false" fragmentIsExternal="false" vertexModified="false" vertexIsExternal="false" geometryModified="false" geometryIsExternal="false">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                            </MetaData>
+                        </Property>
+                        <Property mapKey="texture" name="texture" noPathSet="false" value="../../../../voreenve-4.3-win64/resource/workspaces" />
+                    </Properties>
+                    <Inports>
+                        <Port name="image.input" direction="1" portID="image.input" guiName="Image Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties />
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="image.output" direction="0" portID="image.output" guiName="Image Output" allowMultipleConnections="true" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="Canvas" name="Canvas 3" id="ref6">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-978" y="-201" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="813" y="262" width="512" height="512" />
+                        <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
+                        <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
+                            <value x="813" y="262" />
+                        </MetaItem>
+                        <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
+                            <value x="512" y="512" />
+                        </MetaItem>
+                        <MetaItem name="preferedNoFullscreenCanvasPosition" type="IVec2MetaData">
+                            <value x="315" y="93" />
+                        </MetaItem>
+                        <MetaItem name="preferedNoFullscreenCanvasSize" type="IVec2MetaData">
+                            <value x="350" y="350" />
+                        </MetaItem>
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="canvasSize" name="canvasSize">
+                            <value x="512" y="512" />
+                        </Property>
+                        <Property mapKey="saveScreenshot" name="saveScreenshot" />
+                        <Property mapKey="screenshotFilename" name="screenshotFilename" noPathSet="true" value="" />
+                        <Property mapKey="showCursor" name="showCursor" value="true" />
+                        <Property mapKey="showFullScreen" name="showFullScreen" value="false" />
+                    </Properties>
+                    <Inports>
+                        <Port name="image.input" direction="1" portID="image.input" guiName="Image Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="image.input.renderSizeOrigin" name="image.input.renderSizeOrigin" id="ref7">
+                                    <value x="512" y="512" />
+                                </Property>
+                            </Properties>
+                        </Port>
+                    </Inports>
+                    <Outports />
+                    <InteractionHandlers />
+                </Processor>
+            </Processors>
+            <Connections>
+                <Connection>
+                    <Outport name="volumecollection">
+                        <Processor type="VolumeListSource" ref="ref0" />
+                    </Outport>
+                    <Inport name="volumecollection">
+                        <Processor type="VolumeSelector" ref="ref1" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="volumehandle.volumehandle">
+                        <Processor type="VolumeSelector" ref="ref1" />
+                    </Outport>
+                    <Inport name="volumehandle.volumehandle">
+                        <Processor type="CubeProxyGeometry" ref="ref2" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="volumehandle.volumehandle">
+                        <Processor type="VolumeSelector" ref="ref1" />
+                    </Outport>
+                    <Inport name="volumehandle.volumehandle">
+                        <Processor type="SimpleRaycaster" ref="ref3" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="proxygeometry.geometry">
+                        <Processor type="CubeProxyGeometry" ref="ref2" />
+                    </Outport>
+                    <Inport name="proxgeometry.geometry">
+                        <Processor type="MeshEntryExitPoints" ref="ref4" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="image.entrypoints">
+                        <Processor type="MeshEntryExitPoints" ref="ref4" />
+                    </Outport>
+                    <Inport name="image.entrypoints">
+                        <Processor type="SimpleRaycaster" ref="ref3" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="image.exitpoints">
+                        <Processor type="MeshEntryExitPoints" ref="ref4" />
+                    </Outport>
+                    <Inport name="image.exitpoints">
+                        <Processor type="SimpleRaycaster" ref="ref3" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="image.output">
+                        <Processor type="SimpleRaycaster" ref="ref3" />
+                    </Outport>
+                    <Inport name="image.input">
+                        <Processor type="Background" ref="ref5" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="image.output">
+                        <Processor type="Background" ref="ref5" />
+                    </Outport>
+                    <Inport name="image.input">
+                        <Processor type="Canvas" ref="ref6" />
+                    </Inport>
+                </Connection>
+            </Connections>
+            <CoProcessorConnections />
+            <PropertyLinks>
+                <PropertyLink>
+                    <SourceProperty ref="ref7" />
+                    <DestinationProperty ref="ref8" />
+                    <Evaluator type="LinkEvaluatorRenderSize" />
+                </PropertyLink>
+                <PropertyLink>
+                    <SourceProperty ref="ref7" />
+                    <DestinationProperty ref="ref9" />
+                    <Evaluator type="LinkEvaluatorRenderSize" />
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorNetwork>
+        <Animation undoSteps="100" fps="25" duration="20" currentTime="19.73329926" isRendering="false">
+            <processors>
+                <Processor>
+                    <processor type="VolumeListSource" ref="ref0" />
+                    <properties />
+                </Processor>
+                <Processor>
+                    <processor type="VolumeSelector" ref="ref1" />
+                    <properties>
+                        <Property type="PropertyTimelineInt" activeOnRendering="true" propertyId="volumeID" duration="20" tlchanged="true">
+                            <propertyOwner type="VolumeSelector" ref="ref1" />
+                            <timeline>
+                                <values>
+                                    <value key="0" time="0" value="0" smooth="true">
+                                        <before />
+                                        <after type="IntLinearInterpolationFunction" id="ref10" />
+                                    </value>
+                                    <value key="19.73329926" time="19.73329926" value="97" smooth="true">
+                                        <before type="IntLinearInterpolationFunction" ref="ref10" />
+                                        <after />
+                                    </value>
+                                </values>
+                            </timeline>
+                        </Property>
+                    </properties>
+                </Processor>
+                <Processor>
+                    <processor type="CubeProxyGeometry" ref="ref2" />
+                    <properties />
+                </Processor>
+                <Processor>
+                    <processor type="MeshEntryExitPoints" ref="ref4" />
+                    <properties />
+                </Processor>
+                <Processor>
+                    <processor type="SimpleRaycaster" ref="ref3" />
+                    <properties />
+                </Processor>
+                <Processor>
+                    <processor type="Background" ref="ref5" />
+                    <properties />
+                </Processor>
+                <Processor>
+                    <processor type="Canvas" ref="ref6" />
+                    <properties />
+                </Processor>
+            </processors>
+        </Animation>
+    </Workspace>
+</VoreenData>

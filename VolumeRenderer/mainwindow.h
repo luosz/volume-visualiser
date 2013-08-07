@@ -81,6 +81,7 @@ private:
 	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
 	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
 	double lower_bound, upper_bound;
+	double domain_x, domain_y;
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 
@@ -110,9 +111,19 @@ private:
 		return map_to_range(n, lower_bound, upper_bound, 0, 255);
 	}
 
+	double denormalise_intensity_from_domain(double n)
+	{
+		return map_to_range(n, lower_bound, upper_bound, domain_x, domain_y);
+	}
+
 	double normalise_intensity(double n)
 	{
 		return map_to_range(n, 0, 255, lower_bound, upper_bound);
+	}
+
+	double normalise_intensity_to_domain(double n)
+	{
+		return map_to_range(n, domain_x, domain_y, lower_bound, upper_bound);
 	}
 	
 	double normalise_rgba(int n)
@@ -616,7 +627,7 @@ private:
 		}
 	}
 
-	void saveTransferFunction(const char *filename)
+	void saveTransferFunctionToXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
 
@@ -652,6 +663,14 @@ private:
 		transFuncIntensity->InsertEndChild(keys);
 		transFuncIntensity->InsertEndChild(lower);
 		transFuncIntensity->InsertEndChild(upper);
+		const double epsilon = 1e-6;
+		if (abs(domain_x-0)>epsilon || abs(domain_y-255)>epsilon)
+		{
+			auto domain = doc.NewElement("domain");
+			domain->SetAttribute("x", domain_x);
+			domain->SetAttribute("y", domain_y);
+			transFuncIntensity->InsertEndChild(domain);
+		}
 		voreenData->InsertEndChild(transFuncIntensity);
 		doc.InsertEndChild(voreenData);
 
@@ -662,7 +681,7 @@ private:
 		}
 	}
 
-	void openTransferFunction(const char *filename)
+	void openTransferFunctionFromXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
 		auto r = doc.LoadFile(filename);
@@ -673,11 +692,26 @@ private:
 			return;
 		}
 
-		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
+		auto transFuncIntensity = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity");
+		lower_bound = atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value"));
+		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
+		auto domain = transFuncIntensity->FirstChildElement("domain");
+		if (domain != NULL)
+		{
+			domain_x = atof(domain->Attribute("x"));
+			domain_y = atof(domain->Attribute("y"));
+			std::cout<<"domain x="<<domain_x<<" y="<<domain_y<<std::endl;
+		}
+		else
+		{
+			domain_x = 0;
+			domain_y = 255;
+			std::cout<<"domain doesn't exist"<<domain_y<<std::endl;
+		}
 
+		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
 		intensity_list.clear();
 		colour_list.clear();
-
 		do 
 		{
 			double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
@@ -718,10 +752,6 @@ private:
 
 			key = key->NextSiblingElement();
 		} while (key);
-
-		auto transFuncIntensity = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity");
-		lower_bound = atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value"));
-		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
 	}
 
 	void generateDefaultTransferFunction()
@@ -1232,7 +1262,7 @@ private:
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
 
-			openTransferFunction(filename_str);
+			openTransferFunctionFromXML(filename_str);
 			updateTransferFunctionWidgetsFromArrays();
 		}
 
@@ -1253,7 +1283,7 @@ private:
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
 
-			saveTransferFunction(filename_str);
+			saveTransferFunctionToXML(filename_str);
 			//updateTransferFunction();
 		}
 
