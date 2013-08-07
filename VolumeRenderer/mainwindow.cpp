@@ -135,16 +135,16 @@ void MainWindow::on_entropyButton_clicked()
 	if (frequency_list.size() > 0)
 	{
 		unsigned int index = -1;
-		std::cout<<"entropy ";
+		//std::cout<<"entropy ";
 		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
 		{
 			double entropy = get_entropy(intensity);
-			std::cout<<" "<<entropy;
+			//std::cout<<" "<<entropy;
 			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*10)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
 
 		}
-		std::cout<<std::endl;
+		//std::cout<<std::endl;
 	}
 }
 
@@ -157,16 +157,16 @@ void MainWindow::on_entropyOpacityButton_clicked()
 	if (frequency_list.size() > 0)
 	{
 		unsigned int index = -1;
-		std::cout<<"entropy ";
+		//std::cout<<"entropy ";
 		for (unsigned int intensity=0; intensity<frequency_list.size(); intensity++) // 0 to 255
 		{
 			double entropy = get_entropy_opacity(intensity);
-			std::cout<<" "<<entropy;
+			//std::cout<<" "<<entropy;
 			auto line = scene->addLine(intensity, height, intensity+1, (1-entropy*16)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
 
 		}
-		std::cout<<std::endl;
+		//std::cout<<std::endl;
 	}
 }
 
