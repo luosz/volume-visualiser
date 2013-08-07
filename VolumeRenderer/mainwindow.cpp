@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
-	QObject::connect(ui->action_Optimise_Transfer_Function, SIGNAL(triggered()), this, SLOT(on_optimiseButton_clicked()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -170,7 +169,39 @@ void MainWindow::on_entropyOpacityButton_clicked()
 	}
 }
 
-void MainWindow::on_optimiseButton_clicked()
+void MainWindow::on_balanceButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 99)
+    {
+        n = 1;
+    }
+    while (n-- > 0)
+    {
+        balanceTransferFunction();
+    }
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_balanceEntropyButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 99)
+    {
+        n = 1;
+    }
+    while (n-- > 0)
+    {
+        balanceTransferFunctionWithEntropy();
+    }
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_IncreaseOpacityButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
@@ -180,13 +211,13 @@ void MainWindow::on_optimiseButton_clicked()
 	}
 	while (n-- > 0)
 	{
-		optimiseTransferFunction();
+		increaseTransferFunctionOpacity();
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
 }
 
-void MainWindow::on_optimiseEntropyButton_clicked()
+void MainWindow::on_reduceOpacityButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
@@ -196,7 +227,7 @@ void MainWindow::on_optimiseEntropyButton_clicked()
 	}
 	while (n-- > 0)
 	{
-		optimiseTransferFunctionWithEntropy();
+		reduceTransferFunctionOpacity();
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();

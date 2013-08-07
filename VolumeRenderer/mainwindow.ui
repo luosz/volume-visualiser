@@ -61,7 +61,6 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <addaction name="action_Optimise_Transfer_Function"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -206,16 +205,37 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="optimiseButton">
+            <widget class="QPushButton" name="balanceButton">
              <property name="text">
-              <string>&amp;Optimise</string>
+              <string>&amp;Balance</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="optimiseEntropyButton">
+            <widget class="QPushButton" name="balanceEntropyButton">
              <property name="text">
-              <string>Optimise &amp;Entropy</string>
+              <string>Balance &amp;Entropy</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="IncreaseOpacityButton">
+             <property name="text">
+              <string>&amp;Increase Opacity</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="reduceOpacityButton">
+             <property name="text">
+              <string>&amp;Reduce Opacity</string>
              </property>
             </widget>
            </item>

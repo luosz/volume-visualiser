@@ -436,7 +436,7 @@ private:
 		return visibility_increment * opacity / visibility;
 	}
 
-	void optimiseTransferFunction()
+	void balanceTransferFunction()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -477,11 +477,11 @@ private:
 			double height_min_new = height_min + height_increased;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			std::cout<<"balance TF max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
-	void optimiseTransferFunctionWithEntropy()
+	void balanceTransferFunctionWithEntropy()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -522,7 +522,97 @@ private:
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	void reduceTransferFunctionOpacity()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		//int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		//double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				//if (area < min_area && colour_list[i][3] < 1)
+				//{
+				//	min_index = i;
+				//	min_area = area;
+				//}
+			}
+		}
+		if (-1 != max_index)
+		{
+			const double step_size = 1./255.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			double area = get_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new;
+			double new_area = get_neighbour_area_entropy(max_index);
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			//double height_min = colour_list[min_index][3];
+			//double height_min_new = height_min + step_size;
+			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			//colour_list[min_index][3] = height_min_new;
+			std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
+		}
+	}
+
+	void increaseTransferFunctionOpacity()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//int max_index = -1;
+		int min_index = -1;
+		//double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy(i);
+				//if (area > max_area)
+				//{
+				//	max_index = i;
+				//	max_area = area;
+				//}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != -1)
+		{
+			const double step_size = 1./255.;
+			//double height_max = colour_list[max_index][3];
+			//double height_max_new = height_max - step_size;
+			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			//double area = get_neighbour_area_entropy(max_index);
+			//colour_list[max_index][3] = height_max_new;
+			//double new_area = get_neighbour_area_entropy(max_index);
+			//double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1167,14 +1257,16 @@ private:
 			//updateTransferFunction();
 		}
 
-        void on_optimiseButton_clicked();
         void on_defaultButton_clicked();
         void on_entropyButton_clicked();
         void on_frequencyButton_clicked();
         void on_opacityButton_clicked();
         void on_visibilityButton_clicked();
         void on_entropyOpacityButton_clicked();
-        void on_optimiseEntropyButton_clicked();
+        void on_balanceButton_clicked();
+        void on_balanceEntropyButton_clicked();
+        void on_IncreaseOpacityButton_clicked();
+        void on_reduceOpacityButton_clicked();
 };
 
 #endif // MAINWINDOW_H
