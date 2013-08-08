@@ -706,7 +706,7 @@ private:
 		{
 			domain_x = 0;
 			domain_y = 255;
-			std::cout<<"domain doesn't exist"<<domain_y<<std::endl;
+			std::cout<<"domain doesn't exist. default: "<<domain_x<<" "<<domain_y<<std::endl;
 		}
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
