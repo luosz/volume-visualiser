@@ -1027,7 +1027,8 @@ private:
 
 				frequency_list.clear();
 				frequency_list.reserve(256);
-				int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
+				std::cout<<"histogram type is "<<histogram->GetOutput()->GetScalarTypeAsString()<<std::endl;
+				auto pixels = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
 				count_of_voxels = 0;
 				const int max = 256;
 				for (int j=0; j<max; j++)
@@ -1081,7 +1082,7 @@ private:
 			imageData->GetDimensions(dimensions);
 			int count_of_voxels = dimensions[0] * dimensions[1] * dimensions[2];
 			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_voxels<<std::endl;
-			std::cout<<"voxel type "<<imageData->GetScalarTypeAsString()<<std::endl;
+			std::cout<<"voxel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
 			//vtkImageScalarTypeNameMacro(imageData->GetScalarType());
 			auto voxels = static_cast<unsigned char*>(extract->GetOutput()->GetScalarPointer());
 			volume_ptr = voxels;
@@ -1092,13 +1093,19 @@ private:
 			//sprintf(filename, "../%s.csv", buffer);
 			std::cout<<"voxel file "<<filename<<std::endl;
 			std::ofstream myfile(filename);
+			myfile<<hex;
 			for (int i=0; i<count_of_voxels; i++)
 			{
-				myfile<<(int)voxels[i]<<" ";
-				if (i%dimensions[0]==0)
+				if (i % dimensions[0] == 0)
 				{
 					myfile<<std::endl;
+					if (i % (dimensions[0] * dimensions[1]) == 0)
+					{
+						myfile<<std::endl;
+					}
 				}
+				myfile.width(2);
+				myfile<<(int)voxels[i];
 			}
 			myfile<<std::endl;
 #endif
