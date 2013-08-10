@@ -44,6 +44,7 @@ include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 message(STATUS "Qt libs: " ${QT_LIBRARIES})
 
+# CTK
 source_group(CTK FILES ${CTK_header_files} ${CTK_source_files})
 message(STATUS "CTK header files: " ${CTK_header_files})
 message(STATUS "CTK source files: " ${CTK_source_files})
@@ -55,12 +56,21 @@ message(STATUS "CTK ui header files: " ${CTK_ui_header_files})
 QT4_ADD_RESOURCES(CTK_qrc_complied ${CTK_qrc_files})
 source_group(CTK_ui FILES ${CTK_ui_header_files} ${CTK_ui_files} ${CTK_qrc_files} ${CTK_qrc_complied})
 
-set(tinyxml2_files tinyxml2.h tinyxml2.cpp)
+# TinyXML-2
+set(tinyxml2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tinyxml2)
+set(tinyxml2_files ${tinyxml2_DIR}/tinyxml2.h ${tinyxml2_DIR}/tinyxml2.cpp)
 source_group(tinyxml2 FILES ${tinyxml2_files})
 
-set(Project_source_files main.cpp mainwindow.cpp)
+# nvMath
+set(nvMath_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nvMath)
+file(GLOB nvMath_files
+    ${nvMath_DIR}/*.h
+)
+source_group(nvMath FILES ${nvMath_files})
+
+set(Project_source_files main.cpp mainwindow.cpp voxel_utility.h lh_histogram.h)
 set(Project_header_files mainwindow.h)
-QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})  
+QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})
 set(Project_ui_files mainwindow.ui)
 QT4_WRAP_UI(Project_ui_header_files ${Project_ui_files})
 source_group(ui FILES ${Project_ui_files} ${Project_ui_header_files})
@@ -68,10 +78,18 @@ source_group(moc FILES ${Project_moc_source_files})
 #SET(Project_qrc_files YourProject.qrc)
 #QT4_ADD_RESOURCES(Project_qrc_compiled ${Project_qrc_files})
 
+message(STATUS "Project_source_files: " ${Project_source_files})
+message(STATUS "Project_header_files: " ${Project_header_files})
+message(STATUS "Project_moc_source_files: " ${Project_moc_source_files}) 
+message(STATUS "Project_ui_files: " ${Project_ui_files}) 
+message(STATUS "Project_ui_header_files: " ${Project_ui_header_files}) 
+
 include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${CTK_Libs_Core_DIR} ${CTK_Libs_Widgets_DIR} 
 	${CTK_Libs_Visualization_VTK_Core_DIR} 
 	${CTK_Libs_Visualization_VTK_Widgets_DIR}
+	${tinyxml2_DIR}
+	${nvMath_DIR}
 )
 
 add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files}
@@ -79,6 +97,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	#${Project_qrc_compiled}
 	${CTK_header_files} ${CTK_source_files} ${CTK_moc_source_files} ${CTK_ui_header_files} ${CTK_qrc_complied}
 	${tinyxml2_files}
+	${nvMath_files}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})

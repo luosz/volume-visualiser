@@ -1,6 +1,7 @@
 #include <QTime>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "voxel_utility.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -61,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	// should not be used before initialization
 	count_of_voxels = 0;
+	volume_ptr = NULL;
 }
 
 MainWindow::~MainWindow()
@@ -231,4 +233,10 @@ void MainWindow::on_reduceOpacityButton_clicked()
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_lhHistogramButton_clicked()
+{
+	int size[3] = {41, 41, 41};
+	get_index(0, 0, 0, size);
 }

@@ -167,13 +167,6 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="defaultButton">
-             <property name="text">
-              <string>&amp;Default TF</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QPushButton" name="entropyButton">
              <property name="text">
               <string>&amp;Entropy</string>
@@ -184,6 +177,13 @@
             <widget class="QPushButton" name="entropyOpacityButton">
              <property name="text">
               <string>Entropy &amp;Opacity</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="lhHistogramButton">
+             <property name="text">
+              <string>LH Histogram</string>
              </property>
             </widget>
            </item>
@@ -225,6 +225,13 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
+           <item>
+            <widget class="QPushButton" name="defaultButton">
+             <property name="text">
+              <string>&amp;Default TF</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QPushButton" name="IncreaseOpacityButton">
              <property name="text">

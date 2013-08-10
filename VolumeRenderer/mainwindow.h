@@ -50,7 +50,7 @@
 #include "ctkTransferFunctionControlPointsItem.h"
 #include "ctkVTKVolumePropertyWidget.h"
 
-#include "tinyxml2.h"
+#include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
 #define OUTPUT_TO_FILE
 
@@ -84,6 +84,7 @@ private:
 	double domain_x, domain_y;
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
+	void* volume_ptr;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -919,7 +920,7 @@ private:
 	{
 		int ignoreZero = 0;
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
-		std::cout<<"component number="<<numComponents<<endl;
+		std::cout<<"generateVisibilityFunction component number="<<numComponents<<endl;
 		if( numComponents > 3 )
 		{
 			std::cout << "Error: cannot process an image with " 
@@ -1049,6 +1050,61 @@ private:
 		}
 	}
 
+	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)
+	{
+		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
+		std::cout<<"generate_LH_histogram component number="<<numComponents<<endl;
+		if( numComponents > 1 )
+		{
+			std::cout << "Error: cannot process an image with " 
+				<< numComponents << " components!" << std::endl;
+			//return EXIT_FAILURE;
+		}
+
+		for( int i = 0; i < numComponents; ++i )
+		{
+			vtkSmartPointer<vtkImageExtractComponents> extract = 
+				vtkSmartPointer<vtkImageExtractComponents>::New();
+			extract->SetInputConnection( reader->GetOutputPort() );
+			extract->SetComponents( i );
+			extract->Update();
+
+			double range[2];
+			extract->GetOutput()->GetScalarRange( range );
+			std::cout<<"range "<<range[0]<<" "<<range[1]<<endl;
+
+			double intensity_min = range[0];
+			double intensity_max = range[1];
+
+			auto imageData = extract->GetOutput();
+			int dimensions[3];
+			imageData->GetDimensions(dimensions);
+			int count_of_voxels = dimensions[0] * dimensions[1] * dimensions[2];
+			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_voxels<<std::endl;
+			std::cout<<"voxel type "<<imageData->GetScalarTypeAsString()<<std::endl;
+			//vtkImageScalarTypeNameMacro(imageData->GetScalarType());
+			auto voxels = static_cast<unsigned char*>(extract->GetOutput()->GetScalarPointer());
+			volume_ptr = voxels;
+#ifdef OUTPUT_TO_FILE
+			//char buffer[32];
+			//itoa(i, buffer, 10);
+			char filename[32] = "../voxels.txt";
+			//sprintf(filename, "../%s.csv", buffer);
+			std::cout<<"voxel file "<<filename<<std::endl;
+			std::ofstream myfile(filename);
+			for (int i=0; i<count_of_voxels; i++)
+			{
+				myfile<<(int)voxels[i]<<" ";
+				if (i%dimensions[0]==0)
+				{
+					myfile<<std::endl;
+				}
+			}
+			myfile<<std::endl;
+#endif
+		}
+	}
+
 	private slots:
 		void onAboutSlot()
 		{
@@ -1108,6 +1164,7 @@ private:
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
 
 			generateVisibilityFunction(shiftScale);
+			generate_LH_histogram(shiftScale);
 
 			//// Create transfer mapping scalar value to opacity.
 			//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -1297,6 +1354,7 @@ private:
         void on_balanceEntropyButton_clicked();
         void on_IncreaseOpacityButton_clicked();
         void on_reduceOpacityButton_clicked();
+        void on_lhHistogramButton_clicked();
 };
 
 #endif // MAINWINDOW_H
