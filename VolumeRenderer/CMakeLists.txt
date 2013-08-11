@@ -68,7 +68,12 @@ file(GLOB nvMath_files
 )
 source_group(nvMath FILES ${nvMath_files})
 
-set(Project_source_files main.cpp mainwindow.cpp voxel_utility.h lh_histogram.h)
+# volume
+set(volume_files voxel_utility.h lh_histogram.h K_Means_PP_Generic.h volume_utility.h)
+source_group(volume FILES ${volume_files})
+
+# Qt
+set(Project_source_files main.cpp mainwindow.cpp)
 set(Project_header_files mainwindow.h)
 QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})
 set(Project_ui_files mainwindow.ui)
@@ -98,6 +103,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${CTK_header_files} ${CTK_source_files} ${CTK_moc_source_files} ${CTK_ui_header_files} ${CTK_qrc_complied}
 	${tinyxml2_files}
 	${nvMath_files}
+	${volume_files}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})
