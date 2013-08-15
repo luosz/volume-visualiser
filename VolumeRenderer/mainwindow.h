@@ -52,7 +52,8 @@
 
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
-#define OUTPUT_TO_FILE
+
+//#define OUTPUT_TO_FILE
 
 namespace Ui {
 	class MainWindow;
@@ -1087,10 +1088,7 @@ private:
 			auto voxels = static_cast<unsigned char*>(extract->GetOutput()->GetScalarPointer());
 			volume_ptr = voxels;
 #ifdef OUTPUT_TO_FILE
-			//char buffer[32];
-			//itoa(i, buffer, 10);
 			char filename[32] = "../voxels.txt";
-			//sprintf(filename, "../%s.csv", buffer);
 			std::cout<<"voxel file "<<filename<<std::endl;
 			std::ofstream myfile(filename);
 			myfile<<hex;

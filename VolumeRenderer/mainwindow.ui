@@ -199,6 +199,9 @@
              <property name="minimum">
               <number>1</number>
              </property>
+             <property name="maximum">
+              <number>1000</number>
+             </property>
              <property name="value">
               <number>1</number>
              </property>
@@ -214,7 +217,7 @@
            <item>
             <widget class="QPushButton" name="balanceEntropyButton">
              <property name="text">
-              <string>Balance &amp;Entropy</string>
+              <string>Balance &amp;Opacity</string>
              </property>
             </widget>
            </item>

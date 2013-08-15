@@ -175,7 +175,7 @@ void MainWindow::on_balanceButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 99)
+    if (n < 1 || n > 1000)
     {
         n = 1;
     }
@@ -191,7 +191,7 @@ void MainWindow::on_balanceEntropyButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 99)
+    if (n < 1 || n > 1000)
     {
         n = 1;
     }
@@ -207,7 +207,7 @@ void MainWindow::on_IncreaseOpacityButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 99)
+	if (n < 1 || n > 1000)
 	{
 		n = 1;
 	}
@@ -223,7 +223,7 @@ void MainWindow::on_reduceOpacityButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 99)
+	if (n < 1 || n > 1000)
 	{
 		n = 1;
 	}
