@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
+	QObject::connect(ui->actionOpen_Selected_Region, SIGNAL(triggered()), this, SLOT(onOpenSelectedRegionSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -189,34 +190,12 @@ void MainWindow::on_balanceButton_clicked()
 
 void MainWindow::on_balanceEntropyButton_clicked()
 {
-    updateTransferFunctionArraysFromWidgets();
-    int n = ui->spinBox->value();
-    if (n < 1 || n > 1000)
-    {
-        n = 1;
-    }
-    while (n-- > 0)
-    {
-        balanceTransferFunctionWithEntropy();
-    }
-    updateTransferFunctionWidgetsFromArrays();
-    updateTransferFunctionArraysFromWidgets();
+
 }
 
 void MainWindow::on_IncreaseOpacityButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
-	int n = ui->spinBox->value();
-	if (n < 1 || n > 1000)
-	{
-		n = 1;
-	}
-	while (n-- > 0)
-	{
-		increaseTransferFunctionOpacity();
-	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+
 }
 
 void MainWindow::on_reduceOpacityButton_clicked()
@@ -239,4 +218,51 @@ void MainWindow::on_lhHistogramButton_clicked()
 {
 	int size[3] = {41, 41, 41};
 	get_index(0, 0, 0, size);
+}
+
+void MainWindow::on_increaseOpacityButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 1000)
+    {
+        n = 1;
+    }
+    while (n-- > 0)
+    {
+        increaseTransferFunctionOpacity();
+    }
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_balanceOpacityButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 1000)
+    {
+        n = 1;
+    }
+    while (n-- > 0)
+    {
+        balanceTransferFunctionWithEntropy();
+    }
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_enhanceRegionButton_clicked()
+{
+
+}
+
+void MainWindow::on_weakenRegionButton_clicked()
+{
+
+}
+
+void MainWindow::on_balanceRegionButton_clicked()
+{
+
 }

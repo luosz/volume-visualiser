@@ -72,6 +72,7 @@ private:
 
 	QString volume_filename;
 	QString transfer_function_filename;
+	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	QVTKWidget widget;
@@ -136,6 +137,21 @@ private:
 	int denormalise_rgba(double n)
 	{
 		return map_to_range(n, 0, 1, 0, 255);
+	}
+
+	double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
+	{
+		double distance = 0;
+		for (int i=0; i<count; i++)
+		{
+			int index_base = i * numComponents;
+			double dr = normalise_rgba(pixels[index_base + 0]) - r;
+			double dg = normalise_rgba(pixels[index_base + 1]) - g;
+			double db = normalise_rgba(pixels[index_base + 2]) - b;
+			double d = sqrt(dr*dr + dg*dg + db*db);
+			distance += d;
+		}
+		return distance;
 	}
 
 	double get_opacity(int i)
@@ -1085,7 +1101,7 @@ private:
 			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_voxels<<std::endl;
 			std::cout<<"voxel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
 			//vtkImageScalarTypeNameMacro(imageData->GetScalarType());
-			auto voxels = static_cast<unsigned char*>(extract->GetOutput()->GetScalarPointer());
+			auto voxels = static_cast<unsigned char *>(extract->GetOutput()->GetScalarPointer());
 			volume_ptr = voxels;
 #ifdef OUTPUT_TO_FILE
 			char filename[32] = "../voxels.txt";
@@ -1311,7 +1327,7 @@ private:
 		{
 			// show file dialog
 			QString filter("Voreen transfer function (*.tfi)");
-			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
+			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
 				return;
 
@@ -1332,7 +1348,7 @@ private:
 		{
 			// show file dialog
 			QString filter("transfer function file (*.tfi)");
-			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Open a volume data set")), transfer_function_filename, filter); 
+			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
 				return;
 
@@ -1349,6 +1365,21 @@ private:
 			//updateTransferFunction();
 		}
 
+		void onOpenSelectedRegionSlot()
+		{
+			// show file dialog
+			QString filter("PNG image (*.png)");
+			selected_region_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), selected_region_filename, filter); 
+			if (selected_region_filename.isEmpty())
+				return;
+
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = selected_region_filename.toLocal8Bit();  
+			const char *filename_str = ba.data();
+
+			std::cout<<"image file: "<<filename_str<<endl;
+		}
+
         void on_defaultButton_clicked();
         void on_entropyButton_clicked();
         void on_frequencyButton_clicked();
@@ -1360,6 +1391,11 @@ private:
         void on_IncreaseOpacityButton_clicked();
         void on_reduceOpacityButton_clicked();
         void on_lhHistogramButton_clicked();
+        void on_balanceOpacityButton_clicked();
+        void on_increaseOpacityButton_clicked();
+        void on_enhanceRegionButton_clicked();
+        void on_weakenRegionButton_clicked();
+        void on_balanceRegionButton_clicked();
 };
 
 #endif // MAINWINDOW_H
