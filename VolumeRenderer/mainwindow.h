@@ -42,6 +42,7 @@
 #include <vtkProperty2D.h>
 #include <vtkLegendBoxActor.h>
 #include <vtkImageExtractComponents.h>
+#include <vtkPNGReader.h>
 
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
@@ -87,6 +88,7 @@ private:
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 	void* volume_ptr;
+	std::vector<double> region_weight_list;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -139,6 +141,18 @@ private:
 		return map_to_range(n, 0, 1, 0, 255);
 	}
 
+	double get_distance_between_colour_and_pixels_with_metric(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int metric = 0)
+	{
+		if (metric == 1)
+		{
+			return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+		}
+		else
+		{
+			return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+		}
+	}
+
 	double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
 	{
 		double distance = 0;
@@ -149,6 +163,22 @@ private:
 			double dg = normalise_rgba(pixels[index_base + 1]) - g;
 			double db = normalise_rgba(pixels[index_base + 2]) - b;
 			double d = sqrt(dr*dr + dg*dg + db*db);
+			distance += d;
+		}
+		return distance;
+	}
+
+	double get_squared_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
+	{
+		double distance = 0;
+		for (int i=0; i<count; i++)
+		{
+			int index_base = i * numComponents;
+			double dr = normalise_rgba(pixels[index_base + 0]) - r;
+			double dg = normalise_rgba(pixels[index_base + 1]) - g;
+			double db = normalise_rgba(pixels[index_base + 2]) - b;
+			//double d = sqrt(dr*dr + dg*dg + db*db);
+			double d = dr*dr + dg*dg + db*db;
 			distance += d;
 		}
 		return distance;
@@ -336,6 +366,23 @@ private:
 		return get_area_entropy(index) + get_area_entropy(index-1);
 	}
 
+	double get_control_point_weight(int index)
+	{
+		if (index >=0 && index < region_weight_list.size())
+		{
+			return region_weight_list[index];
+		} 
+		else
+		{
+			return 1;
+		}
+	}
+
+	double get_neighbour_area_entropy_weighted_for_region(int index)
+	{
+		return get_neighbour_area_entropy(index) * get_control_point_weight(index);
+	}
+
 	// double intensity belongs to [0,255]
 	double get_entropy_opacity_by_index(double intensity, int index)
 	{
@@ -371,7 +418,8 @@ private:
 		}
 	}
 
-	// double intensity belongs to [0,255]
+	/// compute the area under an edge by integration
+	/// double intensity belongs to [0,255]
 	double get_entropy_opacity(double intensity)
 	{
 		double frequency = get_frequency(intensity);
@@ -388,6 +436,7 @@ private:
 		}
 	}
 
+	/// compute the geometric area (triangle, rectangle or trapezoid) under an edge
 	double get_area(int i)
 	{
 		if (i >= 0 && i < intensity_list.size() - 1)
@@ -465,7 +514,7 @@ private:
 		return visibility_increment * opacity / visibility;
 	}
 
-	void balanceTransferFunction()
+	void balance_transfer_function()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -510,7 +559,7 @@ private:
 		}
 	}
 
-	void balanceTransferFunctionWithEntropy()
+	void balance_opacity()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -555,7 +604,7 @@ private:
 		}
 	}
 
-	void reduceTransferFunctionOpacity()
+	void reduce_opacity()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -600,7 +649,7 @@ private:
 		}
 	}
 
-	void increaseTransferFunctionOpacity()
+	void increase_opacity()
 	{
 		std::cout<<"colour_list size="<<colour_list.size()
 			<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -635,6 +684,141 @@ private:
 			//double area = get_neighbour_area_entropy(max_index);
 			//colour_list[max_index][3] = height_max_new;
 			//double new_area = get_neighbour_area_entropy(max_index);
+			//double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	void balance_opacity_for_region()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != max_index)
+		{
+			const double step_size = 1./255.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			colour_list[max_index][3] = height_max_new;
+			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	void reduce_opacity_for_region()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		//int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		//double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				//if (area < min_area && colour_list[i][3] < 1)
+				//{
+				//	min_index = i;
+				//	min_area = area;
+				//}
+			}
+		}
+		if (-1 != max_index)
+		{
+			const double step_size = 1./255.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			colour_list[max_index][3] = height_max_new;
+			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			//double height_min = colour_list[min_index][3];
+			//double height_min_new = height_min + step_size;
+			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			//colour_list[min_index][3] = height_min_new;
+			std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
+		}
+	}
+
+	void increase_opacity_for_region()
+	{
+		std::cout<<"colour_list size="<<colour_list.size()
+			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//int max_index = -1;
+		int min_index = -1;
+		//double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1./256.;
+		for (unsigned int i=0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				//if (area > max_area)
+				//{
+				//	max_index = i;
+				//	max_area = area;
+				//}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != -1)
+		{
+			const double step_size = 1./255.;
+			//double height_max = colour_list[max_index][3];
+			//double height_max_new = height_max - step_size;
+			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			//double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			//colour_list[max_index][3] = height_max_new;
+			//double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
 			//double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = colour_list[min_index][3];
@@ -772,7 +956,7 @@ private:
 		} while (key);
 	}
 
-	void generateDefaultTransferFunction()
+	void generate_default_transfer_function()
 	{
 		//// Create transfer mapping scalar value to opacity.
 		//opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -879,7 +1063,7 @@ private:
 	{
 		if (intensity_list.size() == 0 || colour_list.size() == 0)
 		{
-			generateDefaultTransferFunction();
+			generate_default_transfer_function();
 		}
 		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
@@ -933,7 +1117,7 @@ private:
 		}
 	}
 
-	void generateVisibilityFunction(vtkSmartPointer<vtkImageAlgorithm> reader)
+	void generate_visibility_function(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
 		int ignoreZero = 0;
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
@@ -1184,7 +1368,7 @@ private:
 			shiftScale->SetInputConnection(reader->GetOutputPort());
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
 
-			generateVisibilityFunction(shiftScale);
+			generate_visibility_function(shiftScale);
 			generate_LH_histogram(shiftScale);
 
 			//// Create transfer mapping scalar value to opacity.
@@ -1260,7 +1444,9 @@ private:
 			QString filter("Meta image file (*.mhd *.mha)");
 			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
 			if (volume_filename.isEmpty())
+			{
 				return;
+			}
 
 			// show filename on window title
 			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
@@ -1329,7 +1515,9 @@ private:
 			QString filter("Voreen transfer function (*.tfi)");
 			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
+			{
 				return;
+			}
 
 			//// show filename on window title
 			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
@@ -1350,7 +1538,9 @@ private:
 			QString filter("transfer function file (*.tfi)");
 			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), transfer_function_filename, filter); 
 			if (transfer_function_filename.isEmpty())
+			{
 				return;
+			}
 
 			//// show filename on window title
 			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
@@ -1365,19 +1555,118 @@ private:
 			//updateTransferFunction();
 		}
 
+		void read_region_image_and_compute_distance(int distance_metric = 0)
+		{
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = selected_region_filename.toLocal8Bit();  
+			const char *filename_str = ba.data();
+
+			std::cout<<"image file: "<<filename_str<<endl;
+
+			auto reader = vtkSmartPointer<vtkPNGReader>::New();
+			if( !reader->CanReadFile(filename_str))
+			{
+				std::cout << "Error: cannot read " << filename_str << std::endl;
+				return;
+			}
+			reader->SetFileName(filename_str);
+			reader->Update();
+
+			int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
+			std::cout<<"component number="<<numComponents<<endl;
+			if( numComponents > 3 )
+			{
+				std::cout << "Error: cannot process an image with " 
+					<< numComponents << " components!" << std::endl;
+				return;
+			}
+
+			// get pixels from image
+			auto imageData = reader->GetOutput();
+			int dimensions[3];
+			imageData->GetDimensions(dimensions);
+			int count_of_pixels = dimensions[0] * dimensions[1] * dimensions[2];
+			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_pixels<<std::endl;
+			std::cout<<"pixel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
+			auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
+
+#ifdef OUTPUT_TO_FILE
+			// compute and write the histogram to file
+			int rgb_histogram[256][3];
+			std::memset(rgb_histogram, 0, 256*3*sizeof(int));
+
+			for (int i=0; i<count_of_pixels; i++)
+			{
+				for (int j=0; j<numComponents; j++)
+				{
+					rgb_histogram[pixels[i*numComponents+j]][j]++;
+				}
+			}
+
+			char filename2[32] = "../rgb_histogram.csv";
+			std::cout<<"rgb_histogram file "<<filename2<<std::endl;
+			std::ofstream out2(filename2);
+
+			for (int i=0; i<256; i++)
+			{
+				for (int j=0; j<numComponents; j++)
+				{
+					out2<<rgb_histogram[i][j];
+					if (j<numComponents-1)
+					{
+						out2<<",";
+					}
+				}
+				out2<<endl;
+			}
+			out2.close();
+#endif
+
+			// compute region weights based on the selected image
+			region_weight_list.clear();
+			double sum = 0;
+			for (unsigned int i=0; i<colour_list.size(); i++)
+			{
+				double r = colour_list[i][0];
+				double g = colour_list[i][1];
+				double b = colour_list[i][2];
+				double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, distance_metric);
+				region_weight_list.push_back(distance);
+				sum += distance;
+			}
+
+			if (sum > 0)
+			{
+				// normalize the distances
+				for (unsigned int i=0; i<region_weight_list.size(); i++)
+				{
+					region_weight_list[i] = region_weight_list[i] / sum;
+				}
+			}
+		}
+
 		void onOpenSelectedRegionSlot()
 		{
 			// show file dialog
 			QString filter("PNG image (*.png)");
 			selected_region_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), selected_region_filename, filter); 
 			if (selected_region_filename.isEmpty())
+			{
 				return;
+			}
 
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = selected_region_filename.toLocal8Bit();  
-			const char *filename_str = ba.data();
+			read_region_image_and_compute_distance(1);
+		}
 
-			std::cout<<"image file: "<<filename_str<<endl;
+		void onComputeDistanceSlot()
+		{
+			read_region_image_and_compute_distance();
+		}
+
+		void onComputeSquaredDistanceSlot()
+		{
+			// compute distance with squared distance
+			read_region_image_and_compute_distance(1);
 		}
 
         void on_defaultButton_clicked();
@@ -1387,8 +1676,6 @@ private:
         void on_visibilityButton_clicked();
         void on_entropyOpacityButton_clicked();
         void on_balanceButton_clicked();
-        void on_balanceEntropyButton_clicked();
-        void on_IncreaseOpacityButton_clicked();
         void on_reduceOpacityButton_clicked();
         void on_lhHistogramButton_clicked();
         void on_balanceOpacityButton_clicked();

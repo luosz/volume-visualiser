@@ -30,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
-	QObject::connect(ui->actionOpen_Selected_Region, SIGNAL(triggered()), this, SLOT(onOpenSelectedRegionSlot()));
+	QObject::connect(ui->action_Open_Selected_Region, SIGNAL(triggered()), this, SLOT(onOpenSelectedRegionSlot()));
+	QObject::connect(ui->action_Compute_Distance, SIGNAL(triggered()), this, SLOT(onComputeDistanceSlot()));
+	QObject::connect(ui->action_Compute_Squared_Distance, SIGNAL(triggered()), this, SLOT(onComputeSquaredDistanceSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -54,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	generateDefaultTransferFunction();
+	generate_default_transfer_function();
 
 	volume_filename = "../../data/nucleon.mhd";
 	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
@@ -73,7 +75,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_defaultButton_clicked()
 {
-	generateDefaultTransferFunction();
+	generate_default_transfer_function();
 	updateTransferFunctionWidgetsFromArrays();
 }
 
@@ -182,20 +184,16 @@ void MainWindow::on_balanceButton_clicked()
     }
     while (n-- > 0)
     {
-        balanceTransferFunction();
+        balance_transfer_function();
     }
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
 }
 
-void MainWindow::on_balanceEntropyButton_clicked()
+void MainWindow::on_lhHistogramButton_clicked()
 {
-
-}
-
-void MainWindow::on_IncreaseOpacityButton_clicked()
-{
-
+	int size[3] = {41, 41, 41};
+	get_index(0, 0, 0, size);
 }
 
 void MainWindow::on_reduceOpacityButton_clicked()
@@ -208,16 +206,10 @@ void MainWindow::on_reduceOpacityButton_clicked()
 	}
 	while (n-- > 0)
 	{
-		reduceTransferFunctionOpacity();
+		reduce_opacity();
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
-}
-
-void MainWindow::on_lhHistogramButton_clicked()
-{
-	int size[3] = {41, 41, 41};
-	get_index(0, 0, 0, size);
 }
 
 void MainWindow::on_increaseOpacityButton_clicked()
@@ -230,7 +222,7 @@ void MainWindow::on_increaseOpacityButton_clicked()
     }
     while (n-- > 0)
     {
-        increaseTransferFunctionOpacity();
+        increase_opacity();
     }
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
@@ -246,7 +238,7 @@ void MainWindow::on_balanceOpacityButton_clicked()
     }
     while (n-- > 0)
     {
-        balanceTransferFunctionWithEntropy();
+        balance_opacity();
     }
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
@@ -254,15 +246,48 @@ void MainWindow::on_balanceOpacityButton_clicked()
 
 void MainWindow::on_enhanceRegionButton_clicked()
 {
-
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		increase_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }
 
 void MainWindow::on_weakenRegionButton_clicked()
 {
-
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		reduce_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }
 
 void MainWindow::on_balanceRegionButton_clicked()
 {
-
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		balance_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }

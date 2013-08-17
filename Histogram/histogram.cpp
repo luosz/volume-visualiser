@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 	auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
 
 	int rgb_histogram[256][3];
-	memset(rgb_histogram, 0, 256*3*sizeof(int));
+	std::memset(rgb_histogram, 0, 256*3*sizeof(int));
 
 	for (int i=0; i<count_of_pixels; i++)
 	{

@@ -48,7 +48,7 @@
     <addaction name="action_Open_Volume"/>
     <addaction name="action_Open_Transfer_Function"/>
     <addaction name="action_Save_Transfer_Function"/>
-    <addaction name="actionOpen_Selected_Region"/>
+    <addaction name="action_Open_Selected_Region"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -62,6 +62,8 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <addaction name="action_Compute_Distance"/>
+    <addaction name="action_Compute_Squared_Distance"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -343,9 +345,19 @@
     <string>&amp;Optimise Transfer Function</string>
    </property>
   </action>
-  <action name="actionOpen_Selected_Region">
+  <action name="action_Open_Selected_Region">
    <property name="text">
     <string>Open Selected &amp;Region...</string>
+   </property>
+  </action>
+  <action name="action_Compute_Squared_Distance">
+   <property name="text">
+    <string>Compute &amp;Squared Distance (RGB)</string>
+   </property>
+  </action>
+  <action name="action_Compute_Distance">
+   <property name="text">
+    <string>Compute &amp;Distance (RGB)</string>
    </property>
   </action>
  </widget>
