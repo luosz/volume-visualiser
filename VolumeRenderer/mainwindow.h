@@ -54,7 +54,9 @@
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
 
+//#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
+//#endif // OUTPUT_TO_FILE
 
 namespace Ui {
 	class MainWindow;
@@ -360,7 +362,8 @@ private:
 		return sum;
 	}
 
-	// int index is the index of control points
+	/// int index is the index of control point.
+	/// the control point 0 and (size-1) are the bounds
 	double get_neighbour_area_entropy(int index)
 	{
 		return get_area_entropy(index) + get_area_entropy(index-1);
@@ -561,8 +564,7 @@ private:
 
 	void balance_opacity()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -600,14 +602,13 @@ private:
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
 	void reduce_opacity()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -645,14 +646,13 @@ private:
 			//double height_min_new = height_min + step_size;
 			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			//colour_list[min_index][3] = height_min_new;
-			std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
+			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
 
 	void increase_opacity()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -690,14 +690,13 @@ private:
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
 	void balance_opacity_for_region()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -735,14 +734,13 @@ private:
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
 	void reduce_opacity_for_region()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -780,14 +778,13 @@ private:
 			//double height_min_new = height_min + step_size;
 			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			//colour_list[min_index][3] = height_min_new;
-			std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
+			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
 
 	void increase_opacity_for_region()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -825,7 +822,7 @@ private:
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1310,6 +1307,31 @@ private:
 		}
 	}
 
+	/// The energy function is the variance of edge weights.
+	double get_energy_function()
+	{
+		std::vector<double> edges;
+
+		// compute the mean
+		double sum = 0;
+		for (unsigned int i=0; i<intensity_list.size()-1; i++)
+		{
+			double edge_weight = get_area_entropy(i);
+			sum += edge_weight;
+			edges.push_back(edge_weight);
+		}
+		double mean = sum / (intensity_list.size() - 1);
+
+		// compute and return the variance
+		sum = 0;
+		for (unsigned int i=0; i<edges.size(); i++)
+		{
+			double diff = edges[i] - mean;
+			sum += diff * diff;
+		}
+		return sum;
+	}
+
 	private slots:
 		void onAboutSlot()
 		{
@@ -1555,6 +1577,7 @@ private:
 			//updateTransferFunction();
 		}
 
+		/// if distance_metric==1 then compute distance with squared distance
 		void read_region_image_and_compute_distance(int distance_metric = 0)
 		{
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
@@ -1660,12 +1683,13 @@ private:
 
 		void onComputeDistanceSlot()
 		{
+			std::cout<<"distance (RGB) is chosen"<<std::endl;
 			read_region_image_and_compute_distance();
 		}
 
 		void onComputeSquaredDistanceSlot()
 		{
-			// compute distance with squared distance
+			std::cout<<"squared distance (RGB) is chosen"<<std::endl;
 			read_region_image_and_compute_distance(1);
 		}
 

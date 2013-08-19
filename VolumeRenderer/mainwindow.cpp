@@ -3,6 +3,10 @@
 #include "ui_mainwindow.h"
 #include "voxel_utility.h"
 
+#ifndef OUTPUT_TO_FILE
+#define OUTPUT_TO_FILE
+#endif // OUTPUT_TO_FILE
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -58,8 +62,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	generate_default_transfer_function();
 
-	volume_filename = "../../data/nucleon.mhd";
-	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
+	volume_filename = "D:/_data/CT-Knee.mhd";
+	transfer_function_filename = "../../voreen/CT-Knee.tfi";
+	selected_region_filename = "../../voreen/CT-Knee_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
@@ -236,10 +241,23 @@ void MainWindow::on_balanceOpacityButton_clicked()
     {
         n = 1;
     }
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout<<"energy function file "<<filename<<std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
     while (n-- > 0)
     {
+#ifdef OUTPUT_TO_FILE
+		out<<iteration_count<<","<<get_energy_function()<<std::endl;
+		iteration_count++;
+#endif
         balance_opacity();
     }
+#ifdef OUTPUT_TO_FILE
+	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+#endif
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
 }
@@ -284,10 +302,23 @@ void MainWindow::on_balanceRegionButton_clicked()
 	{
 		n = 1;
 	}
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function_region.csv";
+	std::cout<<"energy function file "<<filename<<std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
 	while (n-- > 0)
 	{
+#ifdef OUTPUT_TO_FILE
+		out<<iteration_count<<","<<get_energy_function()<<std::endl;
+		iteration_count++;
+#endif
 		balance_opacity_for_region();
 	}
+#ifdef OUTPUT_TO_FILE
+	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+#endif
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
 }
