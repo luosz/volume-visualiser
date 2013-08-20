@@ -257,6 +257,7 @@ void MainWindow::on_balanceOpacityButton_clicked()
     }
 #ifdef OUTPUT_TO_FILE
 	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+	out.close();
 #endif
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
@@ -303,21 +304,28 @@ void MainWindow::on_balanceRegionButton_clicked()
 		n = 1;
 	}
 #ifdef OUTPUT_TO_FILE
-	char filename[32] = "../energy_function_region.csv";
+	char filename[32] = "../energy_function.csv";
 	std::cout<<"energy function file "<<filename<<std::endl;
 	std::ofstream out(filename);
+	char filename2[32] = "../energy_function_region.csv";
+	std::cout<<"energy function (region) file "<<filename2<<std::endl;
+	std::ofstream out2(filename2);
 	int iteration_count = 0;
 #endif
 	while (n-- > 0)
 	{
 #ifdef OUTPUT_TO_FILE
 		out<<iteration_count<<","<<get_energy_function()<<std::endl;
+		out2<<iteration_count<<","<<get_energy_function_weighted_for_region()<<std::endl;
 		iteration_count++;
 #endif
 		balance_opacity_for_region();
 	}
 #ifdef OUTPUT_TO_FILE
 	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+	out.close();
+	out2<<iteration_count<<","<<get_energy_function_weighted_for_region()<<std::endl;
+	out2.close();
 #endif
 	updateTransferFunctionWidgetsFromArrays();
 	updateTransferFunctionArraysFromWidgets();
