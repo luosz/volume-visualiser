@@ -102,7 +102,6 @@ nv::vec3i find_minima(const int *sizes, const std::vector<float> &scalar_value, 
 /// LH histogram
 void calculate_LH_histogram(const int *sizes, const unsigned int count, const std::vector<float> &scalar_value, const std::vector<nv::vec3f> &gradients, std::vector<nv::vec2f> &lh_histogram, std::vector<std::vector<nv::vec3i>> &trace)
 {
-	unsigned int index;
 	int width = sizes[0], height = sizes[1], depth = sizes[2];
 
 	for (int i=0; i<depth; i++)

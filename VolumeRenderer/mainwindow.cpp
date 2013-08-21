@@ -3,6 +3,10 @@
 #include "ui_mainwindow.h"
 #include "voxel_utility.h"
 
+#ifndef OUTPUT_TO_FILE
+#define OUTPUT_TO_FILE
+#endif // OUTPUT_TO_FILE
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -30,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
 	QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
 	QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
+	QObject::connect(ui->action_Open_Selected_Region, SIGNAL(triggered()), this, SLOT(onOpenSelectedRegionSlot()));
+	QObject::connect(ui->action_Compute_Distance, SIGNAL(triggered()), this, SLOT(onComputeDistanceSlot()));
+	QObject::connect(ui->action_Compute_Squared_Distance, SIGNAL(triggered()), this, SLOT(onComputeSquaredDistanceSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -53,10 +60,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	generateDefaultTransferFunction();
+	generate_default_transfer_function();
 
-	volume_filename = "../../data/nucleon.mhd";
-	transfer_function_filename = "../../transferfuncs/nucleon2.tfi";
+	volume_filename = "D:/_data/CT-Knee.mhd";
+	transfer_function_filename = "../../voreen/CT-Knee.tfi";
+	selected_region_filename = "../../voreen/CT-Knee_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
@@ -72,7 +80,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_defaultButton_clicked()
 {
-	generateDefaultTransferFunction();
+	generate_default_transfer_function();
 	updateTransferFunctionWidgetsFromArrays();
 }
 
@@ -175,68 +183,150 @@ void MainWindow::on_balanceButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 99)
+    if (n < 1 || n > 1000)
     {
         n = 1;
     }
     while (n-- > 0)
     {
-        balanceTransferFunction();
+        balance_transfer_function();
     }
     updateTransferFunctionWidgetsFromArrays();
     updateTransferFunctionArraysFromWidgets();
-}
-
-void MainWindow::on_balanceEntropyButton_clicked()
-{
-    updateTransferFunctionArraysFromWidgets();
-    int n = ui->spinBox->value();
-    if (n < 1 || n > 99)
-    {
-        n = 1;
-    }
-    while (n-- > 0)
-    {
-        balanceTransferFunctionWithEntropy();
-    }
-    updateTransferFunctionWidgetsFromArrays();
-    updateTransferFunctionArraysFromWidgets();
-}
-
-void MainWindow::on_IncreaseOpacityButton_clicked()
-{
-	updateTransferFunctionArraysFromWidgets();
-	int n = ui->spinBox->value();
-	if (n < 1 || n > 99)
-	{
-		n = 1;
-	}
-	while (n-- > 0)
-	{
-		increaseTransferFunctionOpacity();
-	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
-}
-
-void MainWindow::on_reduceOpacityButton_clicked()
-{
-	updateTransferFunctionArraysFromWidgets();
-	int n = ui->spinBox->value();
-	if (n < 1 || n > 99)
-	{
-		n = 1;
-	}
-	while (n-- > 0)
-	{
-		reduceTransferFunctionOpacity();
-	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
 }
 
 void MainWindow::on_lhHistogramButton_clicked()
 {
 	int size[3] = {41, 41, 41};
 	get_index(0, 0, 0, size);
+}
+
+void MainWindow::on_reduceOpacityButton_clicked()
+{
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		reduce_opacity();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_increaseOpacityButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 1000)
+    {
+        n = 1;
+    }
+    while (n-- > 0)
+    {
+        increase_opacity();
+    }
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_balanceOpacityButton_clicked()
+{
+    updateTransferFunctionArraysFromWidgets();
+    int n = ui->spinBox->value();
+    if (n < 1 || n > 1000)
+    {
+        n = 1;
+    }
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout<<"energy function file "<<filename<<std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
+    while (n-- > 0)
+    {
+#ifdef OUTPUT_TO_FILE
+		out<<iteration_count<<","<<get_energy_function()<<std::endl;
+		iteration_count++;
+#endif
+        balance_opacity();
+    }
+#ifdef OUTPUT_TO_FILE
+	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+	out.close();
+#endif
+    updateTransferFunctionWidgetsFromArrays();
+    updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_enhanceRegionButton_clicked()
+{
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		increase_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_weakenRegionButton_clicked()
+{
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		reduce_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
+}
+
+void MainWindow::on_balanceRegionButton_clicked()
+{
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > 1000)
+	{
+		n = 1;
+	}
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout<<"energy function file "<<filename<<std::endl;
+	std::ofstream out(filename);
+	char filename2[32] = "../energy_function_region.csv";
+	std::cout<<"energy function (region) file "<<filename2<<std::endl;
+	std::ofstream out2(filename2);
+	int iteration_count = 0;
+#endif
+	while (n-- > 0)
+	{
+#ifdef OUTPUT_TO_FILE
+		out<<iteration_count<<","<<get_energy_function()<<std::endl;
+		out2<<iteration_count<<","<<get_energy_function_weighted_for_region()<<std::endl;
+		iteration_count++;
+#endif
+		balance_opacity_for_region();
+	}
+#ifdef OUTPUT_TO_FILE
+	out<<iteration_count<<","<<get_energy_function()<<std::endl;
+	out.close();
+	out2<<iteration_count<<","<<get_energy_function_weighted_for_region()<<std::endl;
+	out2.close();
+#endif
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }

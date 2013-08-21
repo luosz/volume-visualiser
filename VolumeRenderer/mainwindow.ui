@@ -48,6 +48,7 @@
     <addaction name="action_Open_Volume"/>
     <addaction name="action_Open_Transfer_Function"/>
     <addaction name="action_Save_Transfer_Function"/>
+    <addaction name="action_Open_Selected_Region"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -61,6 +62,8 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <addaction name="action_Compute_Distance"/>
+    <addaction name="action_Compute_Squared_Distance"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -183,7 +186,7 @@
            <item>
             <widget class="QPushButton" name="lhHistogramButton">
              <property name="text">
-              <string>LH Histogram</string>
+              <string>&amp;LH Histogram</string>
              </property>
             </widget>
            </item>
@@ -195,9 +198,19 @@
             <number>0</number>
            </property>
            <item>
+            <widget class="QPushButton" name="defaultButton">
+             <property name="text">
+              <string>&amp;Default TF</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QSpinBox" name="spinBox">
              <property name="minimum">
               <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>1000</number>
              </property>
              <property name="value">
               <number>1</number>
@@ -211,13 +224,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QPushButton" name="balanceEntropyButton">
-             <property name="text">
-              <string>Balance &amp;Entropy</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item>
@@ -226,14 +232,14 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="defaultButton">
+            <widget class="QPushButton" name="balanceOpacityButton">
              <property name="text">
-              <string>&amp;Default TF</string>
+              <string>Balance &amp;Opacity</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="IncreaseOpacityButton">
+            <widget class="QPushButton" name="increaseOpacityButton">
              <property name="text">
               <string>&amp;Increase Opacity</string>
              </property>
@@ -243,6 +249,34 @@
             <widget class="QPushButton" name="reduceOpacityButton">
              <property name="text">
               <string>&amp;Reduce Opacity</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <property name="bottomMargin">
+            <number>11</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="balanceRegionButton">
+             <property name="text">
+              <string>B&amp;alance Region</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="enhanceRegionButton">
+             <property name="text">
+              <string>E&amp;nhance Region</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="weakenRegionButton">
+             <property name="text">
+              <string>&amp;Weaken Region</string>
              </property>
             </widget>
            </item>
@@ -309,6 +343,21 @@
   <action name="action_Optimise_Transfer_Function">
    <property name="text">
     <string>&amp;Optimise Transfer Function</string>
+   </property>
+  </action>
+  <action name="action_Open_Selected_Region">
+   <property name="text">
+    <string>Open Selected &amp;Region...</string>
+   </property>
+  </action>
+  <action name="action_Compute_Squared_Distance">
+   <property name="text">
+    <string>Compute &amp;Squared Distance (RGB)</string>
+   </property>
+  </action>
+  <action name="action_Compute_Distance">
+   <property name="text">
+    <string>Compute &amp;Distance (RGB)</string>
    </property>
   </action>
  </widget>

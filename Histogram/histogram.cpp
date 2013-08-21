@@ -36,58 +36,89 @@ using namespace std;
 #include <vtkXYPlotActor.h>
 #include <vtkImageExtractComponents.h>
 
-void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
+#define OUTPUT_TO_FILE
+
+//void generateHistogram(vtkSmartPointer<vtkImageReader2> reader)
+//{
+//	int bins = 256;
+//	vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
+//	histogram->SetInputConnection(reader->GetOutputPort());
+//	histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
+//	histogram->SetComponentOrigin(0, 0, 0);
+//	histogram->SetComponentSpacing(256/bins, 0, 0);
+//	histogram->Update();
+//	vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
+//	frequencies->SetNumberOfComponents(1);
+//	frequencies->SetNumberOfTuples(bins);
+//	int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+//
+//	for(int j = 0; j < bins; ++j)
+//	{
+//		frequencies->SetTuple1(j, *output++);
+//	}
+//
+//	//histogram->GetOutput()->GetPointData()->GetScalars()
+//
+//	vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
+//	dataObject->GetFieldData()->AddArray( frequencies );
+//	vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
+//
+//	barChart->SetInput(dataObject);
+//	barChart->SetTitle("Histogram");
+//	barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
+//	barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
+//	barChart->GetProperty()->SetColor(1,1,1);
+//	barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
+//	barChart->LegendVisibilityOff();
+//	barChart->LabelVisibilityOff();
+//
+//	double red[3] = {1, 0, 0 };
+//	for(int i = 0; i < bins; ++i)
+//	{
+//		barChart->SetBarColor(i, red );
+//	}
+//
+//	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+//	renderer->AddActor(barChart);
+//	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+//	//auto renderWindow = histogramWidget.GetRenderWindow();
+//	renderWindow->AddRenderer(renderer);
+//	renderWindow->SetSize(640, 480);
+//	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+//	interactor->SetRenderWindow(renderWindow);
+//	//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
+//	renderWindow->Render();
+//	interactor->Initialize();
+//	interactor->Start();
+//}
+
+/// Re-maps a number from one range to another.
+double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
 {
-	int bins = 256;
-	vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
-	histogram->SetInputConnection(reader->GetOutputPort());
-	histogram->SetComponentExtent(0, bins-1, 0, 0, 0, 0);
-	histogram->SetComponentOrigin(0, 0, 0);
-	histogram->SetComponentSpacing(256/bins, 0, 0);
-	histogram->Update();
-	vtkSmartPointer<vtkIntArray> frequencies = vtkSmartPointer<vtkIntArray>::New();
-	frequencies->SetNumberOfComponents(1);
-	frequencies->SetNumberOfTuples(bins);
-	int * output = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+	n = n < lower ? lower : n;
+	n = n > upper ? upper : n;
+	double normalised = (n - lower) / (upper - lower);
+	return normalised * (target_upper - target_lower) + target_lower;
+}
 
-	for(int j = 0; j < bins; ++j)
+double normalise_rgba(int n)
+{
+	return map_to_range(n, 0, 255, 0, 1);
+}
+
+double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
+{
+	double distance = 0;
+	for (int i=0; i<count; i++)
 	{
-		frequencies->SetTuple1(j, *output++);
+		int index_base = i * numComponents;
+		double dr = normalise_rgba(pixels[index_base + 0]) - r;
+		double dg = normalise_rgba(pixels[index_base + 1]) - g;
+		double db = normalise_rgba(pixels[index_base + 2]) - b;
+		double d = sqrt(dr*dr + dg*dg + db*db);
+		distance += d;
 	}
-
-	//histogram->GetOutput()->GetPointData()->GetScalars()
-
-	vtkSmartPointer<vtkDataObject> dataObject = vtkSmartPointer<vtkDataObject>::New();
-	dataObject->GetFieldData()->AddArray( frequencies );
-	vtkSmartPointer<vtkBarChartActor> barChart = vtkSmartPointer<vtkBarChartActor>::New();
-
-	barChart->SetInput(dataObject);
-	barChart->SetTitle("Histogram");
-	barChart->GetPositionCoordinate()->SetValue(0.05,0.05,0.0);
-	barChart->GetPosition2Coordinate()->SetValue(0.95,0.95,0.0);
-	barChart->GetProperty()->SetColor(1,1,1);
-	barChart->GetLegendActor()->SetNumberOfEntries(dataObject->GetFieldData()->GetArray(0)->GetNumberOfTuples());
-	barChart->LegendVisibilityOff();
-	barChart->LabelVisibilityOff();
-
-	double red[3] = {1, 0, 0 };
-	for(int i = 0; i < bins; ++i)
-	{
-		barChart->SetBarColor(i, red );
-	}
-
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->AddActor(barChart);
-	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-	//auto renderWindow = histogramWidget.GetRenderWindow();
-	renderWindow->AddRenderer(renderer);
-	renderWindow->SetSize(640, 480);
-	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	interactor->SetRenderWindow(renderWindow);
-	//interactor->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
-	renderWindow->Render();
-	interactor->Initialize();
-	interactor->Start();
+	return distance;
 }
 
 int main(int argc, char *argv[])
@@ -133,6 +164,66 @@ int main(int argc, char *argv[])
 			<< numComponents << " components!" << std::endl;
 		return EXIT_FAILURE;
 	}
+
+	//////////////////////////////////////////////////////////////////////////
+	auto imageData = reader->GetOutput();
+	int dimensions[3];
+	imageData->GetDimensions(dimensions);
+	int count_of_pixels = dimensions[0] * dimensions[1] * dimensions[2];
+	std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_pixels<<std::endl;
+	std::cout<<"pixel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
+	auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
+
+	int rgb_histogram[256][3];
+	std::memset(rgb_histogram, 0, 256*3*sizeof(int));
+
+	for (int i=0; i<count_of_pixels; i++)
+	{
+		for (int j=0; j<numComponents; j++)
+		{
+			rgb_histogram[pixels[i*numComponents+j]][j]++;
+		}
+	}
+
+	double r, g, b;
+	r = g = b = 0;
+	double distance = get_distance_between_colour_and_pixels(r, g, b, pixels, count_of_pixels, numComponents);
+	double d1 = distance;
+	std::cout<<"distance to ("<<r<<","<<g<<","<<b<<")="<<distance<<std::endl;
+
+	r = 0.909803;
+	g = 0.517647;
+	b = 0.517647;
+	distance = get_distance_between_colour_and_pixels(r, g, b, pixels, count_of_pixels, numComponents);
+	double d2 = distance;
+	std::cout<<"distance to ("<<r<<","<<g<<","<<b<<")="<<distance<<std::endl;
+
+	r = g = b = 1;
+	distance = get_distance_between_colour_and_pixels(r, g, b, pixels, count_of_pixels, numComponents);
+	double d3 = distance;
+	std::cout<<"distance to ("<<r<<","<<g<<","<<b<<")="<<distance<<std::endl;
+	std::cout<<d1/(d1+d2+d3)<<" "<<d2/(d1+d2+d3)<<" "<<d3/(d1+d2+d3)<<std::endl;
+
+#ifdef OUTPUT_TO_FILE
+	char filename2[32] = "../rgb_histogram.csv";
+	std::cout<<"rgb_histogram file "<<filename2<<std::endl;
+	std::ofstream out2(filename2);
+
+	for (int i=0; i<256; i++)
+	{
+		for (int j=0; j<numComponents; j++)
+		{
+			out2<<rgb_histogram[i][j];
+			if (j<numComponents-1)
+			{
+				out2<<",";
+			}
+		}
+		out2<<endl;
+	}
+	out2.close();
+#endif
+	//////////////////////////////////////////////////////////////////////////
 
 	// Create a vtkXYPlotActor
 	vtkSmartPointer<vtkXYPlotActor> plot = 
