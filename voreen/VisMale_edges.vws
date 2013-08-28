@@ -75,7 +75,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false" id="ref20">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="765" y="467" width="546" height="340" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
                                 <Keys>
@@ -166,10 +166,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref3">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-672" y="139" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="-3" y="434" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="26" y="110" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="-3" y="434" />
+                            <value x="26" y="110" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
@@ -538,7 +538,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="726" y="258" width="546" height="340" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
                                 <Keys>
@@ -632,7 +632,7 @@
                     </MetaData>
                     <Properties>
                         <Property mapKey="backgroundColor" name="backgroundColor">
-                            <value x="1" y="1" z="1" w="1" />
+                            <value x="1" y="1" z="1" w="0" />
                         </Property>
                         <Property mapKey="blendMode" name="blendMode" value="replace" />
                         <Property mapKey="edgeColor" name="edgeColor">
@@ -669,7 +669,7 @@
                 <Processor type="Canvas" name="Canvas 3" id="ref12">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-212" y="207" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="110" y="492" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="157" y="245" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
                             <value x="32" y="130" />
@@ -740,7 +740,7 @@
                     </MetaData>
                     <Properties>
                         <Property mapKey="addDepth" name="addDepth" value="false" />
-                        <Property mapKey="blendMode" name="blendMode" value="alpha-blending-b-over-a" />
+                        <Property mapKey="blendMode" name="blendMode" value="alpha-blending" />
                         <Property mapKey="pipethrough" name="pipethrough" value="false" />
                         <Property mapKey="shader.program" name="shader.program" fragmentModified="false" fragmentIsExternal="false" vertexModified="false" vertexIsExternal="false" geometryModified="false" geometryIsExternal="false">
                             <MetaData>
@@ -771,7 +771,7 @@
                 <Processor type="Canvas" name="Canvas 4" id="ref14">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-61" y="212" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="170" y="144" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="558" y="109" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
                             <value x="32" y="130" />
