@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QLineEdit>
 
 #include <iostream>
 #include <memory>
@@ -132,7 +134,7 @@ private:
 	{
 		return map_to_range(n, domain_x, domain_y, lower_bound, upper_bound);
 	}
-	
+
 	double normalise_rgba(int n)
 	{
 		return map_to_range(n, 0, 255, 0, 1);
@@ -904,7 +906,7 @@ private:
 		else
 		{
 			domain_x = 0;
-			domain_y = 255;
+			domain_y = 1;
 			std::cout<<"domain doesn't exist. default: "<<domain_x<<" "<<domain_y<<std::endl;
 		}
 
@@ -979,8 +981,8 @@ private:
 
 		intensity_list.clear();
 		colour_list.clear();
-		lower_bound = 0;
-		upper_bound = 1;
+		domain_x = lower_bound = 0;
+		domain_y = upper_bound = 1;
 
 		intensity_list.push_back(normalise_intensity(0));
 		intensity_list.push_back(normalise_intensity(36));
@@ -1046,6 +1048,69 @@ private:
 			v.push_back(0.75);
 			colour_list.push_back(v);
 		}
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+	}
+
+	void generate_spectrum_transfer_function(int number_of_colours = 4)
+	{
+		if (number_of_colours < 1 || number_of_colours > 6)
+		{
+			std::cout<<"number_of_control_points should be greater than 0 and less or equal to 6"<<std::endl;
+			return;
+		}
+
+		const int m = 3; // 3 control points each group
+		// red, yellow, green, cyan, blue, magenta
+		double colours[6][m] = {
+			{1,0,0},
+			{1,1,0},
+			{0,1,0},
+			{0,1,1},
+			{0,0,1},
+			{1,0,1}
+		};
+		int n = number_of_colours; // 4 groups of control points
+		double interval = 1.0 / (m * n + 1);
+
+		intensity_list.clear();
+		colour_list.clear();
+		domain_x = lower_bound = 0;
+		domain_y = upper_bound = 1;
+
+		intensity_list.push_back(0);
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+
+		for (int i=0; i<m*n; i++)
+		{
+			int colour_index = i / m;
+			double opacity = (i % m == 1) ? 0.5 : 0;
+
+			intensity_list.push_back((i + 1) * interval);
+			{
+				std::vector<double> v;
+				v.push_back(colours[colour_index][0]);
+				v.push_back(colours[colour_index][1]);
+				v.push_back(colours[colour_index][2]);
+				v.push_back(opacity);
+				colour_list.push_back(v);
+			}
+		}
+
+		intensity_list.push_back(1);
 		{
 			std::vector<double> v;
 			v.push_back(1);
@@ -1196,17 +1261,17 @@ private:
 			}
 			std::cout<<"histogram range "<<histogram->GetOutput()->GetScalarRange()[0]<<" "<<histogram->GetOutput()->GetScalarRange()[1]<<endl;
 
-//#if VTK_MAJOR_VERSION <= 5
-//			plot->AddInput( histogram->GetOutput() );
-//#else
-//			plot->AddDataSetInputConnection( histogram->GetOutputPort() );
-//#endif
-//			if( numComponents > 1 )
-//			{
-//				plot->SetPlotColor(i,colors[i]);
-//				plot->SetPlotLabel(i,labels[i]);
-//				plot->LegendOn();
-//			}
+			//#if VTK_MAJOR_VERSION <= 5
+			//			plot->AddInput( histogram->GetOutput() );
+			//#else
+			//			plot->AddDataSetInputConnection( histogram->GetOutputPort() );
+			//#endif
+			//			if( numComponents > 1 )
+			//			{
+			//				plot->SetPlotColor(i,colors[i]);
+			//				plot->SetPlotLabel(i,labels[i]);
+			//				plot->LegendOn();
+			//			}
 
 			//if (i == 0)
 			{
@@ -1718,20 +1783,37 @@ private:
 			read_region_image_and_compute_distance(1);
 		}
 
-        void on_defaultButton_clicked();
-        void on_entropyButton_clicked();
-        void on_frequencyButton_clicked();
-        void on_opacityButton_clicked();
-        void on_visibilityButton_clicked();
-        void on_entropyOpacityButton_clicked();
-        void on_balanceButton_clicked();
-        void on_reduceOpacityButton_clicked();
-        void on_lhHistogramButton_clicked();
-        void on_balanceOpacityButton_clicked();
-        void on_increaseOpacityButton_clicked();
-        void on_enhanceRegionButton_clicked();
-        void on_weakenRegionButton_clicked();
-        void on_balanceRegionButton_clicked();
+		void onDefaultTransferFunctionSlot()
+		{
+			generate_default_transfer_function();
+			updateTransferFunctionWidgetsFromArrays();
+		}
+
+		void onSpectrumTransferFunctionSlot()
+		{
+			bool ok;
+			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours:"), 6, 1, 6, 1, &ok);
+			if (ok)
+			{
+				std::cout<<"QInputDialog::getInteger() "<<n<<std::endl;
+				generate_spectrum_transfer_function(n);
+				updateTransferFunctionWidgetsFromArrays();
+			}
+		}
+
+		void on_entropyButton_clicked();
+		void on_frequencyButton_clicked();
+		void on_opacityButton_clicked();
+		void on_visibilityButton_clicked();
+		void on_entropyOpacityButton_clicked();
+		void on_balanceButton_clicked();
+		void on_reduceOpacityButton_clicked();
+		void on_lhHistogramButton_clicked();
+		void on_balanceOpacityButton_clicked();
+		void on_increaseOpacityButton_clicked();
+		void on_enhanceRegionButton_clicked();
+		void on_weakenRegionButton_clicked();
+		void on_balanceRegionButton_clicked();
 };
 
 #endif // MAINWINDOW_H

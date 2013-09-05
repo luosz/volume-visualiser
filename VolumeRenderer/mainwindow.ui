@@ -64,6 +64,8 @@
     </property>
     <addaction name="action_Compute_Distance"/>
     <addaction name="action_Compute_Squared_Distance"/>
+    <addaction name="action_Default_Transfer_Function"/>
+    <addaction name="action_Spectrum_Transfer_Function"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -197,13 +199,6 @@
            <property name="topMargin">
             <number>0</number>
            </property>
-           <item>
-            <widget class="QPushButton" name="defaultButton">
-             <property name="text">
-              <string>&amp;Default TF</string>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QSpinBox" name="spinBox">
              <property name="minimum">
@@ -358,6 +353,16 @@
   <action name="action_Compute_Distance">
    <property name="text">
     <string>Compute &amp;Distance (RGB)</string>
+   </property>
+  </action>
+  <action name="action_Default_Transfer_Function">
+   <property name="text">
+    <string>&amp;Default Transfer Function</string>
+   </property>
+  </action>
+  <action name="action_Spectrum_Transfer_Function">
+   <property name="text">
+    <string>&amp;Spectrum Transfer Function</string>
    </property>
   </action>
  </widget>
