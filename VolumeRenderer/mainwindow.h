@@ -1183,7 +1183,7 @@ private:
 			return;
 		}
 
-		std::cout<<"update transfer function from widget"<<std::endl;
+		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
 		for (unsigned int i=0; i<colorTransferFunction->GetSize(); i++)
@@ -1202,7 +1202,7 @@ private:
 			colour_list.push_back(c);
 			intensity_list.push_back(intensity);
 			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
-			std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
+			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
 	}
 
