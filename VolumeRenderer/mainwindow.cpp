@@ -179,7 +179,7 @@ void MainWindow::on_balanceButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 1000)
+    if (n < 1 || n > max_iteration_count)
     {
         n = 1;
     }
@@ -201,7 +201,7 @@ void MainWindow::on_reduceOpacityButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 1000)
+	if (n < 1 || n > max_iteration_count)
 	{
 		n = 1;
 	}
@@ -217,7 +217,7 @@ void MainWindow::on_increaseOpacityButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 1000)
+    if (n < 1 || n > max_iteration_count)
     {
         n = 1;
     }
@@ -233,7 +233,7 @@ void MainWindow::on_balanceOpacityButton_clicked()
 {
     updateTransferFunctionArraysFromWidgets();
     int n = ui->spinBox->value();
-    if (n < 1 || n > 1000)
+    if (n < 1 || n > max_iteration_count)
     {
         n = 1;
     }
@@ -263,7 +263,7 @@ void MainWindow::on_enhanceRegionButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 1000)
+	if (n < 1 || n > max_iteration_count)
 	{
 		n = 1;
 	}
@@ -279,7 +279,7 @@ void MainWindow::on_weakenRegionButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 1000)
+	if (n < 1 || n > max_iteration_count)
 	{
 		n = 1;
 	}
@@ -295,7 +295,7 @@ void MainWindow::on_balanceRegionButton_clicked()
 {
 	updateTransferFunctionArraysFromWidgets();
 	int n = ui->spinBox->value();
-	if (n < 1 || n > 1000)
+	if (n < 1 || n > max_iteration_count)
 	{
 		n = 1;
 	}

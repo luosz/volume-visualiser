@@ -15,7 +15,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.040816"/>
                 <split value="0"/>
-                <colorL r="255" g="0" b="0" a="115"/>
+                <colorL r="255" g="0" b="0" a="60"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.061224"/>
@@ -30,7 +30,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.102041"/>
                 <split value="0"/>
-                <colorL r="255" g="95" b="0" a="31"/>
+                <colorL r="255" g="95" b="0" a="16"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.122449"/>
@@ -45,7 +45,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.163265"/>
                 <split value="0"/>
-                <colorL r="255" g="191" b="0" a="6"/>
+                <colorL r="255" g="191" b="0" a="3"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.183673"/>
@@ -60,7 +60,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.224490"/>
                 <split value="0"/>
-                <colorL r="223" g="255" b="0" a="23"/>
+                <colorL r="223" g="255" b="0" a="12"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.244898"/>
@@ -75,7 +75,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.285714"/>
                 <split value="0"/>
-                <colorL r="127" g="255" b="0" a="40"/>
+                <colorL r="127" g="255" b="0" a="21"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.306122"/>
@@ -90,7 +90,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.346939"/>
                 <split value="0"/>
-                <colorL r="31" g="255" b="0" a="67"/>
+                <colorL r="31" g="255" b="0" a="34"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.367347"/>
@@ -105,7 +105,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.408163"/>
                 <split value="0"/>
-                <colorL r="0" g="255" b="63" a="107"/>
+                <colorL r="0" g="255" b="63" a="55"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.428571"/>
@@ -120,7 +120,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.469388"/>
                 <split value="0"/>
-                <colorL r="0" g="255" b="159" a="127"/>
+                <colorL r="0" g="255" b="159" a="86"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.489796"/>
@@ -135,7 +135,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.530612"/>
                 <split value="0"/>
-                <colorL r="0" g="255" b="255" a="127"/>
+                <colorL r="0" g="255" b="255" a="126"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.551020"/>
@@ -150,7 +150,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.591837"/>
                 <split value="0"/>
-                <colorL r="0" g="159" b="255" a="132"/>
+                <colorL r="0" g="159" b="255" a="159"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.612245"/>
@@ -165,7 +165,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.653061"/>
                 <split value="0"/>
-                <colorL r="0" g="63" b="255" a="171"/>
+                <colorL r="0" g="63" b="255" a="207"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.673469"/>
@@ -180,7 +180,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.714286"/>
                 <split value="0"/>
-                <colorL r="31" g="0" b="255" a="195"/>
+                <colorL r="31" g="0" b="255" a="235"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.734694"/>
@@ -195,7 +195,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.775510"/>
                 <split value="0"/>
-                <colorL r="127" g="0" b="255" a="214"/>
+                <colorL r="127" g="0" b="255" a="255"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.795918"/>
@@ -210,7 +210,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.836735"/>
                 <split value="0"/>
-                <colorL r="223" g="0" b="255" a="232"/>
+                <colorL r="223" g="0" b="255" a="255"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.857143"/>
@@ -225,7 +225,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.897959"/>
                 <split value="0"/>
-                <colorL r="255" g="0" b="191" a="236"/>
+                <colorL r="255" g="0" b="191" a="255"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.918367"/>
@@ -240,7 +240,7 @@
             <key type="TransFuncMappingKey">
                 <intensity value="0.959184"/>
                 <split value="0"/>
-                <colorL r="255" g="0" b="95" a="209"/>
+                <colorL r="255" g="0" b="95" a="253"/>
             </key>
             <key type="TransFuncMappingKey">
                 <intensity value="0.979592"/>

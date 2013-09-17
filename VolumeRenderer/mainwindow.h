@@ -94,6 +94,7 @@ private:
 	int count_of_voxels;
 	void* volume_ptr;
 	std::vector<double> region_weight_list;
+	const static int max_iteration_count = 65536;
 
 	QGraphicsScene * getGraphicsScene()
 	{
