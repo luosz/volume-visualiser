@@ -45,6 +45,7 @@
 #include <vtkLegendBoxActor.h>
 #include <vtkImageExtractComponents.h>
 #include <vtkPNGReader.h>
+#include <vtkMath.h>
 
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
@@ -1058,25 +1059,50 @@ private:
 		}
 	}
 
-	void generate_spectrum_transfer_function(int number_of_colours = 4)
+	void generate_spectrum_transfer_function(int number_of_colours = 6)
 	{
-		if (number_of_colours < 1 || number_of_colours > 6)
+		if (number_of_colours < 1 || number_of_colours > 256)
 		{
-			std::cout<<"number_of_control_points should be greater than 0 and less or equal to 6"<<std::endl;
+			std::cout<<"number_of_control_points should belongs to [1,256]"<<std::endl;
 			return;
 		}
 
+		//double h, s, v, r, g, b;
+		//h = s = v = 1;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be red. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+		//h = 1/3.0;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be green. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+		//h = 2/3.0;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be blue. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+
+		int n = number_of_colours; // 1 to 6 groups of control points
+		std::vector<std::vector<double>> spectrum;
+		for (int i=0; i<n; i++)
+		{
+			double h = i / (double)n;
+			double s, v, r, g, b;
+			s = v = 1;
+			vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+			std::vector<double> c;
+			c.push_back(r);
+			c.push_back(g);
+			c.push_back(b);
+			spectrum.push_back(c);
+		}
+
 		const int m = 3; // 3 control points each group
-		// red, yellow, green, cyan, blue, magenta
-		double colours[6][m] = {
-			{1,0,0},
-			{1,1,0},
-			{0,1,0},
-			{0,1,1},
-			{0,0,1},
-			{1,0,1}
-		};
-		int n = number_of_colours; // 4 groups of control points
+		//// red, yellow, green, cyan, blue, magenta
+		//double colours[6][m] = {
+		//	{1,0,0},
+		//	{1,1,0},
+		//	{0,1,0},
+		//	{0,1,1},
+		//	{0,0,1},
+		//	{1,0,1}
+		//};
 		double interval = 1.0 / (m * n + 1);
 
 		intensity_list.clear();
@@ -1102,9 +1128,9 @@ private:
 			intensity_list.push_back((i + 1) * interval);
 			{
 				std::vector<double> v;
-				v.push_back(colours[colour_index][0]);
-				v.push_back(colours[colour_index][1]);
-				v.push_back(colours[colour_index][2]);
+				v.push_back(spectrum[colour_index][0]);
+				v.push_back(spectrum[colour_index][1]);
+				v.push_back(spectrum[colour_index][2]);
 				v.push_back(opacity);
 				colour_list.push_back(v);
 			}
@@ -1792,7 +1818,7 @@ private:
 		void onSpectrumTransferFunctionSlot()
 		{
 			bool ok;
-			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours:"), 6, 1, 6, 1, &ok);
+			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 6, 1, 256, 1, &ok);
 			if (ok)
 			{
 				std::cout<<"QInputDialog::getInteger() "<<n<<std::endl;
