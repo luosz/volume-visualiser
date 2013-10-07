@@ -75,7 +75,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false" id="ref11">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="552" y="153" width="512" height="340" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="353" y="194" width="512" height="340" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
                                 <Keys>
