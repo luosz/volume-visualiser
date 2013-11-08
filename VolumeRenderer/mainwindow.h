@@ -1466,9 +1466,13 @@ private:
 		{
 			// show file dialog
 			QString filter("Meta image file (*.mhd *.mha)");
+			QString filename_backup = volume_filename;
 			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
-			if (volume_filename.isEmpty())
+			if (volume_filename.trimmed().isEmpty())
+			{
+				volume_filename = filename_backup;
 				return;
+			}
 
 			// show filename on window title
 			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
@@ -1652,9 +1656,11 @@ private:
 		{
 			// show file dialog
 			QString filter("Voreen transfer function (*.tfi)");
+			QString filename_backup = transfer_function_filename;
 			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), transfer_function_filename, filter); 
-			if (transfer_function_filename.isEmpty())
+			if (transfer_function_filename.trimmed().isEmpty())
 			{
+				transfer_function_filename = filename_backup;
 				return;
 			}
 
@@ -1789,9 +1795,11 @@ private:
 		{
 			// show file dialog
 			QString filter("PNG image (*.png)");
+			QString filename_backup = selected_region_filename;
 			selected_region_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), selected_region_filename, filter); 
-			if (selected_region_filename.isEmpty())
+			if (selected_region_filename.trimmed().isEmpty())
 			{
+				selected_region_filename = filename_backup;
 				return;
 			}
 
