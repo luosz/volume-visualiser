@@ -5,7 +5,7 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="Compositor" ref="ref2" />
+                        <item type="EdgeDetect" ref="ref9" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
@@ -176,10 +176,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref3">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-690" y="159" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="62" y="128" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="-85" y="135" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="62" y="128" />
+                            <value x="-85" y="135" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
@@ -656,7 +656,7 @@
                 </Processor>
                 <Processor type="EdgeDetect" name="EdgeDetect" id="ref9">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-178" y="-84" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-187" y="-52" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="backgroundColor" name="backgroundColor">
@@ -834,7 +834,7 @@
                 <Processor type="Canvas" name="Canvas 4" id="ref14">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-83" y="235" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="597" y="129" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="423" y="481" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
                             <value x="50" y="134" />
@@ -984,6 +984,14 @@
                     </Outport>
                     <Inport name="image.inport0">
                         <Processor type="Compositor" ref="ref2" />
+                    </Inport>
+                </Connection>
+                <Connection>
+                    <Outport name="image.outport">
+                        <Processor type="EdgeDetect" ref="ref9" />
+                    </Outport>
+                    <Inport name="image.input">
+                        <Processor type="Background" ref="ref11" />
                     </Inport>
                 </Connection>
                 <Connection>

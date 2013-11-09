@@ -46,6 +46,7 @@
 #include <vtkImageExtractComponents.h>
 #include <vtkPNGReader.h>
 #include <vtkMath.h>
+#include <vtkMetaImageWriter.h>
 
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
@@ -1485,6 +1486,27 @@ private:
 			// read Meta Image (.mhd or .mha) files
 			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
 			reader->SetFileName(filename_str);
+
+			//// write Meta Image to file (convert from .mha to .mhd)
+			//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
+			//std::cout << "filename=" << filename_str << std::endl;
+			//char mhd_str[_MAX_PATH];
+			//char raw_str[_MAX_PATH];
+			//strcpy(mhd_str, filename_str);
+			//strcpy(raw_str, filename_str);
+			//auto p1 = strstr(mhd_str, ".mha");
+			//auto p2 = strstr(raw_str, ".mha");
+			//if (p1 && p2)
+			//{
+			//	strcpy(p1, ".mhd");
+			//	strcpy(p2, ".raw");
+			//	std::cout << p1 << "\n" << p2 << std::endl;
+			//	std::cout << mhd_str << "\n" << raw_str << std::endl;
+			//	writer->SetFileName(mhd_str);
+			//	writer->SetRAWFileName(raw_str);
+			//	writer->SetInputConnection(reader->GetOutputPort());
+			//	writer->Write();
+			//}
 #elif 1
 			// read a series of raw files in the specified folder
 			auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
