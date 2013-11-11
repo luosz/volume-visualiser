@@ -1849,7 +1849,7 @@ private:
 		void onSpectrumTransferFunctionSlot()
 		{
 			bool ok;
-			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 16, 1, 256, 1, &ok);
+			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 8, 1, 256, 1, &ok);
 			if (ok)
 			{
 				std::cout<<"QInputDialog::getInteger() "<<n<<std::endl;
