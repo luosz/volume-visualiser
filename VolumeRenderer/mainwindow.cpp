@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	volume_filename = "D:/_data/CT-Knee.mhd";
 	transfer_function_filename = "../../voreen/CT-Knee.tfi";
+	transfer_function_filename_save = "../../voreen/CT-Knee_balance.tfi";
 	selected_region_filename = "../../voreen/CT-Knee_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;

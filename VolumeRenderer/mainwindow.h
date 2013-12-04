@@ -79,6 +79,7 @@ private:
 
 	QString volume_filename;
 	QString transfer_function_filename;
+	QString transfer_function_filename_save;
 	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
@@ -1468,10 +1469,13 @@ private:
 			// show file dialog
 			QString filter("Meta image file (*.mhd *.mha)");
 			QString filename_backup = volume_filename;
-			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
-			if (volume_filename.trimmed().isEmpty())
+			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
+			if (!volume_filename.trimmed().isEmpty())
 			{
 				volume_filename = filename_backup;
+			}
+			else
+			{
 				return;
 			}
 
@@ -1479,7 +1483,7 @@ private:
 			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = volume_filename.toLocal8Bit();  
+			QByteArray ba = filename_backup.toLocal8Bit();
 			const char *filename_str = ba.data();
 
 #if 1
@@ -1679,10 +1683,13 @@ private:
 			// show file dialog
 			QString filter("Voreen transfer function (*.tfi)");
 			QString filename_backup = transfer_function_filename;
-			transfer_function_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), transfer_function_filename, filter); 
-			if (transfer_function_filename.trimmed().isEmpty())
+			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
+			if (!filename_backup.trimmed().isEmpty())
 			{
 				transfer_function_filename = filename_backup;
+			}
+			else
+			{
 				return;
 			}
 
@@ -1690,7 +1697,7 @@ private:
 			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = transfer_function_filename.toLocal8Bit();  
+			QByteArray ba = filename_backup.toLocal8Bit();
 			const char *filename_str = ba.data();
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
@@ -1703,8 +1710,13 @@ private:
 		{
 			// show file dialog
 			QString filter("transfer function file (*.tfi)");
-			transfer_function_filename = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), transfer_function_filename, filter); 
-			if (transfer_function_filename.isEmpty())
+			QString filename_backup = transfer_function_filename_save;
+			filename_backup = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), filename_backup, filter);
+			if (!filename_backup.trimmed().isEmpty())
+			{
+				transfer_function_filename_save = filename_backup;
+			}
+			else
 			{
 				return;
 			}
@@ -1713,7 +1725,7 @@ private:
 			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = transfer_function_filename.toLocal8Bit();  
+			QByteArray ba = filename_backup.toLocal8Bit();
 			const char *filename_str = ba.data();
 
 			std::cout<<"transfer function file: "<<filename_str<<endl;
@@ -1726,7 +1738,7 @@ private:
 		void read_region_image_and_compute_distance(int distance_metric = 0)
 		{
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = selected_region_filename.toLocal8Bit();  
+			QByteArray ba = selected_region_filename.toLocal8Bit();
 			const char *filename_str = ba.data();
 
 			std::cout<<"image file: "<<filename_str<<endl;
@@ -1818,10 +1830,13 @@ private:
 			// show file dialog
 			QString filter("PNG image (*.png)");
 			QString filename_backup = selected_region_filename;
-			selected_region_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), selected_region_filename, filter); 
-			if (selected_region_filename.trimmed().isEmpty())
+			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), filename_backup, filter);
+			if (!filename_backup.trimmed().isEmpty())
 			{
 				selected_region_filename = filename_backup;
+			}
+			else
+			{
 				return;
 			}
 

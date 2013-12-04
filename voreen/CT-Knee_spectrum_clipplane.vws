@@ -5,12 +5,13 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="SingleVolumeRaycaster" ref="ref0" />
+                        <item type="SingleVolumeRaycaster" ref="ref9" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
-                    <value x="-334.5" y="-12" />
+                    <value x="-133.53260803" y="2.93478251" />
                 </MetaItem>
+                <MetaItem name="ZoomFactor" type="FloatMetaData" value="0.68148148" />
             </MetaData>
             <Processors>
                 <Processor type="SingleVolumeRaycaster" name="SingleVolumeRaycaster" id="ref0">
@@ -19,18 +20,18 @@
                     </MetaData>
                     <Properties>
                         <Property mapKey="applyLightAttenuation" name="applyLightAttenuation" value="false" />
-                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="64510.078125" minValue="0.99586099" frustLeft="-0.41249916" frustRight="0.41249916" frustBottom="-0.41249916" frustTop="0.41249916" frustNear="0.99586099" frustFar="64768.1171875" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref13">
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="94750" minValue="1" frustLeft="-0.4142136" frustRight="0.4142136" frustBottom="-0.4142136" frustTop="0.4142136" frustNear="1" frustFar="95129" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref13">
                             <MetaData>
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="35" y="108" />
                             </MetaData>
-                            <position x="-229.94770813" y="76.37734985" z="151.90419006" />
-                            <focus x="100.97535706" y="127.47020721" z="129.02015686" />
-                            <upVector x="-0.06225771" y="-0.04337083" z="-0.99711734" />
+                            <position x="194.22247314" y="-338.32962036" z="192.66468811" />
+                            <focus x="189.5" y="152.5" z="152.5" />
+                            <upVector x="-0.0030383" y="0.08152714" z="0.99666649" />
                             <trackball moveCenter="false">
-                                <center x="100.97535706" y="127.47020721" z="129.02015686" />
+                                <center x="189.5" y="152.5" z="152.5" />
                             </trackball>
-                            <sceneLLF x="0" y="0" z="0" />
-                            <sceneURB x="201.95071411" y="254.94041443" z="258.04031372" />
+                            <sceneLLF x="0" y="76" z="0" />
+                            <sceneURB x="379" y="229" z="305" />
                         </Property>
                         <Property mapKey="classification" name="classification" value="transfer-function" />
                         <Property mapKey="compositing" name="compositing" value="dvr" />
@@ -75,48 +76,66 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false" id="ref17">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="646" y="217" width="546" height="340" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="22" y="211" width="512" height="340" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
                                         <colorL r="0" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.076923" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.153846" split="false">
-                                        <colorL r="255" g="0" b="0" a="18" />
+                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
+                                        <colorL r="255" g="0" b="0" a="11" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.23076899" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.30769199" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.384615" split="false">
-                                        <colorL r="127" g="255" b="0" a="179" />
+                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
+                                        <colorL r="255" g="255" b="0" a="15" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.46153799" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.53846198" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
+                                        <colorL r="0" g="255" b="0" a="220" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.615385" split="false">
-                                        <colorL r="0" g="255" b="255" a="54" />
+                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
+                                        <colorL r="0" g="255" b="255" a="139" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.69230801" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.76923102" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84615397" split="false">
-                                        <colorL r="127" g="0" b="255" a="255" />
+                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
+                                        <colorL r="0" g="0" b="255" a="228" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.92307699" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
+                                        <colorL r="255" g="0" b="255" a="145" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
                                     </key>
                                     <key type="TransFuncMappingKey" intensity="1" split="false">
                                         <colorL r="255" g="255" b="255" a="0" />
@@ -163,10 +182,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref2">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-473" y="198" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="50" y="182" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="502" y="209" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="50" y="182" />
+                            <value x="502" y="209" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
@@ -234,7 +253,7 @@
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeInfo" name="volumeInfo" />
-                        <Property mapKey="volumeURL" name="volumeURL" url="../../../../_data/VisMale.mhd?preferredReader=MhdVolumeReader" />
+                        <Property mapKey="volumeURL" name="volumeURL" url="../../../../_data/CT-Knee.mhd?preferredReader=MhdVolumeReader" />
                     </Properties>
                     <Inports />
                     <Outports>
@@ -251,18 +270,18 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-393" y="-91" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="64510.078125" minValue="0.99586099" frustLeft="-0.41249916" frustRight="0.41249916" frustBottom="-0.41249916" frustTop="0.41249916" frustNear="0.99586099" frustFar="64768.1171875" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref12">
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="94750" minValue="1" frustLeft="-0.4142136" frustRight="0.4142136" frustBottom="-0.4142136" frustTop="0.4142136" frustNear="1" frustFar="95129" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref12">
                             <MetaData>
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="721" y="372" />
                             </MetaData>
-                            <position x="-229.94770813" y="76.37734985" z="151.90419006" />
-                            <focus x="100.97535706" y="127.47020721" z="129.02015686" />
-                            <upVector x="-0.06225771" y="-0.04337083" z="-0.99711734" />
+                            <position x="194.22247314" y="-338.32962036" z="192.66468811" />
+                            <focus x="189.5" y="152.5" z="152.5" />
+                            <upVector x="-0.0030383" y="0.08152714" z="0.99666649" />
                             <trackball moveCenter="false">
-                                <center x="100.97535706" y="127.47020721" z="129.02015686" />
+                                <center x="189.5" y="152.5" z="152.5" />
                             </trackball>
-                            <sceneLLF x="0" y="0" z="0" />
-                            <sceneURB x="201.95071411" y="254.94041443" z="258.04031372" />
+                            <sceneLLF x="0" y="76" z="0" />
+                            <sceneURB x="379" y="229" z="305" />
                         </Property>
                         <Property mapKey="cameraInsideVolumeTechnique" name="cameraInsideVolumeTechnique" value="gpu" />
                         <Property mapKey="jitterEntryPoints" name="jitterEntryPoints" value="false" />
@@ -317,18 +336,18 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-407" y="-181" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="255" />
+                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="228" />
                         <Property mapKey="bottomClippingPlane" name="bottomClippingPlane" value="0" />
                         <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="0" />
-                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="127" />
+                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="378" />
                         <Property mapKey="modeString" name="modeString" value="visiblebricks" />
                         <Property mapKey="resetClipPlanes" name="resetClipPlanes" />
                         <Property mapKey="resolution" name="resolution" value="32" />
                         <Property mapKey="resolutionMode" name="resolutionMode" value="subdivide" />
-                        <Property mapKey="resolutionvoxel" name="resolutionvoxel" value="4" />
+                        <Property mapKey="resolutionvoxel" name="resolutionvoxel" value="7" />
                         <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="0" />
                         <Property mapKey="threshold" name="threshold" value="1" />
-                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="255" />
+                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="304" />
                         <Property mapKey="transferfunction" name="transferfunction" AlwaysFitDomain="false" id="ref18">
                             <MetaData>
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
@@ -338,41 +357,59 @@
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
                                         <colorL r="0" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.076923" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.153846" split="false">
-                                        <colorL r="255" g="0" b="0" a="18" />
+                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
+                                        <colorL r="255" g="0" b="0" a="11" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.23076899" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.30769199" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.384615" split="false">
-                                        <colorL r="127" g="255" b="0" a="179" />
+                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
+                                        <colorL r="255" g="255" b="0" a="15" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.46153799" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.53846198" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
+                                        <colorL r="0" g="255" b="0" a="220" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.615385" split="false">
-                                        <colorL r="0" g="255" b="255" a="54" />
+                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
+                                        <colorL r="0" g="255" b="255" a="139" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.69230801" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.76923102" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84615397" split="false">
-                                        <colorL r="127" g="0" b="255" a="255" />
+                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
+                                        <colorL r="0" g="0" b="255" a="228" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.92307699" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
+                                        <colorL r="255" g="0" b="255" a="145" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
                                     </key>
                                     <key type="TransFuncMappingKey" intensity="1" split="false">
                                         <colorL r="255" g="255" b="255" a="0" />
@@ -402,23 +439,164 @@
                     </Outports>
                     <InteractionHandlers />
                 </Processor>
-                <Processor type="MeshEntryExitPoints" name="MeshEntryExitPoints 2" id="ref7">
+                <Processor type="OptimizedProxyGeometry" name="OptimizedProxyGeometry 2" id="ref7">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-131" y="-76" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-180" y="-180" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="64510.078125" minValue="0.99586099" frustLeft="-0.41249916" frustRight="0.41249916" frustBottom="-0.41249916" frustTop="0.41249916" frustNear="0.99586099" frustFar="64768.1171875" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref19">
+                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="152" />
+                        <Property mapKey="bottomClippingPlane" name="bottomClippingPlane" value="0" />
+                        <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="0" />
+                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="378" />
+                        <Property mapKey="modeString" name="modeString" value="visiblebricks" />
+                        <Property mapKey="resetClipPlanes" name="resetClipPlanes" />
+                        <Property mapKey="resolution" name="resolution" value="2" />
+                        <Property mapKey="resolutionMode" name="resolutionMode" value="subdivide" />
+                        <Property mapKey="resolutionvoxel" name="resolutionvoxel" value="77" />
+                        <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="0" />
+                        <Property mapKey="threshold" name="threshold" value="1" />
+                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="304" />
+                        <Property mapKey="transferfunction" name="transferfunction" AlwaysFitDomain="false" id="ref25">
+                            <MetaData>
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                            </MetaData>
+                            <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
+                                <Keys>
+                                    <key type="TransFuncMappingKey" intensity="0" split="false">
+                                        <colorL r="0" g="0" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
+                                        <colorL r="255" g="0" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
+                                        <colorL r="255" g="0" b="0" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
+                                        <colorL r="255" g="0" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
+                                        <colorL r="255" g="255" b="0" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
+                                        <colorL r="0" g="255" b="0" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
+                                        <colorL r="0" g="255" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
+                                        <colorL r="0" g="255" b="255" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
+                                        <colorL r="0" g="255" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
+                                        <colorL r="0" g="0" b="255" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
+                                        <colorL r="255" g="0" b="255" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="1" split="false">
+                                        <colorL r="255" g="255" b="255" a="0" />
+                                    </key>
+                                </Keys>
+                                <domain x="0" y="1" />
+                            </TransferFunction>
+                        </Property>
+                        <Property mapKey="useClipping" name="useClipping" value="false" />
+                        <Property mapKey="waitForOptimization" name="waitForOptimization" value="false" />
+                    </Properties>
+                    <Inports>
+                        <Port name="volumehandle.volumehandle" direction="1" portID="volumehandle.volumehandle" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
+                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
+                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
+                            </Properties>
+                        </Port>
+                    </Inports>
+                    <Outports>
+                        <Port name="proxygeometry.geometry" direction="0" portID="proxygeometry.geometry" guiName="Proxy Geometry Output" allowMultipleConnections="true" invalidationLevel="20">
+                            <Properties>
+                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
+                            </Properties>
+                        </Port>
+                    </Outports>
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="Canvas" name="Canvas 2" id="ref11">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-246" y="198" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="187" y="186" width="512" height="512" />
+                        <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
+                        <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
+                            <value x="18" y="153" />
+                        </MetaItem>
+                        <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
+                            <value x="512" y="512" />
+                        </MetaItem>
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="canvasSize" name="canvasSize">
+                            <value x="512" y="512" />
+                        </Property>
+                        <Property mapKey="saveScreenshot" name="saveScreenshot" />
+                        <Property mapKey="screenshotFilename" name="screenshotFilename" noPathSet="true" value="" />
+                        <Property mapKey="showCursor" name="showCursor" value="true" />
+                        <Property mapKey="showFullScreen" name="showFullScreen" value="false" />
+                    </Properties>
+                    <Inports>
+                        <Port name="image.input" direction="1" portID="image.input" guiName="Image Input" allowMultipleConnections="false" invalidationLevel="1">
+                            <Properties>
+                                <Property mapKey="image.input.renderSizeOrigin" name="image.input.renderSizeOrigin" id="ref21">
+                                    <value x="512" y="512" />
+                                </Property>
+                            </Properties>
+                        </Port>
+                    </Inports>
+                    <Outports />
+                    <InteractionHandlers />
+                </Processor>
+                <Processor type="MeshEntryExitPoints" name="MeshEntryExitPoints 2" id="ref8">
+                    <MetaData>
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-166" y="-90" />
+                    </MetaData>
+                    <Properties>
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="94750" minValue="1" frustLeft="-0.4142136" frustRight="0.4142136" frustBottom="-0.4142136" frustTop="0.4142136" frustNear="1" frustFar="95129" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref19">
                             <MetaData>
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="721" y="372" />
                             </MetaData>
-                            <position x="-229.94770813" y="76.37734985" z="151.90419006" />
-                            <focus x="100.97535706" y="127.47020721" z="129.02015686" />
-                            <upVector x="-0.06225771" y="-0.04337083" z="-0.99711734" />
+                            <position x="194.22247314" y="-338.32962036" z="192.66468811" />
+                            <focus x="189.5" y="152.5" z="152.5" />
+                            <upVector x="-0.0030383" y="0.08152714" z="0.99666649" />
                             <trackball moveCenter="false">
-                                <center x="100.97535706" y="127.47020721" z="129.02015686" />
+                                <center x="189.5" y="152.5" z="152.5" />
                             </trackball>
-                            <sceneLLF x="0" y="0" z="0" />
-                            <sceneURB x="201.95071411" y="254.94041443" z="258.04031372" />
+                            <sceneLLF x="0" y="76" z="0" />
+                            <sceneURB x="379" y="229" z="305" />
                         </Property>
                         <Property mapKey="cameraInsideVolumeTechnique" name="cameraInsideVolumeTechnique" value="gpu" />
                         <Property mapKey="jitterEntryPoints" name="jitterEntryPoints" value="false" />
@@ -468,99 +646,9 @@
                         </Handler>
                     </InteractionHandlers>
                 </Processor>
-                <Processor type="OptimizedProxyGeometry" name="OptimizedProxyGeometry 2" id="ref9">
-                    <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-145" y="-167" />
-                    </MetaData>
-                    <Properties>
-                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="255" />
-                        <Property mapKey="bottomClippingPlane" name="bottomClippingPlane" value="0" />
-                        <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="0" />
-                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="64" />
-                        <Property mapKey="modeString" name="modeString" value="visiblebricks" />
-                        <Property mapKey="resetClipPlanes" name="resetClipPlanes" />
-                        <Property mapKey="resolution" name="resolution" value="3" />
-                        <Property mapKey="resolutionMode" name="resolutionMode" value="subdivide" />
-                        <Property mapKey="resolutionvoxel" name="resolutionvoxel" value="22" />
-                        <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="0" />
-                        <Property mapKey="threshold" name="threshold" value="1" />
-                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="255" />
-                        <Property mapKey="transferfunction" name="transferfunction" AlwaysFitDomain="false" id="ref25">
-                            <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
-                            </MetaData>
-                            <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
-                                <Keys>
-                                    <key type="TransFuncMappingKey" intensity="0" split="false">
-                                        <colorL r="0" g="0" b="0" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.076923" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.153846" split="false">
-                                        <colorL r="255" g="0" b="0" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.23076899" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.30769199" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.384615" split="false">
-                                        <colorL r="127" g="255" b="0" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.46153799" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.53846198" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.615385" split="false">
-                                        <colorL r="0" g="255" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.69230801" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.76923102" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84615397" split="false">
-                                        <colorL r="127" g="0" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.92307699" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="1" split="false">
-                                        <colorL r="255" g="255" b="255" a="0" />
-                                    </key>
-                                </Keys>
-                                <domain x="0" y="1" />
-                            </TransferFunction>
-                        </Property>
-                        <Property mapKey="useClipping" name="useClipping" value="false" />
-                        <Property mapKey="waitForOptimization" name="waitForOptimization" value="false" />
-                    </Properties>
-                    <Inports>
-                        <Port name="volumehandle.volumehandle" direction="1" portID="volumehandle.volumehandle" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
-                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
-                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
-                            </Properties>
-                        </Port>
-                    </Inports>
-                    <Outports>
-                        <Port name="proxygeometry.geometry" direction="0" portID="proxygeometry.geometry" guiName="Proxy Geometry Output" allowMultipleConnections="true" invalidationLevel="20">
-                            <Properties>
-                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
-                            </Properties>
-                        </Port>
-                    </Outports>
-                    <InteractionHandlers />
-                </Processor>
                 <Processor type="Background" name="Background 2" id="ref10">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-211" y="120" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-246" y="107" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="angle" name="angle" value="60" />
@@ -593,57 +681,24 @@
                     </Outports>
                     <InteractionHandlers />
                 </Processor>
-                <Processor type="Canvas" name="Canvas 2" id="ref11">
+                <Processor type="SingleVolumeRaycaster" name="SingleVolumeRaycaster 2" id="ref9">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-206" y="198" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="667" y="164" width="512" height="512" />
-                        <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
-                        <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="33" y="125" />
-                        </MetaItem>
-                        <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
-                            <value x="512" y="512" />
-                        </MetaItem>
-                    </MetaData>
-                    <Properties>
-                        <Property mapKey="canvasSize" name="canvasSize">
-                            <value x="512" y="512" />
-                        </Property>
-                        <Property mapKey="saveScreenshot" name="saveScreenshot" />
-                        <Property mapKey="screenshotFilename" name="screenshotFilename" noPathSet="true" value="" />
-                        <Property mapKey="showCursor" name="showCursor" value="true" />
-                        <Property mapKey="showFullScreen" name="showFullScreen" value="false" />
-                    </Properties>
-                    <Inports>
-                        <Port name="image.input" direction="1" portID="image.input" guiName="Image Input" allowMultipleConnections="false" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="image.input.renderSizeOrigin" name="image.input.renderSizeOrigin" id="ref21">
-                                    <value x="512" y="512" />
-                                </Property>
-                            </Properties>
-                        </Port>
-                    </Inports>
-                    <Outports />
-                    <InteractionHandlers />
-                </Processor>
-                <Processor type="SingleVolumeRaycaster" name="SingleVolumeRaycaster 2" id="ref8">
-                    <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-200" y="21" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-237" y="14" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="applyLightAttenuation" name="applyLightAttenuation" value="false" />
-                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="64510.078125" minValue="0.99586099" frustLeft="-0.41249916" frustRight="0.41249916" frustBottom="-0.41249916" frustTop="0.41249916" frustNear="0.99586099" frustFar="64768.1171875" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref20">
+                        <Property mapKey="camera" name="camera" projectionMode="1" maxValue="94750" minValue="1" frustLeft="-0.4142136" frustRight="0.4142136" frustBottom="-0.4142136" frustTop="0.4142136" frustNear="1" frustFar="95129" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" centerOption="0" adaptOnChange="true" id="ref20">
                             <MetaData>
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="35" y="108" />
                             </MetaData>
-                            <position x="-229.94770813" y="76.37734985" z="151.90419006" />
-                            <focus x="100.97535706" y="127.47020721" z="129.02015686" />
-                            <upVector x="-0.06225771" y="-0.04337083" z="-0.99711734" />
+                            <position x="194.22247314" y="-338.32962036" z="192.66468811" />
+                            <focus x="189.5" y="152.5" z="152.5" />
+                            <upVector x="-0.0030383" y="0.08152714" z="0.99666649" />
                             <trackball moveCenter="false">
-                                <center x="100.97535706" y="127.47020721" z="129.02015686" />
+                                <center x="189.5" y="152.5" z="152.5" />
                             </trackball>
-                            <sceneLLF x="0" y="0" z="0" />
-                            <sceneURB x="201.95071411" y="254.94041443" z="258.04031372" />
+                            <sceneLLF x="0" y="76" z="0" />
+                            <sceneURB x="379" y="229" z="305" />
                         </Property>
                         <Property mapKey="classification" name="classification" value="transfer-function" />
                         <Property mapKey="compositing" name="compositing" value="dvr" />
@@ -688,48 +743,66 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" AlwaysFitDomain="false" id="ref24">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="-98" y="274" width="512" height="340" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" ignoreAlpha="false" lower="0" upper="1">
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
                                         <colorL r="0" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.076923" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.153846" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
                                         <colorL r="255" g="0" b="0" a="127" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.23076899" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
                                         <colorL r="255" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.30769199" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.384615" split="false">
-                                        <colorL r="127" g="255" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
+                                        <colorL r="255" g="255" b="0" a="127" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.46153799" split="false">
-                                        <colorL r="127" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
+                                        <colorL r="255" g="255" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.53846198" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
+                                        <colorL r="0" g="255" b="0" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
+                                        <colorL r="0" g="255" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.615385" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
                                         <colorL r="0" g="255" b="255" a="127" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.69230801" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
                                         <colorL r="0" g="255" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.76923102" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84615397" split="false">
-                                        <colorL r="127" g="0" b="255" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
+                                        <colorL r="0" g="0" b="255" a="127" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.92307699" split="false">
-                                        <colorL r="127" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
+                                        <colorL r="0" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
+                                        <colorL r="255" g="0" b="255" a="127" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
+                                        <colorL r="255" g="0" b="255" a="0" />
                                     </key>
                                     <key type="TransFuncMappingKey" intensity="1" split="false">
                                         <colorL r="255" g="255" b="255" a="0" />
@@ -775,22 +848,22 @@
                 </Processor>
                 <Processor type="VolumeCrop" name="VolumeCrop" id="ref5">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-157" y="-262" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-250" y="-265" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="255" />
+                        <Property mapKey="backClippingPlane" name="backClippingPlane" value="228" />
                         <Property mapKey="bottomClippingPlane" name="bottomClippingPlane" value="0" />
                         <Property mapKey="button" name="button" />
                         <Property mapKey="clearCache" name="clearCache" />
                         <Property mapKey="continuousCropping" name="continuousCropping" value="true" />
                         <Property mapKey="croppedDimensions" name="croppedDimensions">
-                            <value x="65" y="256" z="256" />
+                            <value x="379" y="153" z="305" />
                         </Property>
-                        <Property mapKey="croppedSize" name="croppedSize" value="4" />
-                        <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="0" />
-                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="127" />
-                        <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="63" />
-                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="255" />
+                        <Property mapKey="croppedSize" name="croppedSize" value="16" />
+                        <Property mapKey="frontClippingPlane" name="frontClippingPlane" value="76" />
+                        <Property mapKey="leftClippingPlane" name="leftClippingPlane" value="378" />
+                        <Property mapKey="rightClippingPlane" name="rightClippingPlane" value="0" />
+                        <Property mapKey="topClippingPlane" name="topClippingPlane" value="304" />
                         <Property mapKey="useCaching" name="useCaching" value="true" />
                     </Properties>
                     <Inports>
@@ -878,27 +951,27 @@
                     </Inport>
                 </Connection>
                 <Connection>
+                    <Outport name="proxygeometry.geometry">
+                        <Processor type="OptimizedProxyGeometry" ref="ref7" />
+                    </Outport>
+                    <Inport name="proxgeometry.geometry">
+                        <Processor type="MeshEntryExitPoints" ref="ref8" />
+                    </Inport>
+                </Connection>
+                <Connection>
                     <Outport name="image.entrypoints">
-                        <Processor type="MeshEntryExitPoints" ref="ref7" />
+                        <Processor type="MeshEntryExitPoints" ref="ref8" />
                     </Outport>
                     <Inport name="image.entrypoints">
-                        <Processor type="SingleVolumeRaycaster" ref="ref8" />
+                        <Processor type="SingleVolumeRaycaster" ref="ref9" />
                     </Inport>
                 </Connection>
                 <Connection>
                     <Outport name="image.exitpoints">
-                        <Processor type="MeshEntryExitPoints" ref="ref7" />
+                        <Processor type="MeshEntryExitPoints" ref="ref8" />
                     </Outport>
                     <Inport name="image.exitpoints">
-                        <Processor type="SingleVolumeRaycaster" ref="ref8" />
-                    </Inport>
-                </Connection>
-                <Connection>
-                    <Outport name="proxygeometry.geometry">
-                        <Processor type="OptimizedProxyGeometry" ref="ref9" />
-                    </Outport>
-                    <Inport name="proxgeometry.geometry">
-                        <Processor type="MeshEntryExitPoints" ref="ref7" />
+                        <Processor type="SingleVolumeRaycaster" ref="ref9" />
                     </Inport>
                 </Connection>
                 <Connection>
@@ -911,7 +984,7 @@
                 </Connection>
                 <Connection>
                     <Outport name="image.output">
-                        <Processor type="SingleVolumeRaycaster" ref="ref8" />
+                        <Processor type="SingleVolumeRaycaster" ref="ref9" />
                     </Outport>
                     <Inport name="image.input">
                         <Processor type="Background" ref="ref10" />
@@ -922,7 +995,7 @@
                         <Processor type="VolumeCrop" ref="ref5" />
                     </Outport>
                     <Inport name="volumehandle.volumehandle">
-                        <Processor type="OptimizedProxyGeometry" ref="ref9" />
+                        <Processor type="OptimizedProxyGeometry" ref="ref7" />
                     </Inport>
                 </Connection>
                 <Connection>
@@ -930,7 +1003,7 @@
                         <Processor type="VolumeCrop" ref="ref5" />
                     </Outport>
                     <Inport name="volumehandle.volumehandle">
-                        <Processor type="SingleVolumeRaycaster" ref="ref8" />
+                        <Processor type="SingleVolumeRaycaster" ref="ref9" />
                     </Inport>
                 </Connection>
             </Connections>
