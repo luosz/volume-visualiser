@@ -3,13 +3,6 @@
     <Workspace version="2" GlobalDescription="">
         <ProcessorNetwork version="15">
             <MetaData>
-                <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
-                    <values>
-                        <item type="VolumeFormatConversion" ref="ref5" />
-                        <item type="VolumeSelector" ref="ref2" />
-                        <item type="VolumeSave" ref="ref6" />
-                    </values>
-                </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
                     <value x="-832.84960938" y="-469.34545898" />
                 </MetaItem>
@@ -236,80 +229,7 @@
                 </Processor>
                 <Processor type="VolumeSelector" name="VolumeSelector" id="ref1">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1085" y="-599" />
-                    </MetaData>
-                    <Properties>
-                        <Property mapKey="volumeID" name="volumeID" value="0" />
-                    </Properties>
-                    <Inports>
-                        <Port name="volumecollection" direction="1" portID="volumecollection" guiName="VolumeList Input" allowMultipleConnections="false" invalidationLevel="1">
-                            <Properties />
-                        </Port>
-                    </Inports>
-                    <Outports>
-                        <Port name="volumehandle.volumehandle" direction="0" portID="volumehandle.volumehandle" guiName="Volume Output" allowMultipleConnections="true" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
-                            </Properties>
-                        </Port>
-                    </Outports>
-                    <InteractionHandlers />
-                </Processor>
-                <Processor type="VolumeFormatConversion" name="VolumeFormatConversion" id="ref3">
-                    <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1085" y="-522" />
-                    </MetaData>
-                    <Properties>
-                        <Property mapKey="clearCache" name="clearCache" />
-                        <Property mapKey="enabled" name="enabled" value="true" />
-                        <Property mapKey="numChannels" name="numChannels" value="1" />
-                        <Property mapKey="targetFormat" name="targetFormat" value="uint8_t" />
-                        <Property mapKey="useCaching" name="useCaching" value="true" />
-                    </Properties>
-                    <Inports>
-                        <Port name="volumehandle.input" direction="1" portID="volumehandle.input" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
-                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
-                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
-                            </Properties>
-                        </Port>
-                    </Inports>
-                    <Outports>
-                        <Port name="volumehandle.output" direction="0" portID="volumehandle.output" guiName="Volume Output" allowMultipleConnections="true" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="blockEvents" name="blockEvents" value="false" />
-                            </Properties>
-                        </Port>
-                    </Outports>
-                    <InteractionHandlers />
-                </Processor>
-                <Processor type="VolumeSave" name="VolumeSave" id="ref4">
-                    <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1086" y="-443" />
-                    </MetaData>
-                    <Properties>
-                        <Property mapKey="continousSave" name="continousSave" value="false" />
-                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../output/vortex01.mhd" />
-                        <Property mapKey="save" name="save" />
-                        <Property mapKey="saveOnPathChange" name="saveOnPathChange" value="true" />
-                        <Property mapKey="volumeInfo" name="volumeInfo" />
-                    </Properties>
-                    <Inports>
-                        <Port name="volumehandle.input" direction="1" portID="volumehandle.input" guiName="Volume Input" allowMultipleConnections="false" invalidationLevel="1">
-                            <Properties>
-                                <Property mapKey="textureBorderIntensity" name="textureBorderIntensity" value="0" />
-                                <Property mapKey="textureClampMode_" name="textureClampMode_" value="clamp-to-edge" />
-                                <Property mapKey="textureFilterMode_" name="textureFilterMode_" value="linear" />
-                            </Properties>
-                        </Port>
-                    </Inports>
-                    <Outports />
-                    <InteractionHandlers />
-                </Processor>
-                <Processor type="VolumeSelector" name="VolumeSelector 2" id="ref2">
-                    <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-803" y="-601" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1079" y="-592" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeID" name="volumeID" value="97" />
@@ -328,9 +248,9 @@
                     </Outports>
                     <InteractionHandlers />
                 </Processor>
-                <Processor type="VolumeFormatConversion" name="VolumeFormatConversion 2" id="ref5">
+                <Processor type="VolumeFormatConversion" name="VolumeFormatConversion" id="ref2">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-802" y="-523" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1116" y="-506" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="clearCache" name="clearCache" />
@@ -357,13 +277,13 @@
                     </Outports>
                     <InteractionHandlers />
                 </Processor>
-                <Processor type="VolumeSave" name="VolumeSave 2" id="ref6">
+                <Processor type="VolumeSave" name="VolumeSave" id="ref3">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-804" y="-439" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1117" y="-427" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="continousSave" name="continousSave" value="false" />
-                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../output/vortex97.mhd" />
+                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../output/vortex/vortex97.mhd" />
                         <Property mapKey="save" name="save" />
                         <Property mapKey="saveOnPathChange" name="saveOnPathChange" value="true" />
                         <Property mapKey="volumeInfo" name="volumeInfo" />
@@ -391,43 +311,19 @@
                     </Inport>
                 </Connection>
                 <Connection>
-                    <Outport name="volumecollection">
-                        <Processor type="VolumeListSource" ref="ref0" />
-                    </Outport>
-                    <Inport name="volumecollection">
-                        <Processor type="VolumeSelector" ref="ref2" />
-                    </Inport>
-                </Connection>
-                <Connection>
                     <Outport name="volumehandle.volumehandle">
                         <Processor type="VolumeSelector" ref="ref1" />
                     </Outport>
                     <Inport name="volumehandle.input">
-                        <Processor type="VolumeFormatConversion" ref="ref3" />
+                        <Processor type="VolumeFormatConversion" ref="ref2" />
                     </Inport>
                 </Connection>
                 <Connection>
                     <Outport name="volumehandle.output">
-                        <Processor type="VolumeFormatConversion" ref="ref3" />
+                        <Processor type="VolumeFormatConversion" ref="ref2" />
                     </Outport>
                     <Inport name="volumehandle.input">
-                        <Processor type="VolumeSave" ref="ref4" />
-                    </Inport>
-                </Connection>
-                <Connection>
-                    <Outport name="volumehandle.volumehandle">
-                        <Processor type="VolumeSelector" ref="ref2" />
-                    </Outport>
-                    <Inport name="volumehandle.input">
-                        <Processor type="VolumeFormatConversion" ref="ref5" />
-                    </Inport>
-                </Connection>
-                <Connection>
-                    <Outport name="volumehandle.output">
-                        <Processor type="VolumeFormatConversion" ref="ref5" />
-                    </Outport>
-                    <Inport name="volumehandle.input">
-                        <Processor type="VolumeSave" ref="ref6" />
+                        <Processor type="VolumeSave" ref="ref3" />
                     </Inport>
                 </Connection>
             </Connections>
@@ -449,10 +345,10 @@
                                 <values>
                                     <value key="0" time="0" value="0" smooth="true">
                                         <before />
-                                        <after type="IntLinearInterpolationFunction" id="ref7" />
+                                        <after type="IntLinearInterpolationFunction" id="ref4" />
                                     </value>
                                     <value key="19.73329926" time="19.73329926" value="97" smooth="true">
-                                        <before type="IntLinearInterpolationFunction" ref="ref7" />
+                                        <before type="IntLinearInterpolationFunction" ref="ref4" />
                                         <after />
                                     </value>
                                 </values>
@@ -461,23 +357,11 @@
                     </properties>
                 </Processor>
                 <Processor>
-                    <processor type="VolumeFormatConversion" ref="ref3" />
+                    <processor type="VolumeFormatConversion" ref="ref2" />
                     <properties />
                 </Processor>
                 <Processor>
-                    <processor type="VolumeSave" ref="ref4" />
-                    <properties />
-                </Processor>
-                <Processor>
-                    <processor type="VolumeSelector" ref="ref2" />
-                    <properties />
-                </Processor>
-                <Processor>
-                    <processor type="VolumeFormatConversion" ref="ref5" />
-                    <properties />
-                </Processor>
-                <Processor>
-                    <processor type="VolumeSave" ref="ref6" />
+                    <processor type="VolumeSave" ref="ref3" />
                     <properties />
                 </Processor>
             </processors>
