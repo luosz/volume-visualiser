@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QObject::connect(ui->action_Compute_Squared_Distance, SIGNAL(triggered()), this, SLOT(onComputeSquaredDistanceSlot()));
 	QObject::connect(ui->action_Default_Transfer_Function, SIGNAL(triggered()), this, SLOT(onDefaultTransferFunctionSlot()));
 	QObject::connect(ui->action_Spectrum_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSpectrumTransferFunctionSlot()));
+	QObject::connect(ui->action_Open_Path, SIGNAL(triggered()), this, SLOT(onOpenPathSlot()));
 
 	// Create transfer mapping scalar value to opacity.
 	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();

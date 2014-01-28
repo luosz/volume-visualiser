@@ -1464,6 +1464,71 @@ private:
 			qApp->quit();
 		}
 
+		void open_volume_no_rendering(QString filename)
+		{
+			// show filename on window title
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = filename.toLocal8Bit();
+			const char *filename_str = ba.data();
+
+			// read Meta Image (.mhd or .mha) files
+			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+			reader->SetFileName(filename_str);
+
+			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+			shiftScale->SetInputConnection(reader->GetOutputPort());
+			shiftScale->SetOutputScalarTypeToUnsignedChar();
+
+			// generate histograms
+			generate_visibility_function(shiftScale);
+			generate_LH_histogram(shiftScale);
+
+			//// set up volume property
+			//auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+			//volumeProperty->SetColor(colorTransferFunction);
+			//volumeProperty->SetScalarOpacity(opacityTransferFunction);
+			//volumeProperty->ShadeOff();
+			//volumeProperty->SetInterpolationTypeToLinear();
+
+			//// assign volume property to the volume property widget
+			//volumePropertywidget.setVolumeProperty(volumeProperty);
+
+			//// The mapper that renders the volume data.
+			//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+			//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			//volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+
+			//// The volume holds the mapper and the property and can be used to position/orient the volume.
+			//auto volume = vtkSmartPointer<vtkVolume>::New();
+			//volume->SetMapper(volumeMapper);
+			//volume->SetProperty(volumeProperty);
+
+			//// add the volume into the renderer
+			////auto renderer = vtkSmartPointer<vtkRenderer>::New();
+			//renderer = vtkSmartPointer<vtkRenderer>::New();
+			//renderer->AddVolume(volume);
+			//renderer->SetBackground(1, 1, 1);
+
+			//// clean previous renderers and then add the current renderer
+			//auto window = widget.GetRenderWindow();
+			//auto collection = window->GetRenderers();
+			//auto item = collection->GetNextItem();
+			//while (item != NULL)
+			//{
+			//	window->RemoveRenderer(item);
+			//	item = collection->GetNextItem();
+			//}
+			//window->AddRenderer(renderer);
+			//window->Render();
+
+			//// initialize the interactor
+			//interactor->Initialize();
+			//interactor->Start();
+		}
+
 		void onOpenVolumeSlot()
 		{
 			// show file dialog
@@ -1480,7 +1545,7 @@ private:
 			}
 
 			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
 
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 			QByteArray ba = filename_backup.toLocal8Bit();
@@ -1537,6 +1602,7 @@ private:
 			shiftScale->SetInputConnection(reader->GetOutputPort());
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
 
+			// generate histograms
 			generate_visibility_function(shiftScale);
 			generate_LH_histogram(shiftScale);
 
@@ -1870,6 +1936,56 @@ private:
 				std::cout<<"QInputDialog::getInteger() "<<n<<std::endl;
 				generate_spectrum_transfer_function(n);
 				updateTransferFunctionWidgetsFromArrays();
+			}
+		}
+
+		void onOpenPathSlot()
+		{
+			bool ok;
+			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+				tr("Path to open:"), QLineEdit::Normal,
+				"D:\\output\\vortex\\", &ok);
+			if (ok && !path.isEmpty())
+			{
+				int index = path.lastIndexOf("/");
+				if (index == -1)
+				{
+					index = path.lastIndexOf("\\");
+				}
+				
+				QString filepath = path;
+				QString filename;
+				if (index != -1)
+				{
+					filepath = path.left(index + 1);
+					filename = path.right(path.length() - 1 - index);
+					if (filename.isEmpty())
+					{
+						filename = "*.mhd";
+					}
+
+					//QMessageBox msgBox;
+					//msgBox.setText(QString::number(index) + "\n" + filepath + "\n" + filename);
+					//int ret = msgBox.exec();
+				}
+
+				QDir dir = QDir(filepath);
+				QStringList files = dir.entryList(QStringList(filename),
+					QDir::Files | QDir::NoSymLinks);
+
+				//QString text;
+				//for (int i = 0; i < files.size(); i++)
+				//{
+				//	text += filepath + files[i] + "\n";
+				//}
+				//QMessageBox msgBox;
+				//msgBox.setText(text);
+				//int ret = msgBox.exec();
+
+				for (int i = 0; i < files.size(); i++)
+				{
+					open_volume_no_rendering(filepath + files[i]);
+				}
 			}
 		}
 
