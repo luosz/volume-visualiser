@@ -1944,7 +1944,7 @@ private:
 			bool ok;
 			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
 				tr("Path to open:"), QLineEdit::Normal,
-				"D:\\output\\vortex\\", &ok);
+				"D:/output/vortex/", &ok);
 			if (ok && !path.isEmpty())
 			{
 				int index = path.lastIndexOf("/");
@@ -2008,7 +2008,7 @@ private:
 					updateTransferFunctionArraysFromWidgets();
 
 					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "D:\\output\\%02d.tfi", i);
+					sprintf(filename_str, "../%02d.tfi", i);
 					std::cout << "transfer function file: " << filename_str << endl;
 					saveTransferFunctionToXML(filename_str);
 				}
