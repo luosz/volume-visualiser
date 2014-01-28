@@ -1982,9 +1982,35 @@ private:
 				//msgBox.setText(text);
 				//int ret = msgBox.exec();
 
+				// spectrum number for transfer function generation
+				const int n = 6;
+
 				for (int i = 0; i < files.size(); i++)
 				{
 					open_volume_no_rendering(filepath + files[i]);
+
+					generate_spectrum_transfer_function(n);
+					updateTransferFunctionWidgetsFromArrays();
+
+					updateTransferFunctionArraysFromWidgets();
+					int n = ui->spinBox->value();
+					if (n < 1 || n > max_iteration_count)
+					{
+						n = 1;
+					}
+
+					while (n-- > 0)
+					{
+						balance_opacity();
+					}
+
+					updateTransferFunctionWidgetsFromArrays();
+					updateTransferFunctionArraysFromWidgets();
+
+					char filename_str[_MAX_PATH];
+					sprintf(filename_str, "D:\\output\\tf\\%02d.tfi", i);
+					std::cout << "transfer function file: " << filename_str << endl;
+					saveTransferFunctionToXML(filename_str);
 				}
 			}
 		}
