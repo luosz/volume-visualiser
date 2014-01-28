@@ -2008,7 +2008,7 @@ private:
 					updateTransferFunctionArraysFromWidgets();
 
 					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "D:\\output\\tf\\%02d.tfi", i);
+					sprintf(filename_str, "D:\\output\\%02d.tfi", i);
 					std::cout << "transfer function file: " << filename_str << endl;
 					saveTransferFunctionToXML(filename_str);
 				}
