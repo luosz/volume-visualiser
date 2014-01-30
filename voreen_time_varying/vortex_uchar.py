@@ -19,6 +19,8 @@ for i in range(0, 98):
     tf_filename)
     
     print "loaded transfer function %s" % tf_filename
+
+    voreen.repaint()
     
     image_filename = "../../../../output/vortex_image/%02d.png" % i
     voreen.snapshotCanvas(0, image_filename)
