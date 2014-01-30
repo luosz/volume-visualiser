@@ -2002,13 +2002,17 @@ private:
 
 					// split filename and extension
 					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+
+					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
 					QByteArray ba = list1[0].toLocal8Bit();
 					const char *filename_no_suffix = ba.data();
 
+					QByteArray ba1 = filepath.toLocal8Bit();
+					const char *path1 = ba1.data();
+
 					// save the transfer function to file
 					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "../%s.tfi", filename_no_suffix);
+					sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
 					std::cout << "transfer function file: " << filename_str << endl;
 					saveTransferFunctionToXML(filename_str);
 				}
@@ -2105,13 +2109,17 @@ private:
 
 					// split filename and extension
 					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+
+					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
 					QByteArray ba = list1[0].toLocal8Bit();
 					const char *filename_no_suffix = ba.data();
 
+					QByteArray ba1 = filepath.toLocal8Bit();
+					const char *path1 = ba1.data();
+
 					// save the transfer function to file
 					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "../%s.tfi", filename_no_suffix);
+					sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
 					std::cout << "transfer function file: " << filename_str << endl;
 					saveTransferFunctionToXML(filename_str);
 				}
