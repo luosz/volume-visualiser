@@ -1939,7 +1939,7 @@ private:
 			}
 		}
 
-		void onOpenPathSlot()
+		void on_Open_Path_and_Generate_Transfer_Functions_Slot()
 		{
 			bool ok;
 			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
@@ -1947,12 +1947,14 @@ private:
 				"D:/output/vortex/", &ok);
 			if (ok && !path.isEmpty())
 			{
+				// get filename separator position
 				int index = path.lastIndexOf("/");
 				if (index == -1)
 				{
 					index = path.lastIndexOf("\\");
 				}
 				
+				// split filename and path
 				QString filepath = path;
 				QString filename;
 				if (index != -1)
@@ -1963,35 +1965,26 @@ private:
 					{
 						filename = "*.mhd";
 					}
-
-					//QMessageBox msgBox;
-					//msgBox.setText(QString::number(index) + "\n" + filepath + "\n" + filename);
-					//int ret = msgBox.exec();
 				}
 
+				// get filenames under the folder
 				QDir dir = QDir(filepath);
 				QStringList files = dir.entryList(QStringList(filename),
 					QDir::Files | QDir::NoSymLinks);
-
-				//QString text;
-				//for (int i = 0; i < files.size(); i++)
-				//{
-				//	text += filepath + files[i] + "\n";
-				//}
-				//QMessageBox msgBox;
-				//msgBox.setText(text);
-				//int ret = msgBox.exec();
 
 				// spectrum number for transfer function generation
 				const int n = 6;
 
 				for (int i = 0; i < files.size(); i++)
 				{
+					// load volume
 					open_volume_no_rendering(filepath + files[i]);
 
+					// generate a spectrum transfer function with n groups of control points
 					generate_spectrum_transfer_function(n);
 					updateTransferFunctionWidgetsFromArrays();
 
+					// optimise the transfer function
 					updateTransferFunctionArraysFromWidgets();
 					int n = ui->spinBox->value();
 					if (n < 1 || n > max_iteration_count)
@@ -2007,8 +2000,118 @@ private:
 					updateTransferFunctionWidgetsFromArrays();
 					updateTransferFunctionArraysFromWidgets();
 
+					// split filename and extension
+					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
+					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+					QByteArray ba = list1[0].toLocal8Bit();
+					const char *filename_no_suffix = ba.data();
+
+					// save the transfer function to file
 					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "../%02d.tfi", i);
+					sprintf(filename_str, "../%s.tfi", filename_no_suffix);
+					std::cout << "transfer function file: " << filename_str << endl;
+					saveTransferFunctionToXML(filename_str);
+				}
+			}
+		}
+
+		// return false if the path is invalid
+		bool split_filename_and_path(const QString path, QString &filepath, QString &filename, const QString default_name = "*.mhd")
+		{
+			// get filename separator position
+			int index = path.lastIndexOf("/");
+			if (index == -1)
+			{
+				index = path.lastIndexOf("\\");
+			}
+
+			// split filename and path
+			if (index != -1)
+			{
+				filepath = path.left(index + 1);
+				filename = path.right(path.length() - 1 - index);
+				if (filename.isEmpty())
+				{
+					filename = default_name;
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		void on_Open_Path_and_Generate_Transfer_Functions_for_Region_Slot()
+		{
+			bool ok;
+			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+				tr("Path to open:"), QLineEdit::Normal,
+				"D:/output/vortex/", &ok);
+			if (ok && !path.isEmpty())
+			{
+				// get filename separator position
+				int index = path.lastIndexOf("/");
+				if (index == -1)
+				{
+					index = path.lastIndexOf("\\");
+				}
+
+				// split filename and path
+				QString filepath = path;
+				QString filename;
+				if (index != -1)
+				{
+					filepath = path.left(index + 1);
+					filename = path.right(path.length() - 1 - index);
+					if (filename.isEmpty())
+					{
+						filename = "*.mhd";
+					}
+				}
+
+				// get filenames under the folder
+				QDir dir = QDir(filepath);
+				QStringList files = dir.entryList(QStringList(filename),
+					QDir::Files | QDir::NoSymLinks);
+
+				// spectrum number for transfer function generation
+				const int n = 6;
+
+				for (int i = 0; i < files.size(); i++)
+				{
+					// load volume
+					open_volume_no_rendering(filepath + files[i]);
+
+					// generate a spectrum transfer function with n groups of control points
+					generate_spectrum_transfer_function(n);
+					updateTransferFunctionWidgetsFromArrays();
+
+					// optimise the transfer function
+					updateTransferFunctionArraysFromWidgets();
+					int n = ui->spinBox->value();
+					if (n < 1 || n > max_iteration_count)
+					{
+						n = 1;
+					}
+
+					while (n-- > 0)
+					{
+						balance_opacity_for_region();
+					}
+
+					updateTransferFunctionWidgetsFromArrays();
+					updateTransferFunctionArraysFromWidgets();
+
+					// split filename and extension
+					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
+					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+					QByteArray ba = list1[0].toLocal8Bit();
+					const char *filename_no_suffix = ba.data();
+
+					// save the transfer function to file
+					char filename_str[_MAX_PATH];
+					sprintf(filename_str, "../%s.tfi", filename_no_suffix);
 					std::cout << "transfer function file: " << filename_str << endl;
 					saveTransferFunctionToXML(filename_str);
 				}
