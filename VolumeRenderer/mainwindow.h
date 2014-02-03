@@ -105,7 +105,7 @@ private:
 		{
 			scene = new QGraphicsScene();
 			ui->graphicsView->setScene(scene);
-			std::cout<<"create a new scene"<<std::endl;
+			std::cout << "create a new scene" << std::endl;
 		}
 		return scene;
 	}
@@ -164,7 +164,7 @@ private:
 	double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
 	{
 		double distance = 0;
-		for (int i=0; i<count; i++)
+		for (int i = 0; i < count; i++)
 		{
 			int index_base = i * numComponents;
 			double dr = normalise_rgba(pixels[index_base + 0]) - r;
@@ -179,7 +179,7 @@ private:
 	double get_squared_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
 	{
 		double distance = 0;
-		for (int i=0; i<count; i++)
+		for (int i = 0; i < count; i++)
 		{
 			int index_base = i * numComponents;
 			double dr = normalise_rgba(pixels[index_base + 0]) - r;
@@ -206,18 +206,18 @@ private:
 			// linear interpolation
 			double t = intensity - intensity_int;
 			double a = frequency_list[intensity_int];
-			double b = frequency_list[intensity_int+1];
+			double b = frequency_list[intensity_int + 1];
 			return (a + (b - a) * t);
-		} 
+		}
 		else
 		{
 			if (intensity_int == max)
 			{
 				return frequency_list[intensity_int];
-			} 
+			}
 			else
 			{
-				std::cout<<"Errors occur in get_frequency()"<<std::endl;
+				std::cout << "Errors occur in get_frequency()" << std::endl;
 				return 0;
 			}
 		}
@@ -237,7 +237,7 @@ private:
 		if (probability > epsilon)
 		{
 			return get_opacity(i) * probability * (-log(probability));
-		} 
+		}
 		else
 		{
 			return 0;
@@ -256,19 +256,19 @@ private:
 		if (intensity < intensity_list[0])
 		{
 			index = -1;
-		} 
+		}
 		else
 		{
-			if (intensity > intensity_list[intensity_list.size()-1])
+			if (intensity > intensity_list[intensity_list.size() - 1])
 			{
 				index = intensity_list.size() - 1;
-			} 
+			}
 			else
 			{
 				index = -2;
-				for (int i=0; i<intensity_list.size()-1; i++)
+				for (int i = 0; i < intensity_list.size() - 1; i++)
 				{
-					if (intensity_list[i] <= intensity && intensity_list[i+1] >= intensity)
+					if (intensity_list[i] <= intensity && intensity_list[i + 1] >= intensity)
 					{
 						index = i;
 						break;
@@ -276,7 +276,7 @@ private:
 				}
 				if (index == -2)
 				{
-					std::cout<<"Errors occur in get_opacity_interpolation_without_index(double intensity)"<<std::endl;
+					std::cout << "Errors occur in get_opacity_interpolation_without_index(double intensity)" << std::endl;
 					return 0;
 				}
 			}
@@ -303,16 +303,16 @@ private:
 			if (i1 == -1)
 			{
 				return intensity_list[i2];
-			} 
+			}
 			else
 			{
 				if (i1 == intensity_list.size() - 1)
 				{
 					return intensity_list[i1];
-				} 
+				}
 				else
 				{
-					std::cout<<"Errors occur in get_opacity_interpolation()"<<std::endl;
+					std::cout << "Errors occur in get_opacity_interpolation()" << std::endl;
 					return 0;
 				}
 			}
@@ -325,25 +325,25 @@ private:
 		if (index >= 0 && index < intensity_list.size() - 1)
 		{
 			a = intensity_list[index];
-			b = intensity_list[index+1];
-		} 
+			b = intensity_list[index + 1];
+		}
 		else
 		{
 			if (index == -1)
 			{
 				a = 0;
-				b = intensity_list[index+1];
-			} 
+				b = intensity_list[index + 1];
+			}
 			else
 			{
 				if (index == intensity_list.size() - 1)
 				{
 					a = intensity_list[index];
 					b = 1;
-				} 
+				}
 				else
 				{
-					std::cout<<"index out of range in get_area_integral()"<<endl;
+					std::cout << "index out of range in get_area_integral()" << endl;
 					return 0;
 				}
 			}
@@ -356,7 +356,7 @@ private:
 
 		double sum = 0;
 		// int intensity belongs to [0,255]
-		for (int intensity=(int)a; intensity<b; intensity++)
+		for (int intensity = (int)a; intensity < b; intensity++)
 		{
 			if (intensity >= a)
 			{
@@ -372,15 +372,15 @@ private:
 	/// the control point 0 and (size-1) are the bounds
 	double get_neighbour_area_entropy(int index)
 	{
-		return get_area_entropy(index) + get_area_entropy(index-1);
+		return get_area_entropy(index) + get_area_entropy(index - 1);
 	}
 
 	double get_control_point_weight(int index)
 	{
-		if (index >=0 && index < region_weight_list.size())
+		if (index >= 0 && index < region_weight_list.size())
 		{
 			return region_weight_list[index];
-		} 
+		}
 		else
 		{
 			return 1;
@@ -451,26 +451,26 @@ private:
 		if (i >= 0 && i < intensity_list.size() - 1)
 		{
 			// area of a trapezoid
-			double h = intensity_list[i+1] - intensity_list[i];
+			double h = intensity_list[i + 1] - intensity_list[i];
 			double a = get_visibility(i);//colour_list[i][3];
-			double b = get_visibility(i+1);//colour_list[i+1][3];
+			double b = get_visibility(i + 1);//colour_list[i+1][3];
 			return (a + b) * h / 2;
-		} 
+		}
 		else
 		{
 			if (i == -1)
 			{
-				return (intensity_list[i+1] - lower_bound) * get_visibility(i+1);//colour_list[i+1][3];
-			} 
+				return (intensity_list[i + 1] - lower_bound) * get_visibility(i + 1);//colour_list[i+1][3];
+			}
 			else
 			{
 				if (i == intensity_list.size() - 1)
 				{
 					return (upper_bound - intensity_list[i]) * get_visibility(i);//colour_list[i][3];
-				} 
+				}
 				else
 				{
-					std::cout<<"index out of range in get_area()"<<endl;
+					std::cout << "index out of range in get_area()" << endl;
 					return 0;
 				}
 			}
@@ -486,11 +486,11 @@ private:
 	double get_height_given_area_increment(int i, double area_increment)
 	{
 		double visibility_increment = -1;
-		if (i > 0  && i < intensity_list.size() - 1)
+		if (i > 0 && i < intensity_list.size() - 1)
 		{
 			// area of two triangles
-			double a = intensity_list[i] - intensity_list[i-1];
-			double b = intensity_list[i+1] - intensity_list[i];
+			double a = intensity_list[i] - intensity_list[i - 1];
+			double b = intensity_list[i + 1] - intensity_list[i];
 			visibility_increment = 2 * area_increment / (a + b);
 		}
 		else
@@ -499,21 +499,21 @@ private:
 			{
 				// area of a rectangle (left) and a triangle (right)
 				double a = intensity_list[i] - lower_bound;
-				double b = intensity_list[i+1] - intensity_list[i];
-				visibility_increment = area_increment / (a + b/2);
-			} 
+				double b = intensity_list[i + 1] - intensity_list[i];
+				visibility_increment = area_increment / (a + b / 2);
+			}
 			else
 			{
 				if (i == intensity_list.size() - 1)
 				{
 					// area of a triangle (left) and a rectangle (right)
-					double a = intensity_list[i] - intensity_list[i-1];
+					double a = intensity_list[i] - intensity_list[i - 1];
 					double b = upper_bound - intensity_list[i];
-					visibility_increment = area_increment / (a/2 + b);
-				} 
+					visibility_increment = area_increment / (a / 2 + b);
+				}
 				else
 				{
-					std::cout<<"index out of range in get_height_given_area_increment()"<<endl;
+					std::cout << "index out of range in get_height_given_area_increment()" << endl;
 					visibility_increment = 0;
 				}
 			}
@@ -525,14 +525,14 @@ private:
 
 	void balance_transfer_function()
 	{
-		std::cout<<"colour_list size="<<colour_list.size()
-			<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		std::cout << "colour_list size=" << colour_list.size()
+			<< " intensity_list size=" << intensity_list.size() << std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -551,7 +551,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -564,7 +564,7 @@ private:
 			double height_min_new = height_min + height_increased;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
-			std::cout<<"balance TF max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+			std::cout << "balance TF max index=" << max_index << " min index=" << min_index << " opacity=" << height_max << " new opacity=" << height_max_new << " area=" << area << " new area=" << new_area << " height=" << height_min << " new height=" << height_min_new << endl;
 		}
 	}
 
@@ -575,8 +575,8 @@ private:
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -595,7 +595,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -619,8 +619,8 @@ private:
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		//double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -639,7 +639,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -663,8 +663,8 @@ private:
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -683,7 +683,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			//double height_max = colour_list[max_index][3];
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -707,8 +707,8 @@ private:
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -727,7 +727,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -751,8 +751,8 @@ private:
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		//double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -771,7 +771,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -795,8 +795,8 @@ private:
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1./256.;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
 			{
@@ -815,7 +815,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1./255.;
+			const double step_size = 1. / 255.;
 			//double height_max = colour_list[max_index][3];
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -843,7 +843,7 @@ private:
 		auto transFuncIntensity = doc.NewElement("TransFuncIntensity");
 		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
 		auto keys = doc.NewElement("Keys");
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
 			auto key = doc.NewElement("key");
 			key->SetAttribute("type", "TransFuncMappingKey");
@@ -869,7 +869,7 @@ private:
 		transFuncIntensity->InsertEndChild(lower);
 		transFuncIntensity->InsertEndChild(upper);
 		const double epsilon = 1e-6;
-		if (abs(domain_x-0)>epsilon || abs(domain_y-255)>epsilon)
+		if (abs(domain_x - 0) > epsilon || abs(domain_y - 255) > epsilon)
 		{
 			auto domain = doc.NewElement("domain");
 			domain->SetAttribute("x", domain_x);
@@ -882,7 +882,7 @@ private:
 		auto r = doc.SaveFile(filename);
 		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			std::cout<<"failed to save file"<<endl;
+			std::cout << "failed to save file" << endl;
 		}
 	}
 
@@ -893,7 +893,7 @@ private:
 
 		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			std::cout<<"failed to open file"<<endl;
+			std::cout << "failed to open file" << endl;
 			return;
 		}
 
@@ -905,19 +905,19 @@ private:
 		{
 			domain_x = atof(domain->Attribute("x"));
 			domain_y = atof(domain->Attribute("y"));
-			std::cout<<"domain x="<<domain_x<<" y="<<domain_y<<std::endl;
+			std::cout << "domain x=" << domain_x << " y=" << domain_y << std::endl;
 		}
 		else
 		{
 			domain_x = 0;
 			domain_y = 1;
-			std::cout<<"domain doesn't exist. default: "<<domain_x<<" "<<domain_y<<std::endl;
+			std::cout << "domain doesn't exist. default: " << domain_x << " " << domain_y << std::endl;
 		}
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
 		intensity_list.clear();
 		colour_list.clear();
-		do 
+		do
 		{
 			double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
 			intensity_list.push_back(intensity);
@@ -933,9 +933,9 @@ private:
 			colour_list.push_back(colour);
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
-			std::cout<<"intensity="<<intensity;
-			std::cout<<"\tsplit="<<(split?"true":"false");
-			std::cout<<"\tcolorL r="<<r<<" g="<<g<<" b="<<b<<" a="<<a;
+			std::cout << "intensity=" << intensity;
+			std::cout << "\tsplit=" << (split ? "true" : "false");
+			std::cout << "\tcolorL r=" << r << " g=" << g << " b=" << b << " a=" << a;
 			const double epsilon = 1e-6;
 			if (split)
 			{
@@ -951,9 +951,9 @@ private:
 				colour2.push_back(normalise_rgba(b2));
 				colour2.push_back(normalise_rgba(a2));
 				colour_list.push_back(colour2);
-				std::cout<<"\tcolorR r="<<r2<<" g="<<g2<<" b="<<b2<<" a="<<a2;
+				std::cout << "\tcolorR r=" << r2 << " g=" << g2 << " b=" << b2 << " a=" << a2;
 			}
-			std::cout<<endl;
+			std::cout << endl;
 
 			key = key->NextSiblingElement();
 		} while (key);
@@ -1066,7 +1066,7 @@ private:
 	{
 		if (number_of_colours < 1 || number_of_colours > 256)
 		{
-			std::cout<<"number_of_control_points should belongs to [1,256]"<<std::endl;
+			std::cout << "number_of_control_points should belongs to [1,256]" << std::endl;
 			return;
 		}
 
@@ -1083,7 +1083,7 @@ private:
 
 		int n = number_of_colours; // 1 to 6 groups of control points
 		std::vector<std::vector<double>> spectrum;
-		for (int i=0; i<n; i++)
+		for (int i = 0; i < n; i++)
 		{
 			double h = i / (double)n;
 			double s, v, r, g, b;
@@ -1123,7 +1123,7 @@ private:
 			colour_list.push_back(v);
 		}
 
-		for (int i=0; i<m*n; i++)
+		for (int i = 0; i < m*n; i++)
 		{
 			int colour_index = i / m;
 			double opacity = (i % m == 1) ? 0.5 : 0;
@@ -1160,7 +1160,7 @@ private:
 		{
 			opacityTransferFunction->RemoveAllPoints();
 			colorTransferFunction->RemoveAllPoints();
-			for (unsigned int i=0; i<intensity_list.size(); i++)
+			for (unsigned int i = 0; i < intensity_list.size(); i++)
 			{
 				opacityTransferFunction->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
 				colorTransferFunction->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
@@ -1188,7 +1188,7 @@ private:
 		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
-		for (unsigned int i=0; i<colorTransferFunction->GetSize(); i++)
+		for (unsigned int i = 0; i < colorTransferFunction->GetSize(); i++)
 		{
 			double xrgb[6];
 			colorTransferFunction->GetNodeValue(i, xrgb);
@@ -1212,10 +1212,10 @@ private:
 	{
 		int ignoreZero = 0;
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
-		std::cout<<"generateVisibilityFunction component number="<<numComponents<<endl;
-		if( numComponents > 3 )
+		std::cout << "generateVisibilityFunction component number=" << numComponents << endl;
+		if (numComponents > 3)
 		{
-			std::cout << "Error: cannot process an image with " 
+			std::cout << "Error: cannot process an image with "
 				<< numComponents << " components!" << std::endl;
 			//return EXIT_FAILURE;
 		}
@@ -1232,27 +1232,27 @@ private:
 
 		// Process the image, extracting and plotting a histogram for each
 		// component
-		for( int i = 0; i < numComponents; ++i )
+		for (int i = 0; i < numComponents; ++i)
 		{
-			vtkSmartPointer<vtkImageExtractComponents> extract = 
+			vtkSmartPointer<vtkImageExtractComponents> extract =
 				vtkSmartPointer<vtkImageExtractComponents>::New();
-			extract->SetInputConnection( reader->GetOutputPort() );
-			extract->SetComponents( i );
+			extract->SetInputConnection(reader->GetOutputPort());
+			extract->SetComponents(i);
 			extract->Update();
 
 			double range[2];
-			extract->GetOutput()->GetScalarRange( range );
-			std::cout<<"range "<<range[0]<<" "<<range[1]<<endl;
+			extract->GetOutput()->GetScalarRange(range);
+			std::cout << "range " << range[0] << " " << range[1] << endl;
 
-			vtkSmartPointer<vtkImageAccumulate> histogram = 
+			vtkSmartPointer<vtkImageAccumulate> histogram =
 				vtkSmartPointer<vtkImageAccumulate>::New();
-			histogram->SetInputConnection( extract->GetOutputPort() );
+			histogram->SetInputConnection(extract->GetOutputPort());
 			histogram->SetComponentExtent(
 				0,
-				static_cast<int>(range[1])-static_cast<int>(range[0])-1,0,0,0,0 );
-			histogram->SetComponentOrigin( range[0],0,0 );
-			histogram->SetComponentSpacing( 1,0,0 );
-			histogram->SetIgnoreZero( ignoreZero );
+				static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1, 0, 0, 0, 0);
+			histogram->SetComponentOrigin(range[0], 0, 0);
+			histogram->SetComponentSpacing(1, 0, 0);
+			histogram->SetIgnoreZero(ignoreZero);
 			histogram->Update();
 
 			//vtkIntArray* currentArray = 0;
@@ -1280,15 +1280,15 @@ private:
 
 			x_min = range[0];
 			x_max = range[1];
-			if( range[1] > xmax ) 
-			{ 
+			if (range[1] > xmax)
+			{
 				xmax = range[1];
 			}
-			if( histogram->GetOutput()->GetScalarRange()[1] > ymax ) 
+			if (histogram->GetOutput()->GetScalarRange()[1] > ymax)
 			{
 				ymax = histogram->GetOutput()->GetScalarRange()[1];
 			}
-			std::cout<<"histogram range "<<histogram->GetOutput()->GetScalarRange()[0]<<" "<<histogram->GetOutput()->GetScalarRange()[1]<<endl;
+			std::cout << "histogram range " << histogram->GetOutput()->GetScalarRange()[0] << " " << histogram->GetOutput()->GetScalarRange()[1] << endl;
 
 			//#if VTK_MAJOR_VERSION <= 5
 			//			plot->AddInput( histogram->GetOutput() );
@@ -1306,7 +1306,7 @@ private:
 			{
 				y_min = histogram->GetOutput()->GetScalarRange()[0];
 				y_max = histogram->GetOutput()->GetScalarRange()[1];
-				std::cout<<"min="<<y_min<<" max="<<y_max<<endl;
+				std::cout << "min=" << y_min << " max=" << y_max << endl;
 
 #ifdef OUTPUT_TO_FILE
 				char buffer[32];
@@ -1319,11 +1319,11 @@ private:
 
 				frequency_list.clear();
 				frequency_list.reserve(256);
-				std::cout<<"histogram type is "<<histogram->GetOutput()->GetScalarTypeAsString()<<std::endl;
+				std::cout << "histogram type is " << histogram->GetOutput()->GetScalarTypeAsString() << std::endl;
 				auto pixels = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
 				count_of_voxels = 0;
 				const int max = 256;
-				for (int j=0; j<max; j++)
+				for (int j = 0; j < max; j++)
 				{
 					int value = pixels[j];
 					if (value < y_min || value > y_max)
@@ -1346,25 +1346,25 @@ private:
 	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
-		std::cout<<"generate_LH_histogram component number="<<numComponents<<endl;
-		if( numComponents > 1 )
+		std::cout << "generate_LH_histogram component number=" << numComponents << endl;
+		if (numComponents > 1)
 		{
-			std::cout << "Error: cannot process an image with " 
+			std::cout << "Error: cannot process an image with "
 				<< numComponents << " components!" << std::endl;
 			//return EXIT_FAILURE;
 		}
 
-		for( int i = 0; i < numComponents; ++i )
+		for (int i = 0; i < numComponents; ++i)
 		{
-			vtkSmartPointer<vtkImageExtractComponents> extract = 
+			vtkSmartPointer<vtkImageExtractComponents> extract =
 				vtkSmartPointer<vtkImageExtractComponents>::New();
-			extract->SetInputConnection( reader->GetOutputPort() );
-			extract->SetComponents( i );
+			extract->SetInputConnection(reader->GetOutputPort());
+			extract->SetComponents(i);
 			extract->Update();
 
 			double range[2];
-			extract->GetOutput()->GetScalarRange( range );
-			std::cout<<"range "<<range[0]<<" "<<range[1]<<endl;
+			extract->GetOutput()->GetScalarRange(range);
+			std::cout << "range " << range[0] << " " << range[1] << endl;
 
 			double intensity_min = range[0];
 			double intensity_max = range[1];
@@ -1373,8 +1373,8 @@ private:
 			int dimensions[3];
 			imageData->GetDimensions(dimensions);
 			int count_of_voxels = dimensions[0] * dimensions[1] * dimensions[2];
-			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_voxels<<std::endl;
-			std::cout<<"voxel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
+			std::cout << "dimension " << dimensions[0] << " " << dimensions[1] << " " << dimensions[2] << " count=" << count_of_voxels << std::endl;
+			std::cout << "voxel type is " << imageData->GetScalarTypeAsString() << std::endl;
 			//vtkImageScalarTypeNameMacro(imageData->GetScalarType());
 			auto voxels = static_cast<unsigned char *>(extract->GetOutput()->GetScalarPointer());
 			volume_ptr = voxels;
@@ -1408,7 +1408,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
 			double w = get_neighbour_area_entropy(i);
 			sum += w;
@@ -1418,7 +1418,7 @@ private:
 
 		// compute and return the variance
 		sum = 0;
-		for (unsigned int i=0; i<weights.size(); i++)
+		for (unsigned int i = 0; i < weights.size(); i++)
 		{
 			double diff = weights[i] - mean;
 			sum += diff * diff;
@@ -1433,7 +1433,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i=0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
 			double w = get_neighbour_area_entropy_weighted_for_region(i);
 			sum += w;
@@ -1443,7 +1443,7 @@ private:
 
 		// compute and return the variance
 		sum = 0;
-		for (unsigned int i=0; i<weights.size(); i++)
+		for (unsigned int i = 0; i < weights.size(); i++)
 		{
 			double diff = weights[i] - mean;
 			sum += diff * diff;
@@ -1452,575 +1452,589 @@ private:
 	}
 
 	private slots:
-		void onAboutSlot()
+	void onAboutSlot()
+	{
+		QMessageBox msgBox;
+		msgBox.setText(QString::fromUtf8("Volume Renderer"));
+		msgBox.exec();
+	}
+
+	void onExitSlot()
+	{
+		qApp->quit();
+	}
+
+	void open_volume_no_rendering(QString filename)
+	{
+		// show filename on window title
+		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+		// read Meta Image (.mhd or .mha) files
+		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+		reader->SetFileName(filename_str);
+
+		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+		shiftScale->SetInputConnection(reader->GetOutputPort());
+		shiftScale->SetOutputScalarTypeToUnsignedChar();
+
+		// generate histograms
+		generate_visibility_function(shiftScale);
+		generate_LH_histogram(shiftScale);
+
+		//// set up volume property
+		//auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+		//volumeProperty->SetColor(colorTransferFunction);
+		//volumeProperty->SetScalarOpacity(opacityTransferFunction);
+		//volumeProperty->ShadeOff();
+		//volumeProperty->SetInterpolationTypeToLinear();
+
+		//// assign volume property to the volume property widget
+		//volumePropertywidget.setVolumeProperty(volumeProperty);
+
+		//// The mapper that renders the volume data.
+		//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+		//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		//volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+
+		//// The volume holds the mapper and the property and can be used to position/orient the volume.
+		//auto volume = vtkSmartPointer<vtkVolume>::New();
+		//volume->SetMapper(volumeMapper);
+		//volume->SetProperty(volumeProperty);
+
+		//// add the volume into the renderer
+		////auto renderer = vtkSmartPointer<vtkRenderer>::New();
+		//renderer = vtkSmartPointer<vtkRenderer>::New();
+		//renderer->AddVolume(volume);
+		//renderer->SetBackground(1, 1, 1);
+
+		//// clean previous renderers and then add the current renderer
+		//auto window = widget.GetRenderWindow();
+		//auto collection = window->GetRenderers();
+		//auto item = collection->GetNextItem();
+		//while (item != NULL)
+		//{
+		//	window->RemoveRenderer(item);
+		//	item = collection->GetNextItem();
+		//}
+		//window->AddRenderer(renderer);
+		//window->Render();
+
+		//// initialize the interactor
+		//interactor->Initialize();
+		//interactor->Start();
+	}
+
+	void onOpenVolumeSlot()
+	{
+		// show file dialog
+		QString filter("Meta image file (*.mhd *.mha)");
+		QString filename_backup = volume_filename;
+		filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
+		if (!volume_filename.trimmed().isEmpty())
 		{
-			QMessageBox msgBox;
-			msgBox.setText(QString::fromUtf8("Volume Renderer"));
-			msgBox.exec();
+			volume_filename = filename_backup;
+		}
+		else
+		{
+			return;
 		}
 
-		void onExitSlot()
-		{
-			qApp->quit();
-		}
+		// show filename on window title
+		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
 
-		void open_volume_no_rendering(QString filename)
-		{
-			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
-
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename.toLocal8Bit();
-			const char *filename_str = ba.data();
-
-			// read Meta Image (.mhd or .mha) files
-			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-			reader->SetFileName(filename_str);
-
-			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-			shiftScale->SetInputConnection(reader->GetOutputPort());
-			shiftScale->SetOutputScalarTypeToUnsignedChar();
-
-			// generate histograms
-			generate_visibility_function(shiftScale);
-			generate_LH_histogram(shiftScale);
-
-			//// set up volume property
-			//auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-			//volumeProperty->SetColor(colorTransferFunction);
-			//volumeProperty->SetScalarOpacity(opacityTransferFunction);
-			//volumeProperty->ShadeOff();
-			//volumeProperty->SetInterpolationTypeToLinear();
-
-			//// assign volume property to the volume property widget
-			//volumePropertywidget.setVolumeProperty(volumeProperty);
-
-			//// The mapper that renders the volume data.
-			//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-			//volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
-
-			//// The volume holds the mapper and the property and can be used to position/orient the volume.
-			//auto volume = vtkSmartPointer<vtkVolume>::New();
-			//volume->SetMapper(volumeMapper);
-			//volume->SetProperty(volumeProperty);
-
-			//// add the volume into the renderer
-			////auto renderer = vtkSmartPointer<vtkRenderer>::New();
-			//renderer = vtkSmartPointer<vtkRenderer>::New();
-			//renderer->AddVolume(volume);
-			//renderer->SetBackground(1, 1, 1);
-
-			//// clean previous renderers and then add the current renderer
-			//auto window = widget.GetRenderWindow();
-			//auto collection = window->GetRenderers();
-			//auto item = collection->GetNextItem();
-			//while (item != NULL)
-			//{
-			//	window->RemoveRenderer(item);
-			//	item = collection->GetNextItem();
-			//}
-			//window->AddRenderer(renderer);
-			//window->Render();
-
-			//// initialize the interactor
-			//interactor->Initialize();
-			//interactor->Start();
-		}
-
-		void onOpenVolumeSlot()
-		{
-			// show file dialog
-			QString filter("Meta image file (*.mhd *.mha)");
-			QString filename_backup = volume_filename;
-			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
-			if (!volume_filename.trimmed().isEmpty())
-			{
-				volume_filename = filename_backup;
-			}
-			else
-			{
-				return;
-			}
-
-			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
-
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename_backup.toLocal8Bit();
-			const char *filename_str = ba.data();
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename_backup.toLocal8Bit();
+		const char *filename_str = ba.data();
 
 #if 1
-			// read Meta Image (.mhd or .mha) files
-			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-			reader->SetFileName(filename_str);
+		// read Meta Image (.mhd or .mha) files
+		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+		reader->SetFileName(filename_str);
 
-			//// write Meta Image to file (convert from .mha to .mhd)
-			//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
-			//std::cout << "filename=" << filename_str << std::endl;
-			//char mhd_str[_MAX_PATH];
-			//char raw_str[_MAX_PATH];
-			//strcpy(mhd_str, filename_str);
-			//strcpy(raw_str, filename_str);
-			//auto p1 = strstr(mhd_str, ".mha");
-			//auto p2 = strstr(raw_str, ".mha");
-			//if (p1 && p2)
-			//{
-			//	strcpy(p1, ".mhd");
-			//	strcpy(p2, ".raw");
-			//	std::cout << p1 << "\n" << p2 << std::endl;
-			//	std::cout << mhd_str << "\n" << raw_str << std::endl;
-			//	writer->SetFileName(mhd_str);
-			//	writer->SetRAWFileName(raw_str);
-			//	writer->SetInputConnection(reader->GetOutputPort());
-			//	writer->Write();
-			//}
+		//// write Meta Image to file (convert from .mha to .mhd)
+		//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
+		//std::cout << "filename=" << filename_str << std::endl;
+		//char mhd_str[_MAX_PATH];
+		//char raw_str[_MAX_PATH];
+		//strcpy(mhd_str, filename_str);
+		//strcpy(raw_str, filename_str);
+		//auto p1 = strstr(mhd_str, ".mha");
+		//auto p2 = strstr(raw_str, ".mha");
+		//if (p1 && p2)
+		//{
+		//	strcpy(p1, ".mhd");
+		//	strcpy(p2, ".raw");
+		//	std::cout << p1 << "\n" << p2 << std::endl;
+		//	std::cout << mhd_str << "\n" << raw_str << std::endl;
+		//	writer->SetFileName(mhd_str);
+		//	writer->SetRAWFileName(raw_str);
+		//	writer->SetInputConnection(reader->GetOutputPort());
+		//	writer->Write();
+		//}
 #elif 1
-			// read a series of raw files in the specified folder
-			auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-			reader->SetDataDimensions (512, 512);
-			reader->SetImageRange (1, 361);
-			reader->SetDataByteOrderToBigEndian();
-			reader->SetFilePrefix(filename_str);
-			reader->SetFilePattern("%s%d");
-			reader->SetDataSpacing(1, 1, 1);
+		// read a series of raw files in the specified folder
+		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+		reader->SetDataDimensions (512, 512);
+		reader->SetImageRange (1, 361);
+		reader->SetDataByteOrderToBigEndian();
+		reader->SetFilePrefix(filename_str);
+		reader->SetFilePattern("%s%d");
+		reader->SetDataSpacing(1, 1, 1);
 #else
-			// read NRRD files
-			vtkNew<vtkNrrdReader> reader;
-			if (!reader->CanReadFile(filename_str))
-			{
-				std::cerr << "Reader reports " << filename_str << " cannot be read.";
-				exit(EXIT_FAILURE);
-			}
-			reader->SetFileName(filename_str);
-			reader->Update();
+		// read NRRD files
+		vtkNew<vtkNrrdReader> reader;
+		if (!reader->CanReadFile(filename_str))
+		{
+			std::cerr << "Reader reports " << filename_str << " cannot be read.";
+			exit(EXIT_FAILURE);
+		}
+		reader->SetFileName(filename_str);
+		reader->Update();
 #endif
 
-			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-			shiftScale->SetInputConnection(reader->GetOutputPort());
-			shiftScale->SetOutputScalarTypeToUnsignedChar();
+		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+		shiftScale->SetInputConnection(reader->GetOutputPort());
+		shiftScale->SetOutputScalarTypeToUnsignedChar();
 
-			// generate histograms
-			generate_visibility_function(shiftScale);
-			generate_LH_histogram(shiftScale);
+		// generate histograms
+		generate_visibility_function(shiftScale);
+		generate_LH_histogram(shiftScale);
 
-			//// Create transfer mapping scalar value to opacity.
-			//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-			//opacityTransferFunction->AddPoint(0.0,  0.0);
-			//opacityTransferFunction->AddPoint(36.0,  0.125);
-			//opacityTransferFunction->AddPoint(72.0,  0.25);
-			//opacityTransferFunction->AddPoint(108.0, 0.375);
-			//opacityTransferFunction->AddPoint(144.0, 0.5);
-			//opacityTransferFunction->AddPoint(180.0, 0.625);
-			//opacityTransferFunction->AddPoint(216.0, 0.75);
-			//opacityTransferFunction->AddPoint(255.0, 0.875);
+		//// Create transfer mapping scalar value to opacity.
+		//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+		//opacityTransferFunction->AddPoint(0.0,  0.0);
+		//opacityTransferFunction->AddPoint(36.0,  0.125);
+		//opacityTransferFunction->AddPoint(72.0,  0.25);
+		//opacityTransferFunction->AddPoint(108.0, 0.375);
+		//opacityTransferFunction->AddPoint(144.0, 0.5);
+		//opacityTransferFunction->AddPoint(180.0, 0.625);
+		//opacityTransferFunction->AddPoint(216.0, 0.75);
+		//opacityTransferFunction->AddPoint(255.0, 0.875);
 
-			//// Create transfer mapping scalar value to color.
-			//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-			//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
-			//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-			//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-			//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-			//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-			//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-			//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-			//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+		//// Create transfer mapping scalar value to color.
+		//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+		//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+		//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-			// set up volume property
-			auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-			volumeProperty->SetColor(colorTransferFunction);
-			volumeProperty->SetScalarOpacity(opacityTransferFunction);
-			volumeProperty->ShadeOff();
-			volumeProperty->SetInterpolationTypeToLinear();
+		// set up volume property
+		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+		volumeProperty->SetColor(colorTransferFunction);
+		volumeProperty->SetScalarOpacity(opacityTransferFunction);
+		volumeProperty->ShadeOff();
+		volumeProperty->SetInterpolationTypeToLinear();
 
-			// assign volume property to the volume property widget
-			volumePropertywidget.setVolumeProperty(volumeProperty);
+		// assign volume property to the volume property widget
+		volumePropertywidget.setVolumeProperty(volumeProperty);
 
-			// The mapper that renders the volume data.
-			auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-			volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+		// The mapper that renders the volume data.
+		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
 
-			// The volume holds the mapper and the property and can be used to position/orient the volume.
-			auto volume = vtkSmartPointer<vtkVolume>::New();
-			volume->SetMapper(volumeMapper);
-			volume->SetProperty(volumeProperty);
+		// The volume holds the mapper and the property and can be used to position/orient the volume.
+		auto volume = vtkSmartPointer<vtkVolume>::New();
+		volume->SetMapper(volumeMapper);
+		volume->SetProperty(volumeProperty);
 
-			// add the volume into the renderer
-			//auto renderer = vtkSmartPointer<vtkRenderer>::New();
-			renderer = vtkSmartPointer<vtkRenderer>::New();
-			renderer->AddVolume(volume);
-			renderer->SetBackground(1, 1, 1);
+		// add the volume into the renderer
+		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->AddVolume(volume);
+		renderer->SetBackground(1, 1, 1);
 
-			// clean previous renderers and then add the current renderer
-			auto window = widget.GetRenderWindow();
-			auto collection = window->GetRenderers();
-			auto item = collection->GetNextItem();
-			while (item != NULL)
-			{
-				window->RemoveRenderer(item);
-				item = collection->GetNextItem();
-			}
-			window->AddRenderer(renderer);
-			window->Render();
+		// clean previous renderers and then add the current renderer
+		auto window = widget.GetRenderWindow();
+		auto collection = window->GetRenderers();
+		auto item = collection->GetNextItem();
+		while (item != NULL)
+		{
+			window->RemoveRenderer(item);
+			item = collection->GetNextItem();
+		}
+		window->AddRenderer(renderer);
+		window->Render();
 
-			// initialize the interactor
-			interactor->Initialize();
-			interactor->Start();
+		// initialize the interactor
+		interactor->Initialize();
+		interactor->Start();
 
-			//generateHistogram(reader);
+		//generateHistogram(reader);
+	}
+
+	void onAppendVolumeSlot()
+	{
+		// show file dialog
+		QString filter("Meta image file (*.mhd *.mha)");
+		volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter);
+		if (volume_filename.isEmpty())
+		{
+			return;
 		}
 
-		void onAppendVolumeSlot()
-		{
-			// show file dialog
-			QString filter("Meta image file (*.mhd *.mha)");
-			volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter); 
-			if (volume_filename.isEmpty())
-			{
-				return;
-			}
+		// show filename on window title
+		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
 
-			// show filename on window title
-			this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = volume_filename.toLocal8Bit();  
-			const char *filename_str = ba.data();
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = volume_filename.toLocal8Bit();
+		const char *filename_str = ba.data();
 
 #if 1
-			// read Meta Image (.mhd or .mha) files
-			auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-			reader->SetFileName(filename_str);
+		// read Meta Image (.mhd or .mha) files
+		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+		reader->SetFileName(filename_str);
 #elif 1
-			// read a series of raw files in the specified folder
-			auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-			reader->SetDataDimensions (512, 512);
-			reader->SetImageRange (1, 361);
-			reader->SetDataByteOrderToBigEndian();
-			reader->SetFilePrefix(filename_str);
-			reader->SetFilePattern("%s%d");
-			reader->SetDataSpacing(1, 1, 1);
+		// read a series of raw files in the specified folder
+		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+		reader->SetDataDimensions (512, 512);
+		reader->SetImageRange (1, 361);
+		reader->SetDataByteOrderToBigEndian();
+		reader->SetFilePrefix(filename_str);
+		reader->SetFilePattern("%s%d");
+		reader->SetDataSpacing(1, 1, 1);
 #else
-			// read NRRD files
-			vtkNew<vtkNrrdReader> reader;
-			if (!reader->CanReadFile(filename_str))
-			{
-				std::cerr << "Reader reports " << filename_str << " cannot be read.";
-				exit(EXIT_FAILURE);
-			}
-			reader->SetFileName(filename_str);
-			reader->Update();
+		// read NRRD files
+		vtkNew<vtkNrrdReader> reader;
+		if (!reader->CanReadFile(filename_str))
+		{
+			std::cerr << "Reader reports " << filename_str << " cannot be read.";
+			exit(EXIT_FAILURE);
+		}
+		reader->SetFileName(filename_str);
+		reader->Update();
 #endif
 
-			// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-			auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-			shiftScale->SetInputConnection(reader->GetOutputPort());
-			shiftScale->SetOutputScalarTypeToUnsignedChar();
+		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+		shiftScale->SetInputConnection(reader->GetOutputPort());
+		shiftScale->SetOutputScalarTypeToUnsignedChar();
 
-			// get existing volumeProperty from volumePropertywidget
-			auto volumeProperty = volumePropertywidget.volumeProperty();
+		// get existing volumeProperty from volumePropertywidget
+		auto volumeProperty = volumePropertywidget.volumeProperty();
 
-			// The mapper that renders the volume data.
-			auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-			volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+		// The mapper that renders the volume data.
+		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
 
-			// The volume holds the mapper and the property and can be used to position/orient the volume.
-			auto volume = vtkSmartPointer<vtkVolume>::New();
-			volume->SetMapper(volumeMapper);
-			volume->SetProperty(volumeProperty);
+		// The volume holds the mapper and the property and can be used to position/orient the volume.
+		auto volume = vtkSmartPointer<vtkVolume>::New();
+		volume->SetMapper(volumeMapper);
+		volume->SetProperty(volumeProperty);
 
-			// add the volume into the renderer
-			renderer->AddVolume(volume);
+		// add the volume into the renderer
+		renderer->AddVolume(volume);
 
-			auto window = widget.GetRenderWindow();
-			window->Render();
+		auto window = widget.GetRenderWindow();
+		window->Render();
 
-			// initialize the interactor
-			interactor->Initialize();
-			interactor->Start();
+		// initialize the interactor
+		interactor->Initialize();
+		interactor->Start();
+	}
+
+	void onOpenTransferFunctionSlot()
+	{
+		// show file dialog
+		QString filter("Voreen transfer function (*.tfi)");
+		QString filename_backup = transfer_function_filename;
+		filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
+		if (!filename_backup.trimmed().isEmpty())
+		{
+			transfer_function_filename = filename_backup;
+		}
+		else
+		{
+			return;
 		}
 
-		void onOpenTransferFunctionSlot()
+		//// show filename on window title
+		//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename_backup.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+		std::cout << "transfer function file: " << filename_str << endl;
+
+		openTransferFunctionFromXML(filename_str);
+		updateTransferFunctionWidgetsFromArrays();
+	}
+
+	void onSaveTransferFunctionSlot()
+	{
+		// show file dialog
+		QString filter("transfer function file (*.tfi)");
+		QString filename_backup = transfer_function_filename_save;
+		filename_backup = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), filename_backup, filter);
+		if (!filename_backup.trimmed().isEmpty())
 		{
-			// show file dialog
-			QString filter("Voreen transfer function (*.tfi)");
-			QString filename_backup = transfer_function_filename;
-			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
-			if (!filename_backup.trimmed().isEmpty())
-			{
-				transfer_function_filename = filename_backup;
-			}
-			else
-			{
-				return;
-			}
-
-			//// show filename on window title
-			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename_backup.toLocal8Bit();
-			const char *filename_str = ba.data();
-
-			std::cout<<"transfer function file: "<<filename_str<<endl;
-
-			openTransferFunctionFromXML(filename_str);
-			updateTransferFunctionWidgetsFromArrays();
+			transfer_function_filename_save = filename_backup;
+		}
+		else
+		{
+			return;
 		}
 
-		void onSaveTransferFunctionSlot()
+		//// show filename on window title
+		//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename_backup.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+		std::cout << "transfer function file: " << filename_str << endl;
+
+		saveTransferFunctionToXML(filename_str);
+		//updateTransferFunction();
+	}
+
+	/// if distance_metric==1 then compute distance with squared distance
+	void read_region_image_and_compute_distance(int distance_metric = 0)
+	{
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = selected_region_filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+		std::cout << "image file: " << filename_str << endl;
+
+		auto reader = vtkSmartPointer<vtkPNGReader>::New();
+		if (!reader->CanReadFile(filename_str))
 		{
-			// show file dialog
-			QString filter("transfer function file (*.tfi)");
-			QString filename_backup = transfer_function_filename_save;
-			filename_backup = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), filename_backup, filter);
-			if (!filename_backup.trimmed().isEmpty())
-			{
-				transfer_function_filename_save = filename_backup;
-			}
-			else
-			{
-				return;
-			}
+			std::cout << "Error: cannot read " << filename_str << std::endl;
+			return;
+		}
+		reader->SetFileName(filename_str);
+		reader->Update();
 
-			//// show filename on window title
-			//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename_backup.toLocal8Bit();
-			const char *filename_str = ba.data();
-
-			std::cout<<"transfer function file: "<<filename_str<<endl;
-
-			saveTransferFunctionToXML(filename_str);
-			//updateTransferFunction();
+		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
+		std::cout << "component number=" << numComponents << endl;
+		if (numComponents > 3)
+		{
+			std::cout << "Error: cannot process an image with "
+				<< numComponents << " components!" << std::endl;
+			return;
 		}
 
-		/// if distance_metric==1 then compute distance with squared distance
-		void read_region_image_and_compute_distance(int distance_metric = 0)
-		{
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = selected_region_filename.toLocal8Bit();
-			const char *filename_str = ba.data();
-
-			std::cout<<"image file: "<<filename_str<<endl;
-
-			auto reader = vtkSmartPointer<vtkPNGReader>::New();
-			if( !reader->CanReadFile(filename_str))
-			{
-				std::cout << "Error: cannot read " << filename_str << std::endl;
-				return;
-			}
-			reader->SetFileName(filename_str);
-			reader->Update();
-
-			int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
-			std::cout<<"component number="<<numComponents<<endl;
-			if( numComponents > 3 )
-			{
-				std::cout << "Error: cannot process an image with " 
-					<< numComponents << " components!" << std::endl;
-				return;
-			}
-
-			// get pixels from image
-			auto imageData = reader->GetOutput();
-			int dimensions[3];
-			imageData->GetDimensions(dimensions);
-			int count_of_pixels = dimensions[0] * dimensions[1] * dimensions[2];
-			std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_pixels<<std::endl;
-			std::cout<<"pixel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
-			auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
+		// get pixels from image
+		auto imageData = reader->GetOutput();
+		int dimensions[3];
+		imageData->GetDimensions(dimensions);
+		int count_of_pixels = dimensions[0] * dimensions[1] * dimensions[2];
+		std::cout << "dimension " << dimensions[0] << " " << dimensions[1] << " " << dimensions[2] << " count=" << count_of_pixels << std::endl;
+		std::cout << "pixel type is " << imageData->GetScalarTypeAsString() << std::endl;
+		auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
 
 #ifdef OUTPUT_TO_FILE
-			// compute and write the histogram to file
-			int rgb_histogram[256][3];
-			std::memset(rgb_histogram, 0, 256*3*sizeof(int));
+		// compute and write the histogram to file
+		int rgb_histogram[256][3];
+		std::memset(rgb_histogram, 0, 256*3*sizeof(int));
 
-			for (int i=0; i<count_of_pixels; i++)
+		for (int i=0; i<count_of_pixels; i++)
+		{
+			for (int j=0; j<numComponents; j++)
 			{
-				for (int j=0; j<numComponents; j++)
-				{
-					rgb_histogram[pixels[i*numComponents+j]][j]++;
-				}
-			}
-
-			char filename2[32] = "../rgb_histogram.csv";
-			std::cout<<"rgb_histogram file "<<filename2<<std::endl;
-			std::ofstream out2(filename2);
-
-			for (int i=0; i<256; i++)
-			{
-				for (int j=0; j<numComponents; j++)
-				{
-					out2<<rgb_histogram[i][j];
-					if (j<numComponents-1)
-					{
-						out2<<",";
-					}
-				}
-				out2<<endl;
-			}
-			out2.close();
-#endif
-
-			// compute region weights based on the selected image
-			region_weight_list.clear();
-			double sum = 0;
-			for (unsigned int i=0; i<colour_list.size(); i++)
-			{
-				double r = colour_list[i][0];
-				double g = colour_list[i][1];
-				double b = colour_list[i][2];
-				double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, distance_metric);
-				region_weight_list.push_back(distance);
-				sum += distance;
-			}
-
-			if (sum > 0)
-			{
-				// normalize the distances
-				for (unsigned int i=0; i<region_weight_list.size(); i++)
-				{
-					region_weight_list[i] = region_weight_list[i] / sum;
-				}
+				rgb_histogram[pixels[i*numComponents+j]][j]++;
 			}
 		}
 
-		void onOpenSelectedRegionSlot()
+		char filename2[32] = "../rgb_histogram.csv";
+		std::cout<<"rgb_histogram file "<<filename2<<std::endl;
+		std::ofstream out2(filename2);
+
+		for (int i=0; i<256; i++)
 		{
-			// show file dialog
-			QString filter("PNG image (*.png)");
-			QString filename_backup = selected_region_filename;
-			filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), filename_backup, filter);
-			if (!filename_backup.trimmed().isEmpty())
+			for (int j=0; j<numComponents; j++)
 			{
-				selected_region_filename = filename_backup;
+				out2<<rgb_histogram[i][j];
+				if (j<numComponents-1)
+				{
+					out2<<",";
+				}
+			}
+			out2<<endl;
+		}
+		out2.close();
+#endif
+
+		// compute region weights based on the selected image
+		region_weight_list.clear();
+		double sum = 0;
+		for (unsigned int i = 0; i<colour_list.size(); i++)
+		{
+			double r = colour_list[i][0];
+			double g = colour_list[i][1];
+			double b = colour_list[i][2];
+			double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, distance_metric);
+			region_weight_list.push_back(distance);
+			sum += distance;
+		}
+
+		if (sum > 0)
+		{
+			// normalize the distances
+			for (unsigned int i = 0; i < region_weight_list.size(); i++)
+			{
+				region_weight_list[i] = region_weight_list[i] / sum;
+			}
+		}
+	}
+
+	void onOpenSelectedRegionSlot()
+	{
+		// show file dialog
+		QString filter("PNG image (*.png)");
+		QString filename_backup = selected_region_filename;
+		filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a PNG image")), filename_backup, filter);
+		if (!filename_backup.trimmed().isEmpty())
+		{
+			selected_region_filename = filename_backup;
+		}
+		else
+		{
+			return;
+		}
+
+		read_region_image_and_compute_distance(1);
+	}
+
+	void onComputeDistanceSlot()
+	{
+		std::cout << "distance (RGB) is chosen" << std::endl;
+		read_region_image_and_compute_distance();
+	}
+
+	void onComputeSquaredDistanceSlot()
+	{
+		std::cout << "squared distance (RGB) is chosen" << std::endl;
+		read_region_image_and_compute_distance(1);
+	}
+
+	void onDefaultTransferFunctionSlot()
+	{
+		generate_default_transfer_function();
+		updateTransferFunctionWidgetsFromArrays();
+	}
+
+	void onSpectrumTransferFunctionSlot()
+	{
+		bool ok;
+		int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 8, 1, 256, 1, &ok);
+		if (ok)
+		{
+			std::cout << "QInputDialog::getInteger() " << n << std::endl;
+			generate_spectrum_transfer_function(n);
+			updateTransferFunctionWidgetsFromArrays();
+		}
+	}
+
+	void on_Open_Path_and_Generate_Transfer_Functions_Slot()
+	{
+		bool ok;
+		QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+			tr("Path to open:"), QLineEdit::Normal,
+			"D:/output/vortex/", &ok);
+		if (ok && !path.isEmpty())
+		{
+			// get filename separator position
+			// a valid path must contain either / or \\. if not, it's invalid
+			int index = path.lastIndexOf("/");
+			if (index == -1)
+			{
+				index = path.lastIndexOf("\\");
+			}
+
+			// a valid path must contain either / or \\. otherwise it's invalid.
+			// split filename and path
+			QString filepath = path;
+			QString filename;
+			if (index != -1)
+			{
+				filepath = path.left(index + 1);
+				filename = path.right(path.length() - 1 - index);
+				if (filename.isEmpty())
+				{
+					filename = "*.mhd";
+				}
 			}
 			else
 			{
+				QMessageBox msgBox;
+				msgBox.setText("Invalid path! Please put either a \ or a // to the end of the path");
+				int ret = msgBox.exec();
 				return;
 			}
 
-			read_region_image_and_compute_distance(1);
-		}
+			// get filenames under the folder
+			QDir dir = QDir(filepath);
+			QStringList files = dir.entryList(QStringList(filename),
+				QDir::Files | QDir::NoSymLinks);
 
-		void onComputeDistanceSlot()
-		{
-			std::cout<<"distance (RGB) is chosen"<<std::endl;
-			read_region_image_and_compute_distance();
-		}
+			// spectrum number for transfer function generation
+			const int n = 6;
 
-		void onComputeSquaredDistanceSlot()
-		{
-			std::cout<<"squared distance (RGB) is chosen"<<std::endl;
-			read_region_image_and_compute_distance(1);
-		}
-
-		void onDefaultTransferFunctionSlot()
-		{
-			generate_default_transfer_function();
-			updateTransferFunctionWidgetsFromArrays();
-		}
-
-		void onSpectrumTransferFunctionSlot()
-		{
-			bool ok;
-			int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 8, 1, 256, 1, &ok);
-			if (ok)
+			for (int i = 0; i < files.size(); i++)
 			{
-				std::cout<<"QInputDialog::getInteger() "<<n<<std::endl;
+				// load volume
+				open_volume_no_rendering(filepath + files[i]);
+
+				// generate a spectrum transfer function with n groups of control points
 				generate_spectrum_transfer_function(n);
 				updateTransferFunctionWidgetsFromArrays();
+
+				// optimise the transfer function
+				updateTransferFunctionArraysFromWidgets();
+				int n = ui->spinBox->value();
+				if (n < 1 || n > max_iteration_count)
+				{
+					n = 1;
+				}
+
+				while (n-- > 0)
+				{
+					balance_opacity();
+				}
+
+				updateTransferFunctionWidgetsFromArrays();
+				updateTransferFunctionArraysFromWidgets();
+
+				// split filename and extension
+				QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
+
+				// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+				QByteArray ba = list1[0].toLocal8Bit();
+				const char *filename_no_suffix = ba.data();
+
+				QByteArray ba1 = filepath.toLocal8Bit();
+				const char *path1 = ba1.data();
+
+				// save the transfer function to file
+				char filename_str[_MAX_PATH];
+				sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
+				std::cout << "transfer function file: " << filename_str << endl;
+				saveTransferFunctionToXML(filename_str);
 			}
 		}
+	}
 
-		void on_Open_Path_and_Generate_Transfer_Functions_Slot()
-		{
-			bool ok;
-			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
-				tr("Path to open:"), QLineEdit::Normal,
-				"D:/output/vortex/", &ok);
-			if (ok && !path.isEmpty())
-			{
-				// get filename separator position
-				int index = path.lastIndexOf("/");
-				if (index == -1)
-				{
-					index = path.lastIndexOf("\\");
-				}
-				
-				// split filename and path
-				QString filepath = path;
-				QString filename;
-				if (index != -1)
-				{
-					filepath = path.left(index + 1);
-					filename = path.right(path.length() - 1 - index);
-					if (filename.isEmpty())
-					{
-						filename = "*.mhd";
-					}
-				}
-
-				// get filenames under the folder
-				QDir dir = QDir(filepath);
-				QStringList files = dir.entryList(QStringList(filename),
-					QDir::Files | QDir::NoSymLinks);
-
-				// spectrum number for transfer function generation
-				const int n = 6;
-
-				for (int i = 0; i < files.size(); i++)
-				{
-					// load volume
-					open_volume_no_rendering(filepath + files[i]);
-
-					// generate a spectrum transfer function with n groups of control points
-					generate_spectrum_transfer_function(n);
-					updateTransferFunctionWidgetsFromArrays();
-
-					// optimise the transfer function
-					updateTransferFunctionArraysFromWidgets();
-					int n = ui->spinBox->value();
-					if (n < 1 || n > max_iteration_count)
-					{
-						n = 1;
-					}
-
-					while (n-- > 0)
-					{
-						balance_opacity();
-					}
-
-					updateTransferFunctionWidgetsFromArrays();
-					updateTransferFunctionArraysFromWidgets();
-
-					// split filename and extension
-					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-
-					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-					QByteArray ba = list1[0].toLocal8Bit();
-					const char *filename_no_suffix = ba.data();
-
-					QByteArray ba1 = filepath.toLocal8Bit();
-					const char *path1 = ba1.data();
-
-					// save the transfer function to file
-					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
-					std::cout << "transfer function file: " << filename_str << endl;
-					saveTransferFunctionToXML(filename_str);
-				}
-			}
-		}
-
-		// return false if the path is invalid
-		bool split_filename_and_path(const QString path, QString &filepath, QString &filename, const QString default_name = "*.mhd")
+	void on_Open_Path_and_Generate_Transfer_Functions_for_Region_Slot()
+	{
+		bool ok;
+		QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+			tr("Path to open:"), QLineEdit::Normal,
+			"D:/output/vortex/", &ok);
+		if (ok && !path.isEmpty())
 		{
 			// get filename separator position
 			int index = path.lastIndexOf("/");
@@ -2029,116 +2043,92 @@ private:
 				index = path.lastIndexOf("\\");
 			}
 
+			// a valid path must contain either / or \\. otherwise it's invalid.
 			// split filename and path
+			QString filepath = path;
+			QString filename;
 			if (index != -1)
 			{
 				filepath = path.left(index + 1);
 				filename = path.right(path.length() - 1 - index);
 				if (filename.isEmpty())
 				{
-					filename = default_name;
+					filename = "*.mhd";
 				}
-				return true;
 			}
 			else
 			{
-				return false;
+				QMessageBox msgBox;
+				msgBox.setText("Invalid path! Please put either a \ or a // to the end of the path");
+				int ret = msgBox.exec();
+				return;
 			}
-		}
 
-		void on_Open_Path_and_Generate_Transfer_Functions_for_Region_Slot()
-		{
-			bool ok;
-			QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
-				tr("Path to open:"), QLineEdit::Normal,
-				"D:/output/vortex/", &ok);
-			if (ok && !path.isEmpty())
+			// get filenames under the folder
+			QDir dir = QDir(filepath);
+			QStringList files = dir.entryList(QStringList(filename),
+				QDir::Files | QDir::NoSymLinks);
+
+			// spectrum number for transfer function generation
+			const int n = 6;
+
+			for (int i = 0; i < files.size(); i++)
 			{
-				// get filename separator position
-				int index = path.lastIndexOf("/");
-				if (index == -1)
+				// load volume
+				open_volume_no_rendering(filepath + files[i]);
+
+				// generate a spectrum transfer function with n groups of control points
+				generate_spectrum_transfer_function(n);
+				updateTransferFunctionWidgetsFromArrays();
+
+				// optimise the transfer function
+				updateTransferFunctionArraysFromWidgets();
+				int n = ui->spinBox->value();
+				if (n < 1 || n > max_iteration_count)
 				{
-					index = path.lastIndexOf("\\");
+					n = 1;
 				}
 
-				// split filename and path
-				QString filepath = path;
-				QString filename;
-				if (index != -1)
+				while (n-- > 0)
 				{
-					filepath = path.left(index + 1);
-					filename = path.right(path.length() - 1 - index);
-					if (filename.isEmpty())
-					{
-						filename = "*.mhd";
-					}
+					balance_opacity_for_region();
 				}
 
-				// get filenames under the folder
-				QDir dir = QDir(filepath);
-				QStringList files = dir.entryList(QStringList(filename),
-					QDir::Files | QDir::NoSymLinks);
+				updateTransferFunctionWidgetsFromArrays();
+				updateTransferFunctionArraysFromWidgets();
 
-				// spectrum number for transfer function generation
-				const int n = 6;
+				// split filename and extension
+				QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
 
-				for (int i = 0; i < files.size(); i++)
-				{
-					// load volume
-					open_volume_no_rendering(filepath + files[i]);
+				// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+				QByteArray ba = list1[0].toLocal8Bit();
+				const char *filename_no_suffix = ba.data();
 
-					// generate a spectrum transfer function with n groups of control points
-					generate_spectrum_transfer_function(n);
-					updateTransferFunctionWidgetsFromArrays();
+				QByteArray ba1 = filepath.toLocal8Bit();
+				const char *path1 = ba1.data();
 
-					// optimise the transfer function
-					updateTransferFunctionArraysFromWidgets();
-					int n = ui->spinBox->value();
-					if (n < 1 || n > max_iteration_count)
-					{
-						n = 1;
-					}
-
-					while (n-- > 0)
-					{
-						balance_opacity_for_region();
-					}
-
-					updateTransferFunctionWidgetsFromArrays();
-					updateTransferFunctionArraysFromWidgets();
-
-					// split filename and extension
-					QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-
-					// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-					QByteArray ba = list1[0].toLocal8Bit();
-					const char *filename_no_suffix = ba.data();
-
-					QByteArray ba1 = filepath.toLocal8Bit();
-					const char *path1 = ba1.data();
-
-					// save the transfer function to file
-					char filename_str[_MAX_PATH];
-					sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
-					std::cout << "transfer function file: " << filename_str << endl;
-					saveTransferFunctionToXML(filename_str);
-				}
+				// save the transfer function to file
+				char filename_str[_MAX_PATH];
+				sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
+				std::cout << "transfer function file: " << filename_str << endl;
+				saveTransferFunctionToXML(filename_str);
 			}
 		}
+	}
 
-		void on_entropyButton_clicked();
-		void on_frequencyButton_clicked();
-		void on_opacityButton_clicked();
-		void on_visibilityButton_clicked();
-		void on_entropyOpacityButton_clicked();
-		void on_balanceButton_clicked();
-		void on_reduceOpacityButton_clicked();
-		void on_lhHistogramButton_clicked();
-		void on_balanceOpacityButton_clicked();
-		void on_increaseOpacityButton_clicked();
-		void on_enhanceRegionButton_clicked();
-		void on_weakenRegionButton_clicked();
-		void on_balanceRegionButton_clicked();
+	void on_entropyButton_clicked();
+	void on_frequencyButton_clicked();
+	void on_opacityButton_clicked();
+	void on_visibilityButton_clicked();
+	void on_entropyOpacityButton_clicked();
+	void on_balanceButton_clicked();
+	void on_reduceOpacityButton_clicked();
+	void on_lhHistogramButton_clicked();
+	void on_balanceOpacityButton_clicked();
+	void on_increaseOpacityButton_clicked();
+	void on_enhanceRegionButton_clicked();
+	void on_weakenRegionButton_clicked();
+	void on_balanceRegionButton_clicked();
 };
 
 #endif // MAINWINDOW_H
