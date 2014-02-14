@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.8)
-set(VTK_DIR "D:/VTK6.0.0/VTK-build" CACHE PATH "VTK directory")
+set(VTK_DIR "D:/VTK-6.1.0/VTK-build" CACHE PATH "VTK directory")
 
 project(HistogramBarChart)
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(VTK 6.1 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 add_executable(${PROJECT_NAME} HistogramBarChart.cpp)
 target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
@@ -14,7 +14,7 @@ if(WIN32) # Check if we are on Windows
 endif()
 
 project(HistogramXYPlot)
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(VTK 6.1 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 add_executable(${PROJECT_NAME} HistogramXYPlot.cpp)
 target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
@@ -26,7 +26,7 @@ if(WIN32) # Check if we are on Windows
 endif()
 
 project(ImageAccumulateGreyscale)
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(VTK 6.1 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 add_executable(${PROJECT_NAME} ImageAccumulateGreyscale.cpp)
 target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
@@ -38,7 +38,7 @@ if(WIN32) # Check if we are on Windows
 endif()
 
 project(histogram)
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(VTK 6.1 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 add_executable(${PROJECT_NAME} histogram.cpp)
 target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
