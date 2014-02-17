@@ -149,15 +149,29 @@ private:
 		return map_to_range(n, 0, 1, 0, 255);
 	}
 
-	double get_distance_between_colour_and_pixels_with_metric(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int metric = 0)
+	double get_distance_between_colour_and_pixels_with_metric(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int squared = 0, int hsv = 0)
 	{
-		if (metric == 1)
+		if (squared == 1)
 		{
-			return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			if (hsv == 1)
+			{
+				return get_squared_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
+			} 
+			else
+			{
+				return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			}
 		}
 		else
 		{
-			return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			if (hsv == 1)
+			{
+				return get_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
+			} 
+			else
+			{
+				return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			}
 		}
 	}
 
@@ -185,8 +199,39 @@ private:
 			double dr = normalise_rgba(pixels[index_base + 0]) - r;
 			double dg = normalise_rgba(pixels[index_base + 1]) - g;
 			double db = normalise_rgba(pixels[index_base + 2]) - b;
-			//double d = sqrt(dr*dr + dg*dg + db*db);
 			double d = dr*dr + dg*dg + db*db;
+			distance += d;
+		}
+		return distance;
+	}
+
+	double get_distance_between_colour_and_pixels_hsv(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
+	{
+		double distance = 0;
+		for (int i = 0; i < count; i++)
+		{
+			int index_base = i * numComponents;
+			// convert rgb to hsv and get the difference in hue
+			double h, s, v, h1, s1, v1;
+			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
+			double d = abs(h - h1);
+			distance += d;
+		}
+		return distance;
+	}
+
+	double get_squared_distance_between_colour_and_pixels_hsv(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
+	{
+		double distance = 0;
+		for (int i = 0; i < count; i++)
+		{
+			int index_base = i * numComponents;
+			// convert rgb to hsv and get the difference in hue
+			double h, s, v, h1, s1, v1;
+			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
+			double d = (h - h1) * (h1 - h);
 			distance += d;
 		}
 		return distance;
@@ -266,7 +311,7 @@ private:
 			else
 			{
 				index = -2;
-				for (int i = 0; i < intensity_list.size() - 1; i++)
+				for (auto i = 0; i < intensity_list.size() - 1; i++)
 				{
 					if (intensity_list[i] <= intensity && intensity_list[i + 1] >= intensity)
 					{
@@ -1188,7 +1233,7 @@ private:
 		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
-		for (unsigned int i = 0; i < colorTransferFunction->GetSize(); i++)
+		for (auto i = 0; i < colorTransferFunction->GetSize(); i++)
 		{
 			double xrgb[6];
 			colorTransferFunction->GetNodeValue(i, xrgb);
@@ -1971,7 +2016,7 @@ private:
 			else
 			{
 				QMessageBox msgBox;
-				msgBox.setText("Invalid path! Please put either a \ or a // to the end of the path");
+				msgBox.setText("Invalid path! Please put either a \\ or a / to the end of the path");
 				int ret = msgBox.exec();
 				return;
 			}
@@ -2059,7 +2104,7 @@ private:
 			else
 			{
 				QMessageBox msgBox;
-				msgBox.setText("Invalid path! Please put either a \ or a // to the end of the path");
+				msgBox.setText("Invalid path! Please put either a \\ or a / to the end of the path");
 				int ret = msgBox.exec();
 				return;
 			}
@@ -2080,6 +2125,9 @@ private:
 				// generate a spectrum transfer function with n groups of control points
 				generate_spectrum_transfer_function(n);
 				updateTransferFunctionWidgetsFromArrays();
+
+				// compute region-based difference factors
+				read_region_image_and_compute_distance(1);
 
 				// optimise the transfer function
 				updateTransferFunctionArraysFromWidgets();
