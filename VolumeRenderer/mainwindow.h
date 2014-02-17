@@ -1846,7 +1846,7 @@ private:
 	}
 
 	/// if distance_metric==1 then compute distance with squared distance
-	void read_region_image_and_compute_distance(int distance_metric = 0)
+	void read_region_image_and_compute_distance(int squared_distance = 0, int hsv_distance = 0)
 	{
 		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 		QByteArray ba = selected_region_filename.toLocal8Bit();
@@ -1921,7 +1921,7 @@ private:
 			double r = colour_list[i][0];
 			double g = colour_list[i][1];
 			double b = colour_list[i][2];
-			double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, distance_metric);
+			double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, squared_distance, hsv_distance);
 			region_weight_list.push_back(distance);
 			sum += distance;
 		}
@@ -1951,7 +1951,7 @@ private:
 			return;
 		}
 
-		read_region_image_and_compute_distance(1);
+		read_region_image_and_compute_distance(1, 1);
 	}
 
 	void onComputeDistanceSlot()
@@ -1964,6 +1964,18 @@ private:
 	{
 		std::cout << "squared distance (RGB) is chosen" << std::endl;
 		read_region_image_and_compute_distance(1);
+	}
+
+	void onComputeDistanceHSVSlot()
+	{
+		std::cout << "distance (HSV) is chosen" << std::endl;
+		read_region_image_and_compute_distance(0, 1);
+	}
+
+	void onComputeSquaredDistanceHSVSlot()
+	{
+		std::cout << "squared distance (HSV) is chosen" << std::endl;
+		read_region_image_and_compute_distance(1, 1);
 	}
 
 	void onDefaultTransferFunctionSlot()
@@ -2127,7 +2139,7 @@ private:
 				updateTransferFunctionWidgetsFromArrays();
 
 				// compute region-based difference factors
-				read_region_image_and_compute_distance(1);
+				read_region_image_and_compute_distance(1, 1);
 
 				// optimise the transfer function
 				updateTransferFunctionArraysFromWidgets();

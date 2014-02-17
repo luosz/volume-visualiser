@@ -69,6 +69,8 @@
     </property>
     <addaction name="action_Compute_Distance"/>
     <addaction name="action_Compute_Squared_Distance"/>
+    <addaction name="action_Compute_Distance_HSV"/>
+    <addaction name="action_Compute_Squared_Distance_HSV"/>
     <addaction name="action_Default_Transfer_Function"/>
     <addaction name="action_Spectrum_Transfer_Function"/>
    </widget>
@@ -380,8 +382,38 @@
     <string>Open Path and &amp;Generate Transfer Functions for Region</string>
    </property>
   </action>
+  <action name="action_Compute_Squared_Distance_HSV">
+   <property name="text">
+    <string>Compute Squared Distance (HSV)</string>
+   </property>
+  </action>
+  <action name="action_Compute_Distance_HSV">
+   <property name="text">
+    <string>Compute Distance (HSV)</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>menuBar</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>slot1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>9</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>251</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot1()</slot>
+ </slots>
 </ui>
