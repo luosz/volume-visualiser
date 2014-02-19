@@ -342,11 +342,6 @@
     <string>&amp;Save Transfer Function As...</string>
    </property>
   </action>
-  <action name="action_Optimise_Transfer_Function">
-   <property name="text">
-    <string>&amp;Optimise Transfer Function</string>
-   </property>
-  </action>
   <action name="action_Open_Selected_Region">
    <property name="text">
     <string>Open Selected &amp;Region...</string>
@@ -395,25 +390,5 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections>
-  <connection>
-   <sender>menuBar</sender>
-   <signal>triggered(QAction*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>slot1()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>241</x>
-     <y>9</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>251</x>
-     <y>-6</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>slot1()</slot>
- </slots>
+ <connections/>
 </ui>
