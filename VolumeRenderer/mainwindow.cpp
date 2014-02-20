@@ -630,7 +630,7 @@ void MainWindow::on_action_Open_Selected_Region_triggered()
 		return;
 	}
 
-	read_region_image_and_compute_distance(1, 1);
+	read_region_image_and_compute_distance(1);
 }
 
 void MainWindow::on_action_Compute_Squared_Distance_triggered()
@@ -819,7 +819,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			updateTransferFunctionWidgetsFromArrays();
 
 			// compute region-based difference factors
-			read_region_image_and_compute_distance(1, 1);
+			read_region_image_and_compute_distance(1);
 
 			// optimise the transfer function
 			updateTransferFunctionArraysFromWidgets();
