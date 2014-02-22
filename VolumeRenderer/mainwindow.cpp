@@ -27,7 +27,7 @@ ui(new Ui::MainWindow)
 	interactor->SetInteractorStyle(style);
 	interactor->SetStillUpdateRate(1);
 
-	// connect signals to slots
+	//// connect signals to slots
 	//QObject::connect(ui->action_Open_Volume, SIGNAL(triggered()), this, SLOT(onOpenVolumeSlot()));
 	//QObject::connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
 	//QObject::connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
