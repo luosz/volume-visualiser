@@ -156,7 +156,7 @@ private:
 			if (hsv == 1)
 			{
 				return get_squared_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
-			} 
+			}
 			else
 			{
 				return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
@@ -167,7 +167,7 @@ private:
 			if (hsv == 1)
 			{
 				return get_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
-			} 
+			}
 			else
 			{
 				return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
@@ -1652,7 +1652,7 @@ private:
 		}
 	}
 
-	private slots:
+	//private slots:
 	//void onAboutSlot()
 	//{
 	//	QMessageBox msgBox;
@@ -1665,220 +1665,220 @@ private:
 	//	qApp->quit();
 	//}
 
-//	void onOpenVolumeSlot()
-//	{
-//		// show file dialog
-//		QString filter("Meta image file (*.mhd *.mha)");
-//		QString filename_backup = volume_filename;
-//		filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
-//		if (!volume_filename.trimmed().isEmpty())
-//		{
-//			volume_filename = filename_backup;
-//		}
-//		else
-//		{
-//			return;
-//		}
-//
-//		// show filename on window title
-//		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
-//
-//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-//		QByteArray ba = filename_backup.toLocal8Bit();
-//		const char *filename_str = ba.data();
-//
-//#if 1
-//		// read Meta Image (.mhd or .mha) files
-//		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-//		reader->SetFileName(filename_str);
-//
-//		//// write Meta Image to file (convert from .mha to .mhd)
-//		//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
-//		//std::cout << "filename=" << filename_str << std::endl;
-//		//char mhd_str[_MAX_PATH];
-//		//char raw_str[_MAX_PATH];
-//		//strcpy(mhd_str, filename_str);
-//		//strcpy(raw_str, filename_str);
-//		//auto p1 = strstr(mhd_str, ".mha");
-//		//auto p2 = strstr(raw_str, ".mha");
-//		//if (p1 && p2)
-//		//{
-//		//	strcpy(p1, ".mhd");
-//		//	strcpy(p2, ".raw");
-//		//	std::cout << p1 << "\n" << p2 << std::endl;
-//		//	std::cout << mhd_str << "\n" << raw_str << std::endl;
-//		//	writer->SetFileName(mhd_str);
-//		//	writer->SetRAWFileName(raw_str);
-//		//	writer->SetInputConnection(reader->GetOutputPort());
-//		//	writer->Write();
-//		//}
-//#elif 1
-//		// read a series of raw files in the specified folder
-//		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-//		reader->SetDataDimensions (512, 512);
-//		reader->SetImageRange (1, 361);
-//		reader->SetDataByteOrderToBigEndian();
-//		reader->SetFilePrefix(filename_str);
-//		reader->SetFilePattern("%s%d");
-//		reader->SetDataSpacing(1, 1, 1);
-//#else
-//		// read NRRD files
-//		vtkNew<vtkNrrdReader> reader;
-//		if (!reader->CanReadFile(filename_str))
-//		{
-//			std::cerr << "Reader reports " << filename_str << " cannot be read.";
-//			exit(EXIT_FAILURE);
-//		}
-//		reader->SetFileName(filename_str);
-//		reader->Update();
-//#endif
-//
-//		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-//		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-//		shiftScale->SetInputConnection(reader->GetOutputPort());
-//		shiftScale->SetOutputScalarTypeToUnsignedChar();
-//
-//		// generate histograms
-//		generate_visibility_function(shiftScale);
-//		generate_LH_histogram(shiftScale);
-//
-//		//// Create transfer mapping scalar value to opacity.
-//		//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-//		//opacityTransferFunction->AddPoint(0.0,  0.0);
-//		//opacityTransferFunction->AddPoint(36.0,  0.125);
-//		//opacityTransferFunction->AddPoint(72.0,  0.25);
-//		//opacityTransferFunction->AddPoint(108.0, 0.375);
-//		//opacityTransferFunction->AddPoint(144.0, 0.5);
-//		//opacityTransferFunction->AddPoint(180.0, 0.625);
-//		//opacityTransferFunction->AddPoint(216.0, 0.75);
-//		//opacityTransferFunction->AddPoint(255.0, 0.875);
-//
-//		//// Create transfer mapping scalar value to color.
-//		//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-//		//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
-//		//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-//		//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-//		//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-//		//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-//		//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-//		//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-//		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
-//
-//		// set up volume property
-//		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-//		volumeProperty->SetColor(colorTransferFunction);
-//		volumeProperty->SetScalarOpacity(opacityTransferFunction);
-//		volumeProperty->ShadeOff();
-//		volumeProperty->SetInterpolationTypeToLinear();
-//
-//		// assign volume property to the volume property widget
-//		volumePropertywidget.setVolumeProperty(volumeProperty);
-//
-//		// The mapper that renders the volume data.
-//		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-//		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-//		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
-//
-//		// The volume holds the mapper and the property and can be used to position/orient the volume.
-//		auto volume = vtkSmartPointer<vtkVolume>::New();
-//		volume->SetMapper(volumeMapper);
-//		volume->SetProperty(volumeProperty);
-//
-//		// add the volume into the renderer
-//		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
-//		renderer = vtkSmartPointer<vtkRenderer>::New();
-//		renderer->AddVolume(volume);
-//		renderer->SetBackground(1, 1, 1);
-//
-//		// clean previous renderers and then add the current renderer
-//		auto window = widget.GetRenderWindow();
-//		auto collection = window->GetRenderers();
-//		auto item = collection->GetNextItem();
-//		while (item != NULL)
-//		{
-//			window->RemoveRenderer(item);
-//			item = collection->GetNextItem();
-//		}
-//		window->AddRenderer(renderer);
-//		window->Render();
-//
-//		// initialize the interactor
-//		interactor->Initialize();
-//		interactor->Start();
-//
-//		//generateHistogram(reader);
-//	}
+	//	void onOpenVolumeSlot()
+	//	{
+	//		// show file dialog
+	//		QString filter("Meta image file (*.mhd *.mha)");
+	//		QString filename_backup = volume_filename;
+	//		filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
+	//		if (!volume_filename.trimmed().isEmpty())
+	//		{
+	//			volume_filename = filename_backup;
+	//		}
+	//		else
+	//		{
+	//			return;
+	//		}
+	//
+	//		// show filename on window title
+	//		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
+	//
+	//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+	//		QByteArray ba = filename_backup.toLocal8Bit();
+	//		const char *filename_str = ba.data();
+	//
+	//#if 1
+	//		// read Meta Image (.mhd or .mha) files
+	//		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+	//		reader->SetFileName(filename_str);
+	//
+	//		//// write Meta Image to file (convert from .mha to .mhd)
+	//		//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
+	//		//std::cout << "filename=" << filename_str << std::endl;
+	//		//char mhd_str[_MAX_PATH];
+	//		//char raw_str[_MAX_PATH];
+	//		//strcpy(mhd_str, filename_str);
+	//		//strcpy(raw_str, filename_str);
+	//		//auto p1 = strstr(mhd_str, ".mha");
+	//		//auto p2 = strstr(raw_str, ".mha");
+	//		//if (p1 && p2)
+	//		//{
+	//		//	strcpy(p1, ".mhd");
+	//		//	strcpy(p2, ".raw");
+	//		//	std::cout << p1 << "\n" << p2 << std::endl;
+	//		//	std::cout << mhd_str << "\n" << raw_str << std::endl;
+	//		//	writer->SetFileName(mhd_str);
+	//		//	writer->SetRAWFileName(raw_str);
+	//		//	writer->SetInputConnection(reader->GetOutputPort());
+	//		//	writer->Write();
+	//		//}
+	//#elif 1
+	//		// read a series of raw files in the specified folder
+	//		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+	//		reader->SetDataDimensions (512, 512);
+	//		reader->SetImageRange (1, 361);
+	//		reader->SetDataByteOrderToBigEndian();
+	//		reader->SetFilePrefix(filename_str);
+	//		reader->SetFilePattern("%s%d");
+	//		reader->SetDataSpacing(1, 1, 1);
+	//#else
+	//		// read NRRD files
+	//		vtkNew<vtkNrrdReader> reader;
+	//		if (!reader->CanReadFile(filename_str))
+	//		{
+	//			std::cerr << "Reader reports " << filename_str << " cannot be read.";
+	//			exit(EXIT_FAILURE);
+	//		}
+	//		reader->SetFileName(filename_str);
+	//		reader->Update();
+	//#endif
+	//
+	//		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+	//		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+	//		shiftScale->SetInputConnection(reader->GetOutputPort());
+	//		shiftScale->SetOutputScalarTypeToUnsignedChar();
+	//
+	//		// generate histograms
+	//		generate_visibility_function(shiftScale);
+	//		generate_LH_histogram(shiftScale);
+	//
+	//		//// Create transfer mapping scalar value to opacity.
+	//		//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	//		//opacityTransferFunction->AddPoint(0.0,  0.0);
+	//		//opacityTransferFunction->AddPoint(36.0,  0.125);
+	//		//opacityTransferFunction->AddPoint(72.0,  0.25);
+	//		//opacityTransferFunction->AddPoint(108.0, 0.375);
+	//		//opacityTransferFunction->AddPoint(144.0, 0.5);
+	//		//opacityTransferFunction->AddPoint(180.0, 0.625);
+	//		//opacityTransferFunction->AddPoint(216.0, 0.75);
+	//		//opacityTransferFunction->AddPoint(255.0, 0.875);
+	//
+	//		//// Create transfer mapping scalar value to color.
+	//		//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	//		//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
+	//		//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	//		//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	//		//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	//		//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	//		//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	//		//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	//		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	//
+	//		// set up volume property
+	//		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+	//		volumeProperty->SetColor(colorTransferFunction);
+	//		volumeProperty->SetScalarOpacity(opacityTransferFunction);
+	//		volumeProperty->ShadeOff();
+	//		volumeProperty->SetInterpolationTypeToLinear();
+	//
+	//		// assign volume property to the volume property widget
+	//		volumePropertywidget.setVolumeProperty(volumeProperty);
+	//
+	//		// The mapper that renders the volume data.
+	//		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+	//		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+	//		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+	//
+	//		// The volume holds the mapper and the property and can be used to position/orient the volume.
+	//		auto volume = vtkSmartPointer<vtkVolume>::New();
+	//		volume->SetMapper(volumeMapper);
+	//		volume->SetProperty(volumeProperty);
+	//
+	//		// add the volume into the renderer
+	//		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
+	//		renderer = vtkSmartPointer<vtkRenderer>::New();
+	//		renderer->AddVolume(volume);
+	//		renderer->SetBackground(1, 1, 1);
+	//
+	//		// clean previous renderers and then add the current renderer
+	//		auto window = widget.GetRenderWindow();
+	//		auto collection = window->GetRenderers();
+	//		auto item = collection->GetNextItem();
+	//		while (item != NULL)
+	//		{
+	//			window->RemoveRenderer(item);
+	//			item = collection->GetNextItem();
+	//		}
+	//		window->AddRenderer(renderer);
+	//		window->Render();
+	//
+	//		// initialize the interactor
+	//		interactor->Initialize();
+	//		interactor->Start();
+	//
+	//		//generateHistogram(reader);
+	//	}
 
-//	void onAppendVolumeSlot()
-//	{
-//		// show file dialog
-//		QString filter("Meta image file (*.mhd *.mha)");
-//		volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter);
-//		if (volume_filename.isEmpty())
-//		{
-//			return;
-//		}
-//
-//		// show filename on window title
-//		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-//
-//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-//		QByteArray ba = volume_filename.toLocal8Bit();
-//		const char *filename_str = ba.data();
-//
-//#if 1
-//		// read Meta Image (.mhd or .mha) files
-//		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-//		reader->SetFileName(filename_str);
-//#elif 1
-//		// read a series of raw files in the specified folder
-//		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-//		reader->SetDataDimensions (512, 512);
-//		reader->SetImageRange (1, 361);
-//		reader->SetDataByteOrderToBigEndian();
-//		reader->SetFilePrefix(filename_str);
-//		reader->SetFilePattern("%s%d");
-//		reader->SetDataSpacing(1, 1, 1);
-//#else
-//		// read NRRD files
-//		vtkNew<vtkNrrdReader> reader;
-//		if (!reader->CanReadFile(filename_str))
-//		{
-//			std::cerr << "Reader reports " << filename_str << " cannot be read.";
-//			exit(EXIT_FAILURE);
-//		}
-//		reader->SetFileName(filename_str);
-//		reader->Update();
-//#endif
-//
-//		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-//		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-//		shiftScale->SetInputConnection(reader->GetOutputPort());
-//		shiftScale->SetOutputScalarTypeToUnsignedChar();
-//
-//		// get existing volumeProperty from volumePropertywidget
-//		auto volumeProperty = volumePropertywidget.volumeProperty();
-//
-//		// The mapper that renders the volume data.
-//		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-//		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-//		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
-//
-//		// The volume holds the mapper and the property and can be used to position/orient the volume.
-//		auto volume = vtkSmartPointer<vtkVolume>::New();
-//		volume->SetMapper(volumeMapper);
-//		volume->SetProperty(volumeProperty);
-//
-//		// add the volume into the renderer
-//		renderer->AddVolume(volume);
-//
-//		auto window = widget.GetRenderWindow();
-//		window->Render();
-//
-//		// initialize the interactor
-//		interactor->Initialize();
-//		interactor->Start();
-//	}
+	//	void onAppendVolumeSlot()
+	//	{
+	//		// show file dialog
+	//		QString filter("Meta image file (*.mhd *.mha)");
+	//		volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter);
+	//		if (volume_filename.isEmpty())
+	//		{
+	//			return;
+	//		}
+	//
+	//		// show filename on window title
+	//		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+	//
+	//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+	//		QByteArray ba = volume_filename.toLocal8Bit();
+	//		const char *filename_str = ba.data();
+	//
+	//#if 1
+	//		// read Meta Image (.mhd or .mha) files
+	//		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+	//		reader->SetFileName(filename_str);
+	//#elif 1
+	//		// read a series of raw files in the specified folder
+	//		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+	//		reader->SetDataDimensions (512, 512);
+	//		reader->SetImageRange (1, 361);
+	//		reader->SetDataByteOrderToBigEndian();
+	//		reader->SetFilePrefix(filename_str);
+	//		reader->SetFilePattern("%s%d");
+	//		reader->SetDataSpacing(1, 1, 1);
+	//#else
+	//		// read NRRD files
+	//		vtkNew<vtkNrrdReader> reader;
+	//		if (!reader->CanReadFile(filename_str))
+	//		{
+	//			std::cerr << "Reader reports " << filename_str << " cannot be read.";
+	//			exit(EXIT_FAILURE);
+	//		}
+	//		reader->SetFileName(filename_str);
+	//		reader->Update();
+	//#endif
+	//
+	//		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+	//		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+	//		shiftScale->SetInputConnection(reader->GetOutputPort());
+	//		shiftScale->SetOutputScalarTypeToUnsignedChar();
+	//
+	//		// get existing volumeProperty from volumePropertywidget
+	//		auto volumeProperty = volumePropertywidget.volumeProperty();
+	//
+	//		// The mapper that renders the volume data.
+	//		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+	//		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+	//		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+	//
+	//		// The volume holds the mapper and the property and can be used to position/orient the volume.
+	//		auto volume = vtkSmartPointer<vtkVolume>::New();
+	//		volume->SetMapper(volumeMapper);
+	//		volume->SetProperty(volumeProperty);
+	//
+	//		// add the volume into the renderer
+	//		renderer->AddVolume(volume);
+	//
+	//		auto window = widget.GetRenderWindow();
+	//		window->Render();
+	//
+	//		// initialize the interactor
+	//		interactor->Initialize();
+	//		interactor->Start();
+	//	}
 
 	//void onOpenTransferFunctionSlot()
 	//{
@@ -2176,6 +2176,7 @@ private:
 	//	}
 	//}
 
+	private slots:
 	void on_entropyButton_clicked();
 	void on_frequencyButton_clicked();
 	void on_opacityButton_clicked();
@@ -2189,21 +2190,21 @@ private:
 	void on_enhanceRegionButton_clicked();
 	void on_weakenRegionButton_clicked();
 	void on_balanceRegionButton_clicked();
-    void on_action_About_triggered();
-    void on_action_Exit_triggered();
-    void on_action_Open_Volume_triggered();
-    void on_action_Append_Volume_triggered();
-    void on_action_Open_Transfer_Function_triggered();
-    void on_action_Save_Transfer_Function_triggered();
-    void on_action_Open_Selected_Region_triggered();
-    void on_action_Compute_Squared_Distance_triggered();
-    void on_action_Compute_Distance_triggered();
-    void on_action_Compute_Squared_Distance_HSV_triggered();
-    void on_action_Compute_Distance_HSV_triggered();
-    void on_action_Default_Transfer_Function_triggered();
-    void on_action_Spectrum_Transfer_Function_triggered();
-    void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
-    void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
+	void on_action_About_triggered();
+	void on_action_Exit_triggered();
+	void on_action_Open_Volume_triggered();
+	void on_action_Append_Volume_triggered();
+	void on_action_Open_Transfer_Function_triggered();
+	void on_action_Save_Transfer_Function_triggered();
+	void on_action_Open_Selected_Region_triggered();
+	void on_action_Compute_Squared_Distance_triggered();
+	void on_action_Compute_Distance_triggered();
+	void on_action_Compute_Squared_Distance_HSV_triggered();
+	void on_action_Compute_Distance_HSV_triggered();
+	void on_action_Default_Transfer_Function_triggered();
+	void on_action_Spectrum_Transfer_Function_triggered();
+	void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
+	void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
 };
 
 #endif // MAINWINDOW_H

@@ -370,27 +370,6 @@ void MainWindow::on_action_Open_Volume_triggered()
 	// read Meta Image (.mhd or .mha) files
 	auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
 	reader->SetFileName(filename_str);
-
-	//// write Meta Image to file (convert from .mha to .mhd)
-	//auto writer = vtkSmartPointer<vtkMetaImageWriter>::New();
-	//std::cout << "filename=" << filename_str << std::endl;
-	//char mhd_str[_MAX_PATH];
-	//char raw_str[_MAX_PATH];
-	//strcpy(mhd_str, filename_str);
-	//strcpy(raw_str, filename_str);
-	//auto p1 = strstr(mhd_str, ".mha");
-	//auto p2 = strstr(raw_str, ".mha");
-	//if (p1 && p2)
-	//{
-	//	strcpy(p1, ".mhd");
-	//	strcpy(p2, ".raw");
-	//	std::cout << p1 << "\n" << p2 << std::endl;
-	//	std::cout << mhd_str << "\n" << raw_str << std::endl;
-	//	writer->SetFileName(mhd_str);
-	//	writer->SetRAWFileName(raw_str);
-	//	writer->SetInputConnection(reader->GetOutputPort());
-	//	writer->Write();
-	//}
 #elif 1
 	// read a series of raw files in the specified folder
 	auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
@@ -420,28 +399,6 @@ void MainWindow::on_action_Open_Volume_triggered()
 	// generate histograms
 	generate_visibility_function(shiftScale);
 	generate_LH_histogram(shiftScale);
-
-	//// Create transfer mapping scalar value to opacity.
-	//auto opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-	//opacityTransferFunction->AddPoint(0.0,  0.0);
-	//opacityTransferFunction->AddPoint(36.0,  0.125);
-	//opacityTransferFunction->AddPoint(72.0,  0.25);
-	//opacityTransferFunction->AddPoint(108.0, 0.375);
-	//opacityTransferFunction->AddPoint(144.0, 0.5);
-	//opacityTransferFunction->AddPoint(180.0, 0.625);
-	//opacityTransferFunction->AddPoint(216.0, 0.75);
-	//opacityTransferFunction->AddPoint(255.0, 0.875);
-
-	//// Create transfer mapping scalar value to color.
-	//auto colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-	//colorTransferFunction->AddRGBPoint(0.0,  0.0, 0.0, 0.0);
-	//colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	//colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	//colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	//colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	//colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	// set up volume property
 	auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
@@ -484,8 +441,6 @@ void MainWindow::on_action_Open_Volume_triggered()
 	// initialize the interactor
 	interactor->Initialize();
 	interactor->Start();
-
-	//generateHistogram(reader);
 }
 
 void MainWindow::on_action_Append_Volume_triggered()
