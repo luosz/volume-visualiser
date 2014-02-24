@@ -1,0 +1,6 @@
+NDims = 3
+DimSize = 379 229 305
+ElementType = MET_UCHAR
+ElementSpacing = 1.0 1.0 1.0
+ElementByteOrderMSB = False
+ElementDataFile = CT-Knee.raw

@@ -50,12 +50,15 @@ ui(new Ui::MainWindow)
 
 	generate_default_transfer_function();
 
-	volume_filename = "D:/_data/CT-Knee.mhd";
-	transfer_function_filename = "../../voreen/CT-Knee.tfi";
-	transfer_function_filename_save = "../../voreen/CT-Knee_balance.tfi";
-	selected_region_filename = "../../voreen/CT-Knee_selection_only.png";
+	volume_filename = "../../data/CT-Knee.mhd";
+	transfer_function_filename = "../../voreen/CT-Knee_spectrum_6.tfi";
+	transfer_function_filename_save = "../../voreen/CT-Knee_save_as.tfi";
+	selected_region_filename = "../../voreen/CT-Knee_spectrum_6_balance_1000_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
+
+	enable_squared_distance = 0;
+	enable_hsv_distance = 0;
 
 	// should not be used before initialization
 	count_of_voxels = 0;
@@ -572,27 +575,34 @@ void MainWindow::on_action_Open_Selected_Region_triggered()
 
 void MainWindow::on_action_Compute_Squared_Distance_triggered()
 {
+	enable_squared_distance = 1;
+	enable_hsv_distance = 0;
 	std::cout << "squared distance (RGB) is chosen" << std::endl;
-	read_region_image_and_compute_distance(1);
+	read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
 }
 
 void MainWindow::on_action_Compute_Distance_triggered()
 {
+	enable_squared_distance = 0;
+	enable_hsv_distance = 0;
 	std::cout << "distance (RGB) is chosen" << std::endl;
-	read_region_image_and_compute_distance();
-
+	read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
 }
 
 void MainWindow::on_action_Compute_Squared_Distance_HSV_triggered()
 {
+	enable_squared_distance = 1;
+	enable_hsv_distance = 1;
 	std::cout << "squared distance (HSV) is chosen" << std::endl;
-	read_region_image_and_compute_distance(1, 1);
+	read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
 }
 
 void MainWindow::on_action_Compute_Distance_HSV_triggered()
 {
+	enable_squared_distance = 0;
+	enable_hsv_distance = 1;
 	std::cout << "distance (HSV) is chosen" << std::endl;
-	read_region_image_and_compute_distance(0, 1);
+	read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
 }
 
 void MainWindow::on_action_Default_Transfer_Function_triggered()
@@ -756,7 +766,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			updateTransferFunctionWidgetsFromArrays();
 
 			// compute region-based difference factors
-			read_region_image_and_compute_distance(1);
+			read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
 
 			// optimise the transfer function
 			updateTransferFunctionArraysFromWidgets();

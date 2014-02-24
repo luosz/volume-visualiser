@@ -1,0 +1,6 @@
+NDims = 3
+DimSize = 128 256 256
+ElementType = MET_UCHAR
+ElementSpacing = 1.57774 0.995861 1.00797
+ElementByteOrderMSB = False
+ElementDataFile = VisMale.raw

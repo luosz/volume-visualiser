@@ -97,6 +97,8 @@ private:
 	void* volume_ptr;
 	std::vector<double> region_weight_list;
 	const static int max_iteration_count = 65536;
+	int enable_squared_distance;
+	int enable_hsv_distance;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -147,32 +149,6 @@ private:
 	int denormalise_rgba(double n)
 	{
 		return map_to_range(n, 0, 1, 0, 255);
-	}
-
-	double get_distance_between_colour_and_pixels_selector(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int squared = 0, int hsv = 0)
-	{
-		if (squared == 1)
-		{
-			if (hsv == 1)
-			{
-				return get_squared_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
-			}
-			else
-			{
-				return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
-			}
-		}
-		else
-		{
-			if (hsv == 1)
-			{
-				return get_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
-			}
-			else
-			{
-				return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
-			}
-		}
 	}
 
 	double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
@@ -235,6 +211,32 @@ private:
 			distance += d;
 		}
 		return distance;
+	}
+
+	double get_distance_between_colour_and_pixels_selector(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int squared = 0, int hsv = 0)
+	{
+		if (squared == 1)
+		{
+			if (hsv == 1)
+			{
+				return get_squared_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
+			}
+			else
+			{
+				return get_squared_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			}
+		}
+		else
+		{
+			if (hsv == 1)
+			{
+				return get_distance_between_colour_and_pixels_hsv(r, g, b, pixels, count, numComponents);
+			}
+			else
+			{
+				return get_distance_between_colour_and_pixels(r, g, b, pixels, count, numComponents);
+			}
+		}
 	}
 
 	double get_opacity(int i)
@@ -1562,7 +1564,7 @@ private:
 	}
 
 	/// if distance_metric==1 then compute distance with squared distance
-	void read_region_image_and_compute_distance(int squared_distance = 0, int hsv_distance = 0)
+	void read_region_image_and_compute_distance(int squared = 0, int hsv = 0)
 	{
 		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 		QByteArray ba = selected_region_filename.toLocal8Bit();
@@ -1637,7 +1639,7 @@ private:
 			double r = colour_list[i][0];
 			double g = colour_list[i][1];
 			double b = colour_list[i][2];
-			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, count_of_pixels, numComponents, squared_distance, hsv_distance);
+			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, count_of_pixels, numComponents, squared, hsv);
 			region_weight_list.push_back(distance);
 			sum += distance;
 		}

@@ -1,0 +1,9 @@
+ObjectFileName: VisMale.raw
+TaggedFileName: ---
+Resolution:    128 256 256
+SliceThickness: 1.57774 0.995861 1.00797
+Format:         UCHAR
+NbrTags:        0
+ObjectType:     TEXTURE_VOLUME_OBJECT
+ObjectModel:    I
+GridType:       EQUIDISTANT
