@@ -57,8 +57,7 @@ ui(new Ui::MainWindow)
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
-	enable_squared_distance = 0;
-	enable_hsv_distance = 0;
+	on_action_Compute_Distance_HSV_triggered();
 
 	// should not be used before initialization
 	count_of_voxels = 0;
@@ -576,6 +575,7 @@ void MainWindow::on_action_Open_Selected_Region_triggered()
 void MainWindow::on_action_Compute_Squared_Distance_triggered()
 {
 	ui->action_Compute_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance->setChecked(true);
 	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
 	ui->action_Compute_Distance_HSV->setChecked(false);
 	enable_squared_distance = 1;
@@ -586,6 +586,7 @@ void MainWindow::on_action_Compute_Squared_Distance_triggered()
 
 void MainWindow::on_action_Compute_Distance_triggered()
 {
+	ui->action_Compute_Distance->setChecked(true);
 	ui->action_Compute_Squared_Distance->setChecked(false);
 	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
 	ui->action_Compute_Distance_HSV->setChecked(false);
@@ -599,6 +600,7 @@ void MainWindow::on_action_Compute_Squared_Distance_HSV_triggered()
 {
 	ui->action_Compute_Distance->setChecked(false);
 	ui->action_Compute_Squared_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance_HSV->setChecked(true);
 	ui->action_Compute_Distance_HSV->setChecked(false);
 	enable_squared_distance = 1;
 	enable_hsv_distance = 1;
@@ -611,6 +613,7 @@ void MainWindow::on_action_Compute_Distance_HSV_triggered()
 	ui->action_Compute_Distance->setChecked(false);
 	ui->action_Compute_Squared_Distance->setChecked(false);
 	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
+	ui->action_Compute_Distance_HSV->setChecked(true);
 	enable_squared_distance = 0;
 	enable_hsv_distance = 1;
 	std::cout << "distance (HSV) is chosen" << std::endl;
