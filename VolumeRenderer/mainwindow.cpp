@@ -320,7 +320,7 @@ void MainWindow::on_balanceRegionButton_clicked()
 void MainWindow::on_action_About_triggered()
 {
 	QMessageBox msgBox;
-	msgBox.setText(QString::fromUtf8("Volume Renderer"));
+	msgBox.setText(QString::fromUtf8("Volume Renderer\nCopyright (c) 2014 by Shengzhou Luo at Trinity College Dublin.\nAll rights reserved."));
 	msgBox.exec();
 }
 
@@ -575,6 +575,9 @@ void MainWindow::on_action_Open_Selected_Region_triggered()
 
 void MainWindow::on_action_Compute_Squared_Distance_triggered()
 {
+	ui->action_Compute_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
+	ui->action_Compute_Distance_HSV->setChecked(false);
 	enable_squared_distance = 1;
 	enable_hsv_distance = 0;
 	std::cout << "squared distance (RGB) is chosen" << std::endl;
@@ -583,6 +586,9 @@ void MainWindow::on_action_Compute_Squared_Distance_triggered()
 
 void MainWindow::on_action_Compute_Distance_triggered()
 {
+	ui->action_Compute_Squared_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
+	ui->action_Compute_Distance_HSV->setChecked(false);
 	enable_squared_distance = 0;
 	enable_hsv_distance = 0;
 	std::cout << "distance (RGB) is chosen" << std::endl;
@@ -591,6 +597,9 @@ void MainWindow::on_action_Compute_Distance_triggered()
 
 void MainWindow::on_action_Compute_Squared_Distance_HSV_triggered()
 {
+	ui->action_Compute_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance->setChecked(false);
+	ui->action_Compute_Distance_HSV->setChecked(false);
 	enable_squared_distance = 1;
 	enable_hsv_distance = 1;
 	std::cout << "squared distance (HSV) is chosen" << std::endl;
@@ -599,6 +608,9 @@ void MainWindow::on_action_Compute_Squared_Distance_HSV_triggered()
 
 void MainWindow::on_action_Compute_Distance_HSV_triggered()
 {
+	ui->action_Compute_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance->setChecked(false);
+	ui->action_Compute_Squared_Distance_HSV->setChecked(false);
 	enable_squared_distance = 0;
 	enable_hsv_distance = 1;
 	std::cout << "distance (HSV) is chosen" << std::endl;

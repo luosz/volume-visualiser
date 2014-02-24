@@ -348,11 +348,17 @@
    </property>
   </action>
   <action name="action_Compute_Squared_Distance">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Compute &amp;Squared Distance (RGB)</string>
    </property>
   </action>
   <action name="action_Compute_Distance">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Compute &amp;Distance (RGB)</string>
    </property>
@@ -378,11 +384,17 @@
    </property>
   </action>
   <action name="action_Compute_Squared_Distance_HSV">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Compute Squared Distance (HSV)</string>
    </property>
   </action>
   <action name="action_Compute_Distance_HSV">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Compute Distance (HSV)</string>
    </property>
