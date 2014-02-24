@@ -83,13 +83,13 @@ private:
 	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
-	QVTKWidget widget;
-	ctkVTKVolumePropertyWidget volumePropertywidget;
+	QVTKWidget vtk_widget;
+	ctkVTKVolumePropertyWidget volume_property_widget;
 	std::vector<double> intensity_list;
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
-	vtkSmartPointer<vtkPiecewiseFunction> opacityTransferFunction;
-	vtkSmartPointer<vtkColorTransferFunction> colorTransferFunction;
+	vtkSmartPointer<vtkPiecewiseFunction> opacity_transfer_function;
+	vtkSmartPointer<vtkColorTransferFunction> color_transfer_function;
 	double lower_bound, upper_bound;
 	double domain_x, domain_y;
 	double x_max, x_min, y_max, y_min;
@@ -149,7 +149,7 @@ private:
 		return map_to_range(n, 0, 1, 0, 255);
 	}
 
-	double get_distance_between_colour_and_pixels_with_metric(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int squared = 0, int hsv = 0)
+	double get_distance_between_colour_and_pixels_selector(double r, double g, double b, unsigned char * pixels, int count, int numComponents, int squared = 0, int hsv = 0)
 	{
 		if (squared == 1)
 		{
@@ -214,7 +214,7 @@ private:
 			// convert rgb to hsv and get the difference in hue
 			double h, s, v, h1, s1, v1;
 			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
-			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
+			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 1]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
 			double d = abs(h - h1);
 			distance += d;
 		}
@@ -230,7 +230,7 @@ private:
 			// convert rgb to hsv and get the difference in hue
 			double h, s, v, h1, s1, v1;
 			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
-			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
+			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 1]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
 			double d = (h - h1) * (h1 - h);
 			distance += d;
 		}
@@ -1203,26 +1203,26 @@ private:
 		}
 		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
-			opacityTransferFunction->RemoveAllPoints();
-			colorTransferFunction->RemoveAllPoints();
+			opacity_transfer_function->RemoveAllPoints();
+			color_transfer_function->RemoveAllPoints();
 			for (unsigned int i = 0; i < intensity_list.size(); i++)
 			{
-				opacityTransferFunction->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
-				colorTransferFunction->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
+				opacity_transfer_function->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
+				color_transfer_function->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
 			}
 		}
 	}
 
 	void updateTransferFunctionArraysFromWidgets()
 	{
-		if (colorTransferFunction->GetSize() < 1)
+		if (color_transfer_function->GetSize() < 1)
 		{
 			QMessageBox msgBox;
 			msgBox.setText("Error: vtkColorTransferFunction is empty.");
 			int ret = msgBox.exec();
 			return;
 		}
-		if (colorTransferFunction->GetSize() != opacityTransferFunction->GetSize())
+		if (color_transfer_function->GetSize() != opacity_transfer_function->GetSize())
 		{
 			QMessageBox msgBox;
 			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
@@ -1233,12 +1233,12 @@ private:
 		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
-		for (auto i = 0; i < colorTransferFunction->GetSize(); i++)
+		for (auto i = 0; i < color_transfer_function->GetSize(); i++)
 		{
 			double xrgb[6];
-			colorTransferFunction->GetNodeValue(i, xrgb);
+			color_transfer_function->GetNodeValue(i, xrgb);
 			double xa[4];
-			opacityTransferFunction->GetNodeValue(i, xa);
+			opacity_transfer_function->GetNodeValue(i, xa);
 			double opacity = xa[1];
 			double intensity = normalise_intensity(xrgb[0]);
 			std::vector<double> c;
@@ -1637,7 +1637,7 @@ private:
 			double r = colour_list[i][0];
 			double g = colour_list[i][1];
 			double b = colour_list[i][2];
-			double distance = get_distance_between_colour_and_pixels_with_metric(r, g, b, pixels, count_of_pixels, numComponents, squared_distance, hsv_distance);
+			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, count_of_pixels, numComponents, squared_distance, hsv_distance);
 			region_weight_list.push_back(distance);
 			sum += distance;
 		}

@@ -14,57 +14,39 @@ ui(new Ui::MainWindow)
 	ui->setupUi(this);
 
 	// add VTK widgets
-	ui->verticalLayout->addWidget(&widget);
-	ui->verticalLayout_2->addWidget(&volumePropertywidget);
-	//ui->verticalLayout_3->addWidget(&histogramWidget);
+	ui->verticalLayout->addWidget(&vtk_widget);
+	ui->verticalLayout_2->addWidget(&volume_property_widget);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	interactor->SetRenderWindow(widget.GetRenderWindow());
+	interactor->SetRenderWindow(vtk_widget.GetRenderWindow());
 
 	// allow the user to interactively manipulate (rotate, pan, etc.) the camera, the viewpoint of the scene.
 	auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
 	interactor->SetInteractorStyle(style);
 	interactor->SetStillUpdateRate(1);
 
-	//// connect signals to slots
-	//QObject::connect(ui->action_Open_Volume, SIGNAL(triggered()), this, SLOT(onOpenVolumeSlot()));
-	//QObject::connect(ui->action_About, SIGNAL(triggered()), this, SLOT(onAboutSlot()));
-	//QObject::connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(onExitSlot()));
-	//QObject::connect(ui->action_Append_Volume, SIGNAL(triggered()), this, SLOT(onAppendVolumeSlot()));
-	//QObject::connect(ui->action_Open_Transfer_Function, SIGNAL(triggered()), this, SLOT(onOpenTransferFunctionSlot()));
-	//QObject::connect(ui->action_Save_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSaveTransferFunctionSlot()));
-	//QObject::connect(ui->action_Open_Selected_Region, SIGNAL(triggered()), this, SLOT(onOpenSelectedRegionSlot()));
-	//QObject::connect(ui->action_Compute_Distance, SIGNAL(triggered()), this, SLOT(onComputeDistanceSlot()));
-	//QObject::connect(ui->action_Compute_Squared_Distance, SIGNAL(triggered()), this, SLOT(onComputeSquaredDistanceSlot()));
-	//QObject::connect(ui->action_Default_Transfer_Function, SIGNAL(triggered()), this, SLOT(onDefaultTransferFunctionSlot()));
-	//QObject::connect(ui->action_Spectrum_Transfer_Function, SIGNAL(triggered()), this, SLOT(onSpectrumTransferFunctionSlot()));
-	//QObject::connect(ui->action_Open_Path_and_Generate_Transfer_Functions, SIGNAL(triggered()), this, SLOT(on_Open_Path_and_Generate_Transfer_Functions_Slot()));
-	//QObject::connect(ui->action_Open_Path_and_Generate_Transfer_Functions_for_Region, SIGNAL(triggered()), this, SLOT(on_Open_Path_and_Generate_Transfer_Functions_for_Region_Slot()));
-	//QObject::connect(ui->action_Compute_Distance_HSV, SIGNAL(triggered()), this, SLOT(onComputeDistanceHSVSlot()));
-	//QObject::connect(ui->action_Compute_Squared_Distance_HSV, SIGNAL(triggered()), this, SLOT(onComputeSquaredDistanceHSVSlot()));
-
 	// Create transfer mapping scalar value to opacity.
-	opacityTransferFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
-	opacityTransferFunction->AddPoint(0.0, 0.0);
-	opacityTransferFunction->AddPoint(36.0, 0.125);
-	opacityTransferFunction->AddPoint(72.0, 0.25);
-	opacityTransferFunction->AddPoint(108.0, 0.375);
-	opacityTransferFunction->AddPoint(144.0, 0.5);
-	opacityTransferFunction->AddPoint(180.0, 0.625);
-	opacityTransferFunction->AddPoint(216.0, 0.75);
-	opacityTransferFunction->AddPoint(255.0, 0.0);
+	opacity_transfer_function = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	opacity_transfer_function->AddPoint(0.0, 0.0);
+	opacity_transfer_function->AddPoint(36.0, 0.125);
+	opacity_transfer_function->AddPoint(72.0, 0.25);
+	opacity_transfer_function->AddPoint(108.0, 0.375);
+	opacity_transfer_function->AddPoint(144.0, 0.5);
+	opacity_transfer_function->AddPoint(180.0, 0.625);
+	opacity_transfer_function->AddPoint(216.0, 0.75);
+	opacity_transfer_function->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
-	colorTransferFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
-	colorTransferFunction->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
-	colorTransferFunction->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	colorTransferFunction->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	colorTransferFunction->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	colorTransferFunction->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	colorTransferFunction->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	color_transfer_function = vtkSmartPointer<vtkColorTransferFunction>::New();
+	color_transfer_function->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
+	color_transfer_function->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	color_transfer_function->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	color_transfer_function->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	color_transfer_function->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	color_transfer_function->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	color_transfer_function->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	color_transfer_function->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	generate_default_transfer_function();
 
@@ -402,13 +384,13 @@ void MainWindow::on_action_Open_Volume_triggered()
 
 	// set up volume property
 	auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-	volumeProperty->SetColor(colorTransferFunction);
-	volumeProperty->SetScalarOpacity(opacityTransferFunction);
+	volumeProperty->SetColor(color_transfer_function);
+	volumeProperty->SetScalarOpacity(opacity_transfer_function);
 	volumeProperty->ShadeOff();
 	volumeProperty->SetInterpolationTypeToLinear();
 
 	// assign volume property to the volume property widget
-	volumePropertywidget.setVolumeProperty(volumeProperty);
+	volume_property_widget.setVolumeProperty(volumeProperty);
 
 	// The mapper that renders the volume data.
 	auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
@@ -427,7 +409,7 @@ void MainWindow::on_action_Open_Volume_triggered()
 	renderer->SetBackground(1, 1, 1);
 
 	// clean previous renderers and then add the current renderer
-	auto window = widget.GetRenderWindow();
+	auto window = vtk_widget.GetRenderWindow();
 	auto collection = window->GetRenderers();
 	auto item = collection->GetNextItem();
 	while (item != NULL)
@@ -491,7 +473,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 	shiftScale->SetOutputScalarTypeToUnsignedChar();
 
 	// get existing volumeProperty from volumePropertywidget
-	auto volumeProperty = volumePropertywidget.volumeProperty();
+	auto volumeProperty = volume_property_widget.volumeProperty();
 
 	// The mapper that renders the volume data.
 	auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
@@ -506,7 +488,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 	// add the volume into the renderer
 	renderer->AddVolume(volume);
 
-	auto window = widget.GetRenderWindow();
+	auto window = vtk_widget.GetRenderWindow();
 	window->Render();
 
 	// initialize the interactor
