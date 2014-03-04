@@ -641,7 +641,7 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 {
 	bool ok;
-	QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+	QString path = QInputDialog::getText(this, tr("Global optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
 		"D:/output/vortex/", &ok);
 	if (ok && !path.isEmpty())
@@ -730,7 +730,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered()
 {
 	bool ok;
-	QString path = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+	QString path = QInputDialog::getText(this, tr("Region-based optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
 		"D:/output/vortex/", &ok);
 	if (ok && !path.isEmpty())
