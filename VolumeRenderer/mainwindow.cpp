@@ -817,3 +817,13 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 		}
 	}
 }
+
+void MainWindow::on_action_Pick_a_colour_triggered()
+{
+	QColor colour = QColorDialog::getColor(Qt::green, this);
+	if (colour.isValid())
+	{
+		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+	}
+}

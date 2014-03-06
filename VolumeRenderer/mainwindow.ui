@@ -73,6 +73,7 @@
     <addaction name="action_Compute_Squared_Distance_HSV"/>
     <addaction name="action_Default_Transfer_Function"/>
     <addaction name="action_Spectrum_Transfer_Function"/>
+    <addaction name="action_Pick_a_colour"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -397,6 +398,11 @@
    </property>
    <property name="text">
     <string>Compute Distance (HSV)</string>
+   </property>
+  </action>
+  <action name="action_Pick_a_colour">
+   <property name="text">
+    <string>&amp;Pick a colour...</string>
    </property>
   </action>
  </widget>

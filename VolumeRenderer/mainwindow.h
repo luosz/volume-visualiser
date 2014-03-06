@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QLineEdit>
+#include <QColorDialog>
 
 #include <iostream>
 #include <memory>
@@ -1654,6 +1655,36 @@ private:
 		}
 	}
 
+	void pick_colour_and_compute_distance(int r, int g, int b)
+	{
+		// put the picked colour in the array for distance computation
+		unsigned char pixels[] = { r, g, b };
+
+		// compute region weights based on the selected image
+		region_weight_list.clear();
+		double sum = 0;
+		for (unsigned int i = 0; i<colour_list.size(); i++)
+		{
+			double r = colour_list[i][0];
+			double g = colour_list[i][1];
+			double b = colour_list[i][2];
+
+			// compute distance in hue without squaring
+			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, 1, 3, 0, 1);
+			region_weight_list.push_back(distance);
+			sum += distance;
+		}
+
+		if (sum > 0)
+		{
+			// normalize the distances
+			for (unsigned int i = 0; i < region_weight_list.size(); i++)
+			{
+				region_weight_list[i] = region_weight_list[i] / sum;
+			}
+		}
+	}
+
 	private slots:
 	void on_entropyButton_clicked();
 	void on_frequencyButton_clicked();
@@ -1683,6 +1714,7 @@ private:
 	void on_action_Spectrum_Transfer_Function_triggered();
 	void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
 	void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
+    void on_action_Pick_a_colour_triggered();
 };
 
 #endif // MAINWINDOW_H
