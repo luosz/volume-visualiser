@@ -7,11 +7,11 @@ voreenqt.info()
 
 voreen.setPropertyValue("VolumeSelector", "volumeID", 0)
 
-for i in range(0, 98):
+for i in range(0, 100):
 
     voreen.setPropertyValue("VolumeSelector", "volumeID", i)
 
-    filename = "../../../../output/vortex/%02d.mhd" % i
+    filename = "../../../../_uchar/5jet/%02d.mhd" % i
 
     voreen.setPropertyValue("VolumeSave", "outputFilename", filename)
 
