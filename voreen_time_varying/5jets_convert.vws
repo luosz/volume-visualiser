@@ -5,7 +5,8 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="VolumeFormatConversion" ref="ref2" />
+                        <item type="VolumeListSource" ref="ref0" />
+                        <item type="VolumeSelector" ref="ref1" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
@@ -16,7 +17,7 @@
             <Processors>
                 <Processor type="VolumeListSource" name="VolumeListSource" id="ref0">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-837" y="-371" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-830" y="-364" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
@@ -238,7 +239,7 @@
                 </Processor>
                 <Processor type="VolumeSelector" name="VolumeSelector" id="ref1">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-835" y="-289" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-828" y="-282" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeID" name="volumeID" value="0" />
@@ -259,7 +260,7 @@
                 </Processor>
                 <Processor type="VolumeListSource" name="VolumeListSource 2" id="ref5">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-532" y="-363" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-532" y="-361" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
@@ -484,7 +485,7 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-530" y="-282" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="volumeID" name="volumeID" value="89" />
+                        <Property mapKey="volumeID" name="volumeID" value="0" />
                     </Properties>
                     <Inports>
                         <Port name="volumecollection" direction="1" portID="volumecollection" guiName="VolumeList Input" allowMultipleConnections="false" invalidationLevel="1">
@@ -502,7 +503,7 @@
                 </Processor>
                 <Processor type="VolumeListSource" name="VolumeListSource 3" id="ref7">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-205" y="-382" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-297" y="-359" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
@@ -724,10 +725,10 @@
                 </Processor>
                 <Processor type="VolumeSelector" name="VolumeSelector 3" id="ref8">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-194" y="-294" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-286" y="-273" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="volumeID" name="volumeID" value="20" />
+                        <Property mapKey="volumeID" name="volumeID" value="0" />
                     </Properties>
                     <Inports>
                         <Port name="volumecollection" direction="1" portID="volumecollection" guiName="VolumeList Input" allowMultipleConnections="false" invalidationLevel="1">
@@ -1014,7 +1015,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref18">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="778" y="436" width="683" height="538" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="682" y="428" width="605" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
                                     <value x="1.16353285" y="1.27613139" />
                                 </MetaItem>
@@ -1106,10 +1107,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref11">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-671" y="225" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="50" y="482" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="21" y="467" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="50" y="482" />
+                            <value x="21" y="467" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
