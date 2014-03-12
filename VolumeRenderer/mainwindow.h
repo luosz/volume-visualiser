@@ -100,6 +100,8 @@ private:
 	const static int max_iteration_count = 65536;
 	int enable_squared_distance;
 	int enable_hsv_distance;
+	int colour_number_in_spectrum;
+	QString batch_patch;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -1198,6 +1200,98 @@ private:
 		}
 	}
 
+	void generate_spectrum_ramp_transfer_function(int number_of_colours = 6)
+	{
+		if (number_of_colours < 1 || number_of_colours > 256)
+		{
+			std::cout << "number_of_control_points should belongs to [1,256]" << std::endl;
+			return;
+		}
+
+		//double h, s, v, r, g, b;
+		//h = s = v = 1;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be red. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+		//h = 1/3.0;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be green. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+		//h = 2/3.0;
+		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+		//std::cout<<"this should be blue. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
+
+		int n = number_of_colours; // 1 to 6 groups of control points
+		std::vector<std::vector<double>> spectrum;
+		for (int i = 0; i < n; i++)
+		{
+			double h = i / (double)n;
+			double s, v, r, g, b;
+			s = v = 1;
+			vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+			std::vector<double> c;
+			c.push_back(r);
+			c.push_back(g);
+			c.push_back(b);
+			spectrum.push_back(c);
+		}
+
+		const int m = 3; // 3 control points each group
+		//// red, yellow, green, cyan, blue, magenta
+		//double colours[6][m] = {
+		//	{1,0,0},
+		//	{1,1,0},
+		//	{0,1,0},
+		//	{0,1,1},
+		//	{0,0,1},
+		//	{1,0,1}
+		//};
+		double interval = 1.0 / (m * n + 1);
+
+		intensity_list.clear();
+		colour_list.clear();
+		domain_x = lower_bound = 0;
+		domain_y = upper_bound = 1;
+
+		intensity_list.push_back(0);
+		{
+			std::vector<double> v;
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+
+		for (int i = 0; i < m*n; i++)
+		{
+			int colour_index = i / m;
+
+			//double opacity = (i % m == 1) ? 0.5 : 0;
+
+			// in a ramp, a control point's opacity equals its intensity
+			double opacity = (i + 1) * interval;
+
+			intensity_list.push_back(opacity);
+			{
+				std::vector<double> v;
+				v.push_back(spectrum[colour_index][0]);
+				v.push_back(spectrum[colour_index][1]);
+				v.push_back(spectrum[colour_index][2]);
+				v.push_back(opacity);
+				colour_list.push_back(v);
+			}
+		}
+
+		intensity_list.push_back(1);
+		{
+			std::vector<double> v;
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(1);
+			v.push_back(0);
+			colour_list.push_back(v);
+		}
+	}
+
 	void updateTransferFunctionWidgetsFromArrays()
 	{
 		if (intensity_list.size() == 0 || colour_list.size() == 0)
@@ -1715,6 +1809,7 @@ private:
 	void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
 	void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
     void on_action_Pick_a_colour_triggered();
+    void on_action_Spectrum_Ramp_Transfer_Function_triggered();
 };
 
 #endif // MAINWINDOW_H

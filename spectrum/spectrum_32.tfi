@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VoreenData version="1">
+    <TransFuncIntensity type="TransFuncIntensity">
+        <Keys>
+            <key type="TransFuncMappingKey">
+                <intensity value="0"/>
+                <split value="0"/>
+                <colorL r="0" g="0" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.010309278350515464"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.020618556701030927"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.030927835051546393"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.041237113402061855"/>
+                <split value="0"/>
+                <colorL r="255" g="47" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.051546391752577317"/>
+                <split value="0"/>
+                <colorL r="255" g="47" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.061855670103092786"/>
+                <split value="0"/>
+                <colorL r="255" g="47" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.072164948453608241"/>
+                <split value="0"/>
+                <colorL r="255" g="95" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.08247422680412371"/>
+                <split value="0"/>
+                <colorL r="255" g="95" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.092783505154639179"/>
+                <split value="0"/>
+                <colorL r="255" g="95" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.10309278350515463"/>
+                <split value="0"/>
+                <colorL r="255" g="143" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.1134020618556701"/>
+                <split value="0"/>
+                <colorL r="255" g="143" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.12371134020618557"/>
+                <split value="0"/>
+                <colorL r="255" g="143" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.13402061855670103"/>
+                <split value="0"/>
+                <colorL r="255" g="191" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.14432989690721648"/>
+                <split value="0"/>
+                <colorL r="255" g="191" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.15463917525773196"/>
+                <split value="0"/>
+                <colorL r="255" g="191" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.16494845360824742"/>
+                <split value="0"/>
+                <colorL r="255" g="239" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.17525773195876287"/>
+                <split value="0"/>
+                <colorL r="255" g="239" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.18556701030927836"/>
+                <split value="0"/>
+                <colorL r="255" g="239" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.19587628865979381"/>
+                <split value="0"/>
+                <colorL r="223" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.20618556701030927"/>
+                <split value="0"/>
+                <colorL r="223" g="255" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.21649484536082475"/>
+                <split value="0"/>
+                <colorL r="223" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.22680412371134021"/>
+                <split value="0"/>
+                <colorL r="175" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.23711340206185566"/>
+                <split value="0"/>
+                <colorL r="175" g="255" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.24742268041237114"/>
+                <split value="0"/>
+                <colorL r="175" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.25773195876288657"/>
+                <split value="0"/>
+                <colorL r="127" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.26804123711340205"/>
+                <split value="0"/>
+                <colorL r="127" g="255" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.27835051546391754"/>
+                <split value="0"/>
+                <colorL r="127" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.28865979381443296"/>
+                <split value="0"/>
+                <colorL r="79" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.29896907216494845"/>
+                <split value="0"/>
+                <colorL r="79" g="255" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.30927835051546393"/>
+                <split value="0"/>
+                <colorL r="79" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.31958762886597936"/>
+                <split value="0"/>
+                <colorL r="31" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.32989690721649484"/>
+                <split value="0"/>
+                <colorL r="31" g="255" b="0" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.34020618556701032"/>
+                <split value="0"/>
+                <colorL r="31" g="255" b="0" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.35051546391752575"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="15" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.36082474226804123"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="15" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.37113402061855671"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="15" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.38144329896907214"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="63" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.39175257731958762"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="63" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.40206185567010311"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="63" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.41237113402061853"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="111" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.42268041237113402"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="111" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.4329896907216495"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="111" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.44329896907216493"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="159" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.45360824742268041"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="159" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.46391752577319589"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="159" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.47422680412371132"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="207" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.4845360824742268"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="207" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.49484536082474229"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="207" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.50515463917525771"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.51546391752577314"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.52577319587628868"/>
+                <split value="0"/>
+                <colorL r="0" g="255" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.53608247422680411"/>
+                <split value="0"/>
+                <colorL r="0" g="207" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.54639175257731953"/>
+                <split value="0"/>
+                <colorL r="0" g="207" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.55670103092783507"/>
+                <split value="0"/>
+                <colorL r="0" g="207" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.5670103092783505"/>
+                <split value="0"/>
+                <colorL r="0" g="159" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.57731958762886593"/>
+                <split value="0"/>
+                <colorL r="0" g="159" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.58762886597938147"/>
+                <split value="0"/>
+                <colorL r="0" g="159" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.59793814432989689"/>
+                <split value="0"/>
+                <colorL r="0" g="111" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.60824742268041232"/>
+                <split value="0"/>
+                <colorL r="0" g="111" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.61855670103092786"/>
+                <split value="0"/>
+                <colorL r="0" g="111" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.62886597938144329"/>
+                <split value="0"/>
+                <colorL r="0" g="63" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.63917525773195871"/>
+                <split value="0"/>
+                <colorL r="0" g="63" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.64948453608247425"/>
+                <split value="0"/>
+                <colorL r="0" g="63" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.65979381443298968"/>
+                <split value="0"/>
+                <colorL r="0" g="15" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.67010309278350511"/>
+                <split value="0"/>
+                <colorL r="0" g="15" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.68041237113402064"/>
+                <split value="0"/>
+                <colorL r="0" g="15" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.69072164948453607"/>
+                <split value="0"/>
+                <colorL r="31" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.7010309278350515"/>
+                <split value="0"/>
+                <colorL r="31" g="0" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.71134020618556704"/>
+                <split value="0"/>
+                <colorL r="31" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.72164948453608246"/>
+                <split value="0"/>
+                <colorL r="79" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.73195876288659789"/>
+                <split value="0"/>
+                <colorL r="79" g="0" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.74226804123711343"/>
+                <split value="0"/>
+                <colorL r="79" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.75257731958762886"/>
+                <split value="0"/>
+                <colorL r="127" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.76288659793814428"/>
+                <split value="0"/>
+                <colorL r="127" g="0" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.77319587628865982"/>
+                <split value="0"/>
+                <colorL r="127" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.78350515463917525"/>
+                <split value="0"/>
+                <colorL r="175" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.79381443298969068"/>
+                <split value="0"/>
+                <colorL r="175" g="0" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.80412371134020622"/>
+                <split value="0"/>
+                <colorL r="175" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.81443298969072164"/>
+                <split value="0"/>
+                <colorL r="223" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.82474226804123707"/>
+                <split value="0"/>
+                <colorL r="223" g="0" b="255" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.83505154639175261"/>
+                <split value="0"/>
+                <colorL r="223" g="0" b="255" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.84536082474226804"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="239" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.85567010309278346"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="239" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.865979381443299"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="239" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.87628865979381443"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="191" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.88659793814432986"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="191" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.89690721649484539"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="191" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.90721649484536082"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="143" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.91752577319587625"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="143" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.92783505154639179"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="143" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.93814432989690721"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="95" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.94845360824742264"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="95" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.95876288659793818"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="95" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.96907216494845361"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="47" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.97938144329896903"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="47" a="127"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="0.98969072164948457"/>
+                <split value="0"/>
+                <colorL r="255" g="0" b="47" a="0"/>
+            </key>
+            <key type="TransFuncMappingKey">
+                <intensity value="1"/>
+                <split value="0"/>
+                <colorL r="255" g="255" b="255" a="0"/>
+            </key>
+        </Keys>
+        <lower value="0"/>
+        <upper value="1"/>
+        <domain x="0" y="1"/>
+    </TransFuncIntensity>
+</VoreenData>

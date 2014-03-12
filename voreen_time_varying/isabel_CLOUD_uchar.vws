@@ -76,7 +76,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref9">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="60" y="139" width="683" height="538" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="892" y="99" width="683" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
                                     <value x="0" y="1" />
                                 </MetaItem>
@@ -88,62 +88,44 @@
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
                                         <colorL r="0" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.07692308" split="false">
+                                        <colorL r="255" g="0" b="0" a="19" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
-                                        <colorL r="255" g="0" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.15384616" split="false">
+                                        <colorL r="255" g="0" b="0" a="39" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.23076923" split="false">
+                                        <colorL r="255" g="0" b="0" a="58" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
-                                        <colorL r="255" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.30769232" split="false">
+                                        <colorL r="127" g="255" b="0" a="78" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
-                                        <colorL r="255" g="255" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.38461539" split="false">
+                                        <colorL r="127" g="255" b="0" a="98" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
-                                        <colorL r="255" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.46153846" split="false">
+                                        <colorL r="127" g="255" b="0" a="117" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
-                                        <colorL r="0" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.53846157" split="false">
+                                        <colorL r="0" g="255" b="255" a="137" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
-                                        <colorL r="0" g="255" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.61538464" split="false">
+                                        <colorL r="0" g="255" b="255" a="156" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
-                                        <colorL r="0" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.69230771" split="false">
+                                        <colorL r="0" g="255" b="255" a="176" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.76923078" split="false">
+                                        <colorL r="127" g="0" b="255" a="196" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
-                                        <colorL r="0" g="255" b="255" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.84615386" split="false">
+                                        <colorL r="127" g="0" b="255" a="215" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
-                                        <colorL r="0" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
-                                        <colorL r="0" g="0" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
-                                        <colorL r="0" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
-                                        <colorL r="255" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
-                                        <colorL r="255" g="0" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
-                                        <colorL r="255" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.92307693" split="false">
+                                        <colorL r="127" g="0" b="255" a="235" />
                                     </key>
                                     <key type="TransFuncMappingKey" intensity="1" split="false">
-                                        <colorL r="255" g="255" b="255" a="0" />
+                                        <colorL r="255" g="255" b="255" a="255" />
                                     </key>
                                 </Keys>
                             </TransferFunction>
@@ -314,62 +296,44 @@
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
                                         <colorL r="0" g="0" b="0" a="0" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.052632" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.07692308" split="false">
+                                        <colorL r="255" g="0" b="0" a="19" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.105263" split="false">
-                                        <colorL r="255" g="0" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.15384616" split="false">
+                                        <colorL r="255" g="0" b="0" a="39" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.157895" split="false">
-                                        <colorL r="255" g="0" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.23076923" split="false">
+                                        <colorL r="255" g="0" b="0" a="58" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.210526" split="false">
-                                        <colorL r="255" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.30769232" split="false">
+                                        <colorL r="127" g="255" b="0" a="78" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.26315799" split="false">
-                                        <colorL r="255" g="255" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.38461539" split="false">
+                                        <colorL r="127" g="255" b="0" a="98" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.31578901" split="false">
-                                        <colorL r="255" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.46153846" split="false">
+                                        <colorL r="127" g="255" b="0" a="117" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.36842099" split="false">
-                                        <colorL r="0" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.53846157" split="false">
+                                        <colorL r="0" g="255" b="255" a="137" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.42105299" split="false">
-                                        <colorL r="0" g="255" b="0" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.61538464" split="false">
+                                        <colorL r="0" g="255" b="255" a="156" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.47368401" split="false">
-                                        <colorL r="0" g="255" b="0" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.69230771" split="false">
+                                        <colorL r="0" g="255" b="255" a="176" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.52631599" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.76923078" split="false">
+                                        <colorL r="127" g="0" b="255" a="196" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.57894701" split="false">
-                                        <colorL r="0" g="255" b="255" a="127" />
+                                    <key type="TransFuncMappingKey" intensity="0.84615386" split="false">
+                                        <colorL r="127" g="0" b="255" a="215" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.63157898" split="false">
-                                        <colorL r="0" g="255" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.68421102" split="false">
-                                        <colorL r="0" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.73684198" split="false">
-                                        <colorL r="0" g="0" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.78947401" split="false">
-                                        <colorL r="0" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.84210497" split="false">
-                                        <colorL r="255" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.89473701" split="false">
-                                        <colorL r="255" g="0" b="255" a="127" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="0.94736803" split="false">
-                                        <colorL r="255" g="0" b="255" a="0" />
+                                    <key type="TransFuncMappingKey" intensity="0.92307693" split="false">
+                                        <colorL r="127" g="0" b="255" a="235" />
                                     </key>
                                     <key type="TransFuncMappingKey" intensity="1" split="false">
-                                        <colorL r="255" g="255" b="255" a="0" />
+                                        <colorL r="255" g="255" b="255" a="255" />
                                     </key>
                                 </Keys>
                             </TransferFunction>
@@ -453,104 +417,104 @@
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
                             <VolumeURLs>
-                                <url value="../../../../output/isabel/00.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/01.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/02.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/03.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/04.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/05.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/06.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/07.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/08.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/09.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/10.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/11.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/12.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/13.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/14.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/15.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/16.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/17.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/18.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/19.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/20.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/21.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/22.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/23.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/24.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/25.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/26.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/27.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/28.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/29.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/30.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/31.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/32.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/33.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/34.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/35.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/36.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/37.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/38.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/39.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/40.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/41.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/42.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/43.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/44.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/45.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/46.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../output/isabel/47.mhd?preferredReader=MhdVolumeReader" />
+                                <url value="../../../../_uchar/isabel_CLOUD/00.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/01.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/02.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/03.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/04.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/05.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/06.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/07.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/08.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/09.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/10.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/11.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/12.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/13.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/14.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/15.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/16.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/17.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/18.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/19.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/20.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/21.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/22.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/23.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/24.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/25.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/26.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/27.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/28.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/29.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/30.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/31.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/32.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/33.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/34.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/35.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/36.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/37.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/38.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/39.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/40.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/41.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/42.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/43.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/44.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/45.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/46.mhd" />
+                                <url value="../../../../_uchar/isabel_CLOUD/47.mhd" />
                             </VolumeURLs>
                             <Selection>
-                                <entry url="../../../../output/isabel/00.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/01.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/02.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/03.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/04.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/05.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/06.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/07.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/08.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/09.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/10.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/11.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/12.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/13.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/14.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/15.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/16.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/17.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/18.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/19.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/20.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/21.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/22.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/23.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/24.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/25.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/26.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/27.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/28.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/29.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/30.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/31.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/32.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/33.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/34.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/35.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/36.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/37.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/38.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/39.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/40.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/41.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/42.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/43.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/44.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/45.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/46.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../output/isabel/47.mhd?preferredReader=MhdVolumeReader" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/00.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/01.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/02.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/03.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/04.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/05.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/06.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/07.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/08.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/09.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/10.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/11.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/12.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/13.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/14.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/15.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/16.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/17.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/18.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/19.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/20.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/21.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/22.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/23.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/24.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/25.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/26.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/27.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/28.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/29.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/30.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/31.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/32.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/33.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/34.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/35.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/36.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/37.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/38.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/39.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/40.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/41.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/42.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/43.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/44.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/45.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/46.mhd" value="true" />
+                                <entry url="../../../../_uchar/isabel_CLOUD/47.mhd" value="true" />
                             </Selection>
                         </Property>
                     </Properties>
@@ -588,10 +552,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref2">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-463" y="187" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="4" y="9" width="1024" height="1015" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="250" y="170" width="1024" height="1015" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="4" y="9" />
+                            <value x="250" y="170" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="1024" y="1015" />

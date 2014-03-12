@@ -3,6 +3,11 @@
     <Workspace version="2" GlobalDescription="">
         <ProcessorNetwork version="15">
             <MetaData>
+                <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
+                    <values>
+                        <item type="VolumeMasking" ref="ref2" />
+                    </values>
+                </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
                     <value x="-1008.88201904" y="-668.94451904" />
                 </MetaItem>
@@ -16,104 +21,104 @@
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
                             <VolumeURLs>
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf01.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf02.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf03.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf04.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf05.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf06.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf07.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf08.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf09.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf10.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf11.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf12.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf13.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf14.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf15.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf16.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf17.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf18.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf19.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf20.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf21.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf22.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf23.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf24.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf25.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf26.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf27.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf28.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf29.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf30.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf31.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf32.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf33.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf34.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf35.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf36.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf37.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf38.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf39.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf40.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf41.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf42.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf43.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf44.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf45.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf46.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf47.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
-                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf48.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf01.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf02.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf03.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf04.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf05.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf06.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf07.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf08.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf09.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf10.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf11.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf12.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf13.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf14.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf15.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf16.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf17.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf18.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf19.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf20.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf21.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf22.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf23.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf24.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf25.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf26.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf27.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf28.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf29.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf30.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf31.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf32.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf33.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf34.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf35.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf36.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf37.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf38.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf39.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf40.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf41.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf42.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf43.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf44.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf45.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf46.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf47.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
+                                <url value="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf48.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" />
                             </VolumeURLs>
                             <Selection>
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf01.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf02.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf03.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf04.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf05.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf06.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf07.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf08.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf09.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf10.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf11.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf12.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf13.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf14.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf15.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf16.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf17.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf18.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf19.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf20.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf21.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf22.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf23.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf24.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf25.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf26.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf27.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf28.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf29.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf30.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf31.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf32.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf33.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf34.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf35.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf36.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf37.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf38.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf39.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf40.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf41.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf42.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf43.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf44.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf45.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf46.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf47.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
-                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/QVAPOR/QVAPORf48.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf01.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf02.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf03.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf04.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf05.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf06.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf07.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf08.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf09.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf10.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf11.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf12.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf13.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf14.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf15.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf16.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf17.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf18.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf19.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf20.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf21.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf22.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf23.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf24.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf25.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf26.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf27.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf28.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf29.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf30.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf31.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf32.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf33.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf34.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf35.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf36.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf37.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf38.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf39.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf40.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf41.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf42.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf43.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf44.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf45.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf46.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf47.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
+                                <entry url="raw://../../../../_time_varying_data/sciviscontest_2004_isabel/TC/TCf48.bin?bigEndian=1&amp;dim_x=500&amp;dim_y=500&amp;dim_z=100&amp;format=FLOAT&amp;headerskip=0&amp;objectModel=I&amp;spacing_x=1&amp;spacing_y=1&amp;spacing_z=1&amp;timeframe=0" value="true" />
                             </Selection>
                         </Property>
                     </Properties>
@@ -129,7 +134,7 @@
                 </Processor>
                 <Processor type="VolumeSelector" name="VolumeSelector" id="ref1">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1279" y="-801" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1280" y="-805" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="volumeID" name="volumeID" value="47" />
@@ -179,11 +184,11 @@
                 </Processor>
                 <Processor type="VolumeSave" name="VolumeSave" id="ref6">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1269" y="-524" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1269" y="-529" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="continousSave" name="continousSave" value="false" />
-                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../_uchar/isabel_QVAPOR/47.mhd" />
+                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../_uchar/isabel_TC/47.mhd" />
                         <Property mapKey="save" name="save" />
                         <Property mapKey="saveOnPathChange" name="saveOnPathChange" value="true" />
                         <Property mapKey="volumeInfo" name="volumeInfo" />
@@ -225,7 +230,7 @@
                                 </MetaItem>
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="0.021656" />
+                                <domain x="0" y="1" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
@@ -348,10 +353,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref9">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1064" y="-535" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="168" y="209" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="39" y="95" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="168" y="209" />
+                            <value x="39" y="95" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
@@ -441,13 +446,13 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref20">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="148" y="424" width="683" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
-                                    <value x="0" y="0.021656" />
+                                    <value x="0" y="0" />
                                 </MetaItem>
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="0.021656" />
+                                <domain x="0" y="1" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
@@ -635,7 +640,7 @@
                 </Processor>
                 <Processor type="CubeProxyGeometry" name="CubeProxyGeometry" id="ref10">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-836" y="-857" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-827" y="-862" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="backClippingPlane" name="backClippingPlane" value="499" />
@@ -734,7 +739,7 @@
                 </Processor>
                 <Processor type="SimpleRaycaster" name="SimpleRaycaster" id="ref12">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-834" y="-688" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-842" y="-692" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="camera" name="camera" projectionMode="1" maxValue="500" minValue="0.01" frustLeft="-0.00165685" frustRight="0.00165685" frustBottom="-0.00165685" frustTop="0.00165685" frustNear="0.004" frustFar="502" fovy="45.00000381" eyeMode="1" eyeSeparation="1" axisMode="0" stereoFocalLengh="600" stereoWidth="450" stereoRelativeFocalLength="0.05" useRealWorldFrustum="0" centerOption="0" adaptOnChange="true" id="ref23">
@@ -761,13 +766,13 @@
                         </Property>
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="291" y="527" width="683" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
-                                    <value x="0" y="0.021656" />
+                                    <value x="0" y="0" />
                                 </MetaItem>
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="0.021656" />
+                                <domain x="0" y="1" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
@@ -879,7 +884,7 @@
                 <Processor type="Canvas" name="Canvas 2" id="ref14">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-838" y="-535" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="965" y="468" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="572" y="97" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
                             <value x="949" y="501" />
@@ -912,7 +917,7 @@
                 </Processor>
                 <Processor type="VolumeMasking" name="VolumeMasking" id="ref2">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1260" y="-722" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-944" y="-962" />
                     </MetaData>
                     <Properties>
                         <Property mapKey="clearCache" name="clearCache" />
@@ -920,25 +925,25 @@
                         <Property mapKey="enableProcessing" name="enableProcessing" value="true" />
                         <Property mapKey="maskFunction" name="maskFunction" domainFittingStrategy="1">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="194" y="156" width="683" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
-                                    <value x="0.00000091" y="100000004091847890000000000000000000" />
+                                    <value x="-78.2247467" y="100000004091847890000000000000000000" />
                                 </MetaItem>
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="200000008183695770000000000000000000" />
+                                <domain x="-83.00402069" y="9999999" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
+                                        <colorL r="0" g="0" b="0" a="0" />
+                                    </key>
+                                    <key type="TransFuncMappingKey" intensity="0.00000001" split="false">
                                         <colorL r="255" g="0" b="0" a="64" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.02368" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.0000115" split="false">
                                         <colorL r="0" g="255" b="0" a="64" />
                                     </key>
-                                    <key type="TransFuncMappingKey" intensity="0.023681" split="false">
-                                        <colorL r="0" g="0" b="255" a="0" />
-                                    </key>
-                                    <key type="TransFuncMappingKey" intensity="1" split="false">
+                                    <key type="TransFuncMappingKey" intensity="0.00001151" split="false">
                                         <colorL r="255" g="255" b="255" a="0" />
                                     </key>
                                 </Keys>
@@ -1101,7 +1106,7 @@
                         <Processor type="VolumeMasking" ref="ref2" />
                     </Outport>
                     <Inport name="volumehandle.volumehandle">
-                        <Processor type="CubeProxyGeometry" ref="ref10" />
+                        <Processor type="SimpleRaycaster" ref="ref12" />
                     </Inport>
                 </Connection>
                 <Connection>
@@ -1109,7 +1114,7 @@
                         <Processor type="VolumeMasking" ref="ref2" />
                     </Outport>
                     <Inport name="volumehandle.volumehandle">
-                        <Processor type="SimpleRaycaster" ref="ref12" />
+                        <Processor type="CubeProxyGeometry" ref="ref10" />
                     </Inport>
                 </Connection>
             </Connections>

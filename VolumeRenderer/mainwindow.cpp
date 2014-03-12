@@ -62,6 +62,8 @@ ui(new Ui::MainWindow)
 	// should not be used before initialization
 	count_of_voxels = 0;
 	volume_ptr = NULL;
+	colour_number_in_spectrum = 8;
+	batch_patch = "D:/_uchar/isabel_QVAPOR/";
 }
 
 MainWindow::~MainWindow()
@@ -629,21 +631,24 @@ void MainWindow::on_action_Default_Transfer_Function_triggered()
 void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 {
 	bool ok;
-	int n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), 8, 1, 256, 1, &ok);
+	int n = colour_number_in_spectrum;
+	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
 		std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTransferFunctionWidgetsFromArrays();
+		colour_number_in_spectrum = n;
 	}
 }
 
 void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 {
 	bool ok;
-	QString path = QInputDialog::getText(this, tr("Global optimization"),
+	QString path = batch_patch;
+	path = QInputDialog::getText(this, tr("Global optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
-		"D:/output/vortex/", &ok);
+		path, &ok);
 	if (ok && !path.isEmpty())
 	{
 		// get filename separator position
@@ -675,13 +680,16 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			return;
 		}
 
+		// save the path for next time
+		batch_patch = path;
+
 		// get filenames under the folder
 		QDir dir = QDir(filepath);
 		QStringList files = dir.entryList(QStringList(filename),
 			QDir::Files | QDir::NoSymLinks);
 
-		// spectrum number for transfer function generation
-		const int n = 6;
+		//// spectrum number for transfer function generation
+		//const int n = 6;
 
 		for (int i = 0; i < files.size(); i++)
 		{
@@ -689,7 +697,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			open_volume_no_rendering(filepath + files[i]);
 
 			// generate a spectrum transfer function with n groups of control points
-			generate_spectrum_transfer_function(n);
+			generate_spectrum_transfer_function(colour_number_in_spectrum);
 			updateTransferFunctionWidgetsFromArrays();
 
 			// optimise the transfer function
@@ -730,9 +738,10 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered()
 {
 	bool ok;
-	QString path = QInputDialog::getText(this, tr("Region-based optimization"),
+	QString path = batch_patch;
+	path = QInputDialog::getText(this, tr("Region-based optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
-		"D:/output/vortex/", &ok);
+		path, &ok);
 	if (ok && !path.isEmpty())
 	{
 		// get filename separator position
@@ -763,13 +772,16 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			return;
 		}
 
+		// save the path for next time
+		batch_patch = path;
+
 		// get filenames under the folder
 		QDir dir = QDir(filepath);
 		QStringList files = dir.entryList(QStringList(filename),
 			QDir::Files | QDir::NoSymLinks);
 
-		// spectrum number for transfer function generation
-		const int n = 6;
+		//// spectrum number for transfer function generation
+		//const int n = 6;
 
 		for (int i = 0; i < files.size(); i++)
 		{
@@ -777,7 +789,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			open_volume_no_rendering(filepath + files[i]);
 
 			// generate a spectrum transfer function with n groups of control points
-			generate_spectrum_transfer_function(n);
+			generate_spectrum_transfer_function(colour_number_in_spectrum);
 			updateTransferFunctionWidgetsFromArrays();
 
 			// compute region-based difference factors
@@ -825,5 +837,19 @@ void MainWindow::on_action_Pick_a_colour_triggered()
 	{
 		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+	}
+}
+
+void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
+{
+	bool ok;
+	int n = colour_number_in_spectrum;
+	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
+	if (ok)
+	{
+		std::cout << "QInputDialog::getInteger() " << n << std::endl;
+		generate_spectrum_ramp_transfer_function(n);
+		updateTransferFunctionWidgetsFromArrays();
+		colour_number_in_spectrum = n;
 	}
 }
