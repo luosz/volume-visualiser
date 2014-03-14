@@ -57,13 +57,15 @@ ui(new Ui::MainWindow)
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
-	on_action_Compute_Distance_HSV_triggered();
-
 	// should not be used before initialization
 	count_of_voxels = 0;
 	volume_ptr = NULL;
 	colour_number_in_spectrum = 8;
 	batch_patch = "D:/_uchar/isabel_QVAPOR/";
+
+	generate_spectrum_ramp_transfer_function_and_check_menu_item();
+
+	on_action_Compute_Distance_HSV_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -630,6 +632,9 @@ void MainWindow::on_action_Default_Transfer_Function_triggered()
 
 void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 {
+	ui->action_Spectrum_Ramp_Transfer_Function->setChecked(false);
+	ui->action_Spectrum_Transfer_Function->setChecked(true);
+	enable_spectrum_ramp = 0;
 	bool ok;
 	int n = colour_number_in_spectrum;
 	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
@@ -697,7 +702,14 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			open_volume_no_rendering(filepath + files[i]);
 
 			// generate a spectrum transfer function with n groups of control points
-			generate_spectrum_transfer_function(colour_number_in_spectrum);
+			if (enable_spectrum_ramp == 0)
+			{
+				generate_spectrum_transfer_function(colour_number_in_spectrum);
+			}
+			else
+			{
+				generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
+			}
 			updateTransferFunctionWidgetsFromArrays();
 
 			// optimise the transfer function
@@ -789,7 +801,14 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			open_volume_no_rendering(filepath + files[i]);
 
 			// generate a spectrum transfer function with n groups of control points
-			generate_spectrum_transfer_function(colour_number_in_spectrum);
+			if (enable_spectrum_ramp == 0)
+			{
+				generate_spectrum_transfer_function(colour_number_in_spectrum);
+			} 
+			else
+			{
+				generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
+			}
 			updateTransferFunctionWidgetsFromArrays();
 
 			// compute region-based difference factors
@@ -842,6 +861,9 @@ void MainWindow::on_action_Pick_a_colour_triggered()
 
 void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
 {
+	ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
+	ui->action_Spectrum_Transfer_Function->setChecked(false);
+	enable_spectrum_ramp = 1;
 	bool ok;
 	int n = colour_number_in_spectrum;
 	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);

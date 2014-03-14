@@ -102,6 +102,7 @@ private:
 	int enable_hsv_distance;
 	int colour_number_in_spectrum;
 	QString batch_patch;
+	int enable_spectrum_ramp;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -1287,7 +1288,7 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			v.push_back(0);
+			v.push_back(1);
 			colour_list.push_back(v);
 		}
 	}
@@ -1777,6 +1778,24 @@ private:
 				region_weight_list[i] = region_weight_list[i] / sum;
 			}
 		}
+	}
+
+	void generate_spectrum_transfer_function_and_check_menu_item()
+	{
+		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(false);
+		ui->action_Spectrum_Transfer_Function->setChecked(true);
+		enable_spectrum_ramp = 0;
+		generate_spectrum_transfer_function(colour_number_in_spectrum);
+		updateTransferFunctionWidgetsFromArrays();
+	}
+
+	void generate_spectrum_ramp_transfer_function_and_check_menu_item()
+	{
+		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
+		ui->action_Spectrum_Transfer_Function->setChecked(false);
+		enable_spectrum_ramp = 1;
+		generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
+		updateTransferFunctionWidgetsFromArrays();
 	}
 
 	private slots:

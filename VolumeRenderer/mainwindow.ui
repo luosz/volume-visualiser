@@ -371,6 +371,12 @@
    </property>
   </action>
   <action name="action_Spectrum_Transfer_Function">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Spectrum Transfer Function</string>
    </property>
@@ -407,6 +413,9 @@
    </property>
   </action>
   <action name="action_Spectrum_Ramp_Transfer_Function">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Spectrum &amp;Ramp Transfer Function</string>
    </property>
