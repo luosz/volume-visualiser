@@ -4,64 +4,69 @@ Created on 14 Mar 2014
 @author: JoeShengzhou
 '''
 
-# print "hello"
-
 import xml.etree.ElementTree as ET
+
 tree = ET.parse("standard.tfi")
 root = tree.getroot()
 
 TransFuncIntensity = root.find("TransFuncIntensity")
-print TransFuncIntensity
 domain = TransFuncIntensity.find("domain")
+domain_x = domain.get("x")
+domain_y = domain.get("y")
 threshold = TransFuncIntensity.find("threshold")
-print domain.get("x"), domain.get("y")
-print threshold.get("x"), threshold.get("y")
+threshold_x = threshold.get("x")
+threshold_y = threshold.get("y")
 
-# for key in root.iter('key'):
-#     print key.find("intensity").get("value"), key.find("split").get("value")
-#     colour = key.find("colorL")
-#     print colour.get("r"), colour.get("g"), colour.get("b"), colour.get("a")
+list_intensity = []
+list_split = []
+list_r = []
+list_g = []
+list_b = []
+list_a = []
 
-
+for key in root.iter('key'):
+    colour = key.find("colorL")
+    list_intensity.append(key.find("intensity").get("value"))
+    list_split.append(key.find("split").get("value"))
+    list_r.append(colour.get("r"))
+    list_g.append(colour.get("g"))
+    list_b.append(colour.get("b"))
+    list_a.append(colour.get("a"))
 
 # build xml tree
-root = ET.Element("root")
-doc = ET.SubElement(root, "doc")
-field1 = ET.SubElement(doc, "field1")
-field1.set("name", "blah")
-field1.text = "some value1"
-field2 = ET.SubElement(doc, "field2")
-field2.set("name", "asdfasd")
-field2.text = "some vlaue2"
-tree = ET.ElementTree(root)
-# tree.write("filename.xml")
+root1 = ET.Element("VoreenData")
+root1.set("version", "1")
+TransFuncIntensity1 = ET.SubElement(root1, "TransFuncIntensity")
+TransFuncIntensity1.set("type", "TransFuncIntensity")
+domain1 = ET.SubElement(TransFuncIntensity1, "domain")
+domain1.set("x", domain_x)
+domain1.set("y", domain_y)
+threshold1 = ET.SubElement(TransFuncIntensity1, "threshold")
+threshold1.set("x", threshold_x)
+threshold1.set("y", threshold_y)
+Keys1 = ET.SubElement(TransFuncIntensity1, "Keys")
 
-# from xml.etree.ElementTree import Element, tostring
-#  
-# document = Element('outer')
-# node = ET.SubElement(document, 'inner')
-# node.NewValue = 1
-# print tostring(document)
+for i in range(len(list_intensity)):
+    print i
+    print list_intensity[i], list_split[i], list_r[i], list_g[i], list_b[i], list_a[i]
+     
+    key1 = ET.SubElement(Keys1, "key")
+    key1.set("type", "TransFuncMappingKey")
+    intensity1 = ET.SubElement(key1, "intensity")
+    intensity1.set("value", list_intensity[i])
+    split1 = ET.SubElement(key1, "split")
+    split1.set("value", list_split[i])
+    colorL1 = ET.SubElement(key1, "colorL")
+    colorL1.set("r", list_r[i])
+    colorL1.set("g", list_g[i])
+    colorL1.set("b", list_b[i])
+    colorL1.set("a", list_a[i])
 
-# from xml.etree.ElementTree import ElementTree
-
-# et = ET.ElementTree(root)
-# 
-# f = open("test.xml", "w")
-# et.write(f, encoding='utf-8', xml_declaration=True) 
-# f.close()
-
-xml_string = ET.tostring(root)
-# print xml_string
-
+xml_string = ET.tostring(root1)
 import xml.dom.minidom as MD
 xml =  MD.parseString(xml_string)
 pretty_xml_as_string = xml.toprettyxml()
-# print pretty_xml_as_string
-
 root2 = ET.fromstring(pretty_xml_as_string)
-# print root2
 et2 = ET.ElementTree(root2)
-f2 = open("test2.xml", "w")
-et2.write(f2, encoding='utf-8', xml_declaration=True) 
-f2.close()
+et2.write("tree_pretty.xml", encoding='utf-8', xml_declaration=True)
+
