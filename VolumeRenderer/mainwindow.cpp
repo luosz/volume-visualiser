@@ -1,4 +1,3 @@
-#include <QTime>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "voxel_utility.h"
@@ -60,12 +59,14 @@ ui(new Ui::MainWindow)
 	// should not be used before initialization
 	count_of_voxels = 0;
 	volume_ptr = NULL;
-	colour_number_in_spectrum = 8;
+	number_of_colours_in_spectrum = 8;
 	batch_patch = "D:/_uchar/isabel_QVAPOR/";
 
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 
 	on_action_Compute_Distance_HSV_triggered();
+
+	draw_spectrum();
 }
 
 MainWindow::~MainWindow()
@@ -636,14 +637,15 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 	ui->action_Spectrum_Transfer_Function->setChecked(true);
 	enable_spectrum_ramp = 0;
 	bool ok;
-	int n = colour_number_in_spectrum;
+	int n = number_of_colours_in_spectrum;
 	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
 		std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTransferFunctionWidgetsFromArrays();
-		colour_number_in_spectrum = n;
+		//colour_number_in_spectrum = n;
+		set_colour_number_in_spectrum(n);
 	}
 }
 
@@ -704,11 +706,11 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			// generate a spectrum transfer function with n groups of control points
 			if (enable_spectrum_ramp == 0)
 			{
-				generate_spectrum_transfer_function(colour_number_in_spectrum);
+				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
 			}
 			else
 			{
-				generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
+				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
 			}
 			updateTransferFunctionWidgetsFromArrays();
 
@@ -803,11 +805,11 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			// generate a spectrum transfer function with n groups of control points
 			if (enable_spectrum_ramp == 0)
 			{
-				generate_spectrum_transfer_function(colour_number_in_spectrum);
+				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
 			} 
 			else
 			{
-				generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
+				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
 			}
 			updateTransferFunctionWidgetsFromArrays();
 
@@ -849,7 +851,25 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 	}
 }
 
-void MainWindow::on_action_Pick_a_colour_triggered()
+void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
+{
+	ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
+	ui->action_Spectrum_Transfer_Function->setChecked(false);
+	enable_spectrum_ramp = 1;
+	bool ok;
+	int n = number_of_colours_in_spectrum;
+	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
+	if (ok)
+	{
+		std::cout << "QInputDialog::getInteger() " << n << std::endl;
+		generate_spectrum_ramp_transfer_function(n);
+		updateTransferFunctionWidgetsFromArrays();
+		//colour_number_in_spectrum = n;
+		set_colour_number_in_spectrum(n);
+	}
+}
+
+void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggered()
 {
 	QColor colour = QColorDialog::getColor(Qt::green, this);
 	if (colour.isValid())
@@ -857,21 +877,24 @@ void MainWindow::on_action_Pick_a_colour_triggered()
 		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 	}
+
+	// optimise the transfer function for the selected colour
+	updateTransferFunctionArraysFromWidgets();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > max_iteration_count)
+	{
+		n = 1;
+	}
+	while (n-- > 0)
+	{
+		balance_opacity_for_region();
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	updateTransferFunctionArraysFromWidgets();
 }
 
-void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
+void MainWindow::on_action_Test_triggered()
 {
-	ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
-	ui->action_Spectrum_Transfer_Function->setChecked(false);
-	enable_spectrum_ramp = 1;
-	bool ok;
-	int n = colour_number_in_spectrum;
-	n = QInputDialog::getInt(this, tr("QInputDialog::getInteger()"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
-	if (ok)
-	{
-		std::cout << "QInputDialog::getInteger() " << n << std::endl;
-		generate_spectrum_ramp_transfer_function(n);
-		updateTransferFunctionWidgetsFromArrays();
-		colour_number_in_spectrum = n;
-	}
+	QGraphicsScene *scene = getGraphicsScene_for_spectrum();
+	std::cout << "width=" << scene->width() << " height=" << scene->height() << std::endl;
 }

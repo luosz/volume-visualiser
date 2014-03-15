@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QColorDialog>
+#include <QTime>
 
 #include <iostream>
 #include <memory>
@@ -58,6 +59,7 @@
 
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
+#include "MyQGraphicsScene.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -75,6 +77,32 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+	void optimise_transfer_function_for_colour(QColor colour)
+	{
+
+		//QColor colour = QColorDialog::getColor(Qt::green, this);
+		//if (colour.isValid())
+		//{
+		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
+		//}
+
+		// optimise the transfer function for the selected colour
+		updateTransferFunctionArraysFromWidgets();
+		int n = ui->spinBox->value();
+		if (n < 1 || n > max_iteration_count)
+		{
+			n = 1;
+		}
+		while (n-- > 0)
+		{
+			balance_opacity_for_region();
+		}
+		updateTransferFunctionWidgetsFromArrays();
+		updateTransferFunctionArraysFromWidgets();
+	}
+
 private:
 	Ui::MainWindow *ui;
 
@@ -91,7 +119,7 @@ private:
 	std::vector<double> frequency_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacity_transfer_function;
 	vtkSmartPointer<vtkColorTransferFunction> color_transfer_function;
-	double lower_bound, upper_bound;
+	double threshold_x, threshold_y;
 	double domain_x, domain_y;
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
@@ -100,7 +128,7 @@ private:
 	const static int max_iteration_count = 65536;
 	int enable_squared_distance;
 	int enable_hsv_distance;
-	int colour_number_in_spectrum;
+	int number_of_colours_in_spectrum;
 	QString batch_patch;
 	int enable_spectrum_ramp;
 
@@ -116,6 +144,25 @@ private:
 		return scene;
 	}
 
+	QGraphicsScene * getGraphicsScene_for_spectrum()
+	{
+		QGraphicsScene *scene = ui->graphicsView_2->scene();
+		if (scene == NULL)
+		{
+			scene = new MyQGraphicsScene();
+			//static_cast<MyQGraphicsScene *>(scene)->set_main_window(this);
+			ui->graphicsView_2->setScene(scene);
+			std::cout << "create a new scene for drawing spectrums" << std::endl;
+		}
+		return scene;
+	}
+
+	void set_colour_number_in_spectrum(int number_of_colours)
+	{
+		number_of_colours_in_spectrum = number_of_colours;
+		static_cast<MyQGraphicsScene *>(getGraphicsScene_for_spectrum())->set_number_of_colours(number_of_colours_in_spectrum);
+	}
+
 	/// Re-maps a number from one range to another.
 	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
 	{
@@ -127,23 +174,23 @@ private:
 
 	double denormalise_intensity(double n)
 	{
-		return map_to_range(n, lower_bound, upper_bound, 0, 255);
+		return map_to_range(n, domain_x, domain_y, 0, 255);
 	}
 
-	double denormalise_intensity_from_domain(double n)
-	{
-		return map_to_range(n, lower_bound, upper_bound, domain_x, domain_y);
-	}
+	//double denormalise_intensity_from_domain(double n)
+	//{
+	//	return map_to_range(n, threshold_x, threshold_y, domain_x, domain_y);
+	//}
 
 	double normalise_intensity(double n)
 	{
-		return map_to_range(n, 0, 255, lower_bound, upper_bound);
+		return map_to_range(n, 0, 255, domain_x, domain_y);
 	}
 
-	double normalise_intensity_to_domain(double n)
-	{
-		return map_to_range(n, domain_x, domain_y, lower_bound, upper_bound);
-	}
+	//double normalise_intensity_to_domain(double n)
+	//{
+	//	return map_to_range(n, domain_x, domain_y, threshold_x, threshold_y);
+	//}
 
 	double normalise_rgba(int n)
 	{
@@ -511,13 +558,13 @@ private:
 		{
 			if (i == -1)
 			{
-				return (intensity_list[i + 1] - lower_bound) * get_visibility(i + 1);//colour_list[i+1][3];
+				return (intensity_list[i + 1] - domain_x) * get_visibility(i + 1);//colour_list[i+1][3];
 			}
 			else
 			{
 				if (i == intensity_list.size() - 1)
 				{
-					return (upper_bound - intensity_list[i]) * get_visibility(i);//colour_list[i][3];
+					return (domain_y - intensity_list[i]) * get_visibility(i);//colour_list[i][3];
 				}
 				else
 				{
@@ -549,7 +596,7 @@ private:
 			if (i == 0)
 			{
 				// area of a rectangle (left) and a triangle (right)
-				double a = intensity_list[i] - lower_bound;
+				double a = intensity_list[i] - domain_x;
 				double b = intensity_list[i + 1] - intensity_list[i];
 				visibility_increment = area_increment / (a + b / 2);
 			}
@@ -559,7 +606,7 @@ private:
 				{
 					// area of a triangle (left) and a rectangle (right)
 					double a = intensity_list[i] - intensity_list[i - 1];
-					double b = upper_bound - intensity_list[i];
+					double b = domain_y - intensity_list[i];
 					visibility_increment = area_increment / (a / 2 + b);
 				}
 				else
@@ -663,6 +710,50 @@ private:
 		}
 	}
 
+	void balance_opacity_for_region()
+	{
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+		const double epsilon = 1. / 256.;
+		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		{
+			if (colour_list[i][3] > epsilon)
+			{
+				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != max_index)
+		{
+			const double step_size = 1. / 255.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			colour_list[max_index][3] = height_max_new;
+			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new;
+			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
 	void reduce_opacity()
 	{
 		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -748,50 +839,6 @@ private:
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			colour_list[min_index][3] = height_min_new;
 			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
-		}
-	}
-
-	void balance_opacity_for_region()
-	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
-		int max_index = -1;
-		int min_index = -1;
-		double max_area = std::numeric_limits<int>::min();
-		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
-		{
-			if (colour_list[i][3] > epsilon)
-			{
-				double area = get_neighbour_area_entropy_weighted_for_region(i);
-				if (area > max_area)
-				{
-					max_index = i;
-					max_area = area;
-				}
-				if (area < min_area && colour_list[i][3] < 1)
-				{
-					min_index = i;
-					min_area = area;
-				}
-			}
-		}
-		if (min_index != max_index)
-		{
-			const double step_size = 1. / 255.;
-			double height_max = colour_list[max_index][3];
-			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
-			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
-			colour_list[max_index][3] = height_max_new;
-			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
-			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
-			double height_min_new = height_min + step_size;
-			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
-			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -893,6 +940,31 @@ private:
 		voreenData->SetAttribute("version", 1);
 		auto transFuncIntensity = doc.NewElement("TransFuncIntensity");
 		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
+
+		// add domain
+		//// I have forgotten why I need to compare domain_x, domain_y to 0, 255
+		//const double epsilon = 1e-6;
+		//if (abs(domain_x - 0) > epsilon || abs(domain_y - 255) > epsilon)
+		//{
+		auto domain = doc.NewElement("domain");
+		domain->SetAttribute("x", domain_x);
+		domain->SetAttribute("y", domain_y);
+		transFuncIntensity->InsertEndChild(domain);
+		//}
+
+		// add threshold
+		auto threshold = doc.NewElement("threshold");
+		threshold->SetAttribute("x", threshold_x);
+		threshold->SetAttribute("y", threshold_y);
+		transFuncIntensity->InsertEndChild(threshold);
+		//auto lower = doc.NewElement("lower");
+		//lower->SetAttribute("value", threshold_x);
+		//auto upper = doc.NewElement("upper");
+		//upper->SetAttribute("value", threshold_y);
+		//transFuncIntensity->InsertEndChild(lower);
+		//transFuncIntensity->InsertEndChild(upper);
+
+		// add Keys
 		auto keys = doc.NewElement("Keys");
 		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
@@ -912,21 +984,8 @@ private:
 			key->InsertEndChild(colorL);
 			keys->InsertEndChild(key);
 		}
-		auto lower = doc.NewElement("lower");
-		lower->SetAttribute("value", lower_bound);
-		auto upper = doc.NewElement("upper");
-		upper->SetAttribute("value", upper_bound);
 		transFuncIntensity->InsertEndChild(keys);
-		transFuncIntensity->InsertEndChild(lower);
-		transFuncIntensity->InsertEndChild(upper);
-		const double epsilon = 1e-6;
-		if (abs(domain_x - 0) > epsilon || abs(domain_y - 255) > epsilon)
-		{
-			auto domain = doc.NewElement("domain");
-			domain->SetAttribute("x", domain_x);
-			domain->SetAttribute("y", domain_y);
-			transFuncIntensity->InsertEndChild(domain);
-		}
+
 		voreenData->InsertEndChild(transFuncIntensity);
 		doc.InsertEndChild(voreenData);
 
@@ -949,8 +1008,19 @@ private:
 		}
 
 		auto transFuncIntensity = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity");
-		lower_bound = atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value"));
-		upper_bound = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
+
+		auto threshold = transFuncIntensity->FirstChildElement("threshold");
+		if (threshold != NULL)
+		{
+			threshold_x = atof(threshold->Attribute("x"));
+			threshold_y = atof(threshold->Attribute("y"));
+		}
+		else
+		{
+			threshold_x = atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value"));
+			threshold_y = atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"));
+		}
+
 		auto domain = transFuncIntensity->FirstChildElement("domain");
 		if (domain != NULL)
 		{
@@ -1036,8 +1106,8 @@ private:
 
 		intensity_list.clear();
 		colour_list.clear();
-		domain_x = lower_bound = 0;
-		domain_y = upper_bound = 1;
+		domain_x = threshold_x = 0;
+		domain_y = threshold_y = 1;
 
 		intensity_list.push_back(normalise_intensity(0));
 		intensity_list.push_back(normalise_intensity(36));
@@ -1161,8 +1231,8 @@ private:
 
 		intensity_list.clear();
 		colour_list.clear();
-		domain_x = lower_bound = 0;
-		domain_y = upper_bound = 1;
+		domain_x = threshold_x = 0;
+		domain_y = threshold_y = 1;
 
 		intensity_list.push_back(0);
 		{
@@ -1249,8 +1319,8 @@ private:
 
 		intensity_list.clear();
 		colour_list.clear();
-		domain_x = lower_bound = 0;
-		domain_y = upper_bound = 1;
+		domain_x = threshold_x = 0;
+		domain_y = threshold_y = 1;
 
 		intensity_list.push_back(0);
 		{
@@ -1290,64 +1360,6 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			colour_list.push_back(v);
-		}
-	}
-
-	void updateTransferFunctionWidgetsFromArrays()
-	{
-		if (intensity_list.size() == 0 || colour_list.size() == 0)
-		{
-			generate_default_transfer_function();
-		}
-		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
-		{
-			opacity_transfer_function->RemoveAllPoints();
-			color_transfer_function->RemoveAllPoints();
-			for (unsigned int i = 0; i < intensity_list.size(); i++)
-			{
-				opacity_transfer_function->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
-				color_transfer_function->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
-			}
-		}
-	}
-
-	void updateTransferFunctionArraysFromWidgets()
-	{
-		if (color_transfer_function->GetSize() < 1)
-		{
-			QMessageBox msgBox;
-			msgBox.setText("Error: vtkColorTransferFunction is empty.");
-			int ret = msgBox.exec();
-			return;
-		}
-		if (color_transfer_function->GetSize() != opacity_transfer_function->GetSize())
-		{
-			QMessageBox msgBox;
-			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
-			int ret = msgBox.exec();
-			return;
-		}
-
-		//std::cout<<"update transfer function from widget"<<std::endl;
-		colour_list.clear();
-		intensity_list.clear();
-		for (auto i = 0; i < color_transfer_function->GetSize(); i++)
-		{
-			double xrgb[6];
-			color_transfer_function->GetNodeValue(i, xrgb);
-			double xa[4];
-			opacity_transfer_function->GetNodeValue(i, xa);
-			double opacity = xa[1];
-			double intensity = normalise_intensity(xrgb[0]);
-			std::vector<double> c;
-			c.push_back(xrgb[1]);
-			c.push_back(xrgb[2]);
-			c.push_back(xrgb[3]);
-			c.push_back(opacity);
-			colour_list.push_back(c);
-			intensity_list.push_back(intensity);
-			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
-			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
 	}
 
@@ -1750,6 +1762,142 @@ private:
 		}
 	}
 
+	void updateTransferFunctionWidgetsFromArrays()
+	{
+		if (intensity_list.size() == 0 || colour_list.size() == 0)
+		{
+			generate_default_transfer_function();
+		}
+		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
+		{
+			opacity_transfer_function->RemoveAllPoints();
+			color_transfer_function->RemoveAllPoints();
+			for (unsigned int i = 0; i < intensity_list.size(); i++)
+			{
+				opacity_transfer_function->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
+				color_transfer_function->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
+			}
+		}
+	}
+
+	void updateTransferFunctionArraysFromWidgets()
+	{
+		if (color_transfer_function->GetSize() < 1)
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Error: vtkColorTransferFunction is empty.");
+			int ret = msgBox.exec();
+			return;
+		}
+		if (color_transfer_function->GetSize() != opacity_transfer_function->GetSize())
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
+			int ret = msgBox.exec();
+			return;
+		}
+
+		//std::cout<<"update transfer function from widget"<<std::endl;
+		colour_list.clear();
+		intensity_list.clear();
+		for (auto i = 0; i < color_transfer_function->GetSize(); i++)
+		{
+			double xrgb[6];
+			color_transfer_function->GetNodeValue(i, xrgb);
+			double xa[4];
+			opacity_transfer_function->GetNodeValue(i, xa);
+			double opacity = xa[1];
+			double intensity = normalise_intensity(xrgb[0]);
+			std::vector<double> c;
+			c.push_back(xrgb[1]);
+			c.push_back(xrgb[2]);
+			c.push_back(xrgb[3]);
+			c.push_back(opacity);
+			colour_list.push_back(c);
+			intensity_list.push_back(intensity);
+			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
+			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
+		}
+	}
+
+	void generate_spectrum_transfer_function_and_check_menu_item()
+	{
+		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(false);
+		ui->action_Spectrum_Transfer_Function->setChecked(true);
+		enable_spectrum_ramp = 0;
+		generate_spectrum_transfer_function(number_of_colours_in_spectrum);
+		updateTransferFunctionWidgetsFromArrays();
+	}
+
+	void generate_spectrum_ramp_transfer_function_and_check_menu_item()
+	{
+		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
+		ui->action_Spectrum_Transfer_Function->setChecked(false);
+		enable_spectrum_ramp = 1;
+		generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
+		updateTransferFunctionWidgetsFromArrays();
+	}
+
+	void draw_spectrum()
+	{
+		int n = 8;
+		double width = 280;
+		double w = width / n;
+		double height = 170;
+		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
+		scene->clear();
+		scene->addText("Spectrum " + QTime::currentTime().toString());
+		QColor colour(Qt::yellow);
+		int h, s, v;
+		colour.getHsv(&h, &s, &v);
+		std::cout << "hsv colour " << h << " " << s << " " << v << std::endl;
+		int r, g, b;
+		colour.getRgb(&r, &g, &b);
+		std::cout << "rgb colour " << r << " " << g << " " << b << std::endl;
+
+		//auto items = std::vector<QGraphicsItem *>();
+
+		for (int i = 0; i < 8; i++)
+		{
+			QColor colour;
+			colour.setHsv(i * 360 / n, 255, 255);
+			QBrush brush(colour);
+			QPen pen;
+			pen.setStyle(Qt::NoPen);
+			auto rect = scene->addRect(w * i, 0, w, height, pen, brush);
+			//rect->setFlag(QGraphicsItem::ItemIsMovable);
+			rect->setFlag(QGraphicsItem::ItemIsSelectable);
+			//items.push_back(rect);
+			rect->setData(0, i);
+		}
+	}
+
+	//void optimise_transfer_function_for_colour(QColor colour)
+	//{
+	//	static_cast<MyQGraphicsScene *>(getGraphicsScene_for_spectrum())->set_number_of_colours_in_spectrum(number_of_colours);
+	//	//QColor colour = QColorDialog::getColor(Qt::green, this);
+	//	//if (colour.isValid())
+	//	//{
+	//	pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+	//	std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+	//	std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
+	//	//}
+
+	//	// optimise the transfer function for the selected colour
+	//	updateTransferFunctionArraysFromWidgets();
+	//	int n = ui->spinBox->value();
+	//	if (n < 1 || n > max_iteration_count)
+	//	{
+	//		n = 1;
+	//	}
+	//	while (n-- > 0)
+	//	{
+	//		balance_opacity_for_region();
+	//	}
+	//	updateTransferFunctionWidgetsFromArrays();
+	//	updateTransferFunctionArraysFromWidgets();
+	//}
+
 	void pick_colour_and_compute_distance(int r, int g, int b)
 	{
 		// put the picked colour in the array for distance computation
@@ -1758,7 +1906,7 @@ private:
 		// compute region weights based on the selected image
 		region_weight_list.clear();
 		double sum = 0;
-		for (unsigned int i = 0; i<colour_list.size(); i++)
+		for (unsigned int i = 0; i < colour_list.size(); i++)
 		{
 			double r = colour_list[i][0];
 			double g = colour_list[i][1];
@@ -1778,24 +1926,6 @@ private:
 				region_weight_list[i] = region_weight_list[i] / sum;
 			}
 		}
-	}
-
-	void generate_spectrum_transfer_function_and_check_menu_item()
-	{
-		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(false);
-		ui->action_Spectrum_Transfer_Function->setChecked(true);
-		enable_spectrum_ramp = 0;
-		generate_spectrum_transfer_function(colour_number_in_spectrum);
-		updateTransferFunctionWidgetsFromArrays();
-	}
-
-	void generate_spectrum_ramp_transfer_function_and_check_menu_item()
-	{
-		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
-		ui->action_Spectrum_Transfer_Function->setChecked(false);
-		enable_spectrum_ramp = 1;
-		generate_spectrum_ramp_transfer_function(colour_number_in_spectrum);
-		updateTransferFunctionWidgetsFromArrays();
 	}
 
 	private slots:
@@ -1827,8 +1957,9 @@ private:
 	void on_action_Spectrum_Transfer_Function_triggered();
 	void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
 	void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
-    void on_action_Pick_a_colour_triggered();
-    void on_action_Spectrum_Ramp_Transfer_Function_triggered();
+	void on_action_Spectrum_Ramp_Transfer_Function_triggered();
+	void on_action_Pick_a_colour_and_optimise_transfer_function_triggered();
+	void on_action_Test_triggered();
 };
 
 #endif // MAINWINDOW_H
