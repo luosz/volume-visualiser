@@ -76,6 +76,14 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+protected:
+	virtual void resizeEvent(QResizeEvent * event)
+	{
+		QWidget::resizeEvent(event);
+		//vtk_widget.repaint();
+		std::cout << "resizeEvent\n";
+	}
+
 private:
 	Ui::MainWindow *ui;
 
@@ -132,7 +140,7 @@ private:
 	void set_colour_number_in_spectrum(int number_of_colours)
 	{
 		number_of_colours_in_spectrum = number_of_colours;
-		draw_spectrum();
+		draw_spectrum_in_graphicsview();
 	}
 
 	/// Re-maps a number from one range to another.
@@ -1812,10 +1820,10 @@ private:
 		updateTransferFunctionWidgetsFromArrays();
 	}
 
-	void draw_spectrum()
+	void draw_spectrum_in_graphicsview()
 	{
-		const double width = 290;
-		const double height = 175;
+		const double width = 300;
+		const double height = 160;
 		int n = number_of_colours_in_spectrum;
 		double w = width / n;
 		QGraphicsScene *scene = getGraphicsScene_for_spectrum();

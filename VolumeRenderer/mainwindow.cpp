@@ -72,6 +72,8 @@ ui(new Ui::MainWindow)
 	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_selectionChanged()));
 	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)),
 		this, SLOT(slot_sceneRectChanged(const QRectF &)));
+
+	//this->showMaximized();
 }
 
 MainWindow::~MainWindow()
