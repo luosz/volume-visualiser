@@ -1750,6 +1750,8 @@ private:
 				color_transfer_function->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
 			}
 		}
+		// update vtk widget
+		vtk_widget.repaint();
 	}
 
 	void updateTransferFunctionArraysFromWidgets()
@@ -1891,9 +1893,11 @@ private:
 		updateTransferFunctionArraysFromWidgets();
 	}
 
-	int get_closest_control_point(int r0, int g0, int b0)
+	int get_closest_non_zero_control_point(int r0, int g0, int b0)
 	{
-		unsigned char pixels[] = { r0, g0, b0 };
+		double h0, s0, v0;
+		vtkMath::RGBToHSV(normalise_rgba(r0), normalise_rgba(g0), normalise_rgba(b0), &h0, &s0, &v0);
+
 		double dist = 1e6;
 		int index = -1;
 		for (unsigned int i = 0; i < colour_list.size(); i++)
@@ -1901,14 +1905,20 @@ private:
 			double r = colour_list[i][0];
 			double g = colour_list[i][1];
 			double b = colour_list[i][2];
-
-			// compute distance in hue without squaring
-			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, 1, 3, 0, 1);
-
-			if (index == -1 || distance < dist)
+			double a = colour_list[i][3];
+			if (a > 0)
 			{
-				index = i;
-				dist = distance;
+				double h, s, v;
+				vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+
+				// compute distance in hue without squaring
+				double distance = abs(h - h0);
+
+				if (index == -1 || distance < dist)
+				{
+					index = i;
+					dist = distance;
+				}
 			}
 		}
 		return index;
@@ -1918,37 +1928,42 @@ private:
 
 	void slot_selectionChanged()
 	{
-		std::cout << "slot_selectionChanged\n";
+		//std::cout << "slot_selectionChanged\n";
 		auto scene = getGraphicsScene_for_spectrum();
 		auto list = scene->items();
 		for (int i = 0; i < list.size(); i++)
 		{
-			auto selected = list.at(i)->isSelected();
-			std::cout << i << (selected ? " selected" : " not selected") << std::endl;
+			bool selected = list.at(i)->isSelected();
+			//std::cout << i << (selected ? " selected" : " not selected") << std::endl;
 			if (selected)
 			{
 				int index = list.at(i)->data(0).toInt();
-				std::cout << "index=" << index << std::endl;
+				std::cout << "QGraphicsItem index=" << index << std::endl;
 				if (index >= 0 && index < number_of_colours_in_spectrum)
 				{
 					QColor colour;
 					colour.setHsv(index * 360 / number_of_colours_in_spectrum, 255, 255);
-					if (ui->radioButton->isChecked())
+					if (ui->radioButton_optimise->isChecked())
 					{
+						// optimise for specific colour
 						optimise_transfer_function_for_colour(colour);
-					} 
+					}
 					else
 					{
-						int ii = get_closest_control_point(colour.red(), colour.green(), colour.blue());
+						// remove closest control point
+						int ii = get_closest_non_zero_control_point(colour.red(), colour.green(), colour.blue());
 						if (ii != -1)
 						{
+							std::cout << "closest control point index=" << ii << std::endl;
 							colour_list[ii][3] = 0;
 							updateTransferFunctionWidgetsFromArrays();
 							updateTransferFunctionArraysFromWidgets();
 						}
-						std::cout << "cloest control point index=" << ii << std::endl;
+						else
+						{
+							std::cout << "there is no non-zero control point." << std::endl;
+						}
 					}
-					vtk_widget.repaint();
 				}
 			}
 		}

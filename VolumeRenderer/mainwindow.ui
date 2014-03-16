@@ -191,7 +191,7 @@
            <item>
             <widget class="QPushButton" name="entropyOpacityButton">
              <property name="text">
-              <string>Entropy &amp;Opacity</string>
+              <string>E&amp;ntropy Opacity</string>
              </property>
             </widget>
            </item>
@@ -329,9 +329,9 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="radioButton_optimise">
            <property name="text">
-            <string>E&amp;mphasise</string>
+            <string>O&amp;ptimise</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -339,7 +339,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="radioButton_remove">
            <property name="text">
             <string>Remo&amp;ve</string>
            </property>
