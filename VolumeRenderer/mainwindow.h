@@ -59,7 +59,6 @@
 
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
-#include "MyQGraphicsScene.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -76,32 +75,6 @@ class MainWindow : public QMainWindow
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
-
-	void optimise_transfer_function_for_colour(QColor colour)
-	{
-
-		//QColor colour = QColorDialog::getColor(Qt::green, this);
-		//if (colour.isValid())
-		//{
-		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
-		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
-		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
-		//}
-
-		// optimise the transfer function for the selected colour
-		updateTransferFunctionArraysFromWidgets();
-		int n = ui->spinBox->value();
-		if (n < 1 || n > max_iteration_count)
-		{
-			n = 1;
-		}
-		while (n-- > 0)
-		{
-			balance_opacity_for_region();
-		}
-		updateTransferFunctionWidgetsFromArrays();
-		updateTransferFunctionArraysFromWidgets();
-	}
 
 private:
 	Ui::MainWindow *ui;
@@ -149,8 +122,7 @@ private:
 		QGraphicsScene *scene = ui->graphicsView_2->scene();
 		if (scene == NULL)
 		{
-			scene = new MyQGraphicsScene();
-			//static_cast<MyQGraphicsScene *>(scene)->set_main_window(this);
+			scene = new QGraphicsScene();
 			ui->graphicsView_2->setScene(scene);
 			std::cout << "create a new scene for drawing spectrums" << std::endl;
 		}
@@ -160,7 +132,7 @@ private:
 	void set_colour_number_in_spectrum(int number_of_colours)
 	{
 		number_of_colours_in_spectrum = number_of_colours;
-		static_cast<MyQGraphicsScene *>(getGraphicsScene_for_spectrum())->set_number_of_colours(number_of_colours_in_spectrum);
+		draw_spectrum();
 	}
 
 	/// Re-maps a number from one range to another.
@@ -1840,10 +1812,10 @@ private:
 
 	void draw_spectrum()
 	{
-		int n = 8;
-		double width = 280;
+		const double width = 290;
+		const double height = 175;
+		int n = number_of_colours_in_spectrum;
 		double w = width / n;
-		double height = 170;
 		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
 		scene->clear();
 		scene->addText("Spectrum " + QTime::currentTime().toString());
@@ -1855,9 +1827,7 @@ private:
 		colour.getRgb(&r, &g, &b);
 		std::cout << "rgb colour " << r << " " << g << " " << b << std::endl;
 
-		//auto items = std::vector<QGraphicsItem *>();
-
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < n; i++)
 		{
 			QColor colour;
 			colour.setHsv(i * 360 / n, 255, 255);
@@ -1865,38 +1835,10 @@ private:
 			QPen pen;
 			pen.setStyle(Qt::NoPen);
 			auto rect = scene->addRect(w * i, 0, w, height, pen, brush);
-			//rect->setFlag(QGraphicsItem::ItemIsMovable);
 			rect->setFlag(QGraphicsItem::ItemIsSelectable);
-			//items.push_back(rect);
 			rect->setData(0, i);
 		}
 	}
-
-	//void optimise_transfer_function_for_colour(QColor colour)
-	//{
-	//	static_cast<MyQGraphicsScene *>(getGraphicsScene_for_spectrum())->set_number_of_colours_in_spectrum(number_of_colours);
-	//	//QColor colour = QColorDialog::getColor(Qt::green, this);
-	//	//if (colour.isValid())
-	//	//{
-	//	pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
-	//	std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
-	//	std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
-	//	//}
-
-	//	// optimise the transfer function for the selected colour
-	//	updateTransferFunctionArraysFromWidgets();
-	//	int n = ui->spinBox->value();
-	//	if (n < 1 || n > max_iteration_count)
-	//	{
-	//		n = 1;
-	//	}
-	//	while (n-- > 0)
-	//	{
-	//		balance_opacity_for_region();
-	//	}
-	//	updateTransferFunctionWidgetsFromArrays();
-	//	updateTransferFunctionArraysFromWidgets();
-	//}
 
 	void pick_colour_and_compute_distance(int r, int g, int b)
 	{
@@ -1928,7 +1870,95 @@ private:
 		}
 	}
 
+	void optimise_transfer_function_for_colour(QColor colour)
+	{
+		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
+
+		// optimise the transfer function for the selected colour
+		updateTransferFunctionArraysFromWidgets();
+		int n = ui->spinBox->value();
+		if (n < 1 || n > max_iteration_count)
+		{
+			n = 1;
+		}
+		while (n-- > 0)
+		{
+			balance_opacity_for_region();
+		}
+		updateTransferFunctionWidgetsFromArrays();
+		updateTransferFunctionArraysFromWidgets();
+	}
+
+	int get_closest_control_point(int r0, int g0, int b0)
+	{
+		unsigned char pixels[] = { r0, g0, b0 };
+		double dist = 1e6;
+		int index = -1;
+		for (unsigned int i = 0; i < colour_list.size(); i++)
+		{
+			double r = colour_list[i][0];
+			double g = colour_list[i][1];
+			double b = colour_list[i][2];
+
+			// compute distance in hue without squaring
+			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, 1, 3, 0, 1);
+
+			if (index == -1 || distance < dist)
+			{
+				index = i;
+				dist = distance;
+			}
+		}
+		return index;
+	}
+
 	private slots:
+
+	void slot_selectionChanged()
+	{
+		std::cout << "slot_selectionChanged\n";
+		auto scene = getGraphicsScene_for_spectrum();
+		auto list = scene->items();
+		for (int i = 0; i < list.size(); i++)
+		{
+			auto selected = list.at(i)->isSelected();
+			std::cout << i << (selected ? " selected" : " not selected") << std::endl;
+			if (selected)
+			{
+				int index = list.at(i)->data(0).toInt();
+				std::cout << "index=" << index << std::endl;
+				if (index >= 0 && index < number_of_colours_in_spectrum)
+				{
+					QColor colour;
+					colour.setHsv(index * 360 / number_of_colours_in_spectrum, 255, 255);
+					if (ui->radioButton->isChecked())
+					{
+						optimise_transfer_function_for_colour(colour);
+					} 
+					else
+					{
+						int ii = get_closest_control_point(colour.red(), colour.green(), colour.blue());
+						if (ii != -1)
+						{
+							colour_list[ii][3] = 0;
+							updateTransferFunctionWidgetsFromArrays();
+							updateTransferFunctionArraysFromWidgets();
+						}
+						std::cout << "cloest control point index=" << ii << std::endl;
+					}
+					vtk_widget.repaint();
+				}
+			}
+		}
+	}
+
+	void slot_sceneRectChanged(const QRectF & rect)
+	{
+		std::cout << "slot_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
+	}
+
 	void on_entropyButton_clicked();
 	void on_frequencyButton_clicked();
 	void on_opacityButton_clicked();

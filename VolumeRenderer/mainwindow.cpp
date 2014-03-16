@@ -59,14 +59,19 @@ ui(new Ui::MainWindow)
 	// should not be used before initialization
 	count_of_voxels = 0;
 	volume_ptr = NULL;
-	number_of_colours_in_spectrum = 8;
+	//number_of_colours_in_spectrum = 8;
+	set_colour_number_in_spectrum(8);
 	batch_patch = "D:/_uchar/isabel_QVAPOR/";
 
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 
 	on_action_Compute_Distance_HSV_triggered();
 
-	draw_spectrum();
+	//draw_spectrum();
+
+	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_selectionChanged()));
+	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)),
+		this, SLOT(slot_sceneRectChanged(const QRectF &)));
 }
 
 MainWindow::~MainWindow()
@@ -644,7 +649,6 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 		std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTransferFunctionWidgetsFromArrays();
-		//colour_number_in_spectrum = n;
 		set_colour_number_in_spectrum(n);
 	}
 }
