@@ -5,7 +5,7 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="VolumeFormatConversion" ref="ref2" />
+                        <item type="VolumeSave" ref="ref3" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
@@ -362,8 +362,8 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-565" y="-55" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="continousSave" name="continousSave" value="true" />
-                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../output/tjet/149.mhd" />
+                        <Property mapKey="continousSave" name="continousSave" value="false" />
+                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../_uchar/tjet/149.mhd" />
                         <Property mapKey="save" name="save" />
                         <Property mapKey="saveOnPathChange" name="saveOnPathChange" value="true" />
                         <Property mapKey="volumeInfo" name="volumeInfo" />
@@ -548,10 +548,10 @@
                 <Processor type="Canvas" name="Canvas" id="ref8">
                     <MetaData>
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-401" y="114" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="28" y="266" width="512" height="512" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="1043" y="467" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="28" y="266" />
+                            <value x="1043" y="467" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
                             <value x="512" y="512" />
@@ -591,7 +591,7 @@
                             </MetaData>
                             <position x="0.57972592" y="2.07299471" z="1.47443891" />
                             <focus x="0.00000018" y="0.00000024" z="0.00000024" />
-                            <upVector x="-0.72112453" y="-0.25617245" z="0.6437043" />
+                            <upVector x="-0.72112447" y="-0.25617242" z="0.64370424" />
                             <trackball moveCenter="false">
                                 <center x="0.00000018" y="0.00000024" z="0.00000024" />
                             </trackball>
@@ -624,7 +624,7 @@
                                 <MetaItem name="FollowCamera" type="BoolMetaData" value="false" />
                                 <MetaItem name="UseBackHemisphere" type="BoolMetaData" value="false" />
                             </MetaData>
-                            <value x="0.43104595" y="1.33536291" z="2.7966063" w="1" />
+                            <value x="0.43104577" y="1.33536267" z="2.7966063" w="1" />
                             <Center x="0.00000018" y="0.00000024" z="0.00000024" />
                             <LightPos x="-0.99081761" y="1.14726245" z="2.7371645" w="0" />
                         </Property>
@@ -641,7 +641,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref14">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="326" y="195" width="683" height="538" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
                                 <domain x="-0.22488132" y="0.15372029" />
@@ -768,7 +768,7 @@
                             </MetaData>
                             <position x="0.57972592" y="2.07299471" z="1.47443891" />
                             <focus x="0.00000018" y="0.00000024" z="0.00000024" />
-                            <upVector x="-0.72112447" y="-0.25617242" z="0.64370424" />
+                            <upVector x="-0.72112453" y="-0.25617245" z="0.6437043" />
                             <trackball moveCenter="false">
                                 <center x="0.00000018" y="0.00000024" z="0.00000024" />
                             </trackball>

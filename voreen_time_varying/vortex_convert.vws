@@ -5,7 +5,7 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="VolumeFormatConversion" ref="ref2" />
+                        <item type="VolumeSave" ref="ref3" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
@@ -287,8 +287,8 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-1078" y="-420" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="continousSave" name="continousSave" value="true" />
-                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../output/vortex/97.mhd" />
+                        <Property mapKey="continousSave" name="continousSave" value="false" />
+                        <Property mapKey="outputFilename" name="outputFilename" noPathSet="false" value="../../../../_uchar/vortex/97.mhd" />
                         <Property mapKey="save" name="save" />
                         <Property mapKey="saveOnPathChange" name="saveOnPathChange" value="true" />
                         <Property mapKey="volumeInfo" name="volumeInfo" />
