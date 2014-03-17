@@ -61,7 +61,7 @@ ui(new Ui::MainWindow)
 	volume_ptr = NULL;
 	//number_of_colours_in_spectrum = 8;
 	set_colour_number_in_spectrum(8);
-	batch_patch = "D:/_uchar/isabel_QVAPOR/";
+	batch_patch = "D:/_uchar/vortex/";
 
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 
@@ -70,10 +70,23 @@ ui(new Ui::MainWindow)
 	//draw_spectrum();
 
 	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_selectionChanged()));
-	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)),
-		this, SLOT(slot_sceneRectChanged(const QRectF &)));
+	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_sceneRectChanged(const QRectF &)));
+
+	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_clicked(const QModelIndex &)));
 
 	//this->showMaximized();
+	model = new QStandardItemModel();
+	QList<QStandardItem *> list1;
+	list1.append(new QStandardItem("item1"));
+	list1.append(new QStandardItem("item2"));
+	model->appendColumn(list1);
+	ui->listView->setModel(model);
+	QList<QStandardItem *> list2;
+	list2.append(new QStandardItem("item3"));
+	list2.append(new QStandardItem("item4"));
+	model->clear();
+	model->appendColumn(list2);
+	//ui->listView->setModel(model);
 }
 
 MainWindow::~MainWindow()
@@ -703,9 +716,11 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 
 		//// spectrum number for transfer function generation
 		//const int n = 6;
+		QList<QStandardItem *> list1;
 
 		for (int i = 0; i < files.size(); i++)
 		{
+			list1.append(new QStandardItem(QString(filepath + files[i])));
 			// load volume
 			open_volume_no_rendering(filepath + files[i]);
 
@@ -752,6 +767,10 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			std::cout << "transfer function file: " << filename_str << endl;
 			saveTransferFunctionToXML(filename_str);
 		}
+
+		model->clear();
+		model->appendColumn(list1);
+		//ui->listView->setModel(model);
 	}
 }
 
@@ -812,7 +831,7 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_
 			if (enable_spectrum_ramp == 0)
 			{
 				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
-			} 
+			}
 			else
 			{
 				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);

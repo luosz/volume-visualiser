@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QColorDialog>
 #include <QTime>
+#include <QStandardItemModel>
 
 #include <iostream>
 #include <memory>
@@ -112,6 +113,7 @@ private:
 	int number_of_colours_in_spectrum;
 	QString batch_patch;
 	int enable_spectrum_ramp;
+	QStandardItemModel *model;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -1822,8 +1824,8 @@ private:
 
 	void draw_spectrum_in_graphicsview()
 	{
-		const double width = 300;
-		const double height = 160;
+		const double width = 280;
+		const double height = 100;
 		int n = number_of_colours_in_spectrum;
 		double w = width / n;
 		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
@@ -1980,6 +1982,11 @@ private:
 	void slot_sceneRectChanged(const QRectF & rect)
 	{
 		std::cout << "slot_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
+	}
+
+	void slot_clicked(const QModelIndex & index)
+	{
+		std::cout << "slot_clicked\n";
 	}
 
 	void on_entropyButton_clicked();
