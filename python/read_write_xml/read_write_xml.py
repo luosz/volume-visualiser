@@ -1,12 +1,15 @@
 '''
 Created on 14 Mar 2014
 
-@author: JoeShengzhou
+@author: Shengzhou
 '''
 
 import xml.etree.ElementTree as ET
 
-tree = ET.parse("standard.tfi")
+j = 0
+filename = "D:/_uchar/vortex/%02d.tfi" % j
+print filename
+tree = ET.parse(filename)
 root = tree.getroot()
 
 TransFuncIntensity = root.find("TransFuncIntensity")
@@ -68,5 +71,4 @@ xml =  MD.parseString(xml_string)
 pretty_xml_as_string = xml.toprettyxml()
 root2 = ET.fromstring(pretty_xml_as_string)
 et2 = ET.ElementTree(root2)
-et2.write("tree_pretty.xml", encoding='utf-8', xml_declaration=True)
-
+et2.write("output.xml", encoding='utf-8', xml_declaration=True)
