@@ -1979,6 +1979,32 @@ private:
 		}
 	}
 
+	void generate_transfer_functions_optimised_for_colour()
+	{
+		bool ok;
+		int n = number_of_colours_in_spectrum;
+		n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
+		if (ok)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				QColor colour;
+				colour.setHsv(i * 360 / n, 255, 255);
+				// optimise for specific colour
+				optimise_transfer_function_for_colour(colour);
+				char c_str2[_MAX_PATH];
+				sprintf(c_str2, "D:/output/CT-Knee/%03d.tfi", i);
+				//char str0[_MAX_PATH];
+				//sprintf(str0, ".%03d.tfi", i);
+				//QString str1 = volume_filename + QString(str0);
+				//QByteArray ba = str1.toLocal8Bit();
+				//const char *c_str2 = ba.data();
+				saveTransferFunctionToXML(c_str2);
+				std::cout << "saved to file " << c_str2 << std::endl;
+			}
+		}
+	}
+
 	void slot_sceneRectChanged(const QRectF & rect)
 	{
 		std::cout << "slot_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
@@ -2020,6 +2046,7 @@ private:
 	void on_action_Spectrum_Ramp_Transfer_Function_triggered();
 	void on_action_Pick_a_colour_and_optimise_transfer_function_triggered();
 	void on_action_Test_triggered();
+    void on_action_Genearte_transfer_functions_for_spectrum_triggered();
 };
 
 #endif // MAINWINDOW_H

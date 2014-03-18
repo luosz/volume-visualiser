@@ -82,6 +82,7 @@
     <addaction name="action_Spectrum_Transfer_Function"/>
     <addaction name="action_Spectrum_Ramp_Transfer_Function"/>
     <addaction name="action_Pick_a_colour_and_optimise_transfer_function"/>
+    <addaction name="action_Genearte_transfer_functions_for_spectrum"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -505,7 +506,7 @@
   </action>
   <action name="action_Pick_a_colour_and_optimise_transfer_function">
    <property name="text">
-    <string>&amp;Pick a colour...</string>
+    <string>&amp;Pick a colour and optimise transfer function...</string>
    </property>
   </action>
   <action name="action_Spectrum_Ramp_Transfer_Function">
@@ -519,6 +520,11 @@
   <action name="action_Test">
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="action_Genearte_transfer_functions_for_spectrum">
+   <property name="text">
+    <string>&amp;Genearte transfer function series for spectrum</string>
    </property>
   </action>
  </widget>
