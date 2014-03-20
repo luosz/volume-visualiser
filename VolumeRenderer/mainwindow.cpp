@@ -69,24 +69,15 @@ ui(new Ui::MainWindow)
 
 	//draw_spectrum();
 
-	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_selectionChanged()));
-	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_sceneRectChanged(const QRectF &)));
+	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
+	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
 
-	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_clicked(const QModelIndex &)));
+	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
+	QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
+
+	ui->listView->setModel(&model_for_listview);
 
 	//this->showMaximized();
-	model = new QStandardItemModel();
-	QList<QStandardItem *> list1;
-	list1.append(new QStandardItem("item1"));
-	list1.append(new QStandardItem("item2"));
-	model->appendColumn(list1);
-	ui->listView->setModel(model);
-	QList<QStandardItem *> list2;
-	list2.append(new QStandardItem("item3"));
-	list2.append(new QStandardItem("item4"));
-	model->clear();
-	model->appendColumn(list2);
-	//ui->listView->setModel(model);
 }
 
 MainWindow::~MainWindow()
@@ -368,88 +359,8 @@ void MainWindow::on_action_Open_Volume_triggered()
 		return;
 	}
 
-	// show filename on window title
-	this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename_backup);
-
-	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-	QByteArray ba = filename_backup.toLocal8Bit();
-	const char *filename_str = ba.data();
-
-#if 1
-	// read Meta Image (.mhd or .mha) files
-	auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-	reader->SetFileName(filename_str);
-#elif 1
-	// read a series of raw files in the specified folder
-	auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-	reader->SetDataDimensions(512, 512);
-	reader->SetImageRange(1, 361);
-	reader->SetDataByteOrderToBigEndian();
-	reader->SetFilePrefix(filename_str);
-	reader->SetFilePattern("%s%d");
-	reader->SetDataSpacing(1, 1, 1);
-#else
-	// read NRRD files
-	vtkNew<vtkNrrdReader> reader;
-	if (!reader->CanReadFile(filename_str))
-	{
-		std::cerr << "Reader reports " << filename_str << " cannot be read.";
-		exit(EXIT_FAILURE);
-	}
-	reader->SetFileName(filename_str);
-	reader->Update();
-#endif
-
-	// scale the volume data to unsigned char (0-255) before passing it to volume mapper
-	auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
-	shiftScale->SetInputConnection(reader->GetOutputPort());
-	shiftScale->SetOutputScalarTypeToUnsignedChar();
-
-	// generate histograms
-	generate_visibility_function(shiftScale);
-	generate_LH_histogram(shiftScale);
-
-	// set up volume property
-	auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-	volumeProperty->SetColor(color_transfer_function);
-	volumeProperty->SetScalarOpacity(opacity_transfer_function);
-	volumeProperty->ShadeOff();
-	volumeProperty->SetInterpolationTypeToLinear();
-
-	// assign volume property to the volume property widget
-	volume_property_widget.setVolumeProperty(volumeProperty);
-
-	// The mapper that renders the volume data.
-	auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-	volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-	volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
-
-	// The volume holds the mapper and the property and can be used to position/orient the volume.
-	auto volume = vtkSmartPointer<vtkVolume>::New();
-	volume->SetMapper(volumeMapper);
-	volume->SetProperty(volumeProperty);
-
-	// add the volume into the renderer
-	//auto renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->AddVolume(volume);
-	renderer->SetBackground(1, 1, 1);
-
-	// clean previous renderers and then add the current renderer
-	auto window = vtk_widget.GetRenderWindow();
-	auto collection = window->GetRenderers();
-	auto item = collection->GetNextItem();
-	while (item != NULL)
-	{
-		window->RemoveRenderer(item);
-		item = collection->GetNextItem();
-	}
-	window->AddRenderer(renderer);
-	window->Render();
-
-	// initialize the interactor
-	interactor->Initialize();
-	interactor->Start();
+	// open the volume file
+	open_volume(filename_backup);
 }
 
 void MainWindow::on_action_Append_Volume_triggered()
@@ -768,9 +679,8 @@ void MainWindow::on_action_Open_Path_and_Generate_Transfer_Functions_triggered()
 			saveTransferFunctionToXML(filename_str);
 		}
 
-		model->clear();
-		model->appendColumn(list1);
-		//ui->listView->setModel(model);
+		model_for_listview.clear();
+		model_for_listview.appendColumn(list1);
 	}
 }
 
@@ -922,6 +832,19 @@ void MainWindow::on_action_Test_triggered()
 {
 	QGraphicsScene *scene = getGraphicsScene_for_spectrum();
 	std::cout << "width=" << scene->width() << " height=" << scene->height() << std::endl;
+
+	QList<QStandardItem *> list1;
+	auto i0 = new QStandardItem("D:\\_uchar\\vortex\\00.mhd");
+	i0->setData(QVariant("D:\\_uchar\\vortex\\00.mhd"));
+	list1.append(i0);
+	auto i1 = new QStandardItem("D:/_uchar/vortex/01.mhd");
+	i1->setData(QVariant("D:/_uchar/vortex/01.mhd"));
+	list1.append(i1);
+	auto i2 = new QStandardItem("D:\\_uchar\\vortex\\02.mhd");
+	i2->setData(QVariant("D:\\_uchar\\vortex\\02.mhd"));
+	list1.append(i2);
+	model_for_listview.clear();
+	model_for_listview.appendColumn(list1);
 }
 
 void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()

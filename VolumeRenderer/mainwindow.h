@@ -19,6 +19,7 @@
 #include <vector>
 #include <limits>
 #include <cmath>
+#include <string>
 
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
@@ -113,7 +114,7 @@ private:
 	int number_of_colours_in_spectrum;
 	QString batch_patch;
 	int enable_spectrum_ramp;
-	QStandardItemModel *model;
+	QStandardItemModel model_for_listview;
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -1588,6 +1589,94 @@ private:
 		return sum;
 	}
 
+	// open a volume file and render it
+	void open_volume(QString filename)
+	{
+		// show filename on window title
+		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+#if 1
+		// read Meta Image (.mhd or .mha) files
+		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
+		reader->SetFileName(filename_str);
+#elif 1
+		// read a series of raw files in the specified folder
+		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
+		reader->SetDataDimensions(512, 512);
+		reader->SetImageRange(1, 361);
+		reader->SetDataByteOrderToBigEndian();
+		reader->SetFilePrefix(filename_str);
+		reader->SetFilePattern("%s%d");
+		reader->SetDataSpacing(1, 1, 1);
+#else
+		// read NRRD files
+		vtkNew<vtkNrrdReader> reader;
+		if (!reader->CanReadFile(filename_str))
+		{
+			std::cerr << "Reader reports " << filename_str << " cannot be read.";
+			exit(EXIT_FAILURE);
+		}
+		reader->SetFileName(filename_str);
+		reader->Update();
+#endif
+
+		// scale the volume data to unsigned char (0-255) before passing it to volume mapper
+		auto shiftScale = vtkSmartPointer<vtkImageShiftScale>::New();
+		shiftScale->SetInputConnection(reader->GetOutputPort());
+		shiftScale->SetOutputScalarTypeToUnsignedChar();
+
+		// generate histograms
+		generate_visibility_function(shiftScale);
+		generate_LH_histogram(shiftScale);
+
+		// set up volume property
+		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+		volumeProperty->SetColor(color_transfer_function);
+		volumeProperty->SetScalarOpacity(opacity_transfer_function);
+		volumeProperty->ShadeOff();
+		volumeProperty->SetInterpolationTypeToLinear();
+
+		// assign volume property to the volume property widget
+		volume_property_widget.setVolumeProperty(volumeProperty);
+
+		// The mapper that renders the volume data.
+		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+
+		// The volume holds the mapper and the property and can be used to position/orient the volume.
+		auto volume = vtkSmartPointer<vtkVolume>::New();
+		volume->SetMapper(volumeMapper);
+		volume->SetProperty(volumeProperty);
+
+		// add the volume into the renderer
+		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->AddVolume(volume);
+		renderer->SetBackground(1, 1, 1);
+
+		// clean previous renderers and then add the current renderer
+		auto window = vtk_widget.GetRenderWindow();
+		auto collection = window->GetRenderers();
+		auto item = collection->GetNextItem();
+		while (item != NULL)
+		{
+			window->RemoveRenderer(item);
+			item = collection->GetNextItem();
+		}
+		window->AddRenderer(renderer);
+		window->Render();
+
+		// initialize the interactor
+		interactor->Initialize();
+		interactor->Start();
+	}
+
+	// open a volume dataset without rendering it
 	void open_volume_no_rendering(QString filename)
 	{
 		// show filename on window title
@@ -1936,9 +2025,34 @@ private:
 
 	private slots:
 
-	void slot_selectionChanged()
+	void generate_transfer_functions_optimised_for_colour()
 	{
-		//std::cout << "slot_selectionChanged\n";
+		bool ok;
+		int n = number_of_colours_in_spectrum;
+		n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
+		if (ok)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				QColor colour;
+				colour.setHsv(i * 360 / n, 255, 255);
+				// optimise for specific colour
+				optimise_transfer_function_for_colour(colour);
+				char c_str2[_MAX_PATH];
+				sprintf(c_str2, "D:/output/CT-Knee/%03d.tfi", i);
+				//char str0[_MAX_PATH];
+				//sprintf(str0, ".%03d.tfi", i);
+				//QString str1 = volume_filename + QString(str0);
+				//QByteArray ba = str1.toLocal8Bit();
+				//const char *c_str2 = ba.data();
+				saveTransferFunctionToXML(c_str2);
+				std::cout << "saved to file " << c_str2 << std::endl;
+			}
+		}
+	}
+
+	void slot_GraphicsScene_selectionChanged()
+	{
 		auto scene = getGraphicsScene_for_spectrum();
 		auto list = scene->items();
 		for (int i = 0; i < list.size(); i++)
@@ -1979,40 +2093,48 @@ private:
 		}
 	}
 
-	void generate_transfer_functions_optimised_for_colour()
+	void slot_GraphicsScene_sceneRectChanged(const QRectF & rect)
 	{
-		bool ok;
-		int n = number_of_colours_in_spectrum;
-		n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
-		if (ok)
+		std::cout << "slot_GraphicsScene_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
+	}
+
+	void slot_ListView_activated(const QModelIndex & index)
+	{
+		std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
+
+		auto item = model_for_listview.itemFromIndex(index);
+		if (item != NULL)
 		{
-			for (int i = 0; i < n; i++)
-			{
-				QColor colour;
-				colour.setHsv(i * 360 / n, 255, 255);
-				// optimise for specific colour
-				optimise_transfer_function_for_colour(colour);
-				char c_str2[_MAX_PATH];
-				sprintf(c_str2, "D:/output/CT-Knee/%03d.tfi", i);
-				//char str0[_MAX_PATH];
-				//sprintf(str0, ".%03d.tfi", i);
-				//QString str1 = volume_filename + QString(str0);
-				//QByteArray ba = str1.toLocal8Bit();
-				//const char *c_str2 = ba.data();
-				saveTransferFunctionToXML(c_str2);
-				std::cout << "saved to file " << c_str2 << std::endl;
-			}
+			auto filename = item->text();
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+			QByteArray ba = filename.toLocal8Bit();
+			const char *filename_str = ba.data();
+			std::cout << "text=" << filename_str << std::endl;
+			open_volume(filename);
 		}
-	}
+		else
+		{
+			std::cout << "invalid index" << std::endl;
+		}
 
-	void slot_sceneRectChanged(const QRectF & rect)
-	{
-		std::cout << "slot_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
-	}
+		//std::cout<< " text=" << model_for_listview->item(index.row())->text().toStdString() << std::endl;
 
-	void slot_clicked(const QModelIndex & index)
-	{
-		std::cout << "slot_clicked\n";
+		//QString filename = model_for_listview->item(index.row())->text();
+		//if (filename.trimmed().isEmpty())
+		//{
+		//	return;
+		//}
+
+		// show filename on window title
+		//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		//QByteArray ba = filename.toLocal8Bit();
+		//const char *filename_str = ba.data();
+
+		//open_volume(model_for_listview->item(index.row())->text());
+		//std::cout << filename_str << std::endl;
+		//std::cout<<filename.toStdString()<<std::endl;
 	}
 
 	void on_entropyButton_clicked();
