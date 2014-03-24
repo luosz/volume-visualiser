@@ -2056,7 +2056,7 @@ private:
 				// optimise for specific colour
 				optimise_transfer_function_for_colour(colour);
 				char c_str2[_MAX_PATH];
-				sprintf(c_str2, "D:/output/CT-Knee/%03d.tfi", i);
+				sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
 				//char str0[_MAX_PATH];
 				//sprintf(str0, ".%03d.tfi", i);
 				//QString str1 = volume_filename + QString(str0);
