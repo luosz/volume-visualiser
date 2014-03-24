@@ -60,9 +60,10 @@ ui(new Ui::MainWindow)
 	count_of_voxels = 0;
 	volume_ptr = NULL;
 	//number_of_colours_in_spectrum = 8;
-	set_colour_number_in_spectrum(8);
 	batch_patch = "D:/_uchar/vortex/";
 
+	//multiplier_for_colours_in_spectrum = 1;
+	set_colour_number_in_spectrum(16);
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 
 	on_action_Compute_Distance_HSV_triggered();

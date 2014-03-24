@@ -112,9 +112,22 @@ private:
 	int enable_squared_distance;
 	int enable_hsv_distance;
 	int number_of_colours_in_spectrum;
+	//int multiplier_for_colours_in_spectrum;
 	QString batch_patch;
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
+
+	int get_number_of_colours_in_spectrum()
+	{
+		//if (enable_spectrum_ramp == 1)
+		//{
+		//	return number_of_colours_in_spectrum * multiplier_for_colours_in_spectrum;
+		//}
+		//else
+		//{
+		return number_of_colours_in_spectrum;
+		//}
+	}
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -143,7 +156,8 @@ private:
 	void set_colour_number_in_spectrum(int number_of_colours)
 	{
 		number_of_colours_in_spectrum = number_of_colours;
-		draw_spectrum_in_graphicsview();
+		//multiplier_for_colours_in_spectrum = multiplier;
+		draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
 	}
 
 	/// Re-maps a number from one range to another.
@@ -1288,7 +1302,7 @@ private:
 			spectrum.push_back(c);
 		}
 
-		const int m = 3; // 3 control points each group
+		const int m = 1; // 3 control points each group
 		//// red, yellow, green, cyan, blue, magenta
 		//double colours[6][m] = {
 		//	{1,0,0},
@@ -1911,11 +1925,14 @@ private:
 		updateTransferFunctionWidgetsFromArrays();
 	}
 
-	void draw_spectrum_in_graphicsview()
+	void draw_spectrum_in_graphicsview(int n)
 	{
+		//if (n == -1)
+		//{
+		//	n = number_of_colours_in_spectrum;
+		//}
 		const double width = 280;
 		const double height = 100;
-		int n = number_of_colours_in_spectrum;
 		double w = width / n;
 		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
 		scene->clear();
@@ -2063,10 +2080,10 @@ private:
 			{
 				int index = list.at(i)->data(0).toInt();
 				std::cout << "QGraphicsItem index=" << index << std::endl;
-				if (index >= 0 && index < number_of_colours_in_spectrum)
+				if (index >= 0 && index < get_number_of_colours_in_spectrum())
 				{
 					QColor colour;
-					colour.setHsv(index * 360 / number_of_colours_in_spectrum, 255, 255);
+					colour.setHsv(index * 360 / get_number_of_colours_in_spectrum(), 255, 255);
 					if (ui->radioButton_optimise->isChecked())
 					{
 						// optimise for specific colour
@@ -2168,7 +2185,7 @@ private:
 	void on_action_Spectrum_Ramp_Transfer_Function_triggered();
 	void on_action_Pick_a_colour_and_optimise_transfer_function_triggered();
 	void on_action_Test_triggered();
-    void on_action_Genearte_transfer_functions_for_spectrum_triggered();
+	void on_action_Genearte_transfer_functions_for_spectrum_triggered();
 };
 
 #endif // MAINWINDOW_H
