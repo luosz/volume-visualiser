@@ -1927,16 +1927,12 @@ private:
 
 	void draw_spectrum_in_graphicsview(int n)
 	{
-		//if (n == -1)
-		//{
-		//	n = number_of_colours_in_spectrum;
-		//}
 		const double width = 280;
-		const double height = 100;
+		const double height = 16;
 		double w = width / n;
 		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
 		scene->clear();
-		scene->addText("Spectrum " + QTime::currentTime().toString());
+		//scene->addText("Spectrum " + QTime::currentTime().toString());
 		QColor colour(Qt::yellow);
 		int h, s, v;
 		colour.getHsv(&h, &s, &v);
@@ -2133,25 +2129,6 @@ private:
 		{
 			std::cout << "invalid index" << std::endl;
 		}
-
-		//std::cout<< " text=" << model_for_listview->item(index.row())->text().toStdString() << std::endl;
-
-		//QString filename = model_for_listview->item(index.row())->text();
-		//if (filename.trimmed().isEmpty())
-		//{
-		//	return;
-		//}
-
-		// show filename on window title
-		//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
-
-		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-		//QByteArray ba = filename.toLocal8Bit();
-		//const char *filename_str = ba.data();
-
-		//open_volume(model_for_listview->item(index.row())->text());
-		//std::cout << filename_str << std::endl;
-		//std::cout<<filename.toStdString()<<std::endl;
 	}
 
 	void on_entropyButton_clicked();

@@ -5,7 +5,7 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="SingleVolumeRaycaster" ref="ref0" />
+                        <item type="VolumeSelector" ref="ref6" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
@@ -25,7 +25,7 @@
                             </MetaData>
                             <position x="-98.06629181" y="-95.66124725" z="-96.62525177" />
                             <focus x="-99" y="-99" z="-99" />
-                            <upVector x="-0.72112447" y="-0.25617242" z="0.64370424" />
+                            <upVector x="-0.72112453" y="-0.25617245" z="0.6437043" />
                             <trackball moveCenter="false">
                                 <center x="-99" y="-99" z="-99" />
                             </trackball>
@@ -75,10 +75,10 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref12">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="601" y="75" width="683" height="538" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="601" y="75" width="683" height="538" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="1" />
+                                <domain x="0" y="0.98039216" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
@@ -278,7 +278,7 @@
                             </MetaData>
                             <position x="-98.06629181" y="-95.66124725" z="-96.62525177" />
                             <focus x="-99" y="-99" z="-99" />
-                            <upVector x="-0.72112453" y="-0.25617245" z="0.6437043" />
+                            <upVector x="-0.72112447" y="-0.25617242" z="0.64370424" />
                             <trackball moveCenter="false">
                                 <center x="-99" y="-99" z="-99" />
                             </trackball>
@@ -356,7 +356,7 @@
                                 <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" />
                             </MetaData>
                             <TransferFunction type="TransFuncIntensity" alphaMode="1" gammaValue="1">
-                                <domain x="0" y="1" />
+                                <domain x="0" y="0.98039216" />
                                 <threshold x="0" y="1" />
                                 <Keys>
                                     <key type="TransFuncMappingKey" intensity="0" split="false">
@@ -519,204 +519,204 @@
                     <Properties>
                         <Property mapKey="volumeURLList" name="volumeURLList">
                             <VolumeURLs>
-                                <url value="../../../../_uchar/vortex/00.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/01.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/02.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/03.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/04.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/05.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/06.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/07.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/08.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/09.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/10.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/11.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/12.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/13.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/14.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/15.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/16.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/17.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/18.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/19.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/20.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/21.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/22.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/23.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/24.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/25.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/26.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/27.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/28.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/29.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/30.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/31.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/32.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/33.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/34.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/35.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/36.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/37.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/38.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/39.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/40.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/41.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/42.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/43.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/44.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/45.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/46.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/47.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/48.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/49.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/50.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/51.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/52.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/53.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/54.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/55.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/56.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/57.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/58.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/59.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/60.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/61.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/62.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/63.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/64.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/65.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/66.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/67.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/68.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/69.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/70.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/71.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/72.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/73.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/74.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/75.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/76.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/77.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/78.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/79.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/80.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/81.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/82.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/83.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/84.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/85.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/86.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/87.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/88.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/89.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/90.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/91.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/92.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/93.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/94.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/95.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/96.mhd?preferredReader=MhdVolumeReader" />
-                                <url value="../../../../_uchar/vortex/97.mhd?preferredReader=MhdVolumeReader" />
+                                <url value="../../../../_uchar/vortex/00.mhd" />
+                                <url value="../../../../_uchar/vortex/01.mhd" />
+                                <url value="../../../../_uchar/vortex/02.mhd" />
+                                <url value="../../../../_uchar/vortex/03.mhd" />
+                                <url value="../../../../_uchar/vortex/04.mhd" />
+                                <url value="../../../../_uchar/vortex/05.mhd" />
+                                <url value="../../../../_uchar/vortex/06.mhd" />
+                                <url value="../../../../_uchar/vortex/07.mhd" />
+                                <url value="../../../../_uchar/vortex/08.mhd" />
+                                <url value="../../../../_uchar/vortex/09.mhd" />
+                                <url value="../../../../_uchar/vortex/10.mhd" />
+                                <url value="../../../../_uchar/vortex/11.mhd" />
+                                <url value="../../../../_uchar/vortex/12.mhd" />
+                                <url value="../../../../_uchar/vortex/13.mhd" />
+                                <url value="../../../../_uchar/vortex/14.mhd" />
+                                <url value="../../../../_uchar/vortex/15.mhd" />
+                                <url value="../../../../_uchar/vortex/16.mhd" />
+                                <url value="../../../../_uchar/vortex/17.mhd" />
+                                <url value="../../../../_uchar/vortex/18.mhd" />
+                                <url value="../../../../_uchar/vortex/19.mhd" />
+                                <url value="../../../../_uchar/vortex/20.mhd" />
+                                <url value="../../../../_uchar/vortex/21.mhd" />
+                                <url value="../../../../_uchar/vortex/22.mhd" />
+                                <url value="../../../../_uchar/vortex/23.mhd" />
+                                <url value="../../../../_uchar/vortex/24.mhd" />
+                                <url value="../../../../_uchar/vortex/25.mhd" />
+                                <url value="../../../../_uchar/vortex/26.mhd" />
+                                <url value="../../../../_uchar/vortex/27.mhd" />
+                                <url value="../../../../_uchar/vortex/28.mhd" />
+                                <url value="../../../../_uchar/vortex/29.mhd" />
+                                <url value="../../../../_uchar/vortex/30.mhd" />
+                                <url value="../../../../_uchar/vortex/31.mhd" />
+                                <url value="../../../../_uchar/vortex/32.mhd" />
+                                <url value="../../../../_uchar/vortex/33.mhd" />
+                                <url value="../../../../_uchar/vortex/34.mhd" />
+                                <url value="../../../../_uchar/vortex/35.mhd" />
+                                <url value="../../../../_uchar/vortex/36.mhd" />
+                                <url value="../../../../_uchar/vortex/37.mhd" />
+                                <url value="../../../../_uchar/vortex/38.mhd" />
+                                <url value="../../../../_uchar/vortex/39.mhd" />
+                                <url value="../../../../_uchar/vortex/40.mhd" />
+                                <url value="../../../../_uchar/vortex/41.mhd" />
+                                <url value="../../../../_uchar/vortex/42.mhd" />
+                                <url value="../../../../_uchar/vortex/43.mhd" />
+                                <url value="../../../../_uchar/vortex/44.mhd" />
+                                <url value="../../../../_uchar/vortex/45.mhd" />
+                                <url value="../../../../_uchar/vortex/46.mhd" />
+                                <url value="../../../../_uchar/vortex/47.mhd" />
+                                <url value="../../../../_uchar/vortex/48.mhd" />
+                                <url value="../../../../_uchar/vortex/49.mhd" />
+                                <url value="../../../../_uchar/vortex/50.mhd" />
+                                <url value="../../../../_uchar/vortex/51.mhd" />
+                                <url value="../../../../_uchar/vortex/52.mhd" />
+                                <url value="../../../../_uchar/vortex/53.mhd" />
+                                <url value="../../../../_uchar/vortex/54.mhd" />
+                                <url value="../../../../_uchar/vortex/55.mhd" />
+                                <url value="../../../../_uchar/vortex/56.mhd" />
+                                <url value="../../../../_uchar/vortex/57.mhd" />
+                                <url value="../../../../_uchar/vortex/58.mhd" />
+                                <url value="../../../../_uchar/vortex/59.mhd" />
+                                <url value="../../../../_uchar/vortex/60.mhd" />
+                                <url value="../../../../_uchar/vortex/61.mhd" />
+                                <url value="../../../../_uchar/vortex/62.mhd" />
+                                <url value="../../../../_uchar/vortex/63.mhd" />
+                                <url value="../../../../_uchar/vortex/64.mhd" />
+                                <url value="../../../../_uchar/vortex/65.mhd" />
+                                <url value="../../../../_uchar/vortex/66.mhd" />
+                                <url value="../../../../_uchar/vortex/67.mhd" />
+                                <url value="../../../../_uchar/vortex/68.mhd" />
+                                <url value="../../../../_uchar/vortex/69.mhd" />
+                                <url value="../../../../_uchar/vortex/70.mhd" />
+                                <url value="../../../../_uchar/vortex/71.mhd" />
+                                <url value="../../../../_uchar/vortex/72.mhd" />
+                                <url value="../../../../_uchar/vortex/73.mhd" />
+                                <url value="../../../../_uchar/vortex/74.mhd" />
+                                <url value="../../../../_uchar/vortex/75.mhd" />
+                                <url value="../../../../_uchar/vortex/76.mhd" />
+                                <url value="../../../../_uchar/vortex/77.mhd" />
+                                <url value="../../../../_uchar/vortex/78.mhd" />
+                                <url value="../../../../_uchar/vortex/79.mhd" />
+                                <url value="../../../../_uchar/vortex/80.mhd" />
+                                <url value="../../../../_uchar/vortex/81.mhd" />
+                                <url value="../../../../_uchar/vortex/82.mhd" />
+                                <url value="../../../../_uchar/vortex/83.mhd" />
+                                <url value="../../../../_uchar/vortex/84.mhd" />
+                                <url value="../../../../_uchar/vortex/85.mhd" />
+                                <url value="../../../../_uchar/vortex/86.mhd" />
+                                <url value="../../../../_uchar/vortex/87.mhd" />
+                                <url value="../../../../_uchar/vortex/88.mhd" />
+                                <url value="../../../../_uchar/vortex/89.mhd" />
+                                <url value="../../../../_uchar/vortex/90.mhd" />
+                                <url value="../../../../_uchar/vortex/91.mhd" />
+                                <url value="../../../../_uchar/vortex/92.mhd" />
+                                <url value="../../../../_uchar/vortex/93.mhd" />
+                                <url value="../../../../_uchar/vortex/94.mhd" />
+                                <url value="../../../../_uchar/vortex/95.mhd" />
+                                <url value="../../../../_uchar/vortex/96.mhd" />
+                                <url value="../../../../_uchar/vortex/97.mhd" />
                             </VolumeURLs>
                             <Selection>
-                                <entry url="../../../../_uchar/vortex/00.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/01.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/02.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/03.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/04.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/05.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/06.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/07.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/08.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/09.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/10.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/11.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/12.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/13.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/14.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/15.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/16.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/17.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/18.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/19.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/20.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/21.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/22.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/23.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/24.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/25.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/26.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/27.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/28.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/29.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/30.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/31.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/32.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/33.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/34.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/35.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/36.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/37.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/38.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/39.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/40.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/41.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/42.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/43.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/44.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/45.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/46.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/47.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/48.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/49.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/50.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/51.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/52.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/53.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/54.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/55.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/56.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/57.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/58.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/59.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/60.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/61.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/62.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/63.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/64.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/65.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/66.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/67.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/68.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/69.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/70.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/71.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/72.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/73.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/74.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/75.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/76.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/77.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/78.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/79.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/80.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/81.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/82.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/83.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/84.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/85.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/86.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/87.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/88.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/89.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/90.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/91.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/92.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/93.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/94.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/95.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/96.mhd?preferredReader=MhdVolumeReader" value="true" />
-                                <entry url="../../../../_uchar/vortex/97.mhd?preferredReader=MhdVolumeReader" value="true" />
+                                <entry url="../../../../_uchar/vortex/00.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/01.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/02.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/03.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/04.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/05.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/06.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/07.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/08.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/09.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/10.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/11.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/12.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/13.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/14.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/15.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/16.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/17.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/18.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/19.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/20.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/21.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/22.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/23.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/24.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/25.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/26.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/27.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/28.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/29.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/30.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/31.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/32.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/33.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/34.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/35.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/36.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/37.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/38.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/39.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/40.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/41.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/42.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/43.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/44.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/45.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/46.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/47.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/48.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/49.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/50.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/51.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/52.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/53.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/54.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/55.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/56.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/57.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/58.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/59.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/60.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/61.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/62.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/63.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/64.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/65.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/66.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/67.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/68.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/69.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/70.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/71.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/72.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/73.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/74.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/75.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/76.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/77.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/78.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/79.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/80.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/81.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/82.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/83.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/84.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/85.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/86.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/87.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/88.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/89.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/90.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/91.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/92.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/93.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/94.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/95.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/96.mhd" value="true" />
+                                <entry url="../../../../_uchar/vortex/97.mhd" value="true" />
                             </Selection>
                         </Property>
                     </Properties>
@@ -735,7 +735,7 @@
                         <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-595" y="-167" />
                     </MetaData>
                     <Properties>
-                        <Property mapKey="volumeID" name="volumeID" value="97" />
+                        <Property mapKey="volumeID" name="volumeID" value="0" />
                     </Properties>
                     <Inports>
                         <Port name="volumecollection" direction="1" portID="volumecollection" guiName="VolumeList Input" allowMultipleConnections="false" invalidationLevel="1">
