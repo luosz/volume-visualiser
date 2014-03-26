@@ -56,8 +56,9 @@
     <addaction name="action_Save_Transfer_Function"/>
     <addaction name="action_Open_Selected_Region"/>
     <addaction name="separator"/>
-    <addaction name="action_Open_Path_and_Generate_Transfer_Functions"/>
-    <addaction name="action_Open_Path_and_Generate_Transfer_Functions_for_Region"/>
+    <addaction name="action_Open_path_and_generate_transfer_functions"/>
+    <addaction name="action_Open_path_and_generate_transfer_functions_for_region"/>
+    <addaction name="action_Open_path_and_generate_transfer_functions_for_colour"/>
     <addaction name="separator"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="separator"/>
@@ -478,14 +479,14 @@
     <string>&amp;Spectrum Transfer Function</string>
    </property>
   </action>
-  <action name="action_Open_Path_and_Generate_Transfer_Functions">
+  <action name="action_Open_path_and_generate_transfer_functions">
    <property name="text">
-    <string>Open &amp;Path and Generate Transfer Functions</string>
+    <string>Open &amp;path and generate transfer functions</string>
    </property>
   </action>
-  <action name="action_Open_Path_and_Generate_Transfer_Functions_for_Region">
+  <action name="action_Open_path_and_generate_transfer_functions_for_region">
    <property name="text">
-    <string>Open Path and &amp;Generate Transfer Functions for Region</string>
+    <string>Open path and generate transfer functions for &amp;region</string>
    </property>
   </action>
   <action name="action_Compute_Squared_Distance_HSV">
@@ -525,6 +526,11 @@
   <action name="action_Genearte_transfer_functions_for_spectrum">
    <property name="text">
     <string>&amp;Genearte transfer function series for spectrum</string>
+   </property>
+  </action>
+  <action name="action_Open_path_and_generate_transfer_functions_for_colour">
+   <property name="text">
+    <string>Open path and generate transfer functions for &amp;colour</string>
    </property>
   </action>
  </widget>

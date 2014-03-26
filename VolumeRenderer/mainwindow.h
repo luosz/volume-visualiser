@@ -157,7 +157,6 @@ private:
 	void set_colour_number_in_spectrum(int number_of_colours)
 	{
 		number_of_colours_in_spectrum = number_of_colours;
-		//multiplier_for_colours_in_spectrum = multiplier;
 		draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
 	}
 
@@ -2059,7 +2058,7 @@ private:
 					colour.setHsv(index * 360 / get_number_of_colours_in_spectrum(), 255, 255);
 					if (ui->radioButton_optimise->isChecked())
 					{
-						// optimise for specific colour
+						// optimise for a specific colour
 						optimise_transfer_function_for_colour(colour);
 					}
 					else
@@ -2134,12 +2133,13 @@ private:
 	void on_action_Compute_Distance_HSV_triggered();
 	void on_action_Default_Transfer_Function_triggered();
 	void on_action_Spectrum_Transfer_Function_triggered();
-	void on_action_Open_Path_and_Generate_Transfer_Functions_triggered();
-	void on_action_Open_Path_and_Generate_Transfer_Functions_for_Region_triggered();
 	void on_action_Spectrum_Ramp_Transfer_Function_triggered();
 	void on_action_Pick_a_colour_and_optimise_transfer_function_triggered();
 	void on_action_Test_triggered();
 	void on_action_Genearte_transfer_functions_for_spectrum_triggered();
+    void on_action_Open_path_and_generate_transfer_functions_triggered();
+    void on_action_Open_path_and_generate_transfer_functions_for_region_triggered();
+    void on_action_Open_path_and_generate_transfer_functions_for_colour_triggered();
 };
 
 #endif // MAINWINDOW_H
