@@ -116,6 +116,7 @@ private:
 	QString batch_patch;
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
+	QColor colour_for_optimization;
 
 	int get_number_of_colours_in_spectrum()
 	{
@@ -1986,6 +1987,8 @@ private:
 
 	void optimise_transfer_function_for_colour(QColor colour)
 	{
+		colour_for_optimization = colour;
+
 		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
@@ -2037,32 +2040,6 @@ private:
 	}
 
 	private slots:
-
-	void generate_transfer_functions_optimised_for_colour()
-	{
-		bool ok;
-		int n = number_of_colours_in_spectrum;
-		n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
-		if (ok)
-		{
-			for (int i = 0; i < n; i++)
-			{
-				QColor colour;
-				colour.setHsv(i * 360 / n, 255, 255);
-				// optimise for specific colour
-				optimise_transfer_function_for_colour(colour);
-				char c_str2[_MAX_PATH];
-				sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
-				//char str0[_MAX_PATH];
-				//sprintf(str0, ".%03d.tfi", i);
-				//QString str1 = volume_filename + QString(str0);
-				//QByteArray ba = str1.toLocal8Bit();
-				//const char *c_str2 = ba.data();
-				saveTransferFunctionToXML(c_str2);
-				std::cout << "saved to file " << c_str2 << std::endl;
-			}
-		}
-	}
 
 	void slot_GraphicsScene_selectionChanged()
 	{
