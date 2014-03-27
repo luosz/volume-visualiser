@@ -100,6 +100,7 @@ private:
 	std::vector<double> intensity_list;
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
+	std::vector<double> control_point_weight_list;
 	vtkSmartPointer<vtkPiecewiseFunction> opacity_transfer_function;
 	vtkSmartPointer<vtkColorTransferFunction> color_transfer_function;
 	double threshold_x, threshold_y;
@@ -107,7 +108,6 @@ private:
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 	void* volume_ptr;
-	std::vector<double> region_weight_list;
 	const static int max_iteration_count = 65536;
 	int enable_squared_distance;
 	int enable_hsv_distance;
@@ -120,14 +120,7 @@ private:
 
 	int get_number_of_colours_in_spectrum()
 	{
-		//if (enable_spectrum_ramp == 1)
-		//{
-		//	return number_of_colours_in_spectrum * multiplier_for_colours_in_spectrum;
-		//}
-		//else
-		//{
 		return number_of_colours_in_spectrum;
-		//}
 	}
 
 	QGraphicsScene * getGraphicsScene()
@@ -377,12 +370,12 @@ private:
 			}
 		}
 
-		return get_opacity_interpolation(intensity, index);
+		return get_opacity_by_interpolation(intensity, index);
 	}
 
 	/// double intensity belongs to [0,1]
 	/// int index >=0 && index < intensity_list.size()
-	double get_opacity_interpolation(double intensity, int index)
+	double get_opacity_by_interpolation(double intensity, int index)
 	{
 		int i1 = index, i2 = index + 1;
 		if (i1 >= 0 && i2 < intensity_list.size())
@@ -407,7 +400,46 @@ private:
 				}
 				else
 				{
-					std::cout << "Errors occur in get_opacity_interpolation()" << std::endl;
+					std::cout << "Errors occur in get_opacity_by_interpolation()" << std::endl;
+					return 0;
+				}
+			}
+		}
+	}
+
+	/// double intensity belongs to [0,1]
+	/// int index >=0 && index < intensity_list.size()
+	double get_control_point_weight_by_interpolation(double intensity, int index)
+	{
+		int i1 = index, i2 = index + 1;
+		if (i1 >= 0 && i2 < intensity_list.size())
+		{
+			// linear interpolation
+			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
+			//double a = colour_list[i1][3];
+			//double b = colour_list[i2][3];
+
+			// get control point weights
+			double a = get_control_point_weight(i1);
+			double b = get_control_point_weight(i2);
+
+			return (a + (b - a) * t);
+		}
+		else
+		{
+			if (i1 == -1)
+			{
+				return get_control_point_weight(i2);
+			}
+			else
+			{
+				if (i1 == intensity_list.size() - 1)
+				{
+					return get_control_point_weight(i1);
+				}
+				else
+				{
+					std::cout << "Errors occur in get_control_point_weight_by_interpolation()" << std::endl;
 					return 0;
 				}
 			}
@@ -463,6 +495,56 @@ private:
 		return sum;
 	}
 
+	// a weighted version of get_area_entropy. Its value is multiplied by control point weights
+	double get_weighted_area_entropy(int index)
+	{
+		double a, b;
+		if (index >= 0 && index < intensity_list.size() - 1)
+		{
+			a = intensity_list[index];
+			b = intensity_list[index + 1];
+		}
+		else
+		{
+			if (index == -1)
+			{
+				a = 0;
+				b = intensity_list[index + 1];
+			}
+			else
+			{
+				if (index == intensity_list.size() - 1)
+				{
+					a = intensity_list[index];
+					b = 1;
+				}
+				else
+				{
+					std::cout << "index out of range in get_area_integral()" << endl;
+					return 0;
+				}
+			}
+		}
+
+		//std::cout<<"intensity "<<a<<" "<<b;
+		a = denormalise_intensity(a);
+		b = denormalise_intensity(b);
+		//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
+
+		double sum = 0;
+		// int intensity belongs to [0,255]
+		for (int intensity = (int)a; intensity < b; intensity++)
+		{
+			if (intensity >= a)
+			{
+				//std::cout<<intensity<<" ";
+				sum += get_weighted_entropy_opacity_by_index(intensity, index);
+			}
+		}
+		//std::cout<<std::endl;
+		return sum;
+	}
+
 	/// int index is the index of control point.
 	/// the control point 0 and (size-1) are the bounds
 	double get_neighbour_area_entropy(int index)
@@ -470,11 +552,16 @@ private:
 		return get_area_entropy(index) + get_area_entropy(index - 1);
 	}
 
+	double get_weighted_neighbour_area_entropy(int index)
+	{
+		return get_weighted_area_entropy(index) + get_weighted_area_entropy(index - 1);
+	}
+
 	double get_control_point_weight(int index)
 	{
-		if (index >= 0 && index < region_weight_list.size())
+		if (index >= 0 && index < control_point_weight_list.size())
 		{
-			return region_weight_list[index];
+			return control_point_weight_list[index];
 		}
 		else
 		{
@@ -482,10 +569,10 @@ private:
 		}
 	}
 
-	double get_neighbour_area_entropy_weighted_for_region(int index)
-	{
-		return get_neighbour_area_entropy(index) * get_control_point_weight(index);
-	}
+	//double get_weighted_neighbour_area_entropy(int index)
+	//{
+	//	return get_neighbour_area_entropy(index) * get_control_point_weight(index);
+	//}
 
 	// double intensity belongs to [0,255]
 	double get_entropy_opacity_by_index(double intensity, int index)
@@ -496,7 +583,25 @@ private:
 		if (probability > epsilon)
 		{
 			double normalised = normalise_intensity(intensity);
-			return get_opacity_interpolation(normalised, index) * probability * (-log(probability));
+			return get_opacity_by_interpolation(normalised, index) * probability * (-log(probability));
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	// a weighted version of get_entropy_opacity_by_index. Its value is multiplied by control point weights
+	// double intensity belongs to [0,255]
+	double get_weighted_entropy_opacity_by_index(double intensity, int index)
+	{
+		double frequency = get_frequency(intensity);
+		const double epsilon = 1e-6;
+		double probability = frequency / count_of_voxels;
+		if (probability > epsilon)
+		{
+			double normalised = normalise_intensity(intensity);
+			return get_control_point_weight_by_interpolation(normalised, index) * get_opacity_by_interpolation(normalised, index) * probability * (-log(probability));
 		}
 		else
 		{
@@ -719,7 +824,7 @@ private:
 		{
 			if (colour_list[i][3] > epsilon)
 			{
-				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
 				{
 					max_index = i;
@@ -738,9 +843,9 @@ private:
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
-			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double area = get_weighted_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new;
-			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double new_area = get_weighted_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = colour_list[min_index][3];
@@ -851,7 +956,7 @@ private:
 		{
 			if (colour_list[i][3] > epsilon)
 			{
-				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
 				{
 					max_index = i;
@@ -870,9 +975,9 @@ private:
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
-			double area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double area = get_weighted_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new;
-			double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
+			double new_area = get_weighted_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			//double height_min = colour_list[min_index][3];
@@ -895,7 +1000,7 @@ private:
 		{
 			if (colour_list[i][3] > epsilon)
 			{
-				double area = get_neighbour_area_entropy_weighted_for_region(i);
+				double area = get_weighted_neighbour_area_entropy(i);
 				//if (area > max_area)
 				//{
 				//	max_index = i;
@@ -1587,7 +1692,7 @@ private:
 		double sum = 0;
 		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
-			double w = get_neighbour_area_entropy_weighted_for_region(i);
+			double w = get_weighted_neighbour_area_entropy(i);
 			sum += w;
 			weights.push_back(w);
 		}
@@ -1825,7 +1930,7 @@ private:
 #endif
 
 		// compute region weights based on the selected image
-		region_weight_list.clear();
+		control_point_weight_list.clear();
 		double sum = 0;
 		for (unsigned int i = 0; i<colour_list.size(); i++)
 		{
@@ -1833,16 +1938,16 @@ private:
 			double g = colour_list[i][1];
 			double b = colour_list[i][2];
 			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, count_of_pixels, numComponents, squared, hsv);
-			region_weight_list.push_back(distance);
+			control_point_weight_list.push_back(distance);
 			sum += distance;
 		}
 
 		if (sum > 0)
 		{
 			// normalize the distances
-			for (unsigned int i = 0; i < region_weight_list.size(); i++)
+			for (unsigned int i = 0; i < control_point_weight_list.size(); i++)
 			{
-				region_weight_list[i] = region_weight_list[i] / sum;
+				control_point_weight_list[i] = control_point_weight_list[i] / sum;
 			}
 		}
 	}
@@ -1960,7 +2065,7 @@ private:
 		unsigned char pixels[] = { r, g, b };
 
 		// compute region weights based on the selected image
-		region_weight_list.clear();
+		control_point_weight_list.clear();
 		double sum = 0;
 		for (unsigned int i = 0; i < colour_list.size(); i++)
 		{
@@ -1970,16 +2075,16 @@ private:
 
 			// compute distance in hue without squaring
 			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, 1, 3, 0, 1);
-			region_weight_list.push_back(distance);
+			control_point_weight_list.push_back(distance);
 			sum += distance;
 		}
 
 		if (sum > 0)
 		{
 			// normalize the distances
-			for (unsigned int i = 0; i < region_weight_list.size(); i++)
+			for (unsigned int i = 0; i < control_point_weight_list.size(); i++)
 			{
-				region_weight_list[i] = region_weight_list[i] / sum;
+				control_point_weight_list[i] = control_point_weight_list[i] / sum;
 			}
 		}
 	}
