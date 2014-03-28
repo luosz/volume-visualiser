@@ -85,6 +85,7 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
+// frequency histogram
 void MainWindow::on_frequencyButton_clicked()
 {
 	double height = ui->graphicsView->height();
@@ -101,6 +102,7 @@ void MainWindow::on_frequencyButton_clicked()
 	}
 }
 
+// opacity
 void MainWindow::on_opacityButton_clicked()
 {
 	double height = ui->graphicsView->height();
@@ -118,6 +120,7 @@ void MainWindow::on_opacityButton_clicked()
 	}
 }
 
+// noteworthiness=alpha(x)*p(x)*log(p(x))
 void MainWindow::on_visibilityButton_clicked()
 {
 	double height = ui->graphicsView->height();
@@ -136,6 +139,7 @@ void MainWindow::on_visibilityButton_clicked()
 	}
 }
 
+// entropy=p(x)*log(p(x))
 void MainWindow::on_entropyButton_clicked()
 {
 	double height = ui->graphicsView->height();
@@ -158,6 +162,7 @@ void MainWindow::on_entropyButton_clicked()
 	}
 }
 
+// integration of alpha(x)*p(x)*log(p(x)) over intensity range [x(i),x(i+1)]
 void MainWindow::on_entropyOpacityButton_clicked()
 {
 	double height = ui->graphicsView->height();
