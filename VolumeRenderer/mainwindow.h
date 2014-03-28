@@ -873,7 +873,11 @@ private:
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		//double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -893,7 +897,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -917,7 +921,11 @@ private:
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -937,7 +945,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			//double height_max = colour_list[max_index][3];
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -961,7 +969,11 @@ private:
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		//double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -981,7 +993,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -1005,7 +1017,11 @@ private:
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -1025,7 +1041,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			//double height_max = colour_list[max_index][3];
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
