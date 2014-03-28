@@ -572,7 +572,7 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 	n = QInputDialog::getInt(this, tr("Spectrum Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
-		std::cout << "QInputDialog::getInteger() " << n << std::endl;
+		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTransferFunctionWidgetsFromArrays();
 		set_colour_number_in_spectrum(n);
@@ -589,10 +589,9 @@ void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
 	n = QInputDialog::getInt(this, tr("Spectrum Ramp Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
-		std::cout << "QInputDialog::getInteger() " << n << std::endl;
+		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_ramp_transfer_function(n);
 		updateTransferFunctionWidgetsFromArrays();
-		//colour_number_in_spectrum = n;
 		set_colour_number_in_spectrum(n);
 	}
 }
@@ -604,6 +603,10 @@ void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggere
 	{
 		//pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		//std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+		// reset transfer function before optimizing it
+		reset_transfer_function();
+
+		// optimise for a specific colour
 		optimise_transfer_function_for_colour(colour);
 	}
 
@@ -652,8 +655,13 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 		{
 			QColor colour;
 			colour.setHsv(i * 360 / n, 255, 255);
-			// optimise for specific colour
+
+			// reset transfer function before optimizing it
+			reset_transfer_function();
+
+			// optimize for a specific colour
 			optimise_transfer_function_for_colour(colour);
+
 			char c_str2[_MAX_PATH];
 			sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
 			//char str0[_MAX_PATH];
@@ -722,18 +730,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 			// load volume
 			open_volume_no_rendering(filepath + files[i]);
 
-			// generate a spectrum transfer function with n groups of control points
-			if (enable_spectrum_ramp == 0)
-			{
-				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
-			}
-			else
-			{
-				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
-			}
-
-			//updateTransferFunctionWidgetsFromArrays();
-			//updateTransferFunctionArraysFromWidgets();
+			reset_transfer_function();
 
 			int n = ui->spinBox->value();
 			if (n < 1 || n > max_iteration_count)
@@ -825,21 +822,10 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 			// load volume
 			open_volume_no_rendering(filepath + files[i]);
 
-			// generate a spectrum transfer function with n groups of control points
-			if (enable_spectrum_ramp == 0)
-			{
-				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
-			}
-			else
-			{
-				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
-			}
+			reset_transfer_function();
 
 			// compute region-based difference factors
 			read_region_image_and_compute_distance(enable_squared_distance, enable_hsv_distance);
-
-			//updateTransferFunctionWidgetsFromArrays();
-			//updateTransferFunctionArraysFromWidgets();
 
 			int n = ui->spinBox->value();
 			if (n < 1 || n > max_iteration_count)
@@ -931,35 +917,9 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 			// load volume
 			open_volume_no_rendering(filepath + files[i]);
 
-			// generate a spectrum transfer function with n groups of control points
-			if (enable_spectrum_ramp == 0)
-			{
-				generate_spectrum_transfer_function(number_of_colours_in_spectrum);
-			}
-			else
-			{
-				generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
-			}
+			reset_transfer_function();
 
-			// compute the distance between control point colour and selected colour
-			pick_colour_and_compute_distance(colour_for_optimization.red(), colour_for_optimization.green(), colour_for_optimization.blue());
-
-			//updateTransferFunctionWidgetsFromArrays();
-			//updateTransferFunctionArraysFromWidgets();
-
-			int n = ui->spinBox->value();
-			if (n < 1 || n > max_iteration_count)
-			{
-				n = 1;
-			}
-
-			while (n-- > 0)
-			{
-				balance_opacity_for_region();
-			}
-
-			updateTransferFunctionWidgetsFromArrays();
-			updateTransferFunctionArraysFromWidgets();
+			optimise_transfer_function_for_colour(colour_for_optimization);
 
 			// split filename and extension
 			QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
@@ -981,4 +941,19 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 		model_for_listview.clear();
 		model_for_listview.appendColumn(filename_list);
 	}
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+	int n = number_of_colours_in_spectrum;
+	if (enable_spectrum_ramp == 0)
+	{
+		generate_spectrum_transfer_function(n);
+	}
+	else
+	{
+		generate_spectrum_ramp_transfer_function(n);
+	}
+	updateTransferFunctionWidgetsFromArrays();
+	set_colour_number_in_spectrum(n);
 }

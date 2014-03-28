@@ -768,6 +768,7 @@ private:
 		}
 	}
 
+	// global optimization
 	void balance_opacity()
 	{
 		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -775,7 +776,11 @@ private:
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -795,23 +800,24 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new;
-			double new_area = get_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new; // update opacity
+			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = colour_list[min_index][3];
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
+			colour_list[min_index][3] = height_min_new; // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
+	// region-based or hue-based optimization
 	void balance_opacity_for_region()
 	{
 		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -819,7 +825,11 @@ private:
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		const double epsilon = 1e-6;
+
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
 			if (colour_list[i][3] > epsilon)
@@ -839,19 +849,19 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < 0 ? 0 : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new;
-			double new_area = get_weighted_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new; // update opacity
+			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = colour_list[min_index][3];
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
+			colour_list[min_index][3] = height_min_new; // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -2093,12 +2103,12 @@ private:
 	{
 		colour_for_optimization = colour;
 
+		// compute the distance between control point colour and selected colour
 		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
 
 		// optimise the transfer function for the selected colour
-		updateTransferFunctionArraysFromWidgets();
 		int n = ui->spinBox->value();
 		if (n < 1 || n > max_iteration_count)
 		{
@@ -2143,6 +2153,19 @@ private:
 		return index;
 	}
 
+	void reset_transfer_function()
+	{
+		// generate a spectrum transfer function with n groups of control points
+		if (enable_spectrum_ramp == 0)
+		{
+			generate_spectrum_transfer_function(number_of_colours_in_spectrum);
+		}
+		else
+		{
+			generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
+		}
+	}
+
 	private slots:
 
 	void slot_GraphicsScene_selectionChanged()
@@ -2163,6 +2186,9 @@ private:
 					colour.setHsv(index * 360 / get_number_of_colours_in_spectrum(), 255, 255);
 					if (ui->radioButton_optimise->isChecked())
 					{
+						// reset transfer function before optimizing it
+						reset_transfer_function();
+
 						// optimise for a specific colour
 						optimise_transfer_function_for_colour(colour);
 					}
@@ -2245,6 +2271,7 @@ private:
     void on_action_Open_path_and_generate_transfer_functions_triggered();
     void on_action_Open_path_and_generate_transfer_functions_for_region_triggered();
     void on_action_Open_path_and_generate_transfer_functions_for_colour_triggered();
+    void on_resetButton_clicked();
 };
 
 #endif // MAINWINDOW_H

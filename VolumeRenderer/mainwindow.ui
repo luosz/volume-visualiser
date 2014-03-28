@@ -261,7 +261,7 @@
            <item>
             <widget class="QPushButton" name="reduceOpacityButton">
              <property name="text">
-              <string>&amp;Reduce Opacity</string>
+              <string>Re&amp;duce Opacity</string>
              </property>
             </widget>
            </item>
@@ -353,6 +353,13 @@
            </property>
            <property name="checked">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="resetButton">
+           <property name="text">
+            <string>&amp;Reset</string>
            </property>
           </widget>
          </item>
