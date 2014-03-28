@@ -55,6 +55,31 @@ ui(new Ui::MainWindow)
 	selected_region_filename = "../../voreen/CT-Knee_spectrum_6_balance_1000_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
+	
+	//////////////////////////////////////////////////////////////////////////
+	// colour test
+
+	double h, s, v, r, g, b;
+	QColor c;
+	c = Qt::black;
+	std::cout << "black rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
+
+	r = c.red();
+	g = c.green();
+	b = c.blue();
+	vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
+	std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
+
+	c = Qt::white;
+	std::cout << "white rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
+
+	r = c.red();
+	g = c.green();
+	b = c.blue();
+	vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
+	std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
+
+	//////////////////////////////////////////////////////////////////////////
 
 	// should not be used before initialization
 	count_of_voxels = 0;
@@ -630,25 +655,6 @@ void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggere
 	//updateTransferFunctionArraysFromWidgets();
 }
 
-void MainWindow::on_action_Test_triggered()
-{
-	QGraphicsScene *scene = getGraphicsScene_for_spectrum();
-	std::cout << "width=" << scene->width() << " height=" << scene->height() << std::endl;
-
-	QList<QStandardItem *> list1;
-	auto i0 = new QStandardItem("D:\\_uchar\\vortex\\00.mhd");
-	i0->setData(QVariant("D:\\_uchar\\vortex\\00.mhd"));
-	list1.append(i0);
-	auto i1 = new QStandardItem("D:/_uchar/vortex/01.mhd");
-	i1->setData(QVariant("D:/_uchar/vortex/01.mhd"));
-	list1.append(i1);
-	auto i2 = new QStandardItem("D:\\_uchar\\vortex\\02.mhd");
-	i2->setData(QVariant("D:\\_uchar\\vortex\\02.mhd"));
-	list1.append(i2);
-	model_for_listview.clear();
-	model_for_listview.appendColumn(list1);
-}
-
 void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 {
 	bool ok;
@@ -961,4 +967,76 @@ void MainWindow::on_resetButton_clicked()
 	}
 	updateTransferFunctionWidgetsFromArrays();
 	set_colour_number_in_spectrum(n);
+}
+
+void MainWindow::on_action_Test_triggered()
+{
+	//QGraphicsScene *scene = getGraphicsScene_for_spectrum();
+	//std::cout << "width=" << scene->width() << " height=" << scene->height() << std::endl;
+
+	//QList<QStandardItem *> list1;
+	//auto i0 = new QStandardItem("D:\\_uchar\\vortex\\00.mhd");
+	//i0->setData(QVariant("D:\\_uchar\\vortex\\00.mhd"));
+	//list1.append(i0);
+	//auto i1 = new QStandardItem("D:/_uchar/vortex/01.mhd");
+	//i1->setData(QVariant("D:/_uchar/vortex/01.mhd"));
+	//list1.append(i1);
+	//auto i2 = new QStandardItem("D:\\_uchar\\vortex\\02.mhd");
+	//i2->setData(QVariant("D:\\_uchar\\vortex\\02.mhd"));
+	//list1.append(i2);
+	//model_for_listview.clear();
+	//model_for_listview.appendColumn(list1);
+
+	std::cout << "weights" << std::endl;
+	for (int i = 0; i < control_point_weight_list.size(); i++)
+	{
+		std::cout << control_point_weight_list[i] << std::endl;
+	}
+
+	std::cout << "interpolation" << std::endl;
+	int index = 0;
+	double a = intensity_list[index];
+	double b = intensity_list[index + 1];
+	a = denormalise_intensity(a);
+	b = denormalise_intensity(b);
+	//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
+
+	//double sum = 0;
+	// int intensity belongs to [0,255]
+	for (int intensity = (int)a; intensity < b; intensity++)
+	{
+		if (intensity >= a)
+		{
+			double normalised = normalise_intensity(intensity);
+			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+
+			//std::cout<<intensity<<" ";
+			//sum += get_weighted_entropy_opacity_by_index(intensity, index);
+		}
+	}
+
+	std::cout << "interpolation" << std::endl;
+	index = 1;
+	a = intensity_list[index];
+	b = intensity_list[index + 1];
+	a = denormalise_intensity(a);
+	b = denormalise_intensity(b);
+
+	for (int intensity = (int)a; intensity < b; intensity++)
+	{
+		if (intensity >= a)
+		{
+			double normalised = normalise_intensity(intensity);
+			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+
+			//std::cout<<intensity<<" ";
+			//sum += get_weighted_entropy_opacity_by_index(intensity, index);
+		}
+	}
+
+	//std::cout<<std::endl;
+	//return sum;
+
+	//get_control_point_weight_by_interpolation()
+	//std::cout << std::endl;
 }

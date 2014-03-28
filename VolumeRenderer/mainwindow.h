@@ -118,6 +118,11 @@ private:
 	QStandardItemModel model_for_listview;
 	QColor colour_for_optimization;
 
+	static double epsilon()
+	{
+			return 1e-6;
+	}
+
 	int get_number_of_colours_in_spectrum()
 	{
 		return number_of_colours_in_spectrum;
@@ -233,6 +238,10 @@ private:
 			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
 			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 1]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
 			double d = abs(h - h1);
+			if (abs(s) < epsilon() || abs(s1) < epsilon())
+			{
+				d = 1;
+			}
 			distance += d;
 		}
 		return distance;
@@ -249,6 +258,10 @@ private:
 			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
 			vtkMath::RGBToHSV(normalise_rgba(pixels[index_base + 0]), normalise_rgba(pixels[index_base + 1]), normalise_rgba(pixels[index_base + 2]), &h1, &s1, &v1);
 			double d = (h - h1) * (h1 - h);
+			if (abs(s) < epsilon() || abs(s1) < epsilon())
+			{
+				d = 1;
+			}
 			distance += d;
 		}
 		return distance;
@@ -596,9 +609,9 @@ private:
 	double get_weighted_entropy_opacity_by_index(double intensity, int index)
 	{
 		double frequency = get_frequency(intensity);
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 		double probability = frequency / count_of_voxels;
-		if (probability > epsilon)
+		if (probability > epsilon())
 		{
 			double normalised = normalise_intensity(intensity);
 			return get_control_point_weight_by_interpolation(normalised, index) * get_opacity_by_interpolation(normalised, index) * probability * (-log(probability));
@@ -723,6 +736,7 @@ private:
 		return visibility_increment * opacity / visibility;
 	}
 
+	// old and deprecated. it's kept for testing purpose.
 	void balance_transfer_function()
 	{
 		std::cout << "colour_list size=" << colour_list.size()
@@ -731,10 +745,10 @@ private:
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		const double epsilon = 1. / 256.;
+		//const double epsilon = 1. / 256.;
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_neighbour_area(i);
 				if (area > max_area)
@@ -754,7 +768,7 @@ private:
 			const double step_size = 1. / 255.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area(max_index);
 			colour_list[max_index][3] = height_max_new;
 			double new_area = get_neighbour_area(max_index);
@@ -779,11 +793,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -803,7 +817,7 @@ private:
 			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new; // update opacity
 			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
@@ -828,11 +842,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -852,7 +866,7 @@ private:
 			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new; // update opacity
 			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
@@ -876,11 +890,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -900,7 +914,7 @@ private:
 			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new;
 			double new_area = get_neighbour_area_entropy(max_index);
@@ -924,11 +938,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				//if (area > max_area)
@@ -972,11 +986,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -996,7 +1010,7 @@ private:
 			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
-			height_max_new = height_max_new < 0 ? 0 : height_max_new;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
 			colour_list[max_index][3] = height_max_new;
 			double new_area = get_weighted_neighbour_area_entropy(max_index);
@@ -1020,11 +1034,11 @@ private:
 
 		// move only non-zero control points
 		//const double epsilon = 1. / 256.;
-		const double epsilon = 1e-6;
+		//const double epsilon = 1e-6;
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon)
+			if (colour_list[i][3] > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				//if (area > max_area)
@@ -2282,12 +2296,12 @@ private:
 	void on_action_Spectrum_Transfer_Function_triggered();
 	void on_action_Spectrum_Ramp_Transfer_Function_triggered();
 	void on_action_Pick_a_colour_and_optimise_transfer_function_triggered();
-	void on_action_Test_triggered();
 	void on_action_Genearte_transfer_functions_for_spectrum_triggered();
     void on_action_Open_path_and_generate_transfer_functions_triggered();
     void on_action_Open_path_and_generate_transfer_functions_for_region_triggered();
     void on_action_Open_path_and_generate_transfer_functions_for_colour_triggered();
     void on_resetButton_clicked();
+	void on_action_Test_triggered();
 };
 
 #endif // MAINWINDOW_H
