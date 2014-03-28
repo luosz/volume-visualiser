@@ -557,6 +557,11 @@ private:
 		return get_weighted_area_entropy(index) + get_weighted_area_entropy(index - 1);
 	}
 
+	//double get_weighted_neighbour_area_entropy(int index)
+	//{
+	//	return get_neighbour_area_entropy(index) * get_control_point_weight(index);
+	//}
+
 	double get_control_point_weight(int index)
 	{
 		if (index >= 0 && index < control_point_weight_list.size())
@@ -568,11 +573,6 @@ private:
 			return 1;
 		}
 	}
-
-	//double get_weighted_neighbour_area_entropy(int index)
-	//{
-	//	return get_neighbour_area_entropy(index) * get_control_point_weight(index);
-	//}
 
 	// double intensity belongs to [0,255]
 	double get_entropy_opacity_by_index(double intensity, int index)
