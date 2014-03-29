@@ -2302,6 +2302,7 @@ private:
     void on_action_Open_path_and_generate_transfer_functions_for_colour_triggered();
     void on_resetButton_clicked();
 	void on_action_Test_triggered();
+    void on_drawWeightButton_clicked();
 };
 
 #endif // MAINWINDOW_H

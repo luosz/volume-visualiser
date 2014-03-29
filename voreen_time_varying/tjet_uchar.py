@@ -5,8 +5,6 @@ import voreenqt
 voreen.info()
 voreenqt.info()
 
-voreen.setPropertyValue("VolumeSelector", "volumeID", 0)
-
 for i in range(0, 150):
 
     voreen.setPropertyValue("VolumeSelector", "volumeID", i)
@@ -23,3 +21,5 @@ for i in range(0, 150):
     voreen.snapshotCanvas(0, image_filename)
 
     print "saved to image %s" % image_filename
+
+voreen.setPropertyValue("VolumeSelector", "volumeID", 0)

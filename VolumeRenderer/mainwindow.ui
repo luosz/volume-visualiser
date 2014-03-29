@@ -144,6 +144,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
          <property name="topMargin">
           <number>0</number>
          </property>
@@ -192,7 +195,7 @@
            <item>
             <widget class="QPushButton" name="entropyButton">
              <property name="text">
-              <string>&amp;Entropy</string>
+              <string>draw &amp;Entropy</string>
              </property>
             </widget>
            </item>
@@ -234,6 +237,13 @@
             <widget class="QPushButton" name="balanceButton">
              <property name="text">
               <string>&amp;Balance</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="drawWeightButton">
+             <property name="text">
+              <string>draw &amp;Weights</string>
              </property>
             </widget>
            </item>
@@ -295,10 +305,10 @@
            </item>
           </layout>
          </item>
+         <item>
+          <widget class="QGraphicsView" name="graphicsView"/>
+         </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QGraphicsView" name="graphicsView"/>
        </item>
       </layout>
      </item>

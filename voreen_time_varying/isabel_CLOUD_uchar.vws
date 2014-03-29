@@ -5,13 +5,13 @@
             <MetaData>
                 <MetaItem name="ProcessorSelection" type="SelectionMetaData::Processor">
                     <values>
-                        <item type="SingleVolumeRaycaster" ref="ref0" />
+                        <item type="Canvas" ref="ref2" />
                     </values>
                 </MetaItem>
                 <MetaItem name="ZoomCenter" type="Vec2MetaData">
-                    <value x="-355.94497681" y="15.26626301" />
+                    <value x="-427.27807617" y="-44.64099121" />
                 </MetaItem>
-                <MetaItem name="ZoomFactor" type="FloatMetaData" value="1.24457443" />
+                <MetaItem name="ZoomFactor" type="FloatMetaData" value="0.78403276" />
             </MetaData>
             <Processors>
                 <Processor type="SingleVolumeRaycaster" name="SingleVolumeRaycaster" id="ref0">
@@ -76,7 +76,7 @@
                         <Property mapKey="shading" name="shading" value="phong" />
                         <Property mapKey="transferFunction" name="transferFunction" domainFittingStrategy="1" id="ref9">
                             <MetaData>
-                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="true" x="1076" y="213" width="683" height="538" />
+                                <MetaItem name="EditorWindow" type="WindowStateMetaData" visible="false" x="369" y="339" width="683" height="538" />
                                 <MetaItem name="TransfuncPropertyWidgetPainterZoom" type="Vec2MetaData">
                                     <value x="0" y="1" />
                                 </MetaItem>
@@ -271,7 +271,7 @@
                             <Properties>
                                 <Property mapKey="blockEvents" name="blockEvents" value="false" />
                                 <Property mapKey="image.entrypoints.renderSizeReceive" name="image.entrypoints.renderSizeReceive" id="ref12">
-                                    <value x="1024" y="1015" />
+                                    <value x="512" y="512" />
                                 </Property>
                             </Properties>
                         </Port>
@@ -279,7 +279,7 @@
                             <Properties>
                                 <Property mapKey="blockEvents" name="blockEvents" value="false" />
                                 <Property mapKey="image.exitpoints.renderSizeReceive" name="image.exitpoints.renderSizeReceive" id="ref13">
-                                    <value x="1024" y="1015" />
+                                    <value x="512" y="512" />
                                 </Property>
                             </Properties>
                         </Port>
@@ -623,19 +623,19 @@
                 </Processor>
                 <Processor type="Canvas" name="Canvas" id="ref2">
                     <MetaData>
-                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-463" y="187" />
-                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="true" x="20" y="9" width="1024" height="1015" />
+                        <MetaItem name="ProcessorGraphicsItem" type="PositionMetaData" x="-464" y="188" />
+                        <MetaItem name="ProcessorWidget" type="WindowStateMetaData" visible="false" x="116" y="161" width="512" height="512" />
                         <MetaItem name="preferedDevelopmentCanvasFS" type="BoolMetaData" value="false" />
                         <MetaItem name="preferedDevelopmentCanvasPosition" type="IVec2MetaData">
-                            <value x="20" y="9" />
+                            <value x="116" y="161" />
                         </MetaItem>
                         <MetaItem name="preferedDevelopmentCanvasSize" type="IVec2MetaData">
-                            <value x="1024" y="1015" />
+                            <value x="512" y="512" />
                         </MetaItem>
                     </MetaData>
                     <Properties>
                         <Property mapKey="canvasSize" name="canvasSize">
-                            <value x="1024" y="1015" />
+                            <value x="512" y="512" />
                         </Property>
                         <Property mapKey="saveScreenshot" name="saveScreenshot" />
                         <Property mapKey="screenshotFilename" name="screenshotFilename" noPathSet="true" value="" />
@@ -647,7 +647,7 @@
                         <Port name="image.input" direction="1" portID="image.input" guiName="Image Input" allowMultipleConnections="false" invalidationLevel="1">
                             <Properties>
                                 <Property mapKey="image.input.renderSizeOrigin" name="image.input.renderSizeOrigin" id="ref11">
-                                    <value x="1024" y="1015" />
+                                    <value x="512" y="512" />
                                 </Property>
                             </Properties>
                         </Port>

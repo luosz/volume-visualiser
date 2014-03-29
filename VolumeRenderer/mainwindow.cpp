@@ -55,7 +55,7 @@ ui(new Ui::MainWindow)
 	selected_region_filename = "../../voreen/CT-Knee_spectrum_6_balance_1000_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
-	
+
 	//////////////////////////////////////////////////////////////////////////
 	// colour test
 
@@ -956,17 +956,9 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 
 void MainWindow::on_resetButton_clicked()
 {
-	int n = number_of_colours_in_spectrum;
-	if (enable_spectrum_ramp == 0)
-	{
-		generate_spectrum_transfer_function(n);
-	}
-	else
-	{
-		generate_spectrum_ramp_transfer_function(n);
-	}
+	reset_transfer_function();
 	updateTransferFunctionWidgetsFromArrays();
-	set_colour_number_in_spectrum(n);
+	draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
 }
 
 void MainWindow::on_action_Test_triggered()
@@ -993,50 +985,70 @@ void MainWindow::on_action_Test_triggered()
 		std::cout << control_point_weight_list[i] << std::endl;
 	}
 
-	std::cout << "interpolation" << std::endl;
-	int index = 0;
-	double a = intensity_list[index];
-	double b = intensity_list[index + 1];
-	a = denormalise_intensity(a);
-	b = denormalise_intensity(b);
-	//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
-
-	//double sum = 0;
-	// int intensity belongs to [0,255]
-	for (int intensity = (int)a; intensity < b; intensity++)
+	double a, b;
+	for (int index = 0; index < intensity_list.size() - 1; index++)
 	{
-		if (intensity >= a)
+		std::cout << "interpolation index=" << index << std::endl;
+		if (index == intensity_list.size() - 1)
 		{
-			double normalised = normalise_intensity(intensity);
-			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+			a = intensity_list[index];
+			b = 1;
+		}
+		else
+		{
+			a = intensity_list[index];
+			b = intensity_list[index + 1];
+		}
+		a = denormalise_intensity(a);
+		b = denormalise_intensity(b);
 
-			//std::cout<<intensity<<" ";
-			//sum += get_weighted_entropy_opacity_by_index(intensity, index);
+		for (int intensity = (int)a; intensity < b; intensity++)
+		{
+			if (intensity >= a)
+			{
+				double normalised = normalise_intensity(intensity);
+				std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+			}
 		}
 	}
+}
 
-	std::cout << "interpolation" << std::endl;
-	index = 1;
-	a = intensity_list[index];
-	b = intensity_list[index + 1];
-	a = denormalise_intensity(a);
-	b = denormalise_intensity(b);
+void MainWindow::on_drawWeightButton_clicked()
+{
+	double height = ui->graphicsView->height();
+	QGraphicsScene *scene = getGraphicsScene();
+	scene->clear();
+	scene->addText("Weights " + QTime::currentTime().toString());
 
-	for (int intensity = (int)a; intensity < b; intensity++)
+	if (control_point_weight_list.size() > 0)
 	{
-		if (intensity >= a)
+		double a, b;
+		// 0 to 255
+		for (int index = 0; index < intensity_list.size() - 1; index++)
 		{
-			double normalised = normalise_intensity(intensity);
-			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+			if (index == intensity_list.size() - 1)
+			{
+				a = intensity_list[index];
+				b = 1;
+			}
+			else
+			{
+				a = intensity_list[index];
+				b = intensity_list[index + 1];
+			}
+			a = denormalise_intensity(a);
+			b = denormalise_intensity(b);
 
-			//std::cout<<intensity<<" ";
-			//sum += get_weighted_entropy_opacity_by_index(intensity, index);
+			for (int intensity = (int)a; intensity < b; intensity++)
+			{
+				if (intensity >= a)
+				{
+					double normalised = normalise_intensity(intensity);
+					//std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+
+					auto line = scene->addLine(intensity, height, intensity + 1, (1 - 10 * get_control_point_weight_by_interpolation(normalised, index))*height);
+				}
+			}
 		}
 	}
-
-	//std::cout<<std::endl;
-	//return sum;
-
-	//get_control_point_weight_by_interpolation()
-	//std::cout << std::endl;
 }
