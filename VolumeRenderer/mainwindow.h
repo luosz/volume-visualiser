@@ -783,6 +783,7 @@ private:
 	}
 
 	// global optimization
+	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity()
 	{
 		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -832,6 +833,7 @@ private:
 	}
 
 	// region-based or hue-based optimization
+	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity_for_region()
 	{
 		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
@@ -863,6 +865,138 @@ private:
 		}
 		if (min_index != max_index)
 		{
+			const double step_size = 1. / 256.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
+			double area = get_weighted_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new; // update opacity
+			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new; // update opacity
+			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	// a replacement of balance_opacity
+	// global optimization
+	void balance_transfer_function_edge()
+	{
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		//const double epsilon = 1e-6;
+
+		for (unsigned int i = 0; i<intensity_list.size()-1; i++)
+		{
+			if (colour_list[i][3] > epsilon())
+			{
+				double area = get_area_entropy(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != max_index)
+		{
+			// get the upper vertex of an edge
+			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
+			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index + 1]), max_index + 1);
+			if (weight_max_2 > weight_max_1)
+			{
+				max_index++;
+			}
+
+			// get the lower vertex of an edge
+			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
+			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index + 1]), min_index + 1);
+			if (weight_min_2 < weight_min_1)
+			{
+				min_index++;
+			}
+
+			const double step_size = 1. / 256.;
+			double height_max = colour_list[max_index][3];
+			double height_max_new = height_max - step_size;
+			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
+			double area = get_neighbour_area_entropy(max_index);
+			colour_list[max_index][3] = height_max_new; // update opacity
+			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
+			double area_decreased = area - new_area;
+			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
+			double height_min = colour_list[min_index][3];
+			double height_min_new = height_min + step_size;
+			height_min_new = height_min_new > 1 ? 1 : height_min_new;
+			colour_list[min_index][3] = height_min_new; // update opacity
+			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	// a replacement of balance_opacity_for_region
+	// region-based or hue-based optimization
+	void balance_transfer_function_edge_for_region()
+	{
+		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		int max_index = -1;
+		int min_index = -1;
+		double max_area = std::numeric_limits<int>::min();
+		double min_area = std::numeric_limits<int>::max();
+
+		// move only non-zero control points
+		//const double epsilon = 1. / 256.;
+		//const double epsilon = 1e-6;
+
+		for (unsigned int i = 0; i<intensity_list.size()-1; i++)
+		{
+			if (colour_list[i][3] > epsilon())
+			{
+				double area = get_weighted_area_entropy(i);
+				if (area > max_area)
+				{
+					max_index = i;
+					max_area = area;
+				}
+				if (area < min_area && colour_list[i][3] < 1)
+				{
+					min_index = i;
+					min_area = area;
+				}
+			}
+		}
+		if (min_index != max_index)
+		{
+			// get the upper vertex of an edge
+			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
+			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index+1]), max_index+1);
+			if (weight_max_2 > weight_max_1)
+			{
+				max_index++;
+			}
+
+			// get the lower vertex of an edge
+			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
+			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index+1]), min_index+1);
+			if (weight_min_2 < weight_min_1)
+			{
+				min_index++;
+			}
+
 			const double step_size = 1. / 256.;
 			double height_max = colour_list[max_index][3];
 			double height_max_new = height_max - step_size;
@@ -2146,7 +2280,8 @@ private:
 		}
 		while (n-- > 0)
 		{
-			balance_opacity_for_region();
+			//balance_opacity_for_region();
+			balance_transfer_function_edge_for_region();
 		}
 		updateTransferFunctionWidgetsFromArrays();
 		updateTransferFunctionArraysFromWidgets();

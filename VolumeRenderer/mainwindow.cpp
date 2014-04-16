@@ -284,7 +284,8 @@ void MainWindow::on_balanceOpacityButton_clicked()
 		out << iteration_count << "," << get_energy_function() << std::endl;
 		iteration_count++;
 #endif
-		balance_opacity();
+		//balance_opacity();
+		balance_transfer_function_edge();
 	}
 #ifdef OUTPUT_TO_FILE
 	out << iteration_count << "," << get_energy_function() << std::endl;
@@ -350,7 +351,8 @@ void MainWindow::on_balanceRegionButton_clicked()
 		out2 << iteration_count << "," << get_energy_function_weighted_for_region() << std::endl;
 		iteration_count++;
 #endif
-		balance_opacity_for_region();
+		//balance_opacity_for_region();
+		balance_transfer_function_edge_for_region();
 	}
 #ifdef OUTPUT_TO_FILE
 	out << iteration_count << "," << get_energy_function() << std::endl;
@@ -751,7 +753,8 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 
 			while (n-- > 0)
 			{
-				balance_opacity();
+				//balance_opacity();
+				balance_transfer_function_edge();
 			}
 
 			updateTransferFunctionWidgetsFromArrays();
@@ -846,7 +849,8 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 
 			while (n-- > 0)
 			{
-				balance_opacity_for_region();
+				//balance_opacity_for_region();
+				balance_transfer_function_edge_for_region();
 			}
 
 			updateTransferFunctionWidgetsFromArrays();
