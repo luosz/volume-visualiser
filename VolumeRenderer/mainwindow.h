@@ -1836,6 +1836,7 @@ private:
 		}
 	}
 
+	/// depreciated. use get_energy_function_edge() instead.
 	/// The energy function is the variance of control point weights.
 	double get_energy_function()
 	{
@@ -1861,6 +1862,33 @@ private:
 		return sum;
 	}
 
+	/// a replacement of get_energy_function()
+	/// The energy function is the variance of control point weights.
+	double get_energy_function_edge()
+	{
+		std::vector<double> weights;
+
+		// compute the mean
+		double sum = 0;
+		for (unsigned int i = 0; i < intensity_list.size() - 1; i++)
+		{
+			double w = get_area_entropy(i);
+			sum += w;
+			weights.push_back(w);
+		}
+		double mean = sum / weights.size();
+
+		// compute and return the variance
+		sum = 0;
+		for (unsigned int i = 0; i < weights.size(); i++)
+		{
+			double diff = weights[i] - mean;
+			sum += diff * diff;
+		}
+		return sum;
+	}
+
+	/// depreciated. use get_energy_function_edge_weighted_for_region() instead.
 	/// The energy function is the variance of control point weights for region
 	double get_energy_function_weighted_for_region()
 	{
@@ -1871,6 +1899,32 @@ private:
 		for (unsigned int i = 0; i < intensity_list.size(); i++)
 		{
 			double w = get_weighted_neighbour_area_entropy(i);
+			sum += w;
+			weights.push_back(w);
+		}
+		double mean = sum / weights.size();
+
+		// compute and return the variance
+		sum = 0;
+		for (unsigned int i = 0; i < weights.size(); i++)
+		{
+			double diff = weights[i] - mean;
+			sum += diff * diff;
+		}
+		return sum;
+	}
+
+	/// a replacement of get_energy_function_weighted_for_region()
+	/// The energy function is the variance of control point weights for region
+	double get_energy_function_edge_weighted_for_region()
+	{
+		std::vector<double> weights;
+
+		// compute the mean
+		double sum = 0;
+		for (unsigned int i = 0; i < intensity_list.size() - 1; i++)
+		{
+			double w = get_weighted_area_entropy(i);
 			sum += w;
 			weights.push_back(w);
 		}

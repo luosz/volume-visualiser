@@ -281,14 +281,14 @@ void MainWindow::on_balanceOpacityButton_clicked()
 	while (n-- > 0)
 	{
 #ifdef OUTPUT_TO_FILE
-		out << iteration_count << "," << get_energy_function() << std::endl;
+		out << iteration_count << "," << get_energy_function_edge() << std::endl;
 		iteration_count++;
 #endif
 		//balance_opacity();
 		balance_transfer_function_edge();
 	}
 #ifdef OUTPUT_TO_FILE
-	out << iteration_count << "," << get_energy_function() << std::endl;
+	out << iteration_count << "," << get_energy_function_edge() << std::endl;
 	out.close();
 #endif
 	updateTransferFunctionWidgetsFromArrays();
@@ -347,17 +347,17 @@ void MainWindow::on_balanceRegionButton_clicked()
 	while (n-- > 0)
 	{
 #ifdef OUTPUT_TO_FILE
-		out << iteration_count << "," << get_energy_function() << std::endl;
-		out2 << iteration_count << "," << get_energy_function_weighted_for_region() << std::endl;
+		out << iteration_count << "," << get_energy_function_edge() << std::endl;
+		out2 << iteration_count << "," << get_energy_function_edge_weighted_for_region() << std::endl;
 		iteration_count++;
 #endif
 		//balance_opacity_for_region();
 		balance_transfer_function_edge_for_region();
 	}
 #ifdef OUTPUT_TO_FILE
-	out << iteration_count << "," << get_energy_function() << std::endl;
+	out << iteration_count << "," << get_energy_function_edge() << std::endl;
 	out.close();
-	out2 << iteration_count << "," << get_energy_function_weighted_for_region() << std::endl;
+	out2 << iteration_count << "," << get_energy_function_edge_weighted_for_region() << std::endl;
 	out2.close();
 #endif
 	updateTransferFunctionWidgetsFromArrays();
