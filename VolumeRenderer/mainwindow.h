@@ -1627,7 +1627,7 @@ private:
 				v.push_back(spectrum[colour_index][0]);
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
-				v.push_back(0.5);
+				v.push_back(0.5/3.0);
 				colour_list.push_back(v);
 			}
 		}
