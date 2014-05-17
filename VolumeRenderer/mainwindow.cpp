@@ -378,7 +378,7 @@ void MainWindow::on_action_Exit_triggered()
 
 void MainWindow::on_action_Open_Volume_triggered()
 {
-	// show file dialog
+	// show file dialog. change volume_filename only when the new filename is not empty.
 	QString filter("Meta image file (*.mhd *.mha)");
 	QString filename_backup = volume_filename;
 	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
