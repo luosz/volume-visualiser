@@ -6,14 +6,14 @@
 \.opensdf$
 \.pdb$
 ^Debug/
-^Release/
 /Debug/
+^Release/
 /Release/
 ^ipch/
 /ipch/
 ^bin/
-^obj/
 /bin/
+^obj/
 /obj/
 ^~
 /~
@@ -40,10 +40,11 @@
 \Thumbs.db$
 
 ^.gitignore$
-^.git$
+^.git/
+/.git/
 
-^sync.ffs_db$
 \sync.ffs_db$
 
-^.DS_Store$
 \.DS_Store$
+
+\.pyc$
