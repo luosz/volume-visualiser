@@ -1,0 +1,12 @@
+<ColorMaps>
+  <ColorMap space="RGB" indexedLookup="false" name="Blue to Yellow">
+    <Point x="0" o="0" r="0.0392157" g="0.0392157" b="0.94902"/>
+    <Point x="1" o="1" r="0.94902" g="0.94902" b="0.0392157"/>
+    <NaN r="1" g="0" b="0"/>
+  </ColorMap>
+  <ColorMap space="RGB" indexedLookup="false" name="RGB">
+    <Point x="0" o="0" r="0.0392157" g="0.0392157" b="0.94902"/>
+    <Point x="1" o="1" r="0.94902" g="0.94902" b="0.0392157"/>
+    <NaN r="1" g="0" b="0"/>
+  </ColorMap>
+</ColorMaps>

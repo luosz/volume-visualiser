@@ -1210,7 +1210,7 @@ private:
 		}
 	}
 
-	void saveTransferFunctionToXML(const char *filename)
+	void saveTransferFunctionToVoreenXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
 
@@ -1276,7 +1276,50 @@ private:
 		}
 	}
 
-	void openTransferFunctionFromXML(const char *filename)
+	void openTransferFunctionFromMITKXML(const char *filename)
+	{
+		tinyxml2::XMLDocument doc;
+		auto r = doc.LoadFile(filename);
+
+		if (r != tinyxml2::XML_NO_ERROR)
+		{
+			std::cout << "failed to open file" << endl;
+			return;
+		}
+
+		intensity_list.clear();
+		colour_list.clear();
+
+		auto scalar_point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
+
+		do
+		{
+			//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+			//intensity_list.push_back(intensity);
+
+			scalar_point = scalar_point->NextSiblingElement();
+		} while (scalar_point);
+
+		auto color_point = doc.FirstChildElement("TransferFunction")->FirstChildElement("Color")->FirstChildElement("point");
+
+		do
+		{
+			//int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
+			//int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
+			//int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
+			//int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
+			//std::vector<double> colour;
+			//colour.push_back(r);
+			//colour.push_back(g);
+			//colour.push_back(b);
+			//colour.push_back(a);
+			//colour_list.push_back(colour);
+
+			color_point = color_point->NextSiblingElement();
+		} while (color_point);
+	}
+
+	void openTransferFunctionFromVoreenXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
 		auto r = doc.LoadFile(filename);

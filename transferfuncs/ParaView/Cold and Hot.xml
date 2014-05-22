@@ -1,0 +1,18 @@
+<ColorMaps>
+  <ColorMap space="RGB" indexedLookup="false" name="Cold and Hot">
+    <Point x="0" o="0" r="0" g="1" b="1"/>
+    <Point x="0.45" o="0.45" r="0" g="0" b="1"/>
+    <Point x="0.5" o="0.5" r="0" g="0" b="0.501961"/>
+    <Point x="0.55" o="0.55" r="1" g="0" b="0"/>
+    <Point x="1" o="1" r="1" g="1" b="0"/>
+    <NaN r="1" g="1" b="0"/>
+  </ColorMap>
+  <ColorMap space="RGB" indexedLookup="false" name="RGB">
+    <Point x="0" o="0" r="0" g="1" b="1"/>
+    <Point x="0.45" o="0.45" r="0" g="0" b="1"/>
+    <Point x="0.5" o="0.5" r="0" g="0" b="0.501961"/>
+    <Point x="0.55" o="0.55" r="1" g="0" b="0"/>
+    <Point x="1" o="1" r="1" g="1" b="0"/>
+    <NaN r="1" g="1" b="0"/>
+  </ColorMap>
+</ColorMaps>

@@ -490,7 +490,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 
 	std::cout << "transfer function file: " << filename_str << endl;
 
-	openTransferFunctionFromXML(filename_str);
+	openTransferFunctionFromVoreenXML(filename_str);
 	updateTransferFunctionWidgetsFromArrays();
 }
 
@@ -518,7 +518,7 @@ void MainWindow::on_action_Save_Transfer_Function_triggered()
 
 	std::cout << "transfer function file: " << filename_str << endl;
 
-	saveTransferFunctionToXML(filename_str);
+	saveTransferFunctionToVoreenXML(filename_str);
 	//updateTransferFunction();
 }
 
@@ -682,7 +682,7 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 			//QString str1 = volume_filename + QString(str0);
 			//QByteArray ba = str1.toLocal8Bit();
 			//const char *c_str2 = ba.data();
-			saveTransferFunctionToXML(c_str2);
+			saveTransferFunctionToVoreenXML(c_str2);
 			std::cout << "saved to file " << c_str2 << std::endl;
 		}
 	}
@@ -774,7 +774,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 			char filename_str[_MAX_PATH];
 			sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
 			std::cout << "transfer function file: " << filename_str << endl;
-			saveTransferFunctionToXML(filename_str);
+			saveTransferFunctionToVoreenXML(filename_str);
 		}
 
 		model_for_listview.clear();
@@ -870,7 +870,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 			char filename_str[_MAX_PATH];
 			sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
 			std::cout << "transfer function file: " << filename_str << endl;
-			saveTransferFunctionToXML(filename_str);
+			saveTransferFunctionToVoreenXML(filename_str);
 		}
 
 		model_for_listview.clear();
@@ -950,7 +950,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 			char filename_str[_MAX_PATH];
 			sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
 			std::cout << "transfer function file: " << filename_str << endl;
-			saveTransferFunctionToXML(filename_str);
+			saveTransferFunctionToVoreenXML(filename_str);
 		}
 
 		model_for_listview.clear();

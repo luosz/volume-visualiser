@@ -1,0 +1,12 @@
+<ColorMaps>
+  <ColorMap space="HSV" indexedLookup="false" name="Red to Blue Rainbow">
+    <Point x="0" o="0" r="1" g="0" b="0"/>
+    <Point x="1" o="1" r="0" g="0" b="1"/>
+    <NaN r="0.498039" g="0.498039" b="0.498039"/>
+  </ColorMap>
+  <ColorMap space="HSV" indexedLookup="false" name="HSV">
+    <Point x="0" o="0" r="1" g="0" b="0"/>
+    <Point x="1" o="1" r="0" g="0" b="1"/>
+    <NaN r="0.498039" g="0.498039" b="0.498039"/>
+  </ColorMap>
+</ColorMaps>
