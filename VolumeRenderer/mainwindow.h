@@ -103,8 +103,9 @@ private:
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
 	std::vector<double> control_point_weight_list;
-	vtkSmartPointer<vtkPiecewiseFunction> opacity_transfer_function;
-	vtkSmartPointer<vtkColorTransferFunction> color_transfer_function;
+	vtkSmartPointer<vtkPiecewiseFunction> scalar_opacity;
+	vtkSmartPointer<vtkPiecewiseFunction> gradient_opacity;
+	vtkSmartPointer<vtkColorTransferFunction> scalar_color;
 	double threshold_x, threshold_y;
 	double domain_x, domain_y;
 	double x_max, x_min, y_max, y_min;
@@ -119,6 +120,11 @@ private:
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
 	QColor colour_for_optimization;
+
+	//// separate opacity and colour lists
+	//std::vector<std::vector<double>> scalar_opacity_list;
+	//std::vector<std::vector<double>> gradient_opacity_list;
+	//std::vector<std::vector<double>> scalar_color_list;
 
 	static double epsilon()
 	{
@@ -1309,7 +1315,7 @@ private:
 				<VolumeProperty selected="false" hideFromEditors="false" name="CT-AAA" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 143.556 0 166.222 0.686275 214.389 0.696078 419.736 0.833333 3071 0.803922" id="vtkMRMLVolumePropertyNode1" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 143.556 0.615686 0.356863 0.184314 166.222 0.882353 0.603922 0.290196 214.389 1 1 1 419.736 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
 				*/
 
-				TransferFunctionProperty p;
+				VolumePropertyXML p;
 				p.selected = property->Attribute("selected");
 				p.hideFromEditors = property->Attribute("hideFromEditors");
 				p.name = property->Attribute("name");
@@ -2116,8 +2122,8 @@ private:
 
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-		volumeProperty->SetColor(color_transfer_function);
-		volumeProperty->SetScalarOpacity(opacity_transfer_function);
+		volumeProperty->SetColor(scalar_color);
+		volumeProperty->SetScalarOpacity(scalar_opacity);
 		volumeProperty->ShadeOff();
 		volumeProperty->SetInterpolationTypeToLinear();
 
@@ -2322,12 +2328,12 @@ private:
 		}
 		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
 		{
-			opacity_transfer_function->RemoveAllPoints();
-			color_transfer_function->RemoveAllPoints();
+			scalar_opacity->RemoveAllPoints();
+			scalar_color->RemoveAllPoints();
 			for (unsigned int i = 0; i < intensity_list.size(); i++)
 			{
-				opacity_transfer_function->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
-				color_transfer_function->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
+				scalar_opacity->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
+				scalar_color->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
 			}
 		}
 		// update vtk widget
@@ -2336,14 +2342,14 @@ private:
 
 	void updateTransferFunctionArraysFromWidgets()
 	{
-		if (color_transfer_function->GetSize() < 1)
+		if (scalar_color->GetSize() < 1)
 		{
 			QMessageBox msgBox;
 			msgBox.setText("Error: vtkColorTransferFunction is empty.");
 			int ret = msgBox.exec();
 			return;
 		}
-		if (color_transfer_function->GetSize() != opacity_transfer_function->GetSize())
+		if (scalar_color->GetSize() != scalar_opacity->GetSize())
 		{
 			QMessageBox msgBox;
 			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
@@ -2354,12 +2360,12 @@ private:
 		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list.clear();
 		intensity_list.clear();
-		for (auto i = 0; i < color_transfer_function->GetSize(); i++)
+		for (auto i = 0; i < scalar_color->GetSize(); i++)
 		{
 			double xrgb[6];
-			color_transfer_function->GetNodeValue(i, xrgb);
+			scalar_color->GetNodeValue(i, xrgb);
 			double xa[4];
-			opacity_transfer_function->GetNodeValue(i, xa);
+			scalar_opacity->GetNodeValue(i, xa);
 			double opacity = xa[1];
 			double intensity = normalise_intensity(xrgb[0]);
 			std::vector<double> c;

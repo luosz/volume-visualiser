@@ -25,27 +25,32 @@ ui(new Ui::MainWindow)
 	interactor->SetInteractorStyle(style);
 	interactor->SetStillUpdateRate(1);
 
+	// create gradient scalar mapping
+	gradient_opacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	gradient_opacity->AddPoint(0, 1);
+	gradient_opacity->AddPoint(1, 1);
+
 	// Create transfer mapping scalar value to opacity.
-	opacity_transfer_function = vtkSmartPointer<vtkPiecewiseFunction>::New();
-	opacity_transfer_function->AddPoint(0.0, 0.0);
-	opacity_transfer_function->AddPoint(36.0, 0.125);
-	opacity_transfer_function->AddPoint(72.0, 0.25);
-	opacity_transfer_function->AddPoint(108.0, 0.375);
-	opacity_transfer_function->AddPoint(144.0, 0.5);
-	opacity_transfer_function->AddPoint(180.0, 0.625);
-	opacity_transfer_function->AddPoint(216.0, 0.75);
-	opacity_transfer_function->AddPoint(255.0, 0.0);
+	scalar_opacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	scalar_opacity->AddPoint(0.0, 0.0);
+	scalar_opacity->AddPoint(36.0, 0.125);
+	scalar_opacity->AddPoint(72.0, 0.25);
+	scalar_opacity->AddPoint(108.0, 0.375);
+	scalar_opacity->AddPoint(144.0, 0.5);
+	scalar_opacity->AddPoint(180.0, 0.625);
+	scalar_opacity->AddPoint(216.0, 0.75);
+	scalar_opacity->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
-	color_transfer_function = vtkSmartPointer<vtkColorTransferFunction>::New();
-	color_transfer_function->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
-	color_transfer_function->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	color_transfer_function->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	color_transfer_function->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	color_transfer_function->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	color_transfer_function->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	color_transfer_function->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	color_transfer_function->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	scalar_color = vtkSmartPointer<vtkColorTransferFunction>::New();
+	scalar_color->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
+	scalar_color->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	scalar_color->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	scalar_color->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	scalar_color->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	scalar_color->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	generate_default_transfer_function();
 

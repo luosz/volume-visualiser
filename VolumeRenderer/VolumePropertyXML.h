@@ -1,5 +1,5 @@
-#ifndef TransferFunctionProperty_h
-#define TransferFunctionProperty_h
+#ifndef VolumePropertyXML_h
+#define VolumePropertyXML_h
 
 #include <string>
 
@@ -11,7 +11,7 @@
 </MRML>
 ************************************************************************/
 
-struct TransferFunctionProperty
+struct VolumePropertyXML
 {
 public:
 	std::string selected;
@@ -30,13 +30,13 @@ public:
 	std::string diffuse;
 	std::string interpolation;
 
-	TransferFunctionProperty()
+	VolumePropertyXML()
 	{
 	}
 
-	~TransferFunctionProperty()
+	~VolumePropertyXML()
 	{
 	}
 };
 
-#endif // TransferFunctionProperty_h
+#endif // VolumePropertyXML_h
