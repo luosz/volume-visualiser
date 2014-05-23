@@ -1290,33 +1290,63 @@ private:
 		intensity_list.clear();
 		colour_list.clear();
 
-		auto scalar_point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
-
-		do
 		{
-			//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-			//intensity_list.push_back(intensity);
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
+			std::cout << "ScalarOpacity" << std::endl;
+			do
+			{
+				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+				//intensity_list.push_back(intensity);
 
-			scalar_point = scalar_point->NextSiblingElement();
-		} while (scalar_point);
+				double x = atof(point->Attribute("x"));
+				double y = atof(point->Attribute("y"));
+				std::cout << "x=" << x << " y=" << y << std::endl;
 
-		auto color_point = doc.FirstChildElement("TransferFunction")->FirstChildElement("Color")->FirstChildElement("point");
+				point = point->NextSiblingElement();
+			} while (point);
+		}
 
-		do
 		{
-			//int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
-			//int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
-			//int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
-			//int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
-			//std::vector<double> colour;
-			//colour.push_back(r);
-			//colour.push_back(g);
-			//colour.push_back(b);
-			//colour.push_back(a);
-			//colour_list.push_back(colour);
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("GradientOpacity")->FirstChildElement("point");
+			std::cout << "GradientOpacity" << std::endl;
+			do
+			{
+				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+				//intensity_list.push_back(intensity);
 
-			color_point = color_point->NextSiblingElement();
-		} while (color_point);
+				double x = atof(point->Attribute("x"));
+				double y = atof(point->Attribute("y"));
+				std::cout << "x=" << x << " y=" << y << std::endl;
+
+				point = point->NextSiblingElement();
+			} while (point);
+		}
+
+		{
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("Color")->FirstChildElement("point");
+			std::cout << "Color" << std::endl;
+			do
+			{
+				//int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
+				//int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
+				//int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
+				//int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
+				//std::vector<double> colour;
+				//colour.push_back(r);
+				//colour.push_back(g);
+				//colour.push_back(b);
+				//colour.push_back(a);
+				//colour_list.push_back(colour);
+
+				double x = atof(point->Attribute("x"));
+				double r = atof(point->Attribute("r"));
+				double g = atof(point->Attribute("g"));
+				double b = atof(point->Attribute("b"));
+				std::cout << "x=" << x << " r=" << r << "g=" << g << "b=" << b << std::endl;
+
+				point = point->NextSiblingElement();
+			} while (point);
+		}
 	}
 
 	void openTransferFunctionFromVoreenXML(const char *filename)
