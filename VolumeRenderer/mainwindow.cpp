@@ -58,6 +58,7 @@ ui(new Ui::MainWindow)
 
 	//////////////////////////////////////////////////////////////////////////
 	// colour test
+	std::cout << "HSV and RGB colour conversion test" << std::endl;
 
 	double h, s, v, r, g, b;
 	QColor c;
@@ -83,6 +84,7 @@ ui(new Ui::MainWindow)
 
 	//////////////////////////////////////////////////////////////////////////
 	// MITK XML test
+	std::cout << "MITK transfer function XML test" << std::endl;
 	openTransferFunctionFromMITKXML("../../transferfuncs/MITK/CT Generic.xml");
 	
 	//////////////////////////////////////////////////////////////////////////

@@ -1342,7 +1342,9 @@ private:
 				double r = atof(point->Attribute("r"));
 				double g = atof(point->Attribute("g"));
 				double b = atof(point->Attribute("b"));
-				std::cout << "x=" << x << " r=" << r << "g=" << g << "b=" << b << std::endl;
+				double midpoint = atof(point->Attribute("midpoint"));
+				double sharpness = atof(point->Attribute("sharpness"));
+				std::cout << "x=" << x << " r=" << r << " g=" << g << " b=" << b << " midpoint=" << midpoint << " sharpness=" << sharpness << std::endl;
 
 				point = point->NextSiblingElement();
 			} while (point);
