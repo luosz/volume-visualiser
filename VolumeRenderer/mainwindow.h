@@ -62,6 +62,8 @@
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
 
+#include "TransferFunctionProperty.h"
+
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
 //#endif // OUTPUT_TO_FILE
@@ -1273,6 +1275,59 @@ private:
 		if (r != tinyxml2::XML_NO_ERROR)
 		{
 			std::cout << "failed to save file" << endl;
+		}
+	}
+
+	void openTransferFunctionFromSlicerXML(const char *filename)
+	{
+		tinyxml2::XMLDocument doc;
+		auto r = doc.LoadFile(filename);
+
+		if (r != tinyxml2::XML_NO_ERROR)
+		{
+			std::cout << "failed to open file" << endl;
+			return;
+		}
+
+		intensity_list.clear();
+		colour_list.clear();
+
+		{
+			auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
+			std::cout << "VolumeProperty name="<< property->Attribute("name")<< std::endl;
+			do
+			{
+				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
+				//intensity_list.push_back(intensity);
+
+				auto gradientOpacity = property->Attribute("gradientOpacity");
+				auto scalarOpacity = property->Attribute("scalarOpacity");
+				auto colorTransfer = property->Attribute("colorTransfer");
+				std::cout << gradientOpacity << std::endl << scalarOpacity << std::endl << colorTransfer << std::endl;
+
+				/*
+				<VolumeProperty selected="false" hideFromEditors="false" name="CT-AAA" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 143.556 0 166.222 0.686275 214.389 0.696078 419.736 0.833333 3071 0.803922" id="vtkMRMLVolumePropertyNode1" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 143.556 0.615686 0.356863 0.184314 166.222 0.882353 0.603922 0.290196 214.389 1 1 1 419.736 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
+				*/
+
+				TransferFunctionProperty p;
+				p.selected = property->Attribute("selected");
+				p.hideFromEditors = property->Attribute("hideFromEditors");
+				p.name = property->Attribute("name");
+				p.gradientOpacity = property->Attribute("gradientOpacity");
+				p.userTags = property->Attribute("userTags");
+				p.specularPower = property->Attribute("specularPower");
+				p.scalarOpacity = property->Attribute("scalarOpacity");
+				p.id = property->Attribute("id");
+				p.specular = property->Attribute("specular");
+				p.shade = property->Attribute("shade");
+				p.ambient = property->Attribute("ambient");
+				p.colorTransfer = property->Attribute("colorTransfer");
+				p.selectable = property->Attribute("selectable");
+				p.diffuse = property->Attribute("diffuse");
+				p.interpolation = property->Attribute("interpolation");
+
+				property = property->NextSiblingElement();
+			} while (property);
 		}
 	}
 

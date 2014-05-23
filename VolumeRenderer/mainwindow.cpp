@@ -87,6 +87,9 @@ ui(new Ui::MainWindow)
 	std::cout << "MITK transfer function XML test" << std::endl;
 	openTransferFunctionFromMITKXML("../../transferfuncs/MITK/CT Generic.xml");
 	
+	// Slicer XML test
+	std::cout << "Slicer transfer function XML test" << std::endl;
+	openTransferFunctionFromSlicerXML("../../transferfuncs/Slicer/presets.xml");
 	//////////////////////////////////////////////////////////////////////////
 
 	// should not be used before initialization
