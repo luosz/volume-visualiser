@@ -61,43 +61,43 @@ ui(new Ui::MainWindow)
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
-	//////////////////////////////////////////////////////////////////////////
-	// colour test
-	std::cout << "HSV and RGB colour conversion test" << std::endl;
+	////////////////////////////////////////////////////////////////////////////
+	//// colour test
+	//std::cout << "HSV and RGB colour conversion test" << std::endl;
 
-	double h, s, v, r, g, b;
-	QColor c;
-	c = Qt::black;
-	std::cout << "black rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
+	//double h, s, v, r, g, b;
+	//QColor c;
+	//c = Qt::black;
+	//std::cout << "black rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
 
-	r = c.red();
-	g = c.green();
-	b = c.blue();
-	vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
-	std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
+	//r = c.red();
+	//g = c.green();
+	//b = c.blue();
+	//vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
+	//std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
 
-	c = Qt::white;
-	std::cout << "white rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
+	//c = Qt::white;
+	//std::cout << "white rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
 
-	r = c.red();
-	g = c.green();
-	b = c.blue();
-	vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
-	std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
+	//r = c.red();
+	//g = c.green();
+	//b = c.blue();
+	//vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
+	//std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
 
-	//////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	// MITK XML test
-	std::cout << "MITK transfer function XML test" << std::endl;
-	openTransferFunctionFromMITKXML("../../transferfuncs/MITK/CT Generic.xml");
-	
-	// Slicer XML test
-	std::cout << "Slicer transfer function XML test" << std::endl;
-	openTransferFunctionFromSlicerXML("../../transferfuncs/Slicer/presets.xml");
-	//////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	//// MITK XML test
+	//std::cout << "MITK transfer function XML test" << std::endl;
+	//openTransferFunctionFromMITKXML("../../transferfuncs/MITK/CT Generic.xml");
+	//
+	//// Slicer XML test
+	//std::cout << "Slicer transfer function XML test" << std::endl;
+	//openTransferFunctionFromSlicerXML("../../transferfuncs/Slicer/presets.xml");
+	////////////////////////////////////////////////////////////////////////////
 
-	// should not be used before initialization
+	// there variables should not be used before initialization
 	count_of_voxels = 0;
 	volume_ptr = NULL;
 	batch_patch = "D:/_uchar/vortex/";
@@ -106,6 +106,7 @@ ui(new Ui::MainWindow)
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 
 	on_action_Compute_Distance_HSV_triggered();
+
 
 	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
 	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));

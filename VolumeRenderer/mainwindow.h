@@ -102,7 +102,7 @@ private:
 	std::vector<double> intensity_list;
 	//std::vector<double> intensity_for_colour_list;
 	std::vector<double> opacity_list;
-	std::vector<std::vector<double>> colour_list;
+	//std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
 	std::vector<double> control_point_weight_list;
 	vtkSmartPointer<vtkPiecewiseFunction> scalar_opacity;
@@ -315,15 +315,83 @@ private:
 
 	double get_colour_r(int i)
 	{
-		return colour_list[i][0];
+		double xrgb[6];
+		scalar_color->GetNodeValue(i, xrgb);
+		return xrgb[1];
 	}
 	double get_colour_g(int i)
 	{
-		return colour_list[i][1];
+		double xrgb[6];
+		scalar_color->GetNodeValue(i, xrgb);
+		return xrgb[2];
 	}
 	double get_colour_b(int i)
 	{
-		return colour_list[i][2];
+		double xrgb[6];
+		scalar_color->GetNodeValue(i, xrgb);
+		return xrgb[3];
+	}
+
+	int intensity_list_size()
+	{
+		return intensity_list.size();
+	}
+
+	void set_intensity(int i, double v)
+	{
+		intensity_list[i] = v;
+	}
+
+	double get_intensity(int i)
+	{
+		return intensity_list[i];
+	}
+
+	void intensity_list_clear()
+	{
+		intensity_list.clear();
+	}
+
+	void intensity_list_push_back(double v)
+	{
+		intensity_list.push_back(v);
+	}
+
+	void opacity_list_push_back(double v)
+	{
+		opacity_list.push_back(v);
+	}
+
+	void opacity_list_clear()
+	{
+		opacity_list.clear();
+	}
+
+	void colour_list_push_back(std::vector<double> v, double x = -1)
+	{
+		// if x == -1, which means parameter x is not provided, then the last value in intensity_list is used
+		if (abs(x + 1) < epsilon())
+		{
+			if (intensity_list_size() > 0)
+			{
+				x = get_intensity(intensity_list_size() - 1);
+			}
+			else
+			{
+				std::cerr << "An error occurred in colour_list_push_back(). intensity_list is empty" << std::endl;
+			}
+		}
+		scalar_color->AddRGBPoint(denormalise_intensity(x), v[0], v[1], v[2]);
+	}
+
+	void colour_list_clear()
+	{
+		scalar_color->RemoveAllPoints();
+	}
+
+	int colour_list_size()
+	{
+		return scalar_color->GetSize();
 	}
 
 	double get_frequency(double intensity) // intensity belongs to [0,255]
@@ -1359,56 +1427,6 @@ private:
 		}
 	}
 
-	int intensity_list_size()
-	{
-		return intensity_list.size();
-	}
-
-	void set_intensity(int i, double v)
-	{
-		intensity_list[i] = v;
-	}
-
-	double get_intensity(int i)
-	{
-		return intensity_list[i];
-	}
-
-	void intensity_list_clear()
-	{
-		intensity_list.clear();
-	}
-
-	void intensity_list_push_back(double v)
-	{
-		intensity_list.push_back(v);
-	}
-
-	void opacity_list_push_back(double v)
-	{
-		opacity_list.push_back(v);
-	}
-
-	void opacity_list_clear()
-	{
-		opacity_list.clear();
-	}
-
-	void colour_list_push_back(std::vector<double> v)
-	{
-		colour_list.push_back(v);
-	}
-
-	void colour_list_clear()
-	{
-		colour_list.clear();
-	}
-
-	int colour_list_size()
-	{
-		return colour_list.size();
-	}
-
 	void openTransferFunctionFromMITKXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
@@ -1585,15 +1603,9 @@ private:
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
-		intensity_list_push_back(normalise_intensity(0));
-		intensity_list_push_back(normalise_intensity(36));
-		intensity_list_push_back(normalise_intensity(72));
-		intensity_list_push_back(normalise_intensity(108));
-		intensity_list_push_back(normalise_intensity(144));
-		intensity_list_push_back(normalise_intensity(180));
-		intensity_list_push_back(normalise_intensity(216));
-		intensity_list_push_back(normalise_intensity(255));
 		{
+			intensity_list_push_back(normalise_intensity(0));
+
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
@@ -1603,6 +1615,8 @@ private:
 			opacity_list_push_back(0);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(36));
+
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(0);
@@ -1612,6 +1626,8 @@ private:
 			opacity_list_push_back(0.125);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(72));
+
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
@@ -1621,6 +1637,8 @@ private:
 			opacity_list_push_back(0.25);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(108));
+
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(1);
@@ -1630,6 +1648,8 @@ private:
 			opacity_list_push_back(0.375);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(144));
+
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(1);
@@ -1639,6 +1659,8 @@ private:
 			opacity_list_push_back(0.5);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(180));
+
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
@@ -1648,6 +1670,8 @@ private:
 			opacity_list_push_back(0.625);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(216));
+
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(0);
@@ -1657,6 +1681,8 @@ private:
 			opacity_list_push_back(0.75);
 		}
 		{
+			intensity_list_push_back(normalise_intensity(255));
+
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
@@ -1726,6 +1752,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			//v.push_back(0);
+			
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2405,11 +2432,11 @@ private:
 		if (intensity_list_size() > 0 && intensity_list_size() == colour_list_size())
 		{
 			scalar_opacity->RemoveAllPoints();
-			scalar_color->RemoveAllPoints();
+			//scalar_color->RemoveAllPoints();
 			for (unsigned int i = 0; i < intensity_list_size(); i++)
 			{
 				scalar_opacity->AddPoint(denormalise_intensity(get_intensity(i)), get_opacity(i));
-				scalar_color->AddRGBPoint(denormalise_intensity(get_intensity(i)), get_colour_r(i), get_colour_g(i), get_colour_b(i));
+				//scalar_color->AddRGBPoint(denormalise_intensity(get_intensity(i)), get_colour_r(i), get_colour_g(i), get_colour_b(i));
 			}
 		}
 		// update vtk widget
@@ -2418,39 +2445,38 @@ private:
 
 	void updateTransferFunctionArraysFromWidgets()
 	{
-		if (scalar_color->GetSize() < 1)
+		if (scalar_opacity->GetSize() < 1)
 		{
 			QMessageBox msgBox;
-			msgBox.setText("Error: vtkColorTransferFunction is empty.");
+			msgBox.setText("Error: vtkPiecewiseFunction is empty.");
 			int ret = msgBox.exec();
 			return;
 		}
-		if (scalar_color->GetSize() != scalar_opacity->GetSize())
-		{
-			QMessageBox msgBox;
-			msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
-			int ret = msgBox.exec();
-			return;
-		}
+		//if (scalar_color->GetSize() != scalar_opacity->GetSize())
+		//{
+		//	QMessageBox msgBox;
+		//	msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
+		//	int ret = msgBox.exec();
+		//	return;
+		//}
 
 		//std::cout<<"update transfer function from widget"<<std::endl;
-		colour_list_clear();
+		//colour_list_clear();
 		opacity_list_clear();
 		intensity_list_clear();
-		for (auto i = 0; i < scalar_color->GetSize(); i++)
+		for (auto i = 0; i < scalar_opacity->GetSize(); i++)
 		{
-			double xrgb[6];
-			scalar_color->GetNodeValue(i, xrgb);
+			//double xrgb[6];
+			//scalar_color->GetNodeValue(i, xrgb);
 			double xa[4];
 			scalar_opacity->GetNodeValue(i, xa);
 			double opacity = xa[1];
-			double intensity = normalise_intensity(xrgb[0]);
-			std::vector<double> c;
-			c.push_back(xrgb[1]);
-			c.push_back(xrgb[2]);
-			c.push_back(xrgb[3]);
-			//c.push_back(opacity);
-			colour_list_push_back(c);
+			double intensity = normalise_intensity(xa[0]);
+			//std::vector<double> c;
+			//c.push_back(xrgb[1]);
+			//c.push_back(xrgb[2]);
+			//c.push_back(xrgb[3]);
+			//colour_list_push_back(c);
 			opacity_list_push_back(opacity);
 			intensity_list_push_back(intensity);
 			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
