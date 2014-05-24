@@ -62,7 +62,7 @@
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
 
-#include "TransferFunctionProperty.h"
+#include "VolumePropertyXML.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -100,6 +100,7 @@ private:
 	QVTKWidget vtk_widget;
 	ctkVTKVolumePropertyWidget volume_property_widget;
 	std::vector<double> intensity_list;
+	std::vector<double> opacity_list;
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
 	std::vector<double> control_point_weight_list;
@@ -303,7 +304,26 @@ private:
 
 	double get_opacity(int i)
 	{
-		return colour_list[i][3];
+		return opacity_list[i];
+	}
+
+	void set_opacity(int i, double v)
+	{
+		colour_list[i][3] = v;
+		opacity_list[i] = v;
+	}
+
+	double get_colour_r(int i)
+	{
+		return colour_list[i][0];
+	}
+	double get_colour_g(int i)
+	{
+		return colour_list[i][1];
+	}
+	double get_colour_b(int i)
+	{
+		return colour_list[i][2];
 	}
 
 	double get_frequency(double intensity) // intensity belongs to [0,255]
@@ -403,8 +423,9 @@ private:
 		{
 			// linear interpolation
 			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
-			double a = colour_list[i1][3];
-			double b = colour_list[i2][3];
+
+			double a = get_opacity(i1);
+			double b = get_opacity(i2);
 			return (a + (b - a) * t);
 		}
 		else
@@ -437,8 +458,6 @@ private:
 		{
 			// linear interpolation
 			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
-			//double a = colour_list[i1][3];
-			//double b = colour_list[i2][3];
 
 			// get control point weights
 			double a = get_control_point_weight(i1);
@@ -673,21 +692,21 @@ private:
 		{
 			// area of a trapezoid
 			double h = intensity_list[i + 1] - intensity_list[i];
-			double a = get_visibility(i);//colour_list[i][3];
-			double b = get_visibility(i + 1);//colour_list[i+1][3];
+			double a = get_visibility(i);
+			double b = get_visibility(i + 1);
 			return (a + b) * h / 2;
 		}
 		else
 		{
 			if (i == -1)
 			{
-				return (intensity_list[i + 1] - domain_x) * get_visibility(i + 1);//colour_list[i+1][3];
+				return (intensity_list[i + 1] - domain_x) * get_visibility(i + 1);
 			}
 			else
 			{
 				if (i == intensity_list.size() - 1)
 				{
-					return (domain_y - intensity_list[i]) * get_visibility(i);//colour_list[i][3];
+					return (domain_y - intensity_list[i]) * get_visibility(i);
 				}
 				else
 				{
@@ -740,7 +759,7 @@ private:
 			}
 		}
 		double visibility = get_visibility(i);
-		double opacity = colour_list[i][3];
+		double opacity = get_opacity(i);
 		return visibility_increment * opacity / visibility;
 	}
 
@@ -756,7 +775,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_neighbour_area(i);
 				if (area > max_area)
@@ -764,7 +783,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -774,18 +793,20 @@ private:
 		if (min_index != max_index)
 		{
 			const double step_size = 1. / 255.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area(max_index);
-			colour_list[max_index][3] = height_max_new;
+			set_opacity(max_index, height_max_new);
+
 			double new_area = get_neighbour_area(max_index);
 			double area_decreased = area - new_area;
 			double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + height_increased;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
+			set_opacity(min_index, height_min_new);
+
 			std::cout << "balance TF max index=" << max_index << " min index=" << min_index << " opacity=" << height_max << " new opacity=" << height_max_new << " area=" << area << " new area=" << new_area << " height=" << height_min << " new height=" << height_min_new << endl;
 		}
 	}
@@ -806,7 +827,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -814,7 +835,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -824,18 +845,18 @@ private:
 		if (min_index != max_index)
 		{
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new; // update opacity
+			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new; // update opacity
+			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -856,7 +877,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -864,7 +885,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -874,18 +895,18 @@ private:
 		if (min_index != max_index)
 		{
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new; // update opacity
+			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new; // update opacity
+			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -906,7 +927,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size() - 1; i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_area_entropy(i);
 				if (area > max_area)
@@ -914,7 +935,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -927,7 +948,7 @@ private:
 			int max_index_next = max_index + 1;
 			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
 			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index_next]), max_index_next);
-			if (colour_list[max_index_next][3] > epsilon() && colour_list[max_index_next][3] < 1 && weight_max_2 > weight_max_1)
+			if (get_opacity(max_index_next) > epsilon() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 			{
 				max_index++;
 			}
@@ -936,24 +957,24 @@ private:
 			int min_index_next = min_index + 1;
 			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
 			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index_next]), min_index_next);
-			if (colour_list[min_index_next][3] > epsilon() && colour_list[min_index_next][3] < 1 && weight_min_2 < weight_min_1)
+			if (get_opacity(min_index_next) > epsilon() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 			{
 				min_index++;
 			}
 
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new; // update opacity
+			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new; // update opacity
+			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -974,7 +995,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size() - 1; i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_weighted_area_entropy(i);
 				if (area > max_area)
@@ -982,7 +1003,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -995,7 +1016,7 @@ private:
 			int max_index_next = max_index + 1;
 			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
 			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index_next]), max_index_next);
-			if (colour_list[max_index_next][3] > epsilon() && colour_list[max_index_next][3] < 1 && weight_max_2 > weight_max_1)
+			if (get_opacity(max_index_next) > epsilon() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 			{
 				max_index++;
 			}
@@ -1004,24 +1025,24 @@ private:
 			int min_index_next = min_index + 1;
 			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
 			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index_next]), min_index_next);
-			if (colour_list[min_index_next][3] > epsilon() && colour_list[min_index_next][3] < 1 && weight_min_2 < weight_min_1)
+			if (get_opacity(min_index_next) > epsilon() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 			{
 				min_index++;
 			}
 
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new; // update opacity
+			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new; // update opacity
+			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -1040,7 +1061,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -1048,7 +1069,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				//if (area < min_area && colour_list[i][3] < 1)
+				//if (area < min_area && get_opacity(i) < 1)
 				//{
 				//	min_index = i;
 				//	min_area = area;
@@ -1058,18 +1079,18 @@ private:
 		if (-1 != max_index)
 		{
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new;
+			set_opacity(max_index, height_max_new);
 			double new_area = get_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			//double height_min = colour_list[min_index][3];
+			//double height_min = get_opacity(min_index);
 			//double height_min_new = height_min + step_size;
 			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			//colour_list[min_index][3] = height_min_new;
+			//set_opacity(min_index, height_min_new);
 			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
@@ -1088,7 +1109,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_neighbour_area_entropy(i);
 				//if (area > max_area)
@@ -1096,7 +1117,7 @@ private:
 				//	max_index = i;
 				//	max_area = area;
 				//}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -1106,18 +1127,18 @@ private:
 		if (min_index != -1)
 		{
 			const double step_size = 1. / 256.;
-			//double height_max = colour_list[max_index][3];
+			//double height_max = get_opacity(max_index);
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
 			//double area = get_neighbour_area_entropy(max_index);
-			//colour_list[max_index][3] = height_max_new;
+			//set_opacity(max_index, height_max_new);
 			//double new_area = get_neighbour_area_entropy(max_index);
 			//double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
+			set_opacity(min_index, height_min_new);
 			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -1136,7 +1157,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				if (area > max_area)
@@ -1144,7 +1165,7 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				//if (area < min_area && colour_list[i][3] < 1)
+				//if (area < min_area && get_opacity(i) < 1)
 				//{
 				//	min_index = i;
 				//	min_area = area;
@@ -1154,18 +1175,18 @@ private:
 		if (-1 != max_index)
 		{
 			const double step_size = 1. / 256.;
-			double height_max = colour_list[max_index][3];
+			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < epsilon() ? epsilon() : height_max_new;
 			double area = get_weighted_neighbour_area_entropy(max_index);
-			colour_list[max_index][3] = height_max_new;
+			set_opacity(max_index, height_max_new);
 			double new_area = get_weighted_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			//double height_min = colour_list[min_index][3];
+			//double height_min = get_opacity(min_index);
 			//double height_min_new = height_min + step_size;
 			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			//colour_list[min_index][3] = height_min_new;
+			//set_opacity(min_index, height_min_new);
 			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
@@ -1184,7 +1205,7 @@ private:
 
 		for (unsigned int i = 0; i<intensity_list.size(); i++)
 		{
-			if (colour_list[i][3] > epsilon())
+			if (get_opacity(i) > epsilon())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
 				//if (area > max_area)
@@ -1192,7 +1213,7 @@ private:
 				//	max_index = i;
 				//	max_area = area;
 				//}
-				if (area < min_area && colour_list[i][3] < 1)
+				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
 					min_area = area;
@@ -1202,18 +1223,18 @@ private:
 		if (min_index != -1)
 		{
 			const double step_size = 1. / 256.;
-			//double height_max = colour_list[max_index][3];
+			//double height_max = get_opacity(max_index);
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
 			//double area = get_neighbour_area_entropy_weighted_for_region(max_index);
-			//colour_list[max_index][3] = height_max_new;
+			//set_opacity(max_index, height_max_new);
 			//double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
 			//double area_decreased = area - new_area;
 			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			double height_min = colour_list[min_index][3];
+			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			colour_list[min_index][3] = height_min_new;
+			set_opacity(min_index, height_min_new);
 			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
@@ -1263,10 +1284,10 @@ private:
 			auto split = doc.NewElement("split");
 			split->SetAttribute("value", false);
 			auto colorL = doc.NewElement("colorL");
-			colorL->SetAttribute("r", denormalise_rgba(colour_list[i][0]));
-			colorL->SetAttribute("g", denormalise_rgba(colour_list[i][1]));
-			colorL->SetAttribute("b", denormalise_rgba(colour_list[i][2]));
-			colorL->SetAttribute("a", denormalise_rgba(colour_list[i][3]));
+			colorL->SetAttribute("r", denormalise_rgba(get_colour_r(i)));
+			colorL->SetAttribute("g", denormalise_rgba(get_colour_g(i)));
+			colorL->SetAttribute("b", denormalise_rgba(get_colour_b(i)));
+			colorL->SetAttribute("a", denormalise_rgba(get_opacity(i)));
 			key->InsertEndChild(intensity);
 			key->InsertEndChild(split);
 			key->InsertEndChild(colorL);
@@ -1296,7 +1317,7 @@ private:
 		}
 
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 
 		{
 			auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
@@ -1337,6 +1358,18 @@ private:
 		}
 	}
 
+	void colour_list_push_back(std::vector<double> v)
+	{
+		colour_list.push_back(v);
+		opacity_list.push_back(v[3]);
+	}
+
+	void colour_list_clear()
+	{
+		colour_list.clear();
+		opacity_list.clear();
+	}
+
 	void openTransferFunctionFromMITKXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
@@ -1349,16 +1382,13 @@ private:
 		}
 
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 
 		{
 			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
 			std::cout << "ScalarOpacity" << std::endl;
 			do
 			{
-				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-				//intensity_list.push_back(intensity);
-
 				double x = atof(point->Attribute("x"));
 				double y = atof(point->Attribute("y"));
 				std::cout << "x=" << x << " y=" << y << std::endl;
@@ -1372,9 +1402,6 @@ private:
 			std::cout << "GradientOpacity" << std::endl;
 			do
 			{
-				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-				//intensity_list.push_back(intensity);
-
 				double x = atof(point->Attribute("x"));
 				double y = atof(point->Attribute("y"));
 				std::cout << "x=" << x << " y=" << y << std::endl;
@@ -1388,17 +1415,6 @@ private:
 			std::cout << "Color" << std::endl;
 			do
 			{
-				//int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
-				//int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
-				//int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
-				//int a = atoi(key->FirstChildElement("colorL")->Attribute("a"));
-				//std::vector<double> colour;
-				//colour.push_back(r);
-				//colour.push_back(g);
-				//colour.push_back(b);
-				//colour.push_back(a);
-				//colour_list.push_back(colour);
-
 				double x = atof(point->Attribute("x"));
 				double r = atof(point->Attribute("r"));
 				double g = atof(point->Attribute("g"));
@@ -1453,7 +1469,7 @@ private:
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 		do
 		{
 			double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
@@ -1467,7 +1483,7 @@ private:
 			colour.push_back(normalise_rgba(g));
 			colour.push_back(normalise_rgba(b));
 			colour.push_back(normalise_rgba(a));
-			colour_list.push_back(colour);
+			colour_list_push_back(colour);
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
 			std::cout << "intensity=" << intensity;
@@ -1487,7 +1503,7 @@ private:
 				colour2.push_back(normalise_rgba(g2));
 				colour2.push_back(normalise_rgba(b2));
 				colour2.push_back(normalise_rgba(a2));
-				colour_list.push_back(colour2);
+				colour_list_push_back(colour2);
 				std::cout << "\tcolorR r=" << r2 << " g=" << g2 << " b=" << b2 << " a=" << a2;
 			}
 			std::cout << endl;
@@ -1521,7 +1537,7 @@ private:
 		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
@@ -1539,7 +1555,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1547,7 +1563,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0.125);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1555,7 +1571,7 @@ private:
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(0.25);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1563,7 +1579,7 @@ private:
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(0.375);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1571,7 +1587,7 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0.5);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1579,7 +1595,7 @@ private:
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(0.625);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1587,7 +1603,7 @@ private:
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(0.75);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 		{
 			std::vector<double> v;
@@ -1595,7 +1611,7 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 	}
 
@@ -1646,7 +1662,7 @@ private:
 		double interval = 1.0 / (m * n + 1);
 
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
@@ -1657,7 +1673,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 
 		for (int i = 0; i < m*n; i++)
@@ -1672,7 +1688,7 @@ private:
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
 				v.push_back(opacity);
-				colour_list.push_back(v);
+				colour_list_push_back(v);
 			}
 		}
 
@@ -1683,7 +1699,7 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 	}
 
@@ -1734,7 +1750,7 @@ private:
 		double interval = 1.0 / (m * n + 1);
 
 		intensity_list.clear();
-		colour_list.clear();
+		colour_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
@@ -1745,7 +1761,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 
 		for (int i = 0; i < m*n; i++)
@@ -1764,7 +1780,7 @@ private:
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
 				v.push_back(0.5/3.0);
-				colour_list.push_back(v);
+				colour_list_push_back(v);
 			}
 		}
 
@@ -1775,7 +1791,7 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0);
-			colour_list.push_back(v);
+			colour_list_push_back(v);
 		}
 	}
 
@@ -2302,9 +2318,9 @@ private:
 		double sum = 0;
 		for (unsigned int i = 0; i<colour_list.size(); i++)
 		{
-			double r = colour_list[i][0];
-			double g = colour_list[i][1];
-			double b = colour_list[i][2];
+			double r = get_colour_r(i);
+			double g = get_colour_g(i);
+			double b = get_colour_b(i);
 			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, count_of_pixels, numComponents, squared, hsv);
 			control_point_weight_list.push_back(distance);
 			sum += distance;
@@ -2332,8 +2348,8 @@ private:
 			scalar_color->RemoveAllPoints();
 			for (unsigned int i = 0; i < intensity_list.size(); i++)
 			{
-				scalar_opacity->AddPoint(denormalise_intensity(intensity_list[i]), colour_list[i][3]);
-				scalar_color->AddRGBPoint(denormalise_intensity(intensity_list[i]), colour_list[i][0], colour_list[i][1], colour_list[i][2]);
+				scalar_opacity->AddPoint(denormalise_intensity(intensity_list[i]), get_opacity(i));
+				scalar_color->AddRGBPoint(denormalise_intensity(intensity_list[i]), get_colour_r(i), get_colour_g(i), get_colour_b(i));
 			}
 		}
 		// update vtk widget
@@ -2358,7 +2374,7 @@ private:
 		}
 
 		//std::cout<<"update transfer function from widget"<<std::endl;
-		colour_list.clear();
+		colour_list_clear();
 		intensity_list.clear();
 		for (auto i = 0; i < scalar_color->GetSize(); i++)
 		{
@@ -2373,7 +2389,7 @@ private:
 			c.push_back(xrgb[2]);
 			c.push_back(xrgb[3]);
 			c.push_back(opacity);
-			colour_list.push_back(c);
+			colour_list_push_back(c);
 			intensity_list.push_back(intensity);
 			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
@@ -2437,9 +2453,9 @@ private:
 		double sum = 0;
 		for (unsigned int i = 0; i < colour_list.size(); i++)
 		{
-			double r = colour_list[i][0];
-			double g = colour_list[i][1];
-			double b = colour_list[i][2];
+			double r = get_colour_r(i);
+			double g = get_colour_g(i);
+			double b = get_colour_b(i);
 
 			// compute distance in hue without squaring
 			double distance = get_distance_between_colour_and_pixels_selector(r, g, b, pixels, 1, 3, 0, 1);
@@ -2490,10 +2506,10 @@ private:
 		int index = -1;
 		for (unsigned int i = 0; i < colour_list.size(); i++)
 		{
-			double r = colour_list[i][0];
-			double g = colour_list[i][1];
-			double b = colour_list[i][2];
-			double a = colour_list[i][3];
+			double r = get_colour_r(i);
+			double g = get_colour_g(i);
+			double b = get_colour_b(i);
+			double a = get_opacity(i);
 			if (a > 0)
 			{
 				double h, s, v;
@@ -2558,7 +2574,7 @@ private:
 						if (ii != -1)
 						{
 							std::cout << "closest control point index=" << ii << std::endl;
-							colour_list[ii][3] = 0;
+							set_opacity(ii, 0);
 							updateTransferFunctionWidgetsFromArrays();
 							updateTransferFunctionArraysFromWidgets();
 						}
