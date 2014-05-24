@@ -100,6 +100,7 @@ private:
 	QVTKWidget vtk_widget;
 	ctkVTKVolumePropertyWidget volume_property_widget;
 	std::vector<double> intensity_list;
+	//std::vector<double> intensity_for_colour_list;
 	std::vector<double> opacity_list;
 	std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
@@ -309,7 +310,6 @@ private:
 
 	void set_opacity(int i, double v)
 	{
-		colour_list[i][3] = v;
 		opacity_list[i] = v;
 	}
 
@@ -1316,8 +1316,9 @@ private:
 			return;
 		}
 
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 
 		{
 			auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
@@ -1325,7 +1326,7 @@ private:
 			do
 			{
 				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-				//intensity_list.push_back(intensity);
+				//intensity_list_push_back(intensity);
 
 				auto gradientOpacity = property->Attribute("gradientOpacity");
 				auto scalarOpacity = property->Attribute("scalarOpacity");
@@ -1358,16 +1359,34 @@ private:
 		}
 	}
 
+	void intensity_list_clear()
+	{
+		intensity_list.clear();
+	}
+
+	void intensity_list_push_back(double v)
+	{
+		intensity_list.push_back(v);
+	}
+
+	void opacity_list_push_back(double v)
+	{
+		opacity_list.push_back(v);
+	}
+
+	void opacity_list_clear()
+	{
+		opacity_list.clear();
+	}
+
 	void colour_list_push_back(std::vector<double> v)
 	{
 		colour_list.push_back(v);
-		opacity_list.push_back(v[3]);
 	}
 
 	void colour_list_clear()
 	{
 		colour_list.clear();
-		opacity_list.clear();
 	}
 
 	void openTransferFunctionFromMITKXML(const char *filename)
@@ -1381,8 +1400,9 @@ private:
 			return;
 		}
 
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 
 		{
 			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
@@ -1468,12 +1488,13 @@ private:
 		}
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 		do
 		{
 			double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-			intensity_list.push_back(intensity);
+			intensity_list_push_back(intensity);
 			int r = atoi(key->FirstChildElement("colorL")->Attribute("r"));
 			int g = atoi(key->FirstChildElement("colorL")->Attribute("g"));
 			int b = atoi(key->FirstChildElement("colorL")->Attribute("b"));
@@ -1482,8 +1503,9 @@ private:
 			colour.push_back(normalise_rgba(r));
 			colour.push_back(normalise_rgba(g));
 			colour.push_back(normalise_rgba(b));
-			colour.push_back(normalise_rgba(a));
+			//colour.push_back(normalise_rgba(a));
 			colour_list_push_back(colour);
+			opacity_list_push_back(normalise_rgba(a));
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
 			std::cout << "intensity=" << intensity;
@@ -1492,7 +1514,7 @@ private:
 			const double epsilon = 1e-6;
 			if (split)
 			{
-				intensity_list.push_back(intensity + epsilon);
+				intensity_list_push_back(intensity + epsilon);
 				auto colorR = key->FirstChildElement("colorR");
 				int r2 = atoi(colorR->Attribute("r"));
 				int g2 = atoi(colorR->Attribute("g"));
@@ -1502,8 +1524,9 @@ private:
 				colour2.push_back(normalise_rgba(r2));
 				colour2.push_back(normalise_rgba(g2));
 				colour2.push_back(normalise_rgba(b2));
-				colour2.push_back(normalise_rgba(a2));
+				//colour2.push_back(normalise_rgba(a2));
 				colour_list_push_back(colour2);
+				opacity_list_push_back(normalise_rgba(a2));
 				std::cout << "\tcolorR r=" << r2 << " g=" << g2 << " b=" << b2 << " a=" << a2;
 			}
 			std::cout << endl;
@@ -1536,82 +1559,91 @@ private:
 		//colorTransferFunction->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 		//colorTransferFunction->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
-		intensity_list.push_back(normalise_intensity(0));
-		intensity_list.push_back(normalise_intensity(36));
-		intensity_list.push_back(normalise_intensity(72));
-		intensity_list.push_back(normalise_intensity(108));
-		intensity_list.push_back(normalise_intensity(144));
-		intensity_list.push_back(normalise_intensity(180));
-		intensity_list.push_back(normalise_intensity(216));
-		intensity_list.push_back(normalise_intensity(255));
+		intensity_list_push_back(normalise_intensity(0));
+		intensity_list_push_back(normalise_intensity(36));
+		intensity_list_push_back(normalise_intensity(72));
+		intensity_list_push_back(normalise_intensity(108));
+		intensity_list_push_back(normalise_intensity(144));
+		intensity_list_push_back(normalise_intensity(180));
+		intensity_list_push_back(normalise_intensity(216));
+		intensity_list_push_back(normalise_intensity(255));
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(0);
-			v.push_back(0.125);
+			//v.push_back(0.125);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.125);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0);
-			v.push_back(0.25);
+			//v.push_back(0.25);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.25);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(0);
-			v.push_back(0.375);
+			//v.push_back(0.375);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.375);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(1);
-			v.push_back(0.5);
+			//v.push_back(0.5);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.5);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(1);
-			v.push_back(0.625);
+			//v.push_back(0.625);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.625);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(1);
-			v.push_back(0.75);
+			//v.push_back(0.75);
 			colour_list_push_back(v);
+			opacity_list_push_back(0.75);
 		}
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 	}
 
@@ -1661,19 +1693,21 @@ private:
 		//};
 		double interval = 1.0 / (m * n + 1);
 
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
-		intensity_list.push_back(0);
+		intensity_list_push_back(0);
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 
 		for (int i = 0; i < m*n; i++)
@@ -1681,25 +1715,27 @@ private:
 			int colour_index = i / m;
 			double opacity = (i % m == 1) ? 0.5 : 0;
 
-			intensity_list.push_back((i + 1) * interval);
+			intensity_list_push_back((i + 1) * interval);
 			{
 				std::vector<double> v;
 				v.push_back(spectrum[colour_index][0]);
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
-				v.push_back(opacity);
+				//v.push_back(opacity);
 				colour_list_push_back(v);
+				opacity_list_push_back(opacity);
 			}
 		}
 
-		intensity_list.push_back(1);
+		intensity_list_push_back(1);
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 	}
 
@@ -1749,19 +1785,21 @@ private:
 		//};
 		double interval = 1.0 / (m * n + 1);
 
-		intensity_list.clear();
+		intensity_list_clear();
 		colour_list_clear();
+		opacity_list_clear();
 		domain_x = threshold_x = 0;
 		domain_y = threshold_y = 1;
 
-		intensity_list.push_back(0);
+		intensity_list_push_back(0);
 		{
 			std::vector<double> v;
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 
 		for (int i = 0; i < m*n; i++)
@@ -1773,25 +1811,27 @@ private:
 			// in a ramp, a control point's opacity equals its intensity
 			double opacity = (i + 1) * interval;
 
-			intensity_list.push_back(opacity);
+			intensity_list_push_back(opacity);
 			{
 				std::vector<double> v;
 				v.push_back(spectrum[colour_index][0]);
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
-				v.push_back(0.5/3.0);
+				//v.push_back(0.5/3.0);
 				colour_list_push_back(v);
+				opacity_list_push_back(0.5 / 3.0);
 			}
 		}
 
-		intensity_list.push_back(1);
+		intensity_list_push_back(1);
 		{
 			std::vector<double> v;
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			v.push_back(0);
+			//v.push_back(0);
 			colour_list_push_back(v);
+			opacity_list_push_back(0);
 		}
 	}
 
@@ -2375,7 +2415,8 @@ private:
 
 		//std::cout<<"update transfer function from widget"<<std::endl;
 		colour_list_clear();
-		intensity_list.clear();
+		opacity_list_clear();
+		intensity_list_clear();
 		for (auto i = 0; i < scalar_color->GetSize(); i++)
 		{
 			double xrgb[6];
@@ -2388,9 +2429,10 @@ private:
 			c.push_back(xrgb[1]);
 			c.push_back(xrgb[2]);
 			c.push_back(xrgb[3]);
-			c.push_back(opacity);
+			//c.push_back(opacity);
 			colour_list_push_back(c);
-			intensity_list.push_back(intensity);
+			opacity_list_push_back(opacity);
+			intensity_list_push_back(intensity);
 			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
