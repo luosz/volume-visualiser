@@ -354,14 +354,14 @@ private:
 
 	double get_frequency_and_opacity(int i)
 	{
-		double intensity = denormalise_intensity(intensity_list[i]);
+		double intensity = denormalise_intensity(get_intensity(i));
 		return get_frequency(intensity) * get_opacity(i);
 	}
 
 	double get_noteworthiness(int i)
 	{
 		const double epsilon = 1e-6;
-		double intensity = denormalise_intensity(intensity_list[i]);
+		double intensity = denormalise_intensity(get_intensity(i));
 		double probability = get_frequency(intensity) / count_of_voxels;
 		if (probability > epsilon)
 		{
@@ -382,22 +382,22 @@ private:
 	double get_opacity_interpolation_without_index(double intensity)
 	{
 		int index;
-		if (intensity < intensity_list[0])
+		if (intensity < get_intensity(0))
 		{
 			index = -1;
 		}
 		else
 		{
-			if (intensity > intensity_list[intensity_list.size() - 1])
+			if (intensity > get_intensity(intensity_list_size() - 1))
 			{
-				index = intensity_list.size() - 1;
+				index = intensity_list_size() - 1;
 			}
 			else
 			{
 				index = -2;
-				for (auto i = 0; i < intensity_list.size() - 1; i++)
+				for (auto i = 0; i < intensity_list_size() - 1; i++)
 				{
-					if (intensity_list[i] <= intensity && intensity_list[i + 1] >= intensity)
+					if (get_intensity(i) <= intensity && get_intensity(i + 1) >= intensity)
 					{
 						index = i;
 						break;
@@ -415,14 +415,14 @@ private:
 	}
 
 	/// double intensity belongs to [0,1]
-	/// int index >=0 && index < intensity_list.size()
+	/// int index >=0 && index < intensity_list_size()
 	double get_opacity_by_interpolation(double intensity, int index)
 	{
 		int i1 = index, i2 = index + 1;
-		if (i1 >= 0 && i2 < intensity_list.size())
+		if (i1 >= 0 && i2 < intensity_list_size())
 		{
 			// linear interpolation
-			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
+			double t = (intensity - get_intensity(i1)) / (get_intensity(i2) - get_intensity(i1));
 
 			double a = get_opacity(i1);
 			double b = get_opacity(i2);
@@ -432,13 +432,13 @@ private:
 		{
 			if (i1 == -1)
 			{
-				return intensity_list[i2];
+				return get_intensity(i2);
 			}
 			else
 			{
-				if (i1 == intensity_list.size() - 1)
+				if (i1 == intensity_list_size() - 1)
 				{
-					return intensity_list[i1];
+					return get_intensity(i1);
 				}
 				else
 				{
@@ -450,14 +450,14 @@ private:
 	}
 
 	/// double intensity belongs to [0,1]
-	/// int index >=0 && index < intensity_list.size()
+	/// int index >=0 && index < intensity_list_size()
 	double get_control_point_weight_by_interpolation(double intensity, int index)
 	{
 		int i1 = index, i2 = index + 1;
-		if (i1 >= 0 && i2 < intensity_list.size())
+		if (i1 >= 0 && i2 < intensity_list_size())
 		{
 			// linear interpolation
-			double t = (intensity - intensity_list[i1]) / (intensity_list[i2] - intensity_list[i1]);
+			double t = (intensity - get_intensity(i1)) / (get_intensity(i2) - get_intensity(i1));
 
 			// get control point weights
 			double a = get_control_point_weight(i1);
@@ -473,7 +473,7 @@ private:
 			}
 			else
 			{
-				if (i1 == intensity_list.size() - 1)
+				if (i1 == intensity_list_size() - 1)
 				{
 					return get_control_point_weight(i1);
 				}
@@ -489,23 +489,23 @@ private:
 	double get_area_entropy(int index)
 	{
 		double a, b;
-		if (index >= 0 && index < intensity_list.size() - 1)
+		if (index >= 0 && index < intensity_list_size() - 1)
 		{
-			a = intensity_list[index];
-			b = intensity_list[index + 1];
+			a = get_intensity(index);
+			b = get_intensity(index + 1);
 		}
 		else
 		{
 			if (index == -1)
 			{
 				a = 0;
-				b = intensity_list[index + 1];
+				b = get_intensity(index + 1);
 			}
 			else
 			{
-				if (index == intensity_list.size() - 1)
+				if (index == intensity_list_size() - 1)
 				{
-					a = intensity_list[index];
+					a = get_intensity(index);
 					b = 1;
 				}
 				else
@@ -539,23 +539,23 @@ private:
 	double get_weighted_area_entropy(int index)
 	{
 		double a, b;
-		if (index >= 0 && index < intensity_list.size() - 1)
+		if (index >= 0 && index < intensity_list_size() - 1)
 		{
-			a = intensity_list[index];
-			b = intensity_list[index + 1];
+			a = get_intensity(index);
+			b = get_intensity(index + 1);
 		}
 		else
 		{
 			if (index == -1)
 			{
 				a = 0;
-				b = intensity_list[index + 1];
+				b = get_intensity(index + 1);
 			}
 			else
 			{
-				if (index == intensity_list.size() - 1)
+				if (index == intensity_list_size() - 1)
 				{
-					a = intensity_list[index];
+					a = get_intensity(index);
 					b = 1;
 				}
 				else
@@ -688,10 +688,10 @@ private:
 	/// compute the geometric area (triangle, rectangle or trapezoid) under an edge
 	double get_area(int i)
 	{
-		if (i >= 0 && i < intensity_list.size() - 1)
+		if (i >= 0 && i < intensity_list_size() - 1)
 		{
 			// area of a trapezoid
-			double h = intensity_list[i + 1] - intensity_list[i];
+			double h = get_intensity(i + 1) - get_intensity(i);
 			double a = get_visibility(i);
 			double b = get_visibility(i + 1);
 			return (a + b) * h / 2;
@@ -700,13 +700,13 @@ private:
 		{
 			if (i == -1)
 			{
-				return (intensity_list[i + 1] - domain_x) * get_visibility(i + 1);
+				return (get_intensity(i + 1) - domain_x) * get_visibility(i + 1);
 			}
 			else
 			{
-				if (i == intensity_list.size() - 1)
+				if (i == intensity_list_size() - 1)
 				{
-					return (domain_y - intensity_list[i]) * get_visibility(i);
+					return (domain_y - get_intensity(i)) * get_visibility(i);
 				}
 				else
 				{
@@ -726,11 +726,11 @@ private:
 	double get_height_given_area_increment(int i, double area_increment)
 	{
 		double visibility_increment = -1;
-		if (i > 0 && i < intensity_list.size() - 1)
+		if (i > 0 && i < intensity_list_size() - 1)
 		{
 			// area of two triangles
-			double a = intensity_list[i] - intensity_list[i - 1];
-			double b = intensity_list[i + 1] - intensity_list[i];
+			double a = get_intensity(i) - get_intensity(i - 1);
+			double b = get_intensity(i + 1) - get_intensity(i);
 			visibility_increment = 2 * area_increment / (a + b);
 		}
 		else
@@ -738,17 +738,17 @@ private:
 			if (i == 0)
 			{
 				// area of a rectangle (left) and a triangle (right)
-				double a = intensity_list[i] - domain_x;
-				double b = intensity_list[i + 1] - intensity_list[i];
+				double a = get_intensity(i) - domain_x;
+				double b = get_intensity(i + 1) - get_intensity(i);
 				visibility_increment = area_increment / (a + b / 2);
 			}
 			else
 			{
-				if (i == intensity_list.size() - 1)
+				if (i == intensity_list_size() - 1)
 				{
 					// area of a triangle (left) and a rectangle (right)
-					double a = intensity_list[i] - intensity_list[i - 1];
-					double b = domain_y - intensity_list[i];
+					double a = get_intensity(i) - get_intensity(i - 1);
+					double b = domain_y - get_intensity(i);
 					visibility_increment = area_increment / (a / 2 + b);
 				}
 				else
@@ -767,13 +767,13 @@ private:
 	void balance_transfer_function()
 	{
 		std::cout << "colour_list size=" << colour_list_size()
-			<< " intensity_list size=" << intensity_list.size() << std::endl;
+			<< " intensity_list size=" << intensity_list_size() << std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
 		//const double epsilon = 1. / 256.;
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -815,7 +815,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -825,7 +825,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -865,7 +865,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -875,7 +875,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -915,7 +915,7 @@ private:
 	// global optimization
 	void balance_transfer_function_edge()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -925,7 +925,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size() - 1; i++)
+		for (unsigned int i = 0; i<intensity_list_size() - 1; i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -946,8 +946,8 @@ private:
 		{
 			// get the upper vertex of an edge
 			int max_index_next = max_index + 1;
-			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
-			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index_next]), max_index_next);
+			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
 			if (get_opacity(max_index_next) > epsilon() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 			{
 				max_index++;
@@ -955,8 +955,8 @@ private:
 
 			// get the lower vertex of an edge
 			int min_index_next = min_index + 1;
-			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
-			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index_next]), min_index_next);
+			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
 			if (get_opacity(min_index_next) > epsilon() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 			{
 				min_index++;
@@ -983,7 +983,7 @@ private:
 	// region-based or hue-based optimization
 	void balance_transfer_function_edge_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -993,7 +993,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size() - 1; i++)
+		for (unsigned int i = 0; i<intensity_list_size() - 1; i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -1014,8 +1014,8 @@ private:
 		{
 			// get the upper vertex of an edge
 			int max_index_next = max_index + 1;
-			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index]), max_index);
-			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[max_index_next]), max_index_next);
+			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
 			if (get_opacity(max_index_next) > epsilon() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 			{
 				max_index++;
@@ -1023,8 +1023,8 @@ private:
 
 			// get the lower vertex of an edge
 			int min_index_next = min_index + 1;
-			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index]), min_index);
-			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(intensity_list[min_index_next]), min_index_next);
+			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
 			if (get_opacity(min_index_next) > epsilon() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 			{
 				min_index++;
@@ -1049,7 +1049,7 @@ private:
 
 	void reduce_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -1059,7 +1059,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -1097,7 +1097,7 @@ private:
 
 	void increase_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -1107,7 +1107,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -1145,7 +1145,7 @@ private:
 
 	void reduce_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -1155,7 +1155,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -1193,7 +1193,7 @@ private:
 
 	void increase_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -1203,7 +1203,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list.size(); i++)
+		for (unsigned int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > epsilon())
 			{
@@ -1275,12 +1275,12 @@ private:
 
 		// add Keys
 		auto keys = doc.NewElement("Keys");
-		for (unsigned int i = 0; i < intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list_size(); i++)
 		{
 			auto key = doc.NewElement("key");
 			key->SetAttribute("type", "TransFuncMappingKey");
 			auto intensity = doc.NewElement("intensity");
-			intensity->SetAttribute("value", intensity_list[i]);
+			intensity->SetAttribute("value", get_intensity(i));
 			auto split = doc.NewElement("split");
 			split->SetAttribute("value", false);
 			auto colorL = doc.NewElement("colorL");
@@ -1357,6 +1357,11 @@ private:
 				property = property->NextSiblingElement();
 			} while (property);
 		}
+	}
+
+	int intensity_list_size()
+	{
+		return intensity_list.size();
 	}
 
 	void set_intensity(int i, double v)
@@ -2051,7 +2056,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list_size(); i++)
 		{
 			double w = get_neighbour_area_entropy(i);
 			sum += w;
@@ -2077,7 +2082,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list.size() - 1; i++)
+		for (unsigned int i = 0; i < intensity_list_size() - 1; i++)
 		{
 			double w = get_area_entropy(i);
 			sum += w;
@@ -2103,7 +2108,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list.size(); i++)
+		for (unsigned int i = 0; i < intensity_list_size(); i++)
 		{
 			double w = get_weighted_neighbour_area_entropy(i);
 			sum += w;
@@ -2129,7 +2134,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list.size() - 1; i++)
+		for (unsigned int i = 0; i < intensity_list_size() - 1; i++)
 		{
 			double w = get_weighted_area_entropy(i);
 			sum += w;
@@ -2393,18 +2398,18 @@ private:
 
 	void updateTransferFunctionWidgetsFromArrays()
 	{
-		if (intensity_list.size() == 0 || colour_list_size() == 0)
+		if (intensity_list_size() == 0 || colour_list_size() == 0)
 		{
 			generate_default_transfer_function();
 		}
-		if (intensity_list.size() > 0 && intensity_list.size() == colour_list_size())
+		if (intensity_list_size() > 0 && intensity_list_size() == colour_list_size())
 		{
 			scalar_opacity->RemoveAllPoints();
 			scalar_color->RemoveAllPoints();
-			for (unsigned int i = 0; i < intensity_list.size(); i++)
+			for (unsigned int i = 0; i < intensity_list_size(); i++)
 			{
-				scalar_opacity->AddPoint(denormalise_intensity(intensity_list[i]), get_opacity(i));
-				scalar_color->AddRGBPoint(denormalise_intensity(intensity_list[i]), get_colour_r(i), get_colour_g(i), get_colour_b(i));
+				scalar_opacity->AddPoint(denormalise_intensity(get_intensity(i)), get_opacity(i));
+				scalar_color->AddRGBPoint(denormalise_intensity(get_intensity(i)), get_colour_r(i), get_colour_g(i), get_colour_b(i));
 			}
 		}
 		// update vtk widget
