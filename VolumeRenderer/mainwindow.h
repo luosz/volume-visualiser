@@ -766,7 +766,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_transfer_function()
 	{
-		std::cout << "colour_list size=" << colour_list.size()
+		std::cout << "colour_list size=" << colour_list_size()
 			<< " intensity_list size=" << intensity_list.size() << std::endl;
 		int max_index = -1;
 		int min_index = -1;
@@ -815,7 +815,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -865,7 +865,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -915,7 +915,7 @@ private:
 	// global optimization
 	void balance_transfer_function_edge()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -983,7 +983,7 @@ private:
 	// region-based or hue-based optimization
 	void balance_transfer_function_edge_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -1049,7 +1049,7 @@ private:
 
 	void reduce_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -1097,7 +1097,7 @@ private:
 
 	void increase_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -1145,7 +1145,7 @@ private:
 
 	void reduce_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		int max_index = -1;
 		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
@@ -1193,7 +1193,7 @@ private:
 
 	void increase_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list.size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
+		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list.size()<<std::endl;
 		//int max_index = -1;
 		int min_index = -1;
 		//double max_area = std::numeric_limits<int>::min();
@@ -1359,6 +1359,16 @@ private:
 		}
 	}
 
+	void set_intensity(int i, double v)
+	{
+		intensity_list[i] = v;
+	}
+
+	double get_intensity(int i)
+	{
+		return intensity_list[i];
+	}
+
 	void intensity_list_clear()
 	{
 		intensity_list.clear();
@@ -1387,6 +1397,11 @@ private:
 	void colour_list_clear()
 	{
 		colour_list.clear();
+	}
+
+	int colour_list_size()
+	{
+		return colour_list.size();
 	}
 
 	void openTransferFunctionFromMITKXML(const char *filename)
@@ -2356,7 +2371,7 @@ private:
 		// compute region weights based on the selected image
 		control_point_weight_list.clear();
 		double sum = 0;
-		for (unsigned int i = 0; i<colour_list.size(); i++)
+		for (unsigned int i = 0; i<colour_list_size(); i++)
 		{
 			double r = get_colour_r(i);
 			double g = get_colour_g(i);
@@ -2378,11 +2393,11 @@ private:
 
 	void updateTransferFunctionWidgetsFromArrays()
 	{
-		if (intensity_list.size() == 0 || colour_list.size() == 0)
+		if (intensity_list.size() == 0 || colour_list_size() == 0)
 		{
 			generate_default_transfer_function();
 		}
-		if (intensity_list.size() > 0 && intensity_list.size() == colour_list.size())
+		if (intensity_list.size() > 0 && intensity_list.size() == colour_list_size())
 		{
 			scalar_opacity->RemoveAllPoints();
 			scalar_color->RemoveAllPoints();
@@ -2493,7 +2508,7 @@ private:
 		// compute region weights based on the selected image
 		control_point_weight_list.clear();
 		double sum = 0;
-		for (unsigned int i = 0; i < colour_list.size(); i++)
+		for (unsigned int i = 0; i < colour_list_size(); i++)
 		{
 			double r = get_colour_r(i);
 			double g = get_colour_g(i);
@@ -2546,7 +2561,7 @@ private:
 
 		double dist = 1e6;
 		int index = -1;
-		for (unsigned int i = 0; i < colour_list.size(); i++)
+		for (unsigned int i = 0; i < colour_list_size(); i++)
 		{
 			double r = get_colour_r(i);
 			double g = get_colour_g(i);
