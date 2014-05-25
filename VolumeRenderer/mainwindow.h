@@ -133,6 +133,26 @@ private:
 		return 1e-6;
 	}
 
+	double get_threshold_x()
+	{
+		return threshold_x;
+	}
+
+	double get_threshold_y()
+	{
+		return threshold_y;
+	}
+
+	double get_domain_x()
+	{
+		return domain_x;
+	}
+
+	double get_domain_y()
+	{
+		return domain_y;
+	}
+
 	int get_number_of_colours_in_spectrum()
 	{
 		return number_of_colours_in_spectrum;
@@ -179,22 +199,22 @@ private:
 
 	double denormalise_intensity(double n)
 	{
-		return map_to_range(n, domain_x, domain_y, 0, 255);
+		return map_to_range(n, get_domain_x(), get_domain_y(), 0, 255);
 	}
 
 	//double denormalise_intensity_from_domain(double n)
 	//{
-	//	return map_to_range(n, threshold_x, threshold_y, domain_x, domain_y);
+	//	return map_to_range(n, get_threshold_x(), get_threshold_y(), get_domain_x(), get_domain_y());
 	//}
 
 	double normalise_intensity(double n)
 	{
-		return map_to_range(n, 0, 255, domain_x, domain_y);
+		return map_to_range(n, 0, 255, get_domain_x(), get_domain_y());
 	}
 
 	//double normalise_intensity_to_domain(double n)
 	//{
-	//	return map_to_range(n, domain_x, domain_y, threshold_x, threshold_y);
+	//	return map_to_range(n, get_domain_x(), get_domain_y(), get_threshold_x(), get_threshold_y());
 	//}
 
 	double normalise_rgba(int n)
@@ -768,13 +788,13 @@ private:
 		{
 			if (i == -1)
 			{
-				return (get_intensity(i + 1) - domain_x) * get_visibility(i + 1);
+				return (get_intensity(i + 1) - get_domain_x()) * get_visibility(i + 1);
 			}
 			else
 			{
 				if (i == intensity_list_size() - 1)
 				{
-					return (domain_y - get_intensity(i)) * get_visibility(i);
+					return (get_domain_y() - get_intensity(i)) * get_visibility(i);
 				}
 				else
 				{
@@ -806,7 +826,7 @@ private:
 			if (i == 0)
 			{
 				// area of a rectangle (left) and a triangle (right)
-				double a = get_intensity(i) - domain_x;
+				double a = get_intensity(i) - get_domain_x();
 				double b = get_intensity(i + 1) - get_intensity(i);
 				visibility_increment = area_increment / (a + b / 2);
 			}
@@ -816,7 +836,7 @@ private:
 				{
 					// area of a triangle (left) and a rectangle (right)
 					double a = get_intensity(i) - get_intensity(i - 1);
-					double b = domain_y - get_intensity(i);
+					double b = get_domain_y() - get_intensity(i);
 					visibility_increment = area_increment / (a / 2 + b);
 				}
 				else
@@ -1321,23 +1341,23 @@ private:
 		// add domain
 		//// I have forgotten why I need to compare domain_x, domain_y to 0, 255
 		//const double epsilon = 1e-6;
-		//if (abs(domain_x - 0) > epsilon || abs(domain_y - 255) > epsilon)
+		//if (abs(get_domain_x() - 0) > epsilon || abs(get_domain_y() - 255) > epsilon)
 		//{
 		auto domain = doc.NewElement("domain");
-		domain->SetAttribute("x", domain_x);
-		domain->SetAttribute("y", domain_y);
+		domain->SetAttribute("x", get_domain_x());
+		domain->SetAttribute("y", get_domain_y());
 		transFuncIntensity->InsertEndChild(domain);
 		//}
 
 		// add threshold
 		auto threshold = doc.NewElement("threshold");
-		threshold->SetAttribute("x", threshold_x);
-		threshold->SetAttribute("y", threshold_y);
+		threshold->SetAttribute("x", get_threshold_x());
+		threshold->SetAttribute("y", get_threshold_y());
 		transFuncIntensity->InsertEndChild(threshold);
 		//auto lower = doc.NewElement("lower");
-		//lower->SetAttribute("value", threshold_x);
+		//lower->SetAttribute("value", get_threshold_x());
 		//auto upper = doc.NewElement("upper");
-		//upper->SetAttribute("value", threshold_y);
+		//upper->SetAttribute("value", get_threshold_y());
 		//transFuncIntensity->InsertEndChild(lower);
 		//transFuncIntensity->InsertEndChild(upper);
 
@@ -1390,7 +1410,7 @@ private:
 
 		{
 			auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
-			std::cout << "VolumeProperty name="<< property->Attribute("name")<< std::endl;
+			std::cout << "VolumeProperty name=" << property->Attribute("name") << std::endl;
 			do
 			{
 				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
@@ -1405,7 +1425,7 @@ private:
 				<VolumeProperty selected="false" hideFromEditors="false" name="CT-AAA" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 143.556 0 166.222 0.686275 214.389 0.696078 419.736 0.833333 3071 0.803922" id="vtkMRMLVolumePropertyNode1" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 143.556 0.615686 0.356863 0.184314 166.222 0.882353 0.603922 0.290196 214.389 1 1 1 419.736 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
 				*/
 
-				VolumePropertyXML p;
+				TransferFunctionXML p;
 				p.selected = property->Attribute("selected");
 				p.hideFromEditors = property->Attribute("hideFromEditors");
 				p.name = property->Attribute("name");
@@ -1516,13 +1536,13 @@ private:
 		{
 			domain_x = atof(domain->Attribute("x"));
 			domain_y = atof(domain->Attribute("y"));
-			std::cout << "domain x=" << domain_x << " y=" << domain_y << std::endl;
+			std::cout << "domain x=" << get_domain_x() << " y=" << get_domain_y() << std::endl;
 		}
 		else
 		{
 			domain_x = 0;
 			domain_y = 1;
-			std::cout << "domain doesn't exist. default: " << domain_x << " " << domain_y << std::endl;
+			std::cout << "domain doesn't exist. default: " << get_domain_x() << " " << get_domain_y() << std::endl;
 		}
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");

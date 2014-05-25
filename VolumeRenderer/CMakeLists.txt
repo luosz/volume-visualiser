@@ -72,9 +72,9 @@ source_group(nvMath FILES ${nvMath_files})
 set(volume_files voxel_utility.h lh_histogram.h K_Means_PP_Generic.h volume_utility.h)
 source_group(volume FILES ${volume_files})
 
-# Qt
+# Qt and project source code
 set(Project_source_files main.cpp mainwindow.cpp)
-set(Project_header_files mainwindow.h)
+set(Project_header_files mainwindow.h transfer_function_xml.h)
 QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})
 set(Project_ui_files mainwindow.ui)
 QT4_WRAP_UI(Project_ui_header_files ${Project_ui_files})

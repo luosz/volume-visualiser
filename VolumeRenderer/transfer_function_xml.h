@@ -11,7 +11,7 @@
 </MRML>
 ************************************************************************/
 
-struct VolumePropertyXML
+struct TransferFunctionXML
 {
 public:
 	std::string selected;
@@ -30,11 +30,11 @@ public:
 	std::string diffuse;
 	std::string interpolation;
 
-	VolumePropertyXML()
+	TransferFunctionXML()
 	{
 	}
 
-	~VolumePropertyXML()
+	~TransferFunctionXML()
 	{
 	}
 };
