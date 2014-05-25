@@ -62,7 +62,7 @@
 #include "tinyxml2/tinyxml2.h"
 #include "ui_mainwindow.h"
 
-#include "VolumePropertyXML.h"
+#include "transfer_function_xml.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE

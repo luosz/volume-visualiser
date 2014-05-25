@@ -1,5 +1,5 @@
-#ifndef VolumePropertyXML_h
-#define VolumePropertyXML_h
+#ifndef transfer_function_xml_h
+#define transfer_function_xml_h
 
 #include <string>
 
@@ -39,4 +39,4 @@ public:
 	}
 };
 
-#endif // VolumePropertyXML_h
+#endif // transfer_function_xml_h
