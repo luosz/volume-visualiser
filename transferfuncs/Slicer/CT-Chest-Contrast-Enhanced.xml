@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Chest-Contrast-Enhanced" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="10 -3024 0 67.0106 0 251.105 0.446429 439.291 0.625 3071 0.616071" id="vtkMRMLVolumePropertyNode8" specular="0.2" shade="1" ambient="0.1" colorTransfer="20 -3024 0 0 0 67.0106 0.54902 0.25098 0.14902 251.105 0.882353 0.603922 0.290196 439.291 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
+</MRML>

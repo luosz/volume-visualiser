@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Lung" gradientOpacity="6 0 1 985.12 1 988 1" userTags="" specularPower="1" scalarOpacity="12 -1000 0 -600 0 -599 0.15 -400 0.15 -399 0 2952 0" id="vtkMRMLVolumePropertyNode16" specular="0" references="0" shade="1" ambient="0.2" colorTransfer="24 -1000 0.3 0.3 1 -600 0 0 1 -530 0.134704 0.781726 0.0724558 -460 0.929244 1 0.109473 -400 0.888889 0.254949 0.0240258 2952 1 0.3 0.3" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

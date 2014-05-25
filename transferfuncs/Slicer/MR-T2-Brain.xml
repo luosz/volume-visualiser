@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="MR-T2-Brain" gradientOpacity="4 0 1 160.25 1" userTags="" specularPower="40" scalarOpacity="10 0 0 36.05 0 218.302 0.171429 412.406 1 641 1" id="vtkMRMLVolumePropertyNode24" specular="0.5" shade="1" ambient="0.3" colorTransfer="16 0 0 0 0 98.7223 0.956863 0.839216 0.192157 412.406 0 0.592157 0.807843 641 1 1 1" selectable="true" diffuse="0.6" interpolation="1"/>
+</MRML>

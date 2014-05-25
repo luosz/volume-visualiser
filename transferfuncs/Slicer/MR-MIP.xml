@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="MR-MIP" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="8 0 0 98.3725 0 416.637 1 2800 1" id="vtkMRMLVolumePropertyNode23" specular="0" shade="0" ambient="0.2" colorTransfer="16 0 1 1 1 98.3725 1 1 1 416.637 1 1 1 2800 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

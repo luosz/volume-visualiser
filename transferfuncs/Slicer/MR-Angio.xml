@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="MR-Angio" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="12 -2048 0 151.354 0 158.279 0.4375 190.112 0.580357 200.873 0.732143 3661 0.741071" id="vtkMRMLVolumePropertyNode21" specular="0" shade="1" ambient="0.2" colorTransfer="24 -2048 0 0 0 151.354 0 0 0 158.279 0.74902 0.376471 0 190.112 1 0.866667 0.733333 200.873 0.937255 0.937255 0.937255 3661 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

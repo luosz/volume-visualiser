@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Cardiac2" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 42.8964 0 163.488 0.428571 277.642 0.776786 1587 0.754902 3071 0.754902" id="vtkMRMLVolumePropertyNode6" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 42.8964 0.54902 0.25098 0.14902 163.488 0.917647 0.639216 0.0588235 277.642 1 0.878431 0.623529 1587 1 1 1 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
+</MRML>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Chest-Vessels" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="10 -3024 0 -1278.35 0 22.8277 0.428571 439.291 0.625 3071 0.616071" id="vtkMRMLVolumePropertyNode9" specular="0" shade="1" ambient="0.2" colorTransfer="20 -3024 0 0 0 -1278.35 0.54902 0.25098 0.14902 22.8277 0.882353 0.603922 0.290196 439.291 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Pulmonary-Arteries" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="14 -2048 0 -568.625 0 -364.081 0.0714286 -244.813 0.401786 18.2775 0.607143 447.798 0.830357 3592.73 0.839286" id="vtkMRMLVolumePropertyNode19" specular="0" shade="1" ambient="0.2" colorTransfer="28 -2048 0 0 0 -568.625 0 0 0 -364.081 0.396078 0.301961 0.180392 -244.813 0.611765 0.352941 0.0705882 18.2775 0.843137 0.0156863 0.156863 447.798 0.752941 0.752941 0.752941 3592.73 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

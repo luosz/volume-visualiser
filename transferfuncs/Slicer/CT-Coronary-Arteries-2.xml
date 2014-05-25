@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Coronary-Arteries-2" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="14 -2048 0 142.677 0 145.016 0.116071 192.174 0.5625 217.24 0.776786 384.347 0.830357 3661 0.830357" id="vtkMRMLVolumePropertyNode11" specular="0" shade="1" ambient="0.2" colorTransfer="28 -2048 0 0 0 142.677 0 0 0 145.016 0.615686 0 0.0156863 192.174 0.909804 0.454902 0 217.24 0.972549 0.807843 0.611765 384.347 0.909804 0.909804 1 3661 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

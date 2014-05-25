@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Liver-Vasculature" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="14 -2048 0 149.113 0 157.884 0.482143 339.96 0.660714 388.526 0.830357 1197.95 0.839286 3661 0.848214" id="vtkMRMLVolumePropertyNode15" specular="0" shade="0" ambient="0.2" colorTransfer="28 -2048 0 0 0 149.113 0 0 0 157.884 0.501961 0.25098 0 339.96 0.695386 0.59603 0.36886 388.526 0.854902 0.85098 0.827451 1197.95 1 1 1 3661 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>

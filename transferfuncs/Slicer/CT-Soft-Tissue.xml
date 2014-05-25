@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MRML>
+  <VolumeProperty selected="false" hideFromEditors="false" name="CT-Soft-Tissue" gradientOpacity="4 0 1 255 1" userTags="" specularPower="1" scalarOpacity="10 -2048 0 -167.01 0 -160 1 240 1 3661 1" id="vtkMRMLVolumePropertyNode20" specular="0" shade="0" ambient="0.2" colorTransfer="20 -2048 0 0 0 -167.01 0 0 0 -160 0.0556356 0.0556356 0.0556356 240 1 1 1 3661 1 1 1" selectable="true" diffuse="1" interpolation="1"/>
+</MRML>
