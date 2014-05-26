@@ -98,6 +98,12 @@ ui(new Ui::MainWindow)
 	////////////////////////////////////////////////////////////////////////////
 
 	// there variables should not be used before initialization
+	Domain_x(0);
+	Domain_y(1);
+	Threshold_x(0);
+	Threshold_y(1);
+	Range_x(0);
+	Range_y(255);
 	count_of_voxels = 0;
 	volume_ptr = NULL;
 	batch_patch = "D:/_uchar/vortex/";
@@ -486,7 +492,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 void MainWindow::on_action_Open_Transfer_Function_triggered()
 {
 	// show file dialog
-	QString filter("all supported (*.tfi *.xml);; Voreen transfer function (*.tfi);;3D Slicer transfer function (*.xml)");
+	QString filter("all supported (*.tfi *.xml);; Voreen transfer function (*.tfi);; MITK transfer function (*.xml)");
 	QString filename_backup = transfer_function_filename;
 	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
 	if (!filename_backup.trimmed().isEmpty())
@@ -512,7 +518,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	}
 	else
 	{
-		openTransferFunctionFromXML(filename_str);
+		openTransferFunctionFromMITKXML(filename_str);
 		updateTransferFunctionArraysFromWidgets();
 	}
 
@@ -548,7 +554,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 void MainWindow::on_action_Save_Transfer_Function_triggered()
 {
 	// show file dialog
-	QString filter("transfer function file (*.tfi)");
+	QString filter("Voreen transfer function (*.tfi);; MITK transfer function (*.xml)");
 	QString filename_backup = transfer_function_filename_save;
 	filename_backup = QFileDialog::getSaveFileName(this, QString(tr("Save transfer function as")), filename_backup, filter);
 	if (!filename_backup.trimmed().isEmpty())
@@ -569,8 +575,16 @@ void MainWindow::on_action_Save_Transfer_Function_triggered()
 
 	std::cout << "transfer function file: " << filename_str << endl;
 
-	saveTransferFunctionToVoreenXML(filename_str);
-	//updateTransferFunction();
+	auto p = strstr(filename_str, ".tfi");
+	if (p)
+	{
+		std::cout << p << std::endl;
+		saveTransferFunctionToVoreenXML(filename_str);
+	}
+	else
+	{
+		saveTransferFunctionToMITKXML(filename_str);
+	}
 }
 
 void MainWindow::on_action_Open_Selected_Region_triggered()

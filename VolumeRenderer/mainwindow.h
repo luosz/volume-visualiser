@@ -181,27 +181,22 @@ private:
 	}
 
 	/// Re-maps a number from one range to another.
-	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
+	double map_to_range(double n, double src_lower, double src_upper, double target_lower, double target_upper)
 	{
-		n = n < lower ? lower : n;
-		n = n > upper ? upper : n;
-		double normalised = (n - lower) / (upper - lower);
+		n = n < src_lower ? src_lower : n;
+		n = n > src_upper ? src_upper : n;
+		double normalised = (n - src_lower) / (src_upper - src_lower);
 		return normalised * (target_upper - target_lower) + target_lower;
 	}
 
 	double denormalise_intensity(double n)
 	{
-		return map_to_range(n, Domain_x(), Domain_y(), 0, 255);
+		return map_to_range(n, Domain_x(), Domain_y(), Range_x(), Range_y());
 	}
-
-	//double denormalise_intensity_from_domain(double n)
-	//{
-	//	return map_to_range(n, get_threshold_x(), get_threshold_y(), get_domain_x(), get_domain_y());
-	//}
 
 	double normalise_intensity(double n)
 	{
-		return map_to_range(n, 0, 255, Domain_x(), Domain_y());
+		return map_to_range(n, Range_x(), Range_y(), Domain_x(), Domain_y());
 	}
 
 	//double normalise_intensity_to_domain(double n)
@@ -1381,12 +1376,73 @@ private:
 		auto r = doc.SaveFile(filename);
 		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			std::cout << "failed to save file" << endl;
+			std::cout << "failed to save file " << filename << endl;
 		}
 	}
 
-	/// open MITK or Slicer transfer functions
-	void openTransferFunctionFromXML(const char *filename)
+	void saveTransferFunctionToMITKXML(const char *filename)
+	{
+		tinyxml2::XMLDocument doc;
+
+		auto declaration = doc.NewDeclaration();
+		doc.InsertEndChild(declaration);
+		auto version = doc.NewElement("Version");
+		version->SetAttribute("TransferfunctionVersion", 1);
+		auto transferFunction = doc.NewElement("TransferFunction");
+		auto scalarOpacity = doc.NewElement("ScalarOpacity");
+		auto gradientOpacity = doc.NewElement("GradientOpacity");
+		auto color = doc.NewElement("Color");
+
+		for (int i = 0; i < gradient_opacity->GetSize(); i++)
+		{
+			double xa[4];
+			gradient_opacity->GetNodeValue(i, xa);
+			auto point = doc.NewElement("point");
+			point->SetAttribute("x", xa[0]);
+			point->SetAttribute("y", xa[1]);
+			scalarOpacity->InsertEndChild(point);
+		}
+
+		for (int i = 0; i < scalar_opacity->GetSize(); i++)
+		{
+			double xa[4];
+			scalar_opacity->GetNodeValue(i, xa);
+			auto point = doc.NewElement("point");
+			point->SetAttribute("x", xa[0]);
+			point->SetAttribute("y", xa[1]);
+			gradientOpacity->InsertEndChild(point);
+		}
+
+		for (int i = 0; i < color_tf->GetSize(); i++)
+		{
+			double xrgb[6];
+			color_tf->GetNodeValue(i, xrgb);
+			auto point = doc.NewElement("point");
+			point->SetAttribute("x", xrgb[0]);
+			point->SetAttribute("r", xrgb[1]);
+			point->SetAttribute("g", xrgb[2]);
+			point->SetAttribute("b", xrgb[3]);
+			point->SetAttribute("midpoint", xrgb[4]);
+			point->SetAttribute("sharpness", xrgb[5]);
+			color->InsertEndChild(point);
+		}
+
+		transferFunction->InsertEndChild(scalarOpacity);
+		transferFunction->InsertEndChild(gradientOpacity);
+		transferFunction->InsertEndChild(color);
+
+		doc.InsertEndChild(version);
+		doc.InsertEndChild(transferFunction);
+
+		auto r = doc.SaveFile(filename);
+		if (r != tinyxml2::XML_NO_ERROR)
+		{
+			std::cout << "failed to save file " << filename << endl;
+		}
+	}
+
+	/// open MITK/Slicer transfer functions
+	void openTransferFunctionFromMITKXML(const char *filename)
 	{
 		intensity_list_clear();
 		colour_list_clear();
@@ -2214,8 +2270,9 @@ private:
 
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-		volumeProperty->SetColor(color_tf);
 		volumeProperty->SetScalarOpacity(scalar_opacity);
+		volumeProperty->SetGradientOpacity(gradient_opacity);
+		volumeProperty->SetColor(color_tf);
 		volumeProperty->ShadeOff();
 		volumeProperty->SetInterpolationTypeToLinear();
 
