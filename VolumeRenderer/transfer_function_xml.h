@@ -35,13 +35,6 @@ public:
 	std::string id;
 	bool selectable;
 	vtkSmartPointer<vtkVolumeProperty> volume;
-	double domain_x, domain_y;
-	double Domain_x() const { return domain_x; }
-	void Domain_x(double val) { domain_x = val; }
-	double Domain_y() const { return domain_y; }
-	void Domain_y(double val) { domain_y = val; }
-	//double range_x;
-	//double range_y;
 
 	vtkSmartPointer<vtkVolumeProperty> Volume() const { return volume; }
 	void Volume(vtkSmartPointer<vtkVolumeProperty> val) { volume = val; }
@@ -50,6 +43,8 @@ public:
 	{
 		volume = vtkSmartPointer<vtkVolumeProperty>::New();
 	}
+
+	~TransferFunctionXML(){}
 
 	void parse(tinyxml2::XMLElement *property)
 	{
@@ -123,14 +118,14 @@ public:
 		int n = atoi(pch);
 		for (int i = 0; i < n; i++)
 		{
-			pch = strtok(str, " ");
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
 				break;
 			}
-			double x = normalise_intensity(atof(pch));
-			pch = strtok(str, " ");
+			double x = atof(pch);
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
@@ -170,28 +165,28 @@ public:
 		int n = atoi(pch);
 		for (int i = 0; i < n; i++)
 		{
-			pch = strtok(str, " ");
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
 				break;
 			}
-			double x = normalise_intensity(atof(pch));
-			pch = strtok(str, " ");
+			double x = atof(pch);
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
 				break;
 			}
 			double r = atof(pch);
-			pch = strtok(str, " ");
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
 				break;
 			}
 			double g = atof(pch);
-			pch = strtok(str, " ");
+			pch = strtok(NULL, " ");
 			if (!pch)
 			{
 				std::cerr << msg << std::endl;
@@ -213,28 +208,24 @@ public:
 		return color;
 	}
 
-	~TransferFunctionXML()
-	{
-	}
+	///// Re-maps a number from one range to another.
+	//double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
+	//{
+	//	n = n < lower ? lower : n;
+	//	n = n > upper ? upper : n;
+	//	double normalised = (n - lower) / (upper - lower);
+	//	return normalised * (target_upper - target_lower) + target_lower;
+	//}
 
-	/// Re-maps a number from one range to another.
-	double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
-	{
-		n = n < lower ? lower : n;
-		n = n > upper ? upper : n;
-		double normalised = (n - lower) / (upper - lower);
-		return normalised * (target_upper - target_lower) + target_lower;
-	}
+	//double denormalise_intensity(double n)
+	//{
+	//	return map_to_range(n, 0, 255, 0, 65535);
+	//}
 
-	double denormalise_intensity(double n)
-	{
-		return map_to_range(n, 0, 255, 0, 65535);
-	}
-
-	double normalise_intensity(double n)
-	{
-		return map_to_range(n, 0, 65535, 0, 255);
-	}
+	//double normalise_intensity(double n)
+	//{
+	//	return map_to_range(n, 0, 65535, 0, 255);
+	//}
 };
 
 #endif // transfer_function_xml_h

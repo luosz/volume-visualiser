@@ -1407,7 +1407,6 @@ private:
 				auto gradientOpacity2 = property->Attribute("gradientOpacity");
 				auto scalarOpacity2 = property->Attribute("scalarOpacity");
 				auto colorTransfer2 = property->Attribute("colorTransfer");
-				//std::cout << gradientOpacity << std::endl << scalarOpacity << std::endl << colorTransfer << std::endl;
 				std::cout << gradientOpacity2 << std::endl << scalarOpacity2 << std::endl << colorTransfer2 << std::endl;
 
 				/*
@@ -1415,12 +1414,48 @@ private:
 				*/
 
 				TransferFunctionXML xml;
-				xml.Domain_x(Domain_x());
-				xml.Domain_y(Domain_y());
 				xml.parse(property);
-				gradient_opacity->DeepCopy(xml.Volume()->GetGradientOpacity());
-				scalar_opacity->DeepCopy(xml.Volume()->GetScalarOpacity());
-				scalar_color->DeepCopy(xml.Volume()->GetRGBTransferFunction());
+				auto gradient = xml.Volume()->GetGradientOpacity();
+				auto scalar = xml.Volume()->GetScalarOpacity();
+				auto color = xml.Volume()->GetRGBTransferFunction();
+
+				scalar_opacity->RemoveAllPoints();
+
+				std::cout << "GetScalarOpacity size=" << scalar->GetSize() << std::endl;
+				for (int i = 0; i<scalar->GetSize(); i++)
+				{
+					double xa[4];
+					scalar->GetNodeValue(i, xa);
+					std::cout << xa[0] << " " << xa[1] << std::endl;
+					scalar_opacity->AddPoint(xa[0], xa[1]);
+				}
+
+				std::cout << "scalar_opacity size=" << scalar_opacity->GetSize() << std::endl;
+				for (int i = 0; i < scalar_opacity->GetSize(); i++)
+				{
+					double xa[4];
+					scalar_opacity->GetNodeValue(i, xa);
+					std::cout << xa[0] << " " << xa[1] << std::endl;
+				}
+
+				scalar_color->RemoveAllPoints();
+
+				std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
+				for (int i = 0; i < color->GetSize(); i++)
+				{
+					double xrgb[6];
+					color->GetNodeValue(i, xrgb);
+					std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+					scalar_color->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
+				}
+
+				std::cout << "scalar_color size=" << scalar_color->GetSize() << std::endl;
+				for (int i = 0; i < scalar_color->GetSize(); i++)
+				{
+					double xrgb[6];
+					scalar_color->GetNodeValue(i, xrgb);
+					std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+				}
 
 				property = property->NextSiblingElement();
 			} while (property);

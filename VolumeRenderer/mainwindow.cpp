@@ -498,9 +498,6 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 		return;
 	}
 
-	//// show filename on window title
-	//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-
 	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 	QByteArray ba = filename_backup.toLocal8Bit();
 	const char *filename_str = ba.data();
@@ -515,8 +512,6 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	}
 	else
 	{
-		//Domain_x(0);
-		//Domain_y(65535);
 		openTransferFunctionFromSlicerXML(filename_str);
 		updateTransferFunctionArraysFromWidgets();
 	}
