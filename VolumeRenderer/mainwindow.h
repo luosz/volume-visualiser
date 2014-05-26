@@ -1389,7 +1389,6 @@ private:
 		tinyxml2::XMLDocument doc;
 
 		auto declaration = doc.NewDeclaration();
-		doc.InsertEndChild(declaration);
 		auto version = doc.NewElement("Version");
 		version->SetAttribute("TransferfunctionVersion", 1);
 		auto transferFunction = doc.NewElement("TransferFunction");
@@ -1397,20 +1396,20 @@ private:
 		auto gradientOpacity = doc.NewElement("GradientOpacity");
 		auto color = doc.NewElement("Color");
 
-		for (int i = 0; i < gradient_opacity->GetSize(); i++)
+		for (int i = 0; i < scalar_opacity->GetSize(); i++)
 		{
 			double xa[4];
-			gradient_opacity->GetNodeValue(i, xa);
+			scalar_opacity->GetNodeValue(i, xa);
 			auto point = doc.NewElement("point");
 			point->SetAttribute("x", xa[0]);
 			point->SetAttribute("y", xa[1]);
 			scalarOpacity->InsertEndChild(point);
 		}
 
-		for (int i = 0; i < scalar_opacity->GetSize(); i++)
+		for (int i = 0; i < gradient_opacity->GetSize(); i++)
 		{
 			double xa[4];
-			scalar_opacity->GetNodeValue(i, xa);
+			gradient_opacity->GetNodeValue(i, xa);
 			auto point = doc.NewElement("point");
 			point->SetAttribute("x", xa[0]);
 			point->SetAttribute("y", xa[1]);
@@ -1435,6 +1434,7 @@ private:
 		transferFunction->InsertEndChild(gradientOpacity);
 		transferFunction->InsertEndChild(color);
 
+		doc.InsertEndChild(declaration);
 		doc.InsertEndChild(version);
 		doc.InsertEndChild(transferFunction);
 
