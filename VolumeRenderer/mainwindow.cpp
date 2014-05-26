@@ -396,7 +396,7 @@ void MainWindow::on_action_Exit_triggered()
 void MainWindow::on_action_Open_Volume_triggered()
 {
 	// show file dialog. change volume_filename only when the new filename is not empty.
-	QString filter("Meta image file (*.mhd *.mha)");
+	QString filter("all supported (*.mhd *.mha *.nrrd *.nhdr);; UNC MetaImage (*.mhd *.mha);; Nearly Raw Raster Data(*.nrrd *.nhdr)");
 	QString filename_backup = volume_filename;
 	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
 	if (!filename_backup.trimmed().isEmpty())
@@ -415,7 +415,7 @@ void MainWindow::on_action_Open_Volume_triggered()
 void MainWindow::on_action_Append_Volume_triggered()
 {
 	// show file dialog
-	QString filter("Meta image file (*.mhd *.mha)");
+	QString filter("UNC MetaImage (*.mhd *.mha)");
 	volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter);
 	if (volume_filename.isEmpty())
 	{
@@ -486,7 +486,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 void MainWindow::on_action_Open_Transfer_Function_triggered()
 {
 	// show file dialog
-	QString filter("Voreen transfer function (*.tfi);;3D Slicer transfer function (*.xml)");
+	QString filter("all supported (*.tfi *.xml);; Voreen transfer function (*.tfi);;3D Slicer transfer function (*.xml)");
 	QString filename_backup = transfer_function_filename;
 	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
 	if (!filename_backup.trimmed().isEmpty())

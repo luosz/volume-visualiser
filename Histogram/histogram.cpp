@@ -271,11 +271,12 @@ int main(int argc, char *argv[])
 		histogram->SetInputConnection( extract->GetOutputPort() );
 		histogram->SetComponentExtent(
 			0,
-			static_cast<int>(range[1])-static_cast<int>(range[0])-1,0,0,0,0 );
+			static_cast<int>(range[1])-static_cast<int>(range[0]),0,0,0,0 );
 		histogram->SetComponentOrigin( range[0],0,0 );
 		histogram->SetComponentSpacing( 1,0,0 );
 		histogram->SetIgnoreZero( ignoreZero );
 		histogram->Update();
+		std::cout << "histogram->SetComponentExtent=" << static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1 << std::endl;
 
 		vtkIntArray* currentArray = 0;
 		if( i == 0 )
@@ -292,7 +293,7 @@ int main(int argc, char *argv[])
 		}
 
 		currentArray->SetNumberOfComponents(1);
-		currentArray->SetNumberOfTuples( 256 );
+		currentArray->SetNumberOfTuples(256);
 		int* output = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
 
 		for( int j = 0; j < 256; ++j )
