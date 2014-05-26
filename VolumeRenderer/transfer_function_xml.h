@@ -41,54 +41,147 @@ public:
 
 	TransferFunctionXML()
 	{
+		selected = hideFromEditors = false;
+		selectable = true;
 		volume = vtkSmartPointer<vtkVolumeProperty>::New();
 	}
 
 	~TransferFunctionXML(){}
 
-	void parse(tinyxml2::XMLElement *property)
+	void parse(const char *filename)
 	{
-		std::cout << "TransferFunctionXML" << std::endl;
-		if (property)
+		char * msg = "An error occurred in TransferFunctionXML.parse()";
+
+		tinyxml2::XMLDocument doc;
+		auto r = doc.LoadFile(filename);
+		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			char s[MAX_PATH];
-			strcpy(s, property->Attribute("selected"));
-			to_lower_case(s);
-			std::cout << "selected=" << s << std::endl;
-			selected = (0 == strcmp(s, "true"));
+			std::cout << "failed to open file" << endl;
+			return;
+		}
 
-			strcpy(s, property->Attribute("hideFromEditors"));
-			to_lower_case(s);
-			std::cout << "hideFromEditors=" << s << std::endl;
-			hideFromEditors = (0 == strcmp(s, "true"));
-
-			name = property->Attribute("name");
-			userTags = property->Attribute("userTags");
-			id = property->Attribute("id");
-
-			strcpy(s, property->Attribute("selectable"));
-			to_lower_case(s);
-			std::cout << "selectable=" << s << std::endl;
-			selectable = (0 == strcmp(s, "true"));
-
-			volume->SetSpecularPower(atof(property->Attribute("specularPower")));
-			volume->SetSpecular(atof(property->Attribute("specular")));
-			volume->SetShade(atoi(property->Attribute("shade")));
-			volume->SetAmbient(atof(property->Attribute("ambient")));
-
-			volume->SetDiffuse(atof(property->Attribute("diffuse")));
-
-			/// #define 	VTK_NEAREST_INTERPOLATION   0
-			/// #define 	VTK_LINEAR_INTERPOLATION   1
-			volume->SetInterpolationType(atoi(property->Attribute("interpolation")));
-
-			volume->SetGradientOpacity(parse_piecewise(property->Attribute("gradientOpacity")));
-			volume->SetScalarOpacity(parse_piecewise(property->Attribute("scalarOpacity")));
-			volume->SetColor(parse_color(property->Attribute("colorTransfer")));
+		auto mrml = doc.FirstChildElement("MRML");
+		if (mrml)
+		{
+			parse_Slicer_XML(doc);
 		}
 		else
 		{
-			std::cerr << "An error occurred in TransferFunctionXML(). XMLElement *property is empty." << std::endl;
+			auto transferFunction = doc.FirstChildElement("TransferFunction");
+			if (!transferFunction)
+			{
+				std::cerr << msg << " Neither <MRML> nor <TransferFunction> exists." << std::endl;
+				return;
+			}
+			parse_MITK_XML(doc);
+		}
+	}
+
+	void parse_Slicer_XML(const tinyxml2::XMLDocument &doc)
+	{
+		std::cout << "parse_Slicer_XML()" << std::endl;
+
+		char * msg = "An error occurred in TransferFunctionXML.parse_Slicer_XML()";
+
+		auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
+		if (!property)
+		{
+			std::cerr << msg << " <VolumeProperty> doesn't exist in <MRML>." << std::endl;
+			return;
+		}
+
+		char s[MAX_PATH];
+		strcpy(s, property->Attribute("selected"));
+		to_lower_case(s);
+		std::cout << "selected=" << s << std::endl;
+		selected = (0 == strcmp(s, "true"));
+
+		strcpy(s, property->Attribute("hideFromEditors"));
+		to_lower_case(s);
+		std::cout << "hideFromEditors=" << s << std::endl;
+		hideFromEditors = (0 == strcmp(s, "true"));
+
+		name = property->Attribute("name");
+		userTags = property->Attribute("userTags");
+		id = property->Attribute("id");
+
+		strcpy(s, property->Attribute("selectable"));
+		to_lower_case(s);
+		std::cout << "selectable=" << s << std::endl;
+		selectable = (0 == strcmp(s, "true"));
+
+		volume->SetSpecularPower(atof(property->Attribute("specularPower")));
+		volume->SetSpecular(atof(property->Attribute("specular")));
+		volume->SetShade(atoi(property->Attribute("shade")));
+		volume->SetAmbient(atof(property->Attribute("ambient")));
+		volume->SetDiffuse(atof(property->Attribute("diffuse")));
+
+		/// #define 	VTK_NEAREST_INTERPOLATION   0
+		/// #define 	VTK_LINEAR_INTERPOLATION   1
+		volume->SetInterpolationType(atoi(property->Attribute("interpolation")));
+
+		volume->SetGradientOpacity(parse_piecewise(property->Attribute("gradientOpacity")));
+		volume->SetScalarOpacity(parse_piecewise(property->Attribute("scalarOpacity")));
+		volume->SetColor(parse_color(property->Attribute("colorTransfer")));
+	}
+
+	void parse_MITK_XML(const tinyxml2::XMLDocument &doc)
+	{
+		std::cout << "parse_MITK_XML()" << std::endl;
+
+		{
+			std::cout << "<ScalarOpacity>" << std::endl;
+			auto scalar = vtkSmartPointer<vtkPiecewiseFunction>::New();
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
+			do
+			{
+				double x = atof(point->Attribute("x"));
+				double y = atof(point->Attribute("y"));
+				std::cout << "x=" << x << " y=" << y << std::endl;
+				scalar->AddPoint(x, y);
+
+				point = point->NextSiblingElement();
+			} while (point);
+
+			volume->SetScalarOpacity(scalar);
+		}
+
+		{
+			std::cout << "<GradientOpacity>" << std::endl;
+			auto gradient = vtkSmartPointer<vtkPiecewiseFunction>::New();
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("GradientOpacity")->FirstChildElement("point");
+			do
+			{
+				double x = atof(point->Attribute("x"));
+				double y = atof(point->Attribute("y"));
+				std::cout << "x=" << x << " y=" << y << std::endl;
+				gradient->AddPoint(x, y);
+
+				point = point->NextSiblingElement();
+			} while (point);
+
+			volume->SetGradientOpacity(gradient);
+		}
+
+		{
+			std::cout << "<Color>" << std::endl;
+			auto color = vtkSmartPointer<vtkColorTransferFunction>::New();
+			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("Color")->FirstChildElement("point");
+			do
+			{
+				double x = atof(point->Attribute("x"));
+				double r = atof(point->Attribute("r"));
+				double g = atof(point->Attribute("g"));
+				double b = atof(point->Attribute("b"));
+				double midpoint = atof(point->Attribute("midpoint"));
+				double sharpness = atof(point->Attribute("sharpness"));
+				std::cout << "x=" << x << " r=" << r << " g=" << g << " b=" << b << " midpoint=" << midpoint << " sharpness=" << sharpness << std::endl;
+				color->AddRGBPoint(x, r, g, b);
+
+				point = point->NextSiblingElement();
+			} while (point);
+
+			volume->SetColor(color);
 		}
 	}
 
@@ -207,25 +300,6 @@ public:
 
 		return color;
 	}
-
-	///// Re-maps a number from one range to another.
-	//double map_to_range(double n, double lower, double upper, double target_lower, double target_upper)
-	//{
-	//	n = n < lower ? lower : n;
-	//	n = n > upper ? upper : n;
-	//	double normalised = (n - lower) / (upper - lower);
-	//	return normalised * (target_upper - target_lower) + target_lower;
-	//}
-
-	//double denormalise_intensity(double n)
-	//{
-	//	return map_to_range(n, 0, 255, 0, 65535);
-	//}
-
-	//double normalise_intensity(double n)
-	//{
-	//	return map_to_range(n, 0, 65535, 0, 255);
-	//}
 };
 
 #endif // transfer_function_xml_h

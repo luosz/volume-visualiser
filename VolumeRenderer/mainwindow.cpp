@@ -42,20 +42,20 @@ ui(new Ui::MainWindow)
 	scalar_opacity->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
-	scalar_color = vtkSmartPointer<vtkColorTransferFunction>::New();
-	scalar_color->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
-	scalar_color->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	scalar_color->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	scalar_color->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	scalar_color->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	scalar_color->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	color_tf = vtkSmartPointer<vtkColorTransferFunction>::New();
+	color_tf->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
+	color_tf->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	color_tf->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	color_tf->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	color_tf->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	color_tf->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	color_tf->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	color_tf->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	generate_default_transfer_function();
 
 	volume_filename = "../../data/CT-Knee.mhd";
-	transfer_function_filename = "../../transferfuncs/CT-AAA.xml";
+	transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
 	transfer_function_filename_save = "../../transfer_function/save_as.tfi";
 	selected_region_filename = "../../voreen/CT-Knee_spectrum_6_balance_1000_selection_only.png";
 
@@ -512,11 +512,37 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	}
 	else
 	{
-		openTransferFunctionFromSlicerXML(filename_str);
+		openTransferFunctionFromXML(filename_str);
 		updateTransferFunctionArraysFromWidgets();
 	}
 
 	updateTransferFunctionWidgetsFromArrays();
+
+	std::cout << "updateTransferFunctionWidgetsFromArrays" << std::endl;
+
+	std::cout << "gradient_opacity size=" << gradient_opacity->GetSize() << std::endl;
+	for (int i = 0; i < gradient_opacity->GetSize(); i++)
+	{
+		double xa[4];
+		gradient_opacity->GetNodeValue(i, xa);
+		std::cout << xa[0] << " " << xa[1] << std::endl;
+	}
+
+	std::cout << "scalar_opacity size=" << scalar_opacity->GetSize() << std::endl;
+	for (int i = 0; i < scalar_opacity->GetSize(); i++)
+	{
+		double xa[4];
+		scalar_opacity->GetNodeValue(i, xa);
+		std::cout << xa[0] << " " << xa[1] << std::endl;
+	}
+
+	std::cout << "color_tf size=" << color_tf->GetSize() << std::endl;
+	for (int i = 0; i < color_tf->GetSize(); i++)
+	{
+		double xrgb[6];
+		color_tf->GetNodeValue(i, xrgb);
+		std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+	}
 }
 
 void MainWindow::on_action_Save_Transfer_Function_triggered()

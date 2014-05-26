@@ -106,7 +106,7 @@ private:
 	std::vector<double> control_point_weight_list;
 	vtkSmartPointer<vtkPiecewiseFunction> scalar_opacity;
 	vtkSmartPointer<vtkPiecewiseFunction> gradient_opacity;
-	vtkSmartPointer<vtkColorTransferFunction> scalar_color;
+	vtkSmartPointer<vtkColorTransferFunction> color_tf;
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 	void* volume_ptr;
@@ -321,19 +321,19 @@ private:
 	double get_colour_r(int i)
 	{
 		double xrgb[6];
-		scalar_color->GetNodeValue(i, xrgb);
+		color_tf->GetNodeValue(i, xrgb);
 		return xrgb[1];
 	}
 	double get_colour_g(int i)
 	{
 		double xrgb[6];
-		scalar_color->GetNodeValue(i, xrgb);
+		color_tf->GetNodeValue(i, xrgb);
 		return xrgb[2];
 	}
 	double get_colour_b(int i)
 	{
 		double xrgb[6];
-		scalar_color->GetNodeValue(i, xrgb);
+		color_tf->GetNodeValue(i, xrgb);
 		return xrgb[3];
 	}
 
@@ -386,17 +386,17 @@ private:
 				std::cerr << "An error occurred in colour_list_push_back(). intensity_list is empty" << std::endl;
 			}
 		}
-		scalar_color->AddRGBPoint(denormalise_intensity(x), v[0], v[1], v[2]);
+		color_tf->AddRGBPoint(denormalise_intensity(x), v[0], v[1], v[2]);
 	}
 
 	void colour_list_clear()
 	{
-		scalar_color->RemoveAllPoints();
+		color_tf->RemoveAllPoints();
 	}
 
 	int colour_list_size()
 	{
-		return scalar_color->GetSize();
+		return color_tf->GetSize();
 	}
 
 	double get_frequency(double intensity) // intensity belongs to [0,255]
@@ -1378,149 +1378,51 @@ private:
 		}
 	}
 
-	void openTransferFunctionFromSlicerXML(const char *filename)
+	/// open MITK or Slicer transfer functions
+	void openTransferFunctionFromXML(const char *filename)
 	{
-		tinyxml2::XMLDocument doc;
-		auto r = doc.LoadFile(filename);
-
-		if (r != tinyxml2::XML_NO_ERROR)
-		{
-			std::cout << "failed to open file" << endl;
-			return;
-		}
-
 		intensity_list_clear();
 		colour_list_clear();
 		opacity_list_clear();
 
+		TransferFunctionXML xml;
+		xml.parse(filename);
+		auto gradient = xml.Volume()->GetGradientOpacity();
+		auto scalar = xml.Volume()->GetScalarOpacity();
+		auto color = xml.Volume()->GetRGBTransferFunction();
+
+		gradient_opacity->RemoveAllPoints();
+		std::cout << "GetGradientOpacity size=" << gradient->GetSize() << std::endl;
+		for (int i = 0; i < gradient->GetSize(); i++)
 		{
-			auto property = doc.FirstChildElement("MRML")->FirstChildElement("VolumeProperty");
-			std::cout << "VolumeProperty name=" << property->Attribute("name") << std::endl;
-			do
-			{
-				//double intensity = atof(key->FirstChildElement("intensity")->Attribute("value"));
-				//intensity_list_push_back(intensity);
+			double xa[4];
+			gradient->GetNodeValue(i, xa);
+			std::cout << xa[0] << " " << xa[1] << std::endl;
+			gradient_opacity->AddPoint(xa[0], xa[1]);
+		}
 
-				auto gradientOpacity = property->Attribute("gradientOpacity");
-				auto scalarOpacity = property->Attribute("scalarOpacity");
-				auto colorTransfer = property->Attribute("colorTransfer");
-				auto gradientOpacity2 = property->Attribute("gradientOpacity");
-				auto scalarOpacity2 = property->Attribute("scalarOpacity");
-				auto colorTransfer2 = property->Attribute("colorTransfer");
-				std::cout << gradientOpacity2 << std::endl << scalarOpacity2 << std::endl << colorTransfer2 << std::endl;
+		scalar_opacity->RemoveAllPoints();
+		std::cout << "GetScalarOpacity size=" << scalar->GetSize() << std::endl;
+		for (int i = 0; i < scalar->GetSize(); i++)
+		{
+			double xa[4];
+			scalar->GetNodeValue(i, xa);
+			std::cout << xa[0] << " " << xa[1] << std::endl;
+			scalar_opacity->AddPoint(xa[0], xa[1]);
+		}
 
-				/*
-				<VolumeProperty selected="false" hideFromEditors="false" name="CT-AAA" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 143.556 0 166.222 0.686275 214.389 0.696078 419.736 0.833333 3071 0.803922" id="vtkMRMLVolumePropertyNode1" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 143.556 0.615686 0.356863 0.184314 166.222 0.882353 0.603922 0.290196 214.389 1 1 1 419.736 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
-				*/
-
-				TransferFunctionXML xml;
-				xml.parse(property);
-				auto gradient = xml.Volume()->GetGradientOpacity();
-				auto scalar = xml.Volume()->GetScalarOpacity();
-				auto color = xml.Volume()->GetRGBTransferFunction();
-
-				scalar_opacity->RemoveAllPoints();
-
-				std::cout << "GetScalarOpacity size=" << scalar->GetSize() << std::endl;
-				for (int i = 0; i<scalar->GetSize(); i++)
-				{
-					double xa[4];
-					scalar->GetNodeValue(i, xa);
-					std::cout << xa[0] << " " << xa[1] << std::endl;
-					scalar_opacity->AddPoint(xa[0], xa[1]);
-				}
-
-				std::cout << "scalar_opacity size=" << scalar_opacity->GetSize() << std::endl;
-				for (int i = 0; i < scalar_opacity->GetSize(); i++)
-				{
-					double xa[4];
-					scalar_opacity->GetNodeValue(i, xa);
-					std::cout << xa[0] << " " << xa[1] << std::endl;
-				}
-
-				scalar_color->RemoveAllPoints();
-
-				std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
-				for (int i = 0; i < color->GetSize(); i++)
-				{
-					double xrgb[6];
-					color->GetNodeValue(i, xrgb);
-					std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
-					scalar_color->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
-				}
-
-				std::cout << "scalar_color size=" << scalar_color->GetSize() << std::endl;
-				for (int i = 0; i < scalar_color->GetSize(); i++)
-				{
-					double xrgb[6];
-					scalar_color->GetNodeValue(i, xrgb);
-					std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
-				}
-
-				property = property->NextSiblingElement();
-			} while (property);
+		color_tf->RemoveAllPoints();
+		std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
+		for (int i = 0; i < color->GetSize(); i++)
+		{
+			double xrgb[6];
+			color->GetNodeValue(i, xrgb);
+			std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+			color_tf->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
 		}
 	}
 
-	void openTransferFunctionFromMITKXML(const char *filename)
-	{
-		tinyxml2::XMLDocument doc;
-		auto r = doc.LoadFile(filename);
-
-		if (r != tinyxml2::XML_NO_ERROR)
-		{
-			std::cout << "failed to open file" << endl;
-			return;
-		}
-
-		intensity_list_clear();
-		colour_list_clear();
-		opacity_list_clear();
-
-		{
-			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("ScalarOpacity")->FirstChildElement("point");
-			std::cout << "ScalarOpacity" << std::endl;
-			do
-			{
-				double x = atof(point->Attribute("x"));
-				double y = atof(point->Attribute("y"));
-				std::cout << "x=" << x << " y=" << y << std::endl;
-
-				point = point->NextSiblingElement();
-			} while (point);
-		}
-
-		{
-			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("GradientOpacity")->FirstChildElement("point");
-			std::cout << "GradientOpacity" << std::endl;
-			do
-			{
-				double x = atof(point->Attribute("x"));
-				double y = atof(point->Attribute("y"));
-				std::cout << "x=" << x << " y=" << y << std::endl;
-
-				point = point->NextSiblingElement();
-			} while (point);
-		}
-
-		{
-			auto point = doc.FirstChildElement("TransferFunction")->FirstChildElement("Color")->FirstChildElement("point");
-			std::cout << "Color" << std::endl;
-			do
-			{
-				double x = atof(point->Attribute("x"));
-				double r = atof(point->Attribute("r"));
-				double g = atof(point->Attribute("g"));
-				double b = atof(point->Attribute("b"));
-				double midpoint = atof(point->Attribute("midpoint"));
-				double sharpness = atof(point->Attribute("sharpness"));
-				std::cout << "x=" << x << " r=" << r << " g=" << g << " b=" << b << " midpoint=" << midpoint << " sharpness=" << sharpness << std::endl;
-
-				point = point->NextSiblingElement();
-			} while (point);
-		}
-	}
-
+	/// open Voreen transfer functions
 	void openTransferFunctionFromVoreenXML(const char *filename)
 	{
 		tinyxml2::XMLDocument doc;
@@ -2266,7 +2168,7 @@ private:
 
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-		volumeProperty->SetColor(scalar_color);
+		volumeProperty->SetColor(color_tf);
 		volumeProperty->SetScalarOpacity(scalar_opacity);
 		volumeProperty->ShadeOff();
 		volumeProperty->SetInterpolationTypeToLinear();
