@@ -101,9 +101,7 @@ private:
 	QVTKWidget vtk_widget;
 	ctkVTKVolumePropertyWidget volume_property_widget;
 	std::vector<double> intensity_list;
-	//std::vector<double> intensity_for_colour_list;
 	std::vector<double> opacity_list;
-	//std::vector<std::vector<double>> colour_list;
 	std::vector<double> frequency_list;
 	std::vector<double> control_point_weight_list;
 	vtkSmartPointer<vtkPiecewiseFunction> scalar_opacity;
@@ -116,7 +114,6 @@ private:
 	int enable_squared_distance;
 	int enable_hsv_distance;
 	int number_of_colours_in_spectrum;
-	//int multiplier_for_colours_in_spectrum;
 	QString batch_patch;
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
@@ -1417,7 +1414,13 @@ private:
 				<VolumeProperty selected="false" hideFromEditors="false" name="CT-AAA" gradientOpacity="4 0 1 255 1" userTags="" specularPower="10" scalarOpacity="12 -3024 0 143.556 0 166.222 0.686275 214.389 0.696078 419.736 0.833333 3071 0.803922" id="vtkMRMLVolumePropertyNode1" specular="0.2" shade="1" ambient="0.1" colorTransfer="24 -3024 0 0 0 143.556 0.615686 0.356863 0.184314 166.222 0.882353 0.603922 0.290196 214.389 1 1 1 419.736 1 0.937033 0.954531 3071 0.827451 0.658824 1" selectable="true" diffuse="0.9" interpolation="1"/>
 				*/
 
-				TransferFunctionXML xml(property);
+				TransferFunctionXML xml;
+				xml.Domain_x(Domain_x());
+				xml.Domain_y(Domain_y());
+				xml.parse(property);
+				gradient_opacity->DeepCopy(xml.Volume()->GetGradientOpacity());
+				scalar_opacity->DeepCopy(xml.Volume()->GetScalarOpacity());
+				scalar_color->DeepCopy(xml.Volume()->GetRGBTransferFunction());
 
 				property = property->NextSiblingElement();
 			} while (property);

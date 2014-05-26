@@ -515,7 +515,10 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	}
 	else
 	{
+		//Domain_x(0);
+		//Domain_y(65535);
 		openTransferFunctionFromSlicerXML(filename_str);
+		updateTransferFunctionArraysFromWidgets();
 	}
 
 	updateTransferFunctionWidgetsFromArrays();
