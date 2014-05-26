@@ -110,7 +110,7 @@ private:
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 	void* volume_ptr;
-	const static int max_iteration_count = 65536;
+	const static int max_iteration_count = USHRT_MAX;
 	int enable_squared_distance;
 	int enable_hsv_distance;
 	int number_of_colours_in_spectrum;
@@ -181,22 +181,22 @@ private:
 	}
 
 	/// Re-maps a number from one range to another.
-	double map_to_range(double n, double src_lower, double src_upper, double target_lower, double target_upper)
+	double map_to_range(double val, double src_lower, double src_upper, double target_lower, double target_upper)
 	{
-		n = n < src_lower ? src_lower : n;
-		n = n > src_upper ? src_upper : n;
-		double normalised = (n - src_lower) / (src_upper - src_lower);
+		val = val < src_lower ? src_lower : val;
+		val = val > src_upper ? src_upper : val;
+		double normalised = (val - src_lower) / (src_upper - src_lower);
 		return normalised * (target_upper - target_lower) + target_lower;
 	}
 
-	double denormalise_intensity(double n)
+	double denormalise_intensity(double val)
 	{
-		return map_to_range(n, Domain_x(), Domain_y(), Range_x(), Range_y());
+		return map_to_range(val, Domain_x(), Domain_y(), Range_x(), Range_y());
 	}
 
-	double normalise_intensity(double n)
+	double normalise_intensity(double val)
 	{
-		return map_to_range(n, Range_x(), Range_y(), Domain_x(), Domain_y());
+		return map_to_range(val, Range_x(), Range_y(), Domain_x(), Domain_y());
 	}
 
 	//double normalise_intensity_to_domain(double n)
@@ -337,6 +337,11 @@ private:
 		double xrgb[6];
 		color_tf->GetNodeValue(i, xrgb);
 		return xrgb[3];
+	}
+
+	void get_color_by_intensity(double x, double rgb[3])
+	{
+		color_tf->GetColor(x, rgb);
 	}
 
 	int intensity_list_size()
@@ -1341,12 +1346,6 @@ private:
 		threshold->SetAttribute("x", Threshold_x());
 		threshold->SetAttribute("y", Threshold_y());
 		transFuncIntensity->InsertEndChild(threshold);
-		//auto lower = doc.NewElement("lower");
-		//lower->SetAttribute("value", get_threshold_x());
-		//auto upper = doc.NewElement("upper");
-		//upper->SetAttribute("value", get_threshold_y());
-		//transFuncIntensity->InsertEndChild(lower);
-		//transFuncIntensity->InsertEndChild(upper);
 
 		// add Keys
 		auto keys = doc.NewElement("Keys");
@@ -1357,11 +1356,16 @@ private:
 			auto intensity = doc.NewElement("intensity");
 			intensity->SetAttribute("value", get_intensity(i));
 			auto split = doc.NewElement("split");
-			split->SetAttribute("value", false);
+			split->SetAttribute("value", "false");
 			auto colorL = doc.NewElement("colorL");
-			colorL->SetAttribute("r", denormalise_rgba(get_colour_r(i)));
-			colorL->SetAttribute("g", denormalise_rgba(get_colour_g(i)));
-			colorL->SetAttribute("b", denormalise_rgba(get_colour_b(i)));
+			double rgb[3];
+			get_color_by_intensity(denormalise_intensity(get_intensity(i)), rgb);
+			//colorL->SetAttribute("r", denormalise_rgba(get_colour_r(i)));
+			//colorL->SetAttribute("g", denormalise_rgba(get_colour_g(i)));
+			//colorL->SetAttribute("b", denormalise_rgba(get_colour_b(i)));
+			colorL->SetAttribute("r", denormalise_rgba(rgb[0]));
+			colorL->SetAttribute("g", denormalise_rgba(rgb[1]));
+			colorL->SetAttribute("b", denormalise_rgba(rgb[2]));
 			colorL->SetAttribute("a", denormalise_rgba(get_opacity(i)));
 			key->InsertEndChild(intensity);
 			key->InsertEndChild(split);
