@@ -55,8 +55,8 @@ ui(new Ui::MainWindow)
 	generate_default_transfer_function();
 
 	volume_filename = "../../data/CT-Knee.mhd";
-	transfer_function_filename = "../../voreen/CT-Knee_spectrum_6.tfi";
-	transfer_function_filename_save = "../../voreen/CT-Knee_save_as.tfi";
+	transfer_function_filename = "../../transferfuncs/CT-AAA.xml";
+	transfer_function_filename_save = "../../transfer_function/save_as.tfi";
 	selected_region_filename = "../../voreen/CT-Knee_spectrum_6_balance_1000_selection_only.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
@@ -486,7 +486,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 void MainWindow::on_action_Open_Transfer_Function_triggered()
 {
 	// show file dialog
-	QString filter("Voreen transfer function (*.tfi)");
+	QString filter("Voreen transfer function (*.tfi);;3D Slicer transfer function (*.xml)");
 	QString filename_backup = transfer_function_filename;
 	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a transfer function")), filename_backup, filter);
 	if (!filename_backup.trimmed().isEmpty())
@@ -507,7 +507,17 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 
 	std::cout << "transfer function file: " << filename_str << endl;
 
-	openTransferFunctionFromVoreenXML(filename_str);
+	auto p = strstr(filename_str, ".tfi");
+	if (p)
+	{
+		std::cout << p << std::endl;
+		openTransferFunctionFromVoreenXML(filename_str);
+	}
+	else
+	{
+		openTransferFunctionFromSlicerXML(filename_str);
+	}
+
 	updateTransferFunctionWidgetsFromArrays();
 }
 

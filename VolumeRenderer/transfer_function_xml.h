@@ -2,6 +2,20 @@
 #define transfer_function_xml_h
 
 #include <string>
+#include <string.h>
+#include <ctype.h>
+#include <iostream>
+
+#include <vtkSmartPointer.h>
+#include <vtkVolumeProperty.h>
+#include <vtkPiecewiseFunction.h>
+#include <vtkColorTransferFunction.h>
+
+#include "tinyxml2/tinyxml2.h"
+
+#ifndef MAX_PATH
+#define MAX_PATH          260
+#endif
 
 /************************************************************************
 3D Slicer transfer function XML file format:
@@ -14,28 +28,183 @@
 struct TransferFunctionXML
 {
 public:
-	std::string selected;
-	std::string hideFromEditors;
+	bool selected;
+	bool hideFromEditors;
 	std::string name;
-	std::string gradientOpacity;
 	std::string userTags;
-	std::string specularPower;
-	std::string scalarOpacity;
 	std::string id;
-	std::string specular;
-	std::string shade;
-	std::string ambient;
-	std::string colorTransfer;
-	std::string selectable;
-	std::string diffuse;
-	std::string interpolation;
+	bool selectable;
+	vtkSmartPointer<vtkVolumeProperty> volume;
 
 	TransferFunctionXML()
 	{
+		volume = vtkSmartPointer<vtkVolumeProperty>::New();
 	}
 
 	~TransferFunctionXML()
 	{
+	}
+
+	void to_lower_case(char *str)
+	{
+		for (int i = 0; str[i]; i++)
+		{
+			str[i] = tolower(str[i]);
+		}
+	}
+
+	TransferFunctionXML(tinyxml2::XMLElement *property)
+	{
+		std::cout << "TransferFunctionXML" << std::endl;
+		if (property)
+		{
+			char s[MAX_PATH];
+			strcpy(s, property->Attribute("selected"));
+			to_lower_case(s);
+			std::cout << "selected=" << s << std::endl;
+			selected = (0 == strcmp(s, "true"));
+
+			strcpy(s, property->Attribute("hideFromEditors"));
+			to_lower_case(s);
+			std::cout << "hideFromEditors=" << s << std::endl;
+			hideFromEditors = (0 == strcmp(s, "true"));
+
+			name = property->Attribute("name");
+			userTags = property->Attribute("userTags");
+			id = property->Attribute("id");
+
+			strcpy(s, property->Attribute("selectable"));
+			to_lower_case(s);
+			std::cout << "selectable=" << s << std::endl;
+			selectable = (0 == strcmp(s, "true"));
+
+			volume->SetSpecularPower(atof(property->Attribute("specularPower")));
+			volume->SetSpecular(atof(property->Attribute("specular")));
+			volume->SetShade(atoi(property->Attribute("shade")));
+			volume->SetAmbient(atof(property->Attribute("ambient")));
+
+			volume->SetDiffuse(atof(property->Attribute("diffuse")));
+
+			/// #define 	VTK_NEAREST_INTERPOLATION   0
+			/// #define 	VTK_LINEAR_INTERPOLATION   1
+			volume->SetInterpolationType(atoi(property->Attribute("interpolation")));
+
+			volume->SetGradientOpacity(parse_piecewise(property->Attribute("gradientOpacity")));
+			volume->SetScalarOpacity(parse_piecewise(property->Attribute("scalarOpacity")));
+			volume->SetColor(parse_color(property->Attribute("colorTransfer")));
+		}
+		else
+		{
+			std::cerr << "An error occurred in TransferFunctionXML(). XMLElement *property is empty." << std::endl;
+		}
+	}
+
+	vtkSmartPointer<vtkPiecewiseFunction> parse_piecewise(const char *s)
+	{
+		char *msg = "An error occurred in TransferFunctionXML.parse_piecewise()";
+		auto piecewise = vtkSmartPointer<vtkPiecewiseFunction>::New();
+		char str[MAX_PATH];
+		strcpy(str, s);
+		char *pch;
+		pch = strtok(str, " ");
+
+		if (!pch)
+		{
+			std::cerr << msg << std::endl;
+			return piecewise;
+		}
+
+		int n = atoi(pch);
+		for (int i = 0; i < n; i++)
+		{
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double x = atof(pch);
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double y = atof(pch);
+
+			piecewise->AddPoint(x, y);
+		}
+
+		std::cout << "parse_piecewise" << std::endl;
+		for (int i = 0; i < piecewise->GetSize(); i++)
+		{
+			double xa[4];
+			piecewise->GetNodeValue(i, xa);
+			std::cout << xa[0] << " " << xa[1] << std::endl;
+		}
+
+		return piecewise;
+	}
+
+	vtkSmartPointer<vtkColorTransferFunction> parse_color(const char *s)
+	{
+		auto color = vtkSmartPointer<vtkColorTransferFunction>::New();
+		char *msg = "An error occurred in TransferFunctionXML.parse_color()";
+		char str[MAX_PATH];
+		strcpy(str, s);
+		char *pch;
+		pch = strtok(str, " ");
+
+		if (!pch)
+		{
+			std::cerr << msg << std::endl;
+			return color;
+		}
+
+		int n = atoi(pch);
+		for (int i = 0; i < n; i++)
+		{
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double x = atof(pch);
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double r = atof(pch);
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double g = atof(pch);
+			pch = strtok(str, " ");
+			if (!pch)
+			{
+				std::cerr << msg << std::endl;
+				break;
+			}
+			double b = atof(pch);
+
+			color->AddRGBPoint(x, r, g, b);
+		}
+
+		std::cout << "parse_color" << std::endl;
+		for (int i = 0; i < color->GetSize(); i++)
+		{
+			double xrgb[6];
+			color->GetNodeValue(i, xrgb);
+			std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+		}
+
+		return color;
 	}
 };
 
