@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.8)
 
-set(VTK_DIR "D:/VTK-6.1.0/VTK-build" CACHE PATH "VTK directory")
+set(VTK_DIR "D:/VTK/VTK-build" CACHE PATH "VTK directory")
 
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
 set(CTK_Libs_Core_DIR "${CTK_DIR}/Libs/Core")
@@ -34,6 +34,7 @@ file(GLOB CTK_ui_files
 
 project(VolumeRenderer)
 
+## VTK 6.x is required
 #find_package(VTK REQUIRED)
 find_package(VTK 6.1 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
