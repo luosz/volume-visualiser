@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8.8)
 
+set(QT_QMAKE_EXECUTABLE "C:/Qt/4.8.6/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
 set(VTK_DIR "D:/VTK/VTK-build" CACHE PATH "VTK directory")
 
+# CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
 set(CTK_Libs_Core_DIR "${CTK_DIR}/Libs/Core")
 set(CTK_Libs_Widgets_DIR "${CTK_DIR}/Libs/Widgets")
@@ -32,7 +34,32 @@ file(GLOB CTK_ui_files
     ${CTK_Libs_Visualization_VTK_Widgets_DIR}/Resources/UI/*.ui
 )
 
-project(VolumeRenderer)
+# # Slicer paths
+# set(Slicer_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Slicer" CACHE PATH "Slicer directory")
+# set(Slicer_VolumeRendering_DIR "${Slicer_DIR}/Modules/Loadable/VolumeRendering")
+# set(Slicer_Widgets_DIR "${Slicer_DIR}/Modules/Loadable/VolumeRendering/Widgets")
+# set(Slicer_VolumeRenderingReplacements_DIR "${Slicer_DIR}/Modules/Loadable/VolumeRendering/VolumeRenderingReplacements")
+# file(GLOB Slicer_header_files
+# #    ${Slicer_VolumeRendering_DIR}/*.h
+# #    ${Slicer_Widgets_DIR}/*.h
+   # ${Slicer_VolumeRenderingReplacements_DIR}/*.h
+# )
+# file(GLOB Slicer_source_files
+# #    ${Slicer_VolumeRendering_DIR}/*.h
+# #    ${Slicer_VolumeRendering_DIR}/*.cxx
+# #    ${Slicer_Widgets_DIR}/*.h
+# #    ${Slicer_Widgets_DIR}/*.cxx
+   # ${Slicer_VolumeRenderingReplacements_DIR}/*.h
+   # ${Slicer_VolumeRenderingReplacements_DIR}/*.cxx
+# )
+# file(GLOB Slicer_qrc_files
+   # # ${Slicer_VolumeRendering_DIR}/Resources/*.qrc
+# )
+# file(GLOB Slicer_ui_files
+   # # ${Slicer_VolumeRendering_DIR}/Resources/UI/qSlicer*.ui
+# )
+
+project(VolumeVisualizer)
 
 ## VTK 6.x is required
 #find_package(VTK REQUIRED)
@@ -56,6 +83,18 @@ QT4_WRAP_UI(CTK_ui_header_files ${CTK_ui_files})
 message(STATUS "CTK ui header files: " ${CTK_ui_header_files})
 QT4_ADD_RESOURCES(CTK_qrc_complied ${CTK_qrc_files})
 source_group(CTK_ui FILES ${CTK_ui_header_files} ${CTK_ui_files} ${CTK_qrc_files} ${CTK_qrc_complied})
+
+# # Slicer
+# source_group(Slicer FILES ${Slicer_header_files} ${Slicer_source_files})
+# message(STATUS "Slicer header files: " ${Slicer_header_files})
+# message(STATUS "Slicer source files: " ${Slicer_source_files})
+# QT4_WRAP_CPP(Slicer_moc_source_files ${Slicer_header_files})
+# message(STATUS "Slicer moc source files: " ${Slicer_moc_source_files})
+# source_group(Slicer_moc FILES ${Slicer_moc_source_files})
+# QT4_WRAP_UI(Slicer_ui_header_files ${Slicer_ui_files})
+# message(STATUS "Slicer ui header files: " ${Slicer_ui_header_files})
+# QT4_ADD_RESOURCES(Slicer_qrc_complied ${Slicer_qrc_files})
+# source_group(Slicer_ui FILES ${Slicer_ui_header_files} ${Slicer_ui_files} ${Slicer_qrc_files} ${Slicer_qrc_complied})
 
 # TinyXML-2
 set(tinyxml2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tinyxml2)
@@ -91,11 +130,10 @@ message(STATUS "Project_ui_files: " ${Project_ui_files})
 message(STATUS "Project_ui_header_files: " ${Project_ui_header_files}) 
 
 include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-	${CTK_Libs_Core_DIR} ${CTK_Libs_Widgets_DIR} 
-	${CTK_Libs_Visualization_VTK_Core_DIR} 
-	${CTK_Libs_Visualization_VTK_Widgets_DIR}
+	${CTK_Libs_Core_DIR} ${CTK_Libs_Widgets_DIR} ${CTK_Libs_Visualization_VTK_Core_DIR} ${CTK_Libs_Visualization_VTK_Widgets_DIR}
 	${tinyxml2_DIR}
 	${nvMath_DIR}
+	# ${Slicer_VolumeRendering_DIR} ${Slicer_Widgets_DIR} ${Slicer_VolumeRenderingReplacements_DIR}
 )
 
 add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files}
@@ -105,6 +143,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${tinyxml2_files}
 	${nvMath_files}
 	${volume_files}
+	# ${Slicer_header_files} ${Slicer_source_files} ${Slicer_moc_source_files} ${Slicer_ui_header_files} ${Slicer_qrc_complied}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})
