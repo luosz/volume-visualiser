@@ -154,9 +154,7 @@ int main(int argc, char *argv[])
 	int ignoreZero = 0;
 
 	// Read a jpeg image
-	//auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
 	vtkSmartPointer<vtkImageReader2> reader;
-	//auto reader = vtkSmartPointer<vtkPNGReader>::New();
 	char *filename_str = argv[1];
 	auto p = strstr(filename_str, ".png");
 	if (p)
@@ -245,7 +243,7 @@ int main(int argc, char *argv[])
 	std::cout<<"rgb_histogram file "<<filename2<<std::endl;
 	std::ofstream out2(filename2);
 
-	for (int i=0; i<256; i++)
+	for (int i = 0; i<range_y; i++)
 	{
 		for (int j=0; j<numComponents; j++)
 		{
@@ -329,10 +327,10 @@ int main(int argc, char *argv[])
 		}
 
 		currentArray->SetNumberOfComponents(1);
-		currentArray->SetNumberOfTuples(256);
+		currentArray->SetNumberOfTuples(range_y);
 		int* output = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
 
-		for( int j = 0; j < 256; ++j )
+		for (int j = 0; j < range_y; ++j)
 		{
 			currentArray->SetTuple1( j, *output++ );
 		}
@@ -372,7 +370,7 @@ int main(int argc, char *argv[])
 			ofstream myfile;
 			myfile.open(filename);
 			int* pixels = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
-			for (int j=0; j<256; j++)
+			for (int j = 0; j<range_y; j++)
 			{
 				int value = pixels[j];
 				if (value < min || value > max)
