@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstdio>
 #include <string>
+#include <cstring>
 #include <cstdlib>
 using namespace std;
 
@@ -106,6 +107,13 @@ double normalise_rgba(int n)
 	return map_to_range(n, 0, 255, 0, 1);
 }
 
+double range_x = 0, range_y = 255;
+
+double normalise_intensity(double n)
+{
+	return map_to_range(n, 0, 255, 0, 1);
+}
+
 double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
 {
 	double distance = 0;
@@ -147,13 +155,33 @@ int main(int argc, char *argv[])
 
 	// Read a jpeg image
 	//auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-	auto reader = vtkSmartPointer<vtkPNGReader>::New();
-	if( !reader->CanReadFile( argv[1] ) )
+	vtkSmartPointer<vtkImageReader2> reader;
+	//auto reader = vtkSmartPointer<vtkPNGReader>::New();
+	char *filename_str = argv[1];
+	auto p = strstr(filename_str, ".png");
+	if (p)
 	{
-		std::cout << "Error: cannot read " << argv[1] << std::endl;
+		reader = vtkSmartPointer<vtkPNGReader>::New();
+	} 
+	else
+	{
+		p = strstr(filename_str, ".mhd");
+		if (p)
+		{
+			reader = vtkSmartPointer<vtkMetaImageReader>::New();
+		} 
+		else
+		{
+			std::cout << filename_str << " has unknown filename extension. Only .png and .mhd are supported." << std::endl;
+			return EXIT_FAILURE;
+		}
+	}
+	if (!reader->CanReadFile(filename_str))
+	{
+		std::cout << "Error: cannot read " << filename_str << std::endl;
 		return EXIT_FAILURE;
 	}
-	reader->SetFileName( argv[1] );
+	reader->SetFileName(filename_str);
 	reader->Update();
 
 	int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
@@ -173,6 +201,14 @@ int main(int argc, char *argv[])
 	std::cout<<"dimension "<<dimensions[0]<<" "<<dimensions[1]<<" "<<dimensions[2]<<" count="<<count_of_pixels<<std::endl;
 	std::cout<<"pixel type is "<<imageData->GetScalarTypeAsString()<<std::endl;
 	auto pixels = static_cast<unsigned char *>(imageData->GetScalarPointer());
+
+	{
+		double range[2];
+		imageData->GetScalarRange(range);
+		range_x = range[0];
+		range_y = range[1];
+		std::cout << "GetScalarRange "<<range_x<<" "<<range_y << std::endl;
+	}
 
 	int rgb_histogram[256][3];
 	std::memset(rgb_histogram, 0, 256*3*sizeof(int));
