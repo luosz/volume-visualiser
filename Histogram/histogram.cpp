@@ -33,6 +33,7 @@ using namespace std;
 #include <vtkPointData.h>
 #include <vtkProperty2D.h>
 #include <vtkLegendBoxActor.h>
+#include <vtkJPEGReader.h>
 #include <vtkPNGReader.h>
 #include <vtkXYPlotActor.h>
 #include <vtkImageExtractComponents.h>
@@ -153,27 +154,34 @@ int main(int argc, char *argv[])
 
 	int ignoreZero = 0;
 
-	// Read a jpeg image
-	vtkSmartPointer<vtkImageReader2> reader;
+	//// Read a jpeg image
+	//vtkSmartPointer<vtkJPEGReader> reader =
+	//	vtkSmartPointer<vtkJPEGReader>::New();
+
 	char *filename_str = argv[1];
-	auto p = strstr(filename_str, ".png");
-	if (p)
+	vtkSmartPointer<vtkImageReader2> reader;
+	if (strstr(filename_str, ".jpg"))
+	{
+		reader = vtkSmartPointer<vtkJPEGReader>::New();
+	}
+	if (strstr(filename_str, ".png"))
 	{
 		reader = vtkSmartPointer<vtkPNGReader>::New();
-	} 
-	else
-	{
-		p = strstr(filename_str, ".mhd");
-		if (p)
-		{
-			reader = vtkSmartPointer<vtkMetaImageReader>::New();
-		} 
-		else
-		{
-			std::cout << filename_str << " has unknown filename extension. Only .png and .mhd are supported." << std::endl;
-			return EXIT_FAILURE;
-		}
 	}
+	if (strstr(filename_str, ".mhd"))
+	{
+		reader = vtkSmartPointer<vtkMetaImageReader>::New();
+	}
+	if (strstr(filename_str, ".nrrd"))
+	{
+		reader = vtkSmartPointer<vtkNrrdReader>::New();
+	}
+	if (reader == NULL)
+	{
+		std::cout << filename_str << " has unknown filename extension. Only .jpg .png .mhd and .nrrd are supported." << std::endl;
+		return EXIT_FAILURE;
+	}
+
 	if (!reader->CanReadFile(filename_str))
 	{
 		std::cout << "Error: cannot read " << filename_str << std::endl;
