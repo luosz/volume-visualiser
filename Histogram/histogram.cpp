@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
 		histogram->SetInputConnection( extract->GetOutputPort() );
 		histogram->SetComponentExtent(
 			0,
-			static_cast<int>(range[1])-static_cast<int>(range[0]),0,0,0,0 );
+			static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1, 0, 0, 0, 0);
 		histogram->SetComponentOrigin( range[0],0,0 );
 		histogram->SetComponentSpacing( 1,0,0 );
 		histogram->SetIgnoreZero( ignoreZero );

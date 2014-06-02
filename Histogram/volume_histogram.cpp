@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 		for (int j = extents[0]; j < extents[1]; j++)
 		{
 			f << j<<"\t"<<histogram_data[j] << std::endl;
-			std::cout << histogram_data[j] << "\t";
+			//std::cout << histogram_data[j] << "\t";
 		}
 		std::cout << endl;
 		
