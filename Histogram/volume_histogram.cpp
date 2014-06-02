@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 		std::cout << "extent " << extents[0] << " " << extents[1] << std::endl;
 		auto histogram_data = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
 		char filename[MAX_PATH];
-		sprintf(filename, "../%i.txt", i);
+		sprintf(filename, "../~%i.txt", i);
 		ofstream f(filename);
 		for (int j = extents[0]; j < extents[1]; j++)
 		{

@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
 	std::cout<<d1/(d1+d2+d3)<<" "<<d2/(d1+d2+d3)<<" "<<d3/(d1+d2+d3)<<std::endl;
 
 #ifdef OUTPUT_TO_FILE
-	char filename2[32] = "../rgb_histogram.csv";
+	char filename2[32] = "../~rgb_histogram.csv";
 	std::cout<<"rgb_histogram file "<<filename2<<std::endl;
 	std::ofstream out2(filename2);
 
@@ -373,7 +373,7 @@ int main(int argc, char *argv[])
 			char buffer[32];
 			itoa(i, buffer, 10);
 			char filename[32];
-			sprintf(filename, "../%s.csv", buffer);
+			sprintf(filename, "../~%s.csv", buffer);
 			std::cout<<"output file "<<filename<<std::endl;
 			ofstream myfile;
 			myfile.open(filename);
