@@ -53,6 +53,7 @@
 #include <vtkMath.h>
 #include <vtkMetaImageWriter.h>
 
+// CTK
 #include "ctkTransferFunction.h"
 #include "ctkVTKColorTransferFunction.h"
 #include "ctkTransferFunctionView.h"
@@ -60,7 +61,13 @@
 #include "ctkTransferFunctionControlPointsItem.h"
 #include "ctkVTKVolumePropertyWidget.h"
 
+// Slicer
+#include "vtkSlicerGPURayCastVolumeMapper.h"
+#include "vtkSlicerGPURayCastMultiVolumeMapper.h"
+
+// TinyXML-2
 #include "tinyxml2/tinyxml2.h"
+
 #include "ui_mainwindow.h"
 
 #include "transfer_function_xml.h"
@@ -139,6 +146,10 @@ private:
 	void Range_x(double val) { range_x = val; }
 	double Range_y() const { return range_y; }
 	void Range_y(double val) { range_y = val; }
+
+	int volume_mapper_index;
+	int Volume_mapper_index() const { return volume_mapper_index; }
+	void Volume_mapper_index(int val) { volume_mapper_index = val; }
 
 	static double EPSILON()
 	{
@@ -2289,8 +2300,24 @@ private:
 		volume_property_widget.setVolumeProperty(volumeProperty);
 
 		// The mapper that renders the volume data.
-		auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-		volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+		//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+		vtkSmartPointer<vtkVolumeMapper> volumeMapper;
+
+		switch (Volume_mapper_index())
+		{
+		case 1:
+			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastVolumeMapper>::New();
+			break;
+		case 2:
+			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
+			break;
+		default:
+			volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+			((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			break;
+		}
+
 		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
 
 		// The volume holds the mapper and the property and can be used to position/orient the volume.
@@ -2791,6 +2818,9 @@ private:
 	void on_resetButton_clicked();
 	void on_action_Test_triggered();
 	void on_drawWeightButton_clicked();
+    void on_action_VtkSmartVolumeMapper_triggered();
+    void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
+    void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
 };
 
 #endif // MAINWINDOW_H

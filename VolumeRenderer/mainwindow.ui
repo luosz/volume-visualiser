@@ -84,6 +84,9 @@
     <addaction name="action_Spectrum_Ramp_Transfer_Function"/>
     <addaction name="action_Pick_a_colour_and_optimise_transfer_function"/>
     <addaction name="action_Genearte_transfer_functions_for_spectrum"/>
+    <addaction name="action_VtkSmartVolumeMapper"/>
+    <addaction name="action_VtkSlicerGPURayCastVolumeMapper"/>
+    <addaction name="action_VtkSlicerGPURayCastMultiVolumeMapper"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -548,6 +551,30 @@
   <action name="action_Open_path_and_generate_transfer_functions_for_colour">
    <property name="text">
     <string>Open path and generate transfer functions for &amp;colour</string>
+   </property>
+  </action>
+  <action name="action_VtkSmartVolumeMapper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>vtkSmartVolumeMapper (GPURenderMode)</string>
+   </property>
+  </action>
+  <action name="action_VtkSlicerGPURayCastVolumeMapper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>vtkSlicerGPURayCastVolumeMapper</string>
+   </property>
+  </action>
+  <action name="action_VtkSlicerGPURayCastMultiVolumeMapper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>vtkSlicerGPURayCastMultiVolumeMapper</string>
    </property>
   </action>
  </widget>
