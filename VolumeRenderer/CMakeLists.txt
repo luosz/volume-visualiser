@@ -62,7 +62,10 @@ source_group(CTK_ui FILES ${CTK_ui_header_files} ${CTK_ui_files} ${CTK_qrc_files
 
 # Slicer
 set(Slicer_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Slicer)
-set(Slicer_files ${Slicer_DIR}/*.h ${Slicer_DIR}/*.cxx)
+file(GLOB Slicer_files
+    ${Slicer_DIR}/*.h
+	${Slicer_DIR}/*.cxx
+)
 source_group(Slicer FILES ${Slicer_files})
 
 # TinyXML-2
