@@ -872,7 +872,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1. / 255.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -924,7 +924,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -939,6 +939,11 @@ private:
 			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
+	}
+
+	double get_stepsize()
+	{
+		return 1. / UCHAR_MAX;
 	}
 
 	// region-based or hue-based optimization
@@ -974,7 +979,7 @@ private:
 		}
 		if (min_index != max_index)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1042,7 +1047,7 @@ private:
 				min_index++;
 			}
 
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1110,7 +1115,7 @@ private:
 				min_index++;
 			}
 
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1158,7 +1163,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1206,7 +1211,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			//double height_max = get_opacity(max_index);
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
@@ -1254,7 +1259,7 @@ private:
 		}
 		if (-1 != max_index)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			double height_max = get_opacity(max_index);
 			double height_max_new = height_max - step_size;
 			height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1302,7 +1307,7 @@ private:
 		}
 		if (min_index != -1)
 		{
-			const double step_size = 1. / 256.;
+			const double step_size = get_stepsize();
 			//double height_max = get_opacity(max_index);
 			//double height_max_new = height_max - step_size;
 			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
