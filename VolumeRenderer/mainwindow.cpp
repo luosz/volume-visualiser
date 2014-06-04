@@ -52,8 +52,6 @@ ui(new Ui::MainWindow)
 	//color_tf->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	//color_tf->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	generate_default_transfer_function();
-
 	volume_filename = "../../data/CT-Knee.mhd";
 	transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
 	transfer_function_filename_save = "../../transfer_function/save_as.tfi";
@@ -108,6 +106,7 @@ ui(new Ui::MainWindow)
 	volume_ptr = NULL;
 	batch_patch = "D:/_uchar/vortex/";
 
+	//generate_default_transfer_function();
 	set_colour_number_in_spectrum(16);
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 

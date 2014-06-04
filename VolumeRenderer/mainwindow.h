@@ -420,7 +420,7 @@ private:
 	double get_frequency(double intensity) // intensity belongs to [0,255]
 	{
 		int intensity_int = (int)intensity;
-		const int max = 255;
+		const int max = static_cast<int>(Range_y() + EPSILON());
 		if (intensity_int >= 0 && intensity_int < max)
 		{
 			// linear interpolation
@@ -451,7 +451,7 @@ private:
 
 	double get_noteworthiness(int i)
 	{
-		const double epsilon = 1e-6;
+		const double epsilon = EPSILON();
 		double intensity = denormalise_intensity(get_intensity(i));
 		double probability = get_frequency(intensity) / count_of_voxels;
 		if (probability > epsilon)
@@ -614,7 +614,7 @@ private:
 
 		double sum = 0;
 		// int intensity belongs to [0,255]
-		for (int intensity = (int)a; intensity < b; intensity++)
+		for (int intensity = static_cast<int>(a + EPSILON()); intensity < b; intensity++)
 		{
 			if (intensity >= a)
 			{
@@ -709,7 +709,7 @@ private:
 	double get_entropy_opacity_by_index(double intensity, int index)
 	{
 		double frequency = get_frequency(intensity);
-		const double epsilon = 1e-6;
+		const double epsilon = EPSILON();
 		double probability = frequency / count_of_voxels;
 		if (probability > epsilon)
 		{
@@ -744,7 +744,7 @@ private:
 	double get_entropy(double intensity)
 	{
 		double frequency = get_frequency(intensity);
-		const double epsilon = 1e-6;
+		const double epsilon = EPSILON();
 		double probability = frequency / count_of_voxels;
 		if (probability > epsilon)
 		{
@@ -763,7 +763,7 @@ private:
 	double get_entropy_opacity(double intensity)
 	{
 		double frequency = get_frequency(intensity);
-		const double epsilon = 1e-6;
+		const double epsilon = EPSILON();
 		double probability = frequency / count_of_voxels;
 		if (probability > epsilon)
 		{
@@ -2019,12 +2019,15 @@ private:
 
 				// There is a potential problem. The range may not be [0,255]
 				frequency_list.clear();
-				frequency_list.reserve(256);
+				frequency_list.reserve(Range_y());
 				std::cout << "histogram type is " << histogram->GetOutput()->GetScalarTypeAsString() << std::endl;
 				auto pixels = static_cast<int *>(histogram->GetOutput()->GetScalarPointer());
+				int extent[6];
+				histogram->GetOutput()->GetExtent(extent);
+				std::cout << "histogram extent " << extent[0] << " " << extent[1] << std::endl;
 				count_of_voxels = 0;
-				const int max = 256;
-				for (int j = 0; j < max; j++)
+				const int max = extent[1];
+				for (int j = 0; j <= max + 1; j++)
 				{
 					int value = pixels[j];
 					if (value < y_min || value > y_max)
