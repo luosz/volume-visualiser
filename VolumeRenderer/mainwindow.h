@@ -1626,7 +1626,7 @@ private:
 		Threshold_y(1);
 
 		{
-			intensity_list_push_back(normalise_intensity(0));
+			intensity_list_push_back(normalise_rgba(0));
 
 			std::vector<double> v;
 			v.push_back(0);
@@ -1637,7 +1637,7 @@ private:
 			opacity_list_push_back(0);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(36));
+			intensity_list_push_back(normalise_rgba(36));
 
 			std::vector<double> v;
 			v.push_back(1);
@@ -1648,7 +1648,7 @@ private:
 			opacity_list_push_back(0.125);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(72));
+			intensity_list_push_back(normalise_rgba(72));
 
 			std::vector<double> v;
 			v.push_back(1);
@@ -1659,7 +1659,7 @@ private:
 			opacity_list_push_back(0.25);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(108));
+			intensity_list_push_back(normalise_rgba(108));
 
 			std::vector<double> v;
 			v.push_back(0);
@@ -1670,7 +1670,7 @@ private:
 			opacity_list_push_back(0.375);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(144));
+			intensity_list_push_back(normalise_rgba(144));
 
 			std::vector<double> v;
 			v.push_back(0);
@@ -1681,7 +1681,7 @@ private:
 			opacity_list_push_back(0.5);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(180));
+			intensity_list_push_back(normalise_rgba(180));
 
 			std::vector<double> v;
 			v.push_back(0);
@@ -1692,7 +1692,7 @@ private:
 			opacity_list_push_back(0.625);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(216));
+			intensity_list_push_back(normalise_rgba(216));
 
 			std::vector<double> v;
 			v.push_back(1);
@@ -1703,7 +1703,7 @@ private:
 			opacity_list_push_back(0.75);
 		}
 		{
-			intensity_list_push_back(normalise_intensity(255));
+			intensity_list_push_back(normalise_rgba(255));
 
 			std::vector<double> v;
 			v.push_back(1);
@@ -2505,7 +2505,7 @@ private:
 		}
 	}
 
-	void updateTransferFunctionWidgetsFromArrays()
+	void updateTFWidgetFromOpacityArrays()
 	{
 		if (intensity_list_size() == 0 || colour_list_size() == 0)
 		{
@@ -2525,7 +2525,7 @@ private:
 		vtk_widget.repaint();
 	}
 
-	void updateTransferFunctionArraysFromWidgets()
+	void updateOpacityArrayFromTFWidget()
 	{
 		if (scalar_opacity->GetSize() < 1)
 		{
@@ -2572,7 +2572,7 @@ private:
 		ui->action_Spectrum_Transfer_Function->setChecked(true);
 		enable_spectrum_ramp = 0;
 		generate_spectrum_transfer_function(number_of_colours_in_spectrum);
-		updateTransferFunctionWidgetsFromArrays();
+		updateTFWidgetFromOpacityArrays();
 	}
 
 	void generate_spectrum_ramp_transfer_function_and_check_menu_item()
@@ -2581,7 +2581,7 @@ private:
 		ui->action_Spectrum_Transfer_Function->setChecked(false);
 		enable_spectrum_ramp = 1;
 		generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
-		updateTransferFunctionWidgetsFromArrays();
+		updateTFWidgetFromOpacityArrays();
 	}
 
 	void draw_spectrum_in_graphicsview(int n)
@@ -2663,8 +2663,8 @@ private:
 			//balance_opacity_for_region();
 			balance_transfer_function_edge_for_region();
 		}
-		updateTransferFunctionWidgetsFromArrays();
-		updateTransferFunctionArraysFromWidgets();
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
 	}
 
 	int get_closest_non_zero_control_point(int r0, int g0, int b0)
@@ -2745,8 +2745,8 @@ private:
 						{
 							std::cout << "closest control point index=" << ii << std::endl;
 							set_opacity(ii, 0);
-							updateTransferFunctionWidgetsFromArrays();
-							updateTransferFunctionArraysFromWidgets();
+							updateTFWidgetFromOpacityArrays();
+							updateOpacityArrayFromTFWidget();
 						}
 						else
 						{

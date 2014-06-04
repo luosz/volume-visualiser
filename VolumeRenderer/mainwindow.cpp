@@ -32,25 +32,25 @@ ui(new Ui::MainWindow)
 
 	// Create transfer mapping scalar value to opacity.
 	scalar_opacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
-	scalar_opacity->AddPoint(0.0, 0.0);
-	scalar_opacity->AddPoint(36.0, 0.125);
-	scalar_opacity->AddPoint(72.0, 0.25);
-	scalar_opacity->AddPoint(108.0, 0.375);
-	scalar_opacity->AddPoint(144.0, 0.5);
-	scalar_opacity->AddPoint(180.0, 0.625);
-	scalar_opacity->AddPoint(216.0, 0.75);
-	scalar_opacity->AddPoint(255.0, 0.0);
+	//scalar_opacity->AddPoint(0.0, 0.0);
+	//scalar_opacity->AddPoint(36.0, 0.125);
+	//scalar_opacity->AddPoint(72.0, 0.25);
+	//scalar_opacity->AddPoint(108.0, 0.375);
+	//scalar_opacity->AddPoint(144.0, 0.5);
+	//scalar_opacity->AddPoint(180.0, 0.625);
+	//scalar_opacity->AddPoint(216.0, 0.75);
+	//scalar_opacity->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
 	color_tf = vtkSmartPointer<vtkColorTransferFunction>::New();
-	color_tf->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
-	color_tf->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	color_tf->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	color_tf->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	color_tf->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	color_tf->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	color_tf->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	color_tf->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	//color_tf->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
+	//color_tf->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	//color_tf->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	//color_tf->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	//color_tf->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	//color_tf->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	//color_tf->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	//color_tf->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	generate_default_transfer_function();
 
@@ -238,7 +238,7 @@ void MainWindow::on_entropyOpacityButton_clicked()
 
 void MainWindow::on_balanceButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -248,8 +248,8 @@ void MainWindow::on_balanceButton_clicked()
 	{
 		balance_transfer_function();
 	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_lhHistogramButton_clicked()
@@ -260,7 +260,7 @@ void MainWindow::on_lhHistogramButton_clicked()
 
 void MainWindow::on_reduceOpacityButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -270,13 +270,13 @@ void MainWindow::on_reduceOpacityButton_clicked()
 	{
 		reduce_opacity();
 	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_increaseOpacityButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -286,13 +286,13 @@ void MainWindow::on_increaseOpacityButton_clicked()
 	{
 		increase_opacity();
 	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_balanceOpacityButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -317,13 +317,13 @@ void MainWindow::on_balanceOpacityButton_clicked()
 	out << iteration_count << "," << get_energy_function_edge() << std::endl;
 	out.close();
 #endif
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_enhanceRegionButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -333,13 +333,13 @@ void MainWindow::on_enhanceRegionButton_clicked()
 	{
 		increase_opacity_for_region();
 	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_weakenRegionButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -349,13 +349,13 @@ void MainWindow::on_weakenRegionButton_clicked()
 	{
 		reduce_opacity_for_region();
 	}
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_balanceRegionButton_clicked()
 {
-	updateTransferFunctionArraysFromWidgets();
+	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
 	if (n < 1 || n > max_iteration_count)
 	{
@@ -386,8 +386,8 @@ void MainWindow::on_balanceRegionButton_clicked()
 	out2 << iteration_count << "," << get_energy_function_edge_weighted_for_region() << std::endl;
 	out2.close();
 #endif
-	updateTransferFunctionWidgetsFromArrays();
-	updateTransferFunctionArraysFromWidgets();
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
 
 void MainWindow::on_action_About_triggered()
@@ -522,10 +522,10 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	else
 	{
 		openTransferFunctionFromMITKXML(filename_str);
-		updateTransferFunctionArraysFromWidgets();
+		updateOpacityArrayFromTFWidget();
 	}
 
-	updateTransferFunctionWidgetsFromArrays();
+	updateTFWidgetFromOpacityArrays();
 
 	std::cout << "updateTransferFunctionWidgetsFromArrays" << std::endl;
 
@@ -659,7 +659,7 @@ void MainWindow::on_action_Compute_Distance_HSV_triggered()
 void MainWindow::on_action_Default_Transfer_Function_triggered()
 {
 	generate_default_transfer_function();
-	updateTransferFunctionWidgetsFromArrays();
+	updateTFWidgetFromOpacityArrays();
 }
 
 void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
@@ -674,7 +674,7 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 	{
 		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
-		updateTransferFunctionWidgetsFromArrays();
+		updateTFWidgetFromOpacityArrays();
 		set_colour_number_in_spectrum(n);
 	}
 }
@@ -691,7 +691,7 @@ void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
 	{
 		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_ramp_transfer_function(n);
-		updateTransferFunctionWidgetsFromArrays();
+		updateTFWidgetFromOpacityArrays();
 		set_colour_number_in_spectrum(n);
 	}
 }
@@ -825,8 +825,8 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 				balance_transfer_function_edge();
 			}
 
-			updateTransferFunctionWidgetsFromArrays();
-			updateTransferFunctionArraysFromWidgets();
+			updateTFWidgetFromOpacityArrays();
+			updateOpacityArrayFromTFWidget();
 
 			// split filename and extension
 			QStringList str_list = files[i].split(".", QString::SkipEmptyParts);
@@ -921,8 +921,8 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 				balance_transfer_function_edge_for_region();
 			}
 
-			updateTransferFunctionWidgetsFromArrays();
-			updateTransferFunctionArraysFromWidgets();
+			updateTFWidgetFromOpacityArrays();
+			updateOpacityArrayFromTFWidget();
 
 			// split filename and extension
 			QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
@@ -1029,7 +1029,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 void MainWindow::on_resetButton_clicked()
 {
 	reset_transfer_function();
-	updateTransferFunctionWidgetsFromArrays();
+	updateTFWidgetFromOpacityArrays();
 	draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
 }
 
