@@ -61,6 +61,14 @@
 #include "ctkTransferFunctionControlPointsItem.h"
 #include "ctkVTKVolumePropertyWidget.h"
 
+#include "ctkVTKHistogram.h"
+
+#include "ctkVTKMatrixWidget.h"
+#include "ctkVTKPropertyWidget.h"
+#include "ctkVTKScalarBarWidget.h"
+#include "ctkVTKSurfaceMaterialPropertyWidget.h"
+#include "ctkVTKTextPropertyWidget.h"
+
 // Slicer
 #include "vtkSlicerGPURayCastVolumeMapper.h"
 #include "vtkSlicerGPURayCastMultiVolumeMapper.h"
