@@ -13,9 +13,9 @@ ui(new Ui::MainWindow)
 	ui->setupUi(this);
 
 	// add VTK widgets
-	ui->verticalLayout->addWidget(&vtk_widget);
-	ui->verticalLayout_2->addWidget(&volume_property_widget);
-	ui->verticalLayout_7->addWidget(&ctkVTKScalarsToColorsWidget1);
+	get_vtk_layout()->addWidget(&vtk_widget);
+	get_property_layout()->addWidget(&volume_property_widget);
+	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget1);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -113,11 +113,8 @@ ui(new Ui::MainWindow)
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 	update_colour_palette();
 
-	auto view = ctkVTKScalarsToColorsWidget1.view();
-	view->addOpacityFunction(scalar_opacity);
-	//view->addColorTransferFunction(scalar_color);
-	//view->addPiecewiseFunction(gradient_opacity);
-	ctkVTKScalarsToColorsWidget1.setEditColors(false);
+	get_histogram_view()->addOpacityFunction(scalar_opacity);
+	//get_histogram_widget()->setEditColors(false);
 
 	// use HSV without squaring distance
 	on_action_Compute_Distance_HSV_triggered();
@@ -125,8 +122,8 @@ ui(new Ui::MainWindow)
 	// use VtkSlicerGPURayCastVolumeMapper by default
 	on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
 
-	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
-	QObject::connect(getGraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
+	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
+	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
 
 	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
 	QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
@@ -148,7 +145,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_frequencyButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Frequency " + QTime::currentTime().toString());
 	if (frequency_list.size() > 0)
@@ -165,7 +162,7 @@ void MainWindow::on_frequencyButton_clicked()
 void MainWindow::on_opacityButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list_size() > 0)
@@ -183,7 +180,7 @@ void MainWindow::on_opacityButton_clicked()
 void MainWindow::on_visibilityButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list_size() > 0)
@@ -202,7 +199,7 @@ void MainWindow::on_visibilityButton_clicked()
 void MainWindow::on_entropyButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Entropy " + QTime::currentTime().toString());
 	if (frequency_list.size() > 0)
@@ -225,7 +222,7 @@ void MainWindow::on_entropyButton_clicked()
 void MainWindow::on_entropyOpacityButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Entropy Opacity " + QTime::currentTime().toString());
 	if (frequency_list.size() > 0)
@@ -1101,7 +1098,7 @@ void MainWindow::on_action_Test_triggered()
 void MainWindow::on_drawWeightButton_clicked()
 {
 	double height = ui->graphicsView->height();
-	QGraphicsScene *scene = getGraphicsScene();
+	QGraphicsScene *scene = get_GraphicsScene();
 	scene->clear();
 	scene->addText("Weights " + QTime::currentTime().toString());
 

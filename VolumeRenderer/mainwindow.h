@@ -175,7 +175,7 @@ private:
 	//	return number_of_colours_in_spectrum;
 	//}
 
-	QGraphicsScene * getGraphicsScene()
+	QGraphicsScene * get_GraphicsScene()
 	{
 		QGraphicsScene *scene = ui->graphicsView->scene();
 		if (scene == NULL)
@@ -187,7 +187,7 @@ private:
 		return scene;
 	}
 
-	QGraphicsScene * getGraphicsScene_for_spectrum()
+	QGraphicsScene * get_GraphicsScene_for_spectrum()
 	{
 		QGraphicsScene *scene = ui->graphicsView_2->scene();
 		if (scene == NULL)
@@ -197,6 +197,31 @@ private:
 			std::cout << "create a new scene for drawing spectrums" << std::endl;
 		}
 		return scene;
+	}
+
+	ctkVTKScalarsToColorsView * get_histogram_view()
+	{
+		return ctkVTKScalarsToColorsWidget1.view();
+	}
+
+	ctkVTKScalarsToColorsWidget * get_histogram_widget()
+	{
+		return &ctkVTKScalarsToColorsWidget1;
+	}
+
+	QLayout * get_vtk_layout()
+	{
+		return ui->verticalLayout;
+	}
+
+	QLayout * get_property_layout()
+	{
+		return ui->verticalLayout_2;
+	}
+
+	QLayout * get_histogram_layout()
+	{
+		return ui->verticalLayout_4;
 	}
 
 	//void set_colour_number_in_spectrum(int number_of_colours)
@@ -2606,10 +2631,10 @@ private:
 		//int n = Number_of_colours_in_spectrum();
 		auto tf = scalar_color;
 		int n = tf->GetSize();
-		const double width = 280;
+		const double width = 320;
 		const double height = 16;
 		double w = width / n;
-		QGraphicsScene *scene = getGraphicsScene_for_spectrum();
+		QGraphicsScene *scene = get_GraphicsScene_for_spectrum();
 		scene->clear();
 		//scene->addText("Spectrum " + QTime::currentTime().toString());
 		QColor colour(Qt::yellow);
@@ -2813,7 +2838,7 @@ private:
 	void slot_GraphicsScene_selectionChanged()
 	{
 		auto tf = scalar_color;
-		auto scene = getGraphicsScene_for_spectrum();
+		auto scene = get_GraphicsScene_for_spectrum();
 		auto list = scene->items();
 		for (int i = 0; i < list.size(); i++)
 		{

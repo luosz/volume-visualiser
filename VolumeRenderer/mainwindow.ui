@@ -126,11 +126,38 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_2">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>361</width>
+     <height>204</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>361</width>
+     <height>204</height>
+    </size>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,0,0">
+     <property name="spacing">
+      <number>7</number>
+     </property>
      <property name="leftMargin">
       <number>0</number>
      </property>
@@ -144,174 +171,154 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="leftMargin">
-          <number>0</number>
+        <widget class="QPushButton" name="frequencyButton">
+         <property name="text">
+          <string>&amp;Frequency</string>
          </property>
-         <property name="topMargin">
-          <number>0</number>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="opacityButton">
+         <property name="text">
+          <string>&amp;Opacity</string>
          </property>
-         <property name="bottomMargin">
-          <number>0</number>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="visibilityButton">
+         <property name="text">
+          <string>&amp;Visibility</string>
          </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="frequencyButton">
-             <property name="text">
-              <string>&amp;Frequency</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="opacityButton">
-             <property name="text">
-              <string>&amp;Opacity</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="visibilityButton">
-             <property name="text">
-              <string>&amp;Visibility</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="entropyButton">
-             <property name="text">
-              <string>draw &amp;Entropy</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="entropyOpacityButton">
-             <property name="text">
-              <string>E&amp;ntropy Opacity</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="lhHistogramButton">
-             <property name="text">
-              <string>&amp;LH Histogram</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QSpinBox" name="spinBox">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>65536</number>
-             </property>
-             <property name="value">
-              <number>1000</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="balanceButton">
-             <property name="text">
-              <string>&amp;Balance</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="drawWeightButton">
-             <property name="text">
-              <string>draw &amp;Weights</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="balanceOpacityButton">
-             <property name="text">
-              <string>Balance &amp;Opacity</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="increaseOpacityButton">
-             <property name="text">
-              <string>&amp;Increase Opacity</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="reduceOpacityButton">
-             <property name="text">
-              <string>Re&amp;duce Opacity</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <property name="bottomMargin">
-            <number>11</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="balanceRegionButton">
-             <property name="text">
-              <string>B&amp;alance Region</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="enhanceRegionButton">
-             <property name="text">
-              <string>E&amp;nhance Region</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="weakenRegionButton">
-             <property name="text">
-              <string>&amp;Weaken Region</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QGraphicsView" name="graphicsView"/>
-         </item>
-        </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="entropyButton">
+         <property name="text">
+          <string>draw &amp;Entropy</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="entropyOpacityButton">
+         <property name="text">
+          <string>E&amp;ntropy Opacity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="lhHistogramButton">
+         <property name="text">
+          <string>&amp;LH Histogram</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QSpinBox" name="spinBox">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>65536</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="balanceButton">
+         <property name="text">
+          <string>&amp;Balance</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="drawWeightButton">
+         <property name="text">
+          <string>draw &amp;Weights</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="balanceOpacityButton">
+         <property name="text">
+          <string>Balance &amp;Opacity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="increaseOpacityButton">
+         <property name="text">
+          <string>&amp;Increase Opacity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="reduceOpacityButton">
+         <property name="text">
+          <string>Re&amp;duce Opacity</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="balanceRegionButton">
+         <property name="text">
+          <string>B&amp;alance Region</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="enhanceRegionButton">
+         <property name="text">
+          <string>E&amp;nhance Region</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="weakenRegionButton">
+         <property name="text">
+          <string>&amp;Weaken Region</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -319,11 +326,17 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_4">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5">
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
      <property name="leftMargin">
       <number>0</number>
      </property>
@@ -337,56 +350,71 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <property name="leftMargin">
-          <number>0</number>
+        <widget class="QRadioButton" name="radioButton_optimise">
+         <property name="text">
+          <string>O&amp;ptimise</string>
          </property>
-         <property name="topMargin">
-          <number>0</number>
+         <property name="checked">
+          <bool>true</bool>
          </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="radioButton_optimise">
-           <property name="text">
-            <string>O&amp;ptimise</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_remove">
-           <property name="text">
-            <string>Remo&amp;ve</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="resetButton">
-           <property name="text">
-            <string>&amp;Reset TF</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="reloadButton">
-           <property name="text">
-            <string>Reload TF</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        </widget>
        </item>
        <item>
+        <widget class="QRadioButton" name="radioButton_remove">
+         <property name="text">
+          <string>Remo&amp;ve</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="resetButton">
+         <property name="text">
+          <string>&amp;Reset TF</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="reloadButton">
+         <property name="text">
+          <string>Reload TF</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>22</number>
+       </property>
+       <item>
         <widget class="QGraphicsView" name="graphicsView_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -419,11 +447,7 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
-       <item>
-        <widget class="QListView" name="listView"/>
-       </item>
-      </layout>
+      <widget class="QListView" name="listView"/>
      </item>
     </layout>
    </widget>
@@ -433,7 +457,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_4">
-    <layout class="QHBoxLayout" name="horizontalLayout_12">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="leftMargin">
       <number>0</number>
      </property>
@@ -447,7 +471,7 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_7"/>
+      <widget class="QGraphicsView" name="graphicsView"/>
      </item>
     </layout>
    </widget>
