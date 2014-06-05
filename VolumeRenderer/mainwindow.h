@@ -121,7 +121,7 @@ private:
 	std::vector<double> control_point_weight_list;
 	vtkSmartPointer<vtkPiecewiseFunction> scalar_opacity;
 	vtkSmartPointer<vtkPiecewiseFunction> gradient_opacity;
-	vtkSmartPointer<vtkColorTransferFunction> color_tf;
+	vtkSmartPointer<vtkColorTransferFunction> scalar_color;
 	double x_max, x_min, y_max, y_min;
 	int count_of_voxels;
 	void* volume_ptr;
@@ -129,6 +129,8 @@ private:
 	int enable_squared_distance;
 	int enable_hsv_distance;
 	int number_of_colours_in_spectrum;
+	int Number_of_colours_in_spectrum() const { return number_of_colours_in_spectrum; }
+	void Number_of_colours_in_spectrum(int val) { number_of_colours_in_spectrum = val; }
 	QString batch_patch;
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
@@ -164,10 +166,10 @@ private:
 		return 1e-6;
 	}
 
-	int get_number_of_colours_in_spectrum()
-	{
-		return number_of_colours_in_spectrum;
-	}
+	//int get_number_of_colours_in_spectrum()
+	//{
+	//	return number_of_colours_in_spectrum;
+	//}
 
 	QGraphicsScene * getGraphicsScene()
 	{
@@ -193,11 +195,11 @@ private:
 		return scene;
 	}
 
-	void set_colour_number_in_spectrum(int number_of_colours)
-	{
-		number_of_colours_in_spectrum = number_of_colours;
-		draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
-	}
+	//void set_colour_number_in_spectrum(int number_of_colours)
+	//{
+	//	number_of_colours_in_spectrum = number_of_colours;
+	//	draw_spectrum_in_graphicsview();
+	//}
 
 	/// Re-maps a number from one range to another.
 	double map_to_range(double val, double src_lower, double src_upper, double target_lower, double target_upper)
@@ -342,25 +344,25 @@ private:
 	double get_colour_r(int i)
 	{
 		double xrgb[6];
-		color_tf->GetNodeValue(i, xrgb);
+		scalar_color->GetNodeValue(i, xrgb);
 		return xrgb[1];
 	}
 	double get_colour_g(int i)
 	{
 		double xrgb[6];
-		color_tf->GetNodeValue(i, xrgb);
+		scalar_color->GetNodeValue(i, xrgb);
 		return xrgb[2];
 	}
 	double get_colour_b(int i)
 	{
 		double xrgb[6];
-		color_tf->GetNodeValue(i, xrgb);
+		scalar_color->GetNodeValue(i, xrgb);
 		return xrgb[3];
 	}
 
 	void get_color_by_intensity(double x, double rgb[3])
 	{
-		color_tf->GetColor(x, rgb);
+		scalar_color->GetColor(x, rgb);
 	}
 
 	int intensity_list_size()
@@ -412,17 +414,17 @@ private:
 				std::cerr << "An error occurred in colour_list_push_back(). intensity_list is empty" << std::endl;
 			}
 		}
-		color_tf->AddRGBPoint(denormalise_intensity(x), v[0], v[1], v[2]);
+		scalar_color->AddRGBPoint(denormalise_intensity(x), v[0], v[1], v[2]);
 	}
 
 	void colour_list_clear()
 	{
-		color_tf->RemoveAllPoints();
+		scalar_color->RemoveAllPoints();
 	}
 
 	int colour_list_size()
 	{
-		return color_tf->GetSize();
+		return scalar_color->GetSize();
 	}
 
 	double get_frequency(double intensity) // intensity belongs to [0,255]
@@ -1440,10 +1442,10 @@ private:
 			gradientOpacity->InsertEndChild(point);
 		}
 
-		for (int i = 0; i < color_tf->GetSize(); i++)
+		for (int i = 0; i < scalar_color->GetSize(); i++)
 		{
 			double xrgb[6];
-			color_tf->GetNodeValue(i, xrgb);
+			scalar_color->GetNodeValue(i, xrgb);
 			auto point = doc.NewElement("point");
 			point->SetAttribute("x", xrgb[0]);
 			point->SetAttribute("r", xrgb[1]);
@@ -1502,14 +1504,14 @@ private:
 			scalar_opacity->AddPoint(xa[0], xa[1]);
 		}
 
-		color_tf->RemoveAllPoints();
+		scalar_color->RemoveAllPoints();
 		std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
 		for (int i = 0; i < color->GetSize(); i++)
 		{
 			double xrgb[6];
 			color->GetNodeValue(i, xrgb);
 			std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
-			color_tf->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
+			scalar_color->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
 		}
 	}
 
@@ -1536,7 +1538,7 @@ private:
 		else
 		{
 			Threshold_x(atof(transFuncIntensity->FirstChildElement("lower")->Attribute("value")));
-			Threshold_y(atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value"))); 
+			Threshold_y(atof(transFuncIntensity->FirstChildElement("upper")->Attribute("value")));
 		}
 
 		auto domain = transFuncIntensity->FirstChildElement("domain");
@@ -1784,7 +1786,7 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			//v.push_back(0);
-			
+
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -1887,12 +1889,7 @@ private:
 		{
 			int colour_index = i / m;
 
-			//double opacity = (i % m == 1) ? 0.5 : 0;
-
-			// in a ramp, a control point's opacity equals its intensity
-			double opacity = (i + 1) * interval;
-
-			intensity_list_push_back(opacity);
+			intensity_list_push_back((i + 1) * interval);
 			{
 				std::vector<double> v;
 				v.push_back(spectrum[colour_index][0]);
@@ -1900,7 +1897,7 @@ private:
 				v.push_back(spectrum[colour_index][2]);
 				//v.push_back(0.5/3.0);
 				colour_list_push_back(v);
-				opacity_list_push_back(0.5 / 3.0);
+				opacity_list_push_back(0.5 / 3);
 			}
 		}
 
@@ -2260,7 +2257,7 @@ private:
 		{
 			// read UNC MetaImage (.mhd or .mha) files
 			reader = vtkSmartPointer<vtkMetaImageReader>::New();
-		} 
+		}
 		else
 		{
 			// read Nearly Raw Raster Data (*.nrrd *.nhdr) files
@@ -2289,7 +2286,7 @@ private:
 		if (Range_y() > UCHAR_MAX)
 		{
 			shiftScale->SetOutputScalarTypeToUnsignedShort();
-		} 
+		}
 		else
 		{
 			shiftScale->SetOutputScalarTypeToUnsignedChar();
@@ -2303,7 +2300,7 @@ private:
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
 		volumeProperty->SetScalarOpacity(scalar_opacity);
 		volumeProperty->SetGradientOpacity(gradient_opacity);
-		volumeProperty->SetColor(color_tf);
+		volumeProperty->SetColor(scalar_color);
 		volumeProperty->ShadeOff();
 		volumeProperty->SetInterpolationTypeToLinear();
 
@@ -2536,6 +2533,11 @@ private:
 		vtk_widget.repaint();
 	}
 
+	void update_colour_palette()
+	{
+		draw_spectrum_in_graphicsview();
+	}
+
 	void updateOpacityArrayFromTFWidget()
 	{
 		if (scalar_opacity->GetSize() < 1)
@@ -2582,7 +2584,7 @@ private:
 		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(false);
 		ui->action_Spectrum_Transfer_Function->setChecked(true);
 		enable_spectrum_ramp = 0;
-		generate_spectrum_transfer_function(number_of_colours_in_spectrum);
+		generate_spectrum_transfer_function(Number_of_colours_in_spectrum());
 		updateTFWidgetFromOpacityArrays();
 	}
 
@@ -2591,12 +2593,15 @@ private:
 		ui->action_Spectrum_Ramp_Transfer_Function->setChecked(true);
 		ui->action_Spectrum_Transfer_Function->setChecked(false);
 		enable_spectrum_ramp = 1;
-		generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
+		generate_spectrum_ramp_transfer_function(Number_of_colours_in_spectrum());
 		updateTFWidgetFromOpacityArrays();
 	}
 
-	void draw_spectrum_in_graphicsview(int n)
+	void draw_spectrum_in_graphicsview()
 	{
+		//int n = Number_of_colours_in_spectrum();
+		auto tf = scalar_color;
+		int n = tf->GetSize();
 		const double width = 280;
 		const double height = 16;
 		double w = width / n;
@@ -2613,8 +2618,11 @@ private:
 
 		for (int i = 0; i < n; i++)
 		{
+			double xrgb[6];
+			tf->GetNodeValue(i, xrgb);
 			QColor colour;
-			colour.setHsv(i * 360 / n, 255, 255);
+			//colour.setHsv(i * 360 / n, 255, 255);
+			colour.setRgb(denormalise_rgba(xrgb[1]), denormalise_rgba(xrgb[2]), denormalise_rgba(xrgb[3]));
 			QBrush brush(colour);
 			QPen pen;
 			pen.setStyle(Qt::NoPen);
@@ -2624,7 +2632,7 @@ private:
 		}
 	}
 
-	void pick_colour_and_compute_distance(int r, int g, int b)
+	void compute_distance_and_weights_by_colours(int r, int g, int b)
 	{
 		// put the picked colour in the array for distance computation
 		unsigned char pixels[] = { r, g, b };
@@ -2654,12 +2662,35 @@ private:
 		}
 	}
 
+	void compute_distance_and_weights_by_intensity(double normalized_intensity)
+	{
+		control_point_weight_list.clear();
+		double sum = 0;
+
+		for (int i = 0; i < intensity_list_size(); i++)
+		{
+			double distance = abs(get_intensity(i) - normalized_intensity);
+			control_point_weight_list.push_back(distance);
+			sum += distance;
+		}
+
+		if (sum > 0)
+		{
+			// normalize the distances
+			for (unsigned int i = 0; i < control_point_weight_list.size(); i++)
+			{
+				control_point_weight_list[i] = control_point_weight_list[i] / sum;
+			}
+		}
+	}
+
 	void optimise_transfer_function_for_colour(QColor colour)
 	{
 		colour_for_optimization = colour;
 
 		// compute the distance between control point colour and selected colour
-		pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+		compute_distance_and_weights_by_colours(colour.red(), colour.green(), colour.blue());
+
 		std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 		std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
 
@@ -2678,47 +2709,74 @@ private:
 		updateOpacityArrayFromTFWidget();
 	}
 
-	int get_closest_non_zero_control_point(int r0, int g0, int b0)
+	/// 
+	void optimise_transfer_function_for_intensity(double normalized_intensity)
 	{
-		double h0, s0, v0;
-		vtkMath::RGBToHSV(normalise_rgba(r0), normalise_rgba(g0), normalise_rgba(b0), &h0, &s0, &v0);
+		//colour_for_optimization = colour;
 
-		double dist = 1e6;
-		int index = -1;
-		for (unsigned int i = 0; i < colour_list_size(); i++)
+		//// compute the distance between control point colour and selected colour
+		//pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
+		//std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
+		//std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
+
+		compute_distance_and_weights_by_intensity(normalized_intensity);
+
+		// optimise the transfer function for the selected colour
+		int n = ui->spinBox->value();
+		if (n < 1 || n > max_iteration_count)
 		{
-			double r = get_colour_r(i);
-			double g = get_colour_g(i);
-			double b = get_colour_b(i);
-			double a = get_opacity(i);
-			if (a > 0)
-			{
-				double h, s, v;
-				vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
-
-				// compute distance in hue without squaring
-				double distance = abs(h - h0);
-
-				if (index == -1 || distance < dist)
-				{
-					index = i;
-					dist = distance;
-				}
-			}
+			n = 1;
 		}
-		return index;
+		while (n-- > 0)
+		{
+			//balance_opacity_for_region();
+			balance_transfer_function_edge_for_region();
+		}
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
 	}
+
+	//int get_closest_non_zero_control_point(int r0, int g0, int b0)
+	//{
+	//	double h0, s0, v0;
+	//	vtkMath::RGBToHSV(normalise_rgba(r0), normalise_rgba(g0), normalise_rgba(b0), &h0, &s0, &v0);
+
+	//	double dist = 1e6;
+	//	int index = -1;
+	//	for (unsigned int i = 0; i < colour_list_size(); i++)
+	//	{
+	//		double r = get_colour_r(i);
+	//		double g = get_colour_g(i);
+	//		double b = get_colour_b(i);
+	//		double a = get_opacity(i);
+	//		if (a > 0)
+	//		{
+	//			double h, s, v;
+	//			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+
+	//			// compute distance in hue without squaring
+	//			double distance = abs(h - h0);
+
+	//			if (index == -1 || distance < dist)
+	//			{
+	//				index = i;
+	//				dist = distance;
+	//			}
+	//		}
+	//	}
+	//	return index;
+	//}
 
 	void reset_transfer_function()
 	{
 		// generate a spectrum transfer function with n groups of control points
 		if (enable_spectrum_ramp == 0)
 		{
-			generate_spectrum_transfer_function(number_of_colours_in_spectrum);
+			generate_spectrum_transfer_function(Number_of_colours_in_spectrum());
 		}
 		else
 		{
-			generate_spectrum_ramp_transfer_function(number_of_colours_in_spectrum);
+			generate_spectrum_ramp_transfer_function(Number_of_colours_in_spectrum());
 		}
 	}
 
@@ -2726,6 +2784,7 @@ private:
 
 	void slot_GraphicsScene_selectionChanged()
 	{
+		auto tf = scalar_color;
 		auto scene = getGraphicsScene_for_spectrum();
 		auto list = scene->items();
 		for (int i = 0; i < list.size(); i++)
@@ -2736,33 +2795,43 @@ private:
 			{
 				int index = list.at(i)->data(0).toInt();
 				std::cout << "QGraphicsItem index=" << index << std::endl;
-				if (index >= 0 && index < get_number_of_colours_in_spectrum())
+				if (index >= 0 && index < tf->GetSize())
 				{
-					QColor colour;
-					colour.setHsv(index * 360 / get_number_of_colours_in_spectrum(), 255, 255);
-					if (ui->radioButton_optimise->isChecked())
+					double xrgb[6];
+					tf->GetNodeValue(index, xrgb);
+					double intensity = normalise_intensity(xrgb[0]);
+					double min_distance = UCHAR_MAX;
+					int min_index = -1;
+					for (int i = 0; i < intensity_list_size(); i++)
 					{
-						// reset transfer function before optimizing it
-						reset_transfer_function();
-
-						// optimise for a specific colour
-						optimise_transfer_function_for_colour(colour);
-					}
-					else
-					{
-						// remove closest control point
-						int ii = get_closest_non_zero_control_point(colour.red(), colour.green(), colour.blue());
-						if (ii != -1)
+						double distance = abs(intensity - get_intensity(i));
+						if (distance < min_distance)
 						{
-							std::cout << "closest control point index=" << ii << std::endl;
-							set_opacity(ii, 0);
-							updateTFWidgetFromOpacityArrays();
-							updateOpacityArrayFromTFWidget();
+							min_distance = distance;
+							min_index = i;
+						}
+					}
+					if (min_index != -1)
+					{
+						std::cout << "closest control point index=" << min_index << " intensity=" << get_intensity(min_index) << std::endl;
+						if (ui->radioButton_optimise->isChecked())
+						{
+							// reset transfer function before optimizing it
+							//reset_transfer_function();
+
+							optimise_transfer_function_for_intensity(get_intensity(min_index));
 						}
 						else
 						{
-							std::cout << "there is no non-zero control point." << std::endl;
+							// set opacity of the closest control point to zero
+							set_opacity(min_index, 0);
+							updateTFWidgetFromOpacityArrays();
+							updateOpacityArrayFromTFWidget();
 						}
+					}
+					else
+					{
+						std::cout << "Errors in slot_GraphicsScene_selectionChanged(). min_index=" << min_index << std::endl;
 					}
 				}
 			}
@@ -2829,9 +2898,9 @@ private:
 	void on_resetButton_clicked();
 	void on_action_Test_triggered();
 	void on_drawWeightButton_clicked();
-    void on_action_VtkSmartVolumeMapper_triggered();
-    void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
-    void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
+	void on_action_VtkSmartVolumeMapper_triggered();
+	void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
+	void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
 };
 
 #endif // MAINWINDOW_H

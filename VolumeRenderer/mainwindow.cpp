@@ -42,7 +42,7 @@ ui(new Ui::MainWindow)
 	//scalar_opacity->AddPoint(255.0, 0.0);
 
 	// Create transfer mapping scalar value to color.
-	color_tf = vtkSmartPointer<vtkColorTransferFunction>::New();
+	scalar_color = vtkSmartPointer<vtkColorTransferFunction>::New();
 	//color_tf->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
 	//color_tf->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
 	//color_tf->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
@@ -107,8 +107,10 @@ ui(new Ui::MainWindow)
 	batch_patch = "D:/_uchar/vortex/";
 
 	//generate_default_transfer_function();
-	set_colour_number_in_spectrum(16);
+	//set_colour_number_in_spectrum(16);
+	Number_of_colours_in_spectrum(16);
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
+	update_colour_palette();
 
 	// use HSV without squaring distance
 	on_action_Compute_Distance_HSV_triggered();
@@ -525,6 +527,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	}
 
 	updateTFWidgetFromOpacityArrays();
+	update_colour_palette();
 
 	std::cout << "updateTransferFunctionWidgetsFromArrays" << std::endl;
 
@@ -544,11 +547,11 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 		std::cout << xa[0] << " " << xa[1] << std::endl;
 	}
 
-	std::cout << "color_tf size=" << color_tf->GetSize() << std::endl;
-	for (int i = 0; i < color_tf->GetSize(); i++)
+	std::cout << "color_tf size=" << scalar_color->GetSize() << std::endl;
+	for (int i = 0; i < scalar_color->GetSize(); i++)
 	{
 		double xrgb[6];
-		color_tf->GetNodeValue(i, xrgb);
+		scalar_color->GetNodeValue(i, xrgb);
 		std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
 	}
 }
@@ -667,14 +670,16 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 	ui->action_Spectrum_Transfer_Function->setChecked(true);
 	enable_spectrum_ramp = 0;
 	bool ok;
-	int n = number_of_colours_in_spectrum;
+	int n = Number_of_colours_in_spectrum();
 	n = QInputDialog::getInt(this, tr("Spectrum Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
 		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTFWidgetFromOpacityArrays();
-		set_colour_number_in_spectrum(n);
+		//set_colour_number_in_spectrum(n);
+		Number_of_colours_in_spectrum(n);
+		update_colour_palette();
 	}
 }
 
@@ -684,14 +689,16 @@ void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
 	ui->action_Spectrum_Transfer_Function->setChecked(false);
 	enable_spectrum_ramp = 1;
 	bool ok;
-	int n = number_of_colours_in_spectrum;
+	int n = Number_of_colours_in_spectrum();
 	n = QInputDialog::getInt(this, tr("Spectrum Ramp Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
 		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_ramp_transfer_function(n);
 		updateTFWidgetFromOpacityArrays();
-		set_colour_number_in_spectrum(n);
+		//set_colour_number_in_spectrum(n);
+		Number_of_colours_in_spectrum(n);
+		update_colour_palette();
 	}
 }
 
@@ -727,7 +734,7 @@ void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggere
 void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 {
 	bool ok;
-	int n = number_of_colours_in_spectrum;
+	int n = Number_of_colours_in_spectrum();
 	n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
@@ -1029,7 +1036,7 @@ void MainWindow::on_resetButton_clicked()
 {
 	reset_transfer_function();
 	updateTFWidgetFromOpacityArrays();
-	draw_spectrum_in_graphicsview(number_of_colours_in_spectrum);
+	update_colour_palette();
 }
 
 void MainWindow::on_action_Test_triggered()
