@@ -68,6 +68,8 @@
 #include "ctkVTKScalarBarWidget.h"
 #include "ctkVTKSurfaceMaterialPropertyWidget.h"
 #include "ctkVTKTextPropertyWidget.h"
+#include "ctkVTKScalarsToColorsWidget.h"
+#include "ctkVTKScalarsToColorsView.h"
 
 // Slicer
 #include "vtkSlicerGPURayCastVolumeMapper.h"
@@ -106,6 +108,8 @@ protected:
 
 private:
 	Ui::MainWindow *ui;
+
+	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
 
 	QString volume_filename;
 	QString transfer_function_filename;
@@ -2780,6 +2784,30 @@ private:
 		}
 	}
 
+	void reload_transfer_function_from_file()
+	{
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = transfer_function_filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+
+		std::cout << "transfer function file: " << filename_str << endl;
+
+		auto p = strstr(filename_str, ".tfi");
+		if (p)
+		{
+			std::cout << p << std::endl;
+			openTransferFunctionFromVoreenXML(filename_str);
+		}
+		else
+		{
+			openTransferFunctionFromMITKXML(filename_str);
+			updateOpacityArrayFromTFWidget();
+		}
+
+		updateTFWidgetFromOpacityArrays();
+		update_colour_palette();
+	}
+
 	private slots:
 
 	void slot_GraphicsScene_selectionChanged()
@@ -2901,6 +2929,7 @@ private:
 	void on_action_VtkSmartVolumeMapper_triggered();
 	void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
 	void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
+    void on_reloadButton_clicked();
 };
 
 #endif // MAINWINDOW_H

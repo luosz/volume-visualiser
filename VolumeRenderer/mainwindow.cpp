@@ -15,6 +15,7 @@ ui(new Ui::MainWindow)
 	// add VTK widgets
 	ui->verticalLayout->addWidget(&vtk_widget);
 	ui->verticalLayout_2->addWidget(&volume_property_widget);
+	ui->verticalLayout_7->addWidget(&ctkVTKScalarsToColorsWidget1);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -111,6 +112,12 @@ ui(new Ui::MainWindow)
 	Number_of_colours_in_spectrum(16);
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 	update_colour_palette();
+
+	auto view = ctkVTKScalarsToColorsWidget1.view();
+	view->addOpacityFunction(scalar_opacity);
+	//view->addColorTransferFunction(scalar_color);
+	//view->addPiecewiseFunction(gradient_opacity);
+	ctkVTKScalarsToColorsWidget1.setEditColors(false);
 
 	// use HSV without squaring distance
 	on_action_Compute_Distance_HSV_triggered();
@@ -1153,4 +1160,9 @@ void MainWindow::on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered()
     ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
     ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(true);
 	Volume_mapper_index(2);
+}
+
+void MainWindow::on_reloadButton_clicked()
+{
+	reload_transfer_function_from_file();
 }

@@ -372,14 +372,28 @@
          <item>
           <widget class="QPushButton" name="resetButton">
            <property name="text">
-            <string>&amp;Reset</string>
+            <string>&amp;Reset TF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="reloadButton">
+           <property name="text">
+            <string>Reload TF</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QGraphicsView" name="graphicsView_2"/>
+        <widget class="QGraphicsView" name="graphicsView_2">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
