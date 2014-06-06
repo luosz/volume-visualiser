@@ -2082,6 +2082,15 @@ private:
 		}
 	}
 
+	void draw_histogram_on_widget()
+	{
+		histogram_function->RemoveAllPoints();
+		for (int i = 0; i < frequency_list.size(); i++)
+		{
+			histogram_function->AddPoint(i, frequency_list[i]);
+		}
+	}
+
 	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
@@ -2325,6 +2334,8 @@ private:
 		// generate histograms
 		generate_visibility_function(shiftScale);;
 		generate_LH_histogram(shiftScale);
+
+		draw_histogram_on_widget();
 
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
