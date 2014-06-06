@@ -113,7 +113,9 @@ ui(new Ui::MainWindow)
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 	update_colour_palette();
 
-	get_histogram_view()->addOpacityFunction(scalar_opacity);
+	histogram_function = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	histogram_function->DeepCopy(scalar_opacity);
+	get_histogram_view()->addOpacityFunction(histogram_function);
 	//get_histogram_widget()->setEditColors(false);
 
 	// use HSV without squaring distance

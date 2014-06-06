@@ -110,6 +110,7 @@ private:
 	Ui::MainWindow *ui;
 
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
+	vtkSmartPointer<vtkPiecewiseFunction> histogram_function;
 
 	QString volume_filename;
 	QString transfer_function_filename;
