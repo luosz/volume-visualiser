@@ -222,7 +222,7 @@ private:
 
 	QLayout * get_histogram_layout()
 	{
-		return ui->verticalLayout_4;
+		return ui->verticalLayout_5;
 	}
 
 	//void set_colour_number_in_spectrum(int number_of_colours)
@@ -2084,10 +2084,12 @@ private:
 
 	void draw_histogram_on_widget()
 	{
+		std::ofstream f("d:/histogram.txt");
 		histogram_function->RemoveAllPoints();
 		for (int i = 0; i < frequency_list.size(); i++)
 		{
 			histogram_function->AddPoint(i, frequency_list[i]);
+			f << i << "\t" << frequency_list[i] << std::endl;
 		}
 	}
 
