@@ -16,6 +16,8 @@ ui(new Ui::MainWindow)
 	get_vtk_layout()->addWidget(&vtk_widget);
 	get_property_layout()->addWidget(&volume_property_widget);
 	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget1);
+	ui->verticalLayout_6->addWidget(&histogram_widget);
+
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();

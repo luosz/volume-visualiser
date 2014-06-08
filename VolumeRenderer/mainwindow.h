@@ -82,6 +82,9 @@
 
 #include "transfer_function_xml.h"
 
+// histogram
+#include "Histogram.h"
+
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
 //#endif // OUTPUT_TO_FILE
@@ -111,6 +114,7 @@ private:
 
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
 	vtkSmartPointer<vtkPiecewiseFunction> histogram_function;
+	Histogram histogram_widget;
 
 	QString volume_filename;
 	QString transfer_function_filename;
@@ -2086,11 +2090,15 @@ private:
 	{
 		std::ofstream f("d:/histogram.txt");
 		histogram_function->RemoveAllPoints();
+		std::vector<int> v;
+		v.reserve(frequency_list.size());
 		for (int i = 0; i < frequency_list.size(); i++)
 		{
 			histogram_function->AddPoint(i, frequency_list[i]);
 			f << i << "\t" << frequency_list[i] << std::endl;
+			v.push_back(static_cast<int>(frequency_list[i]));
 		}
+		histogram_widget.setBins(v);
 	}
 
 	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)

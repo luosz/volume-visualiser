@@ -73,6 +73,11 @@ set(tinyxml2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tinyxml2)
 set(tinyxml2_files ${tinyxml2_DIR}/tinyxml2.h ${tinyxml2_DIR}/tinyxml2.cpp)
 source_group(tinyxml2 FILES ${tinyxml2_files})
 
+# histogram
+set(histogram_DIR ${CMAKE_CURRENT_SOURCE_DIR}/histogram)
+set(histogram_files ${histogram_DIR}/Histogram.h ${histogram_DIR}/Histogram.cpp)
+source_group(histogram FILES ${histogram_files})
+
 # nvMath
 set(nvMath_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nvMath)
 file(GLOB nvMath_files
@@ -106,6 +111,7 @@ include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${tinyxml2_DIR}
 	${nvMath_DIR}
 	${Slicer_DIR}
+	${histogram_DIR}
 )
 
 add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files}
@@ -116,6 +122,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${nvMath_files}
 	${volume_files}
 	${Slicer_files}
+	${histogram_files}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})
