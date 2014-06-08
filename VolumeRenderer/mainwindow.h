@@ -11,6 +11,7 @@
 #include <QColorDialog>
 #include <QTime>
 #include <QStandardItemModel>
+#include <QVector>
 
 #include <iostream>
 #include <memory>
@@ -2090,13 +2091,12 @@ private:
 	{
 		std::ofstream f("d:/histogram.txt");
 		histogram_function->RemoveAllPoints();
-		std::vector<int> v;
-		v.reserve(frequency_list.size());
+		QVector<int> v(frequency_list.size());
 		for (int i = 0; i < frequency_list.size(); i++)
 		{
 			histogram_function->AddPoint(i, frequency_list[i]);
 			f << i << "\t" << frequency_list[i] << std::endl;
-			v.push_back(static_cast<int>(frequency_list[i]));
+			v[i] = static_cast<int>(frequency_list[i]);
 		}
 		histogram_widget.setBins(v);
 	}
