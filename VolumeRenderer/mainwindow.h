@@ -19,9 +19,9 @@
 #include <cstdlib>
 #include <vector>
 #include <limits>
-#include <cmath>
 #include <string>
 #include <string.h>
+#include <cmath>
 
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
@@ -83,9 +83,6 @@
 
 #include "transfer_function_xml.h"
 
-// histogram
-#include "Histogram.h"
-
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
 //#endif // OUTPUT_TO_FILE
@@ -114,8 +111,9 @@ private:
 	Ui::MainWindow *ui;
 
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
-	vtkSmartPointer<vtkPiecewiseFunction> histogram_function;
-	Histogram histogram_widget;
+	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget2;
+	vtkSmartPointer<vtkPiecewiseFunction> opacity_function_1;
+	vtkSmartPointer<vtkPiecewiseFunction> opacity_function_2;
 
 	QString volume_filename;
 	QString transfer_function_filename;
@@ -205,15 +203,15 @@ private:
 		return scene;
 	}
 
-	ctkVTKScalarsToColorsView * get_histogram_view()
-	{
-		return ctkVTKScalarsToColorsWidget1.view();
-	}
+	//ctkVTKScalarsToColorsView * get_histogram_view()
+	//{
+	//	return ctkVTKScalarsToColorsWidget1.view();
+	//}
 
-	ctkVTKScalarsToColorsWidget * get_histogram_widget()
-	{
-		return &ctkVTKScalarsToColorsWidget1;
-	}
+	//ctkVTKScalarsToColorsWidget * get_histogram_widget()
+	//{
+	//	return &ctkVTKScalarsToColorsWidget1;
+	//}
 
 	QLayout * get_vtk_layout()
 	{
@@ -228,6 +226,44 @@ private:
 	QLayout * get_histogram_layout()
 	{
 		return ui->verticalLayout_5;
+	}
+
+	double clamp(double val, double minimum, double maximun)
+	{
+		if (val < minimum)
+		{
+			return minimum;
+		}
+		if (val > maximun)
+		{
+			return maximun;
+		}
+		return val;
+	}
+
+#ifndef M_PI
+#define M_PI       3.14159265358979323846
+#endif
+	/**
+	http://stackoverflow.com/questions/11209115/creating-gaussian-filter-of-required-length-in-python
+	from math import pi, sqrt, exp
+	def gauss(n=11,sigma=1):
+	r = range(-int(n/2),int(n/2)+1)
+	return [1 / (sigma * sqrt(2*pi)) * exp(-float(x)**2/(2*sigma**2)) for x in r]
+	*/
+	std::vector<double> gaussian_kernel_1d(int n = 11, double sigma = 1)
+	{
+		std::vector<double> kernel;
+		const double pi = M_PI;
+		std::cout << "gaussian_kernel_1d" << std::endl;
+		for (int x = -(n / 2); x < (n / 2) + 1; x++)
+		{
+			double val = 1 / (sigma * sqrt(2 * pi)) * exp(-x*x / (2. * sigma*sigma));
+			kernel.push_back(val);
+			std::cout << val << " ";
+		}
+		std::cout << std::endl;
+		return kernel;
 	}
 
 	//void set_colour_number_in_spectrum(int number_of_colours)
@@ -2087,19 +2123,18 @@ private:
 		}
 	}
 
-	void draw_histogram_on_widget()
-	{
-		std::ofstream f("d:/histogram.txt");
-		histogram_function->RemoveAllPoints();
-		QVector<int> v(frequency_list.size());
-		for (int i = 0; i < frequency_list.size(); i++)
-		{
-			histogram_function->AddPoint(i, frequency_list[i]);
-			f << i << "\t" << frequency_list[i] << std::endl;
-			v[i] = static_cast<int>(frequency_list[i]);
-		}
-		histogram_widget.setBins(v);
-	}
+	//void draw_histogram_on_widget()
+	//{
+	//	std::ofstream f("d:/histogram.txt");
+	//	//histogram1->RemoveAllPoints();
+	//	//QVector<int> v(frequency_list.size());
+	//	for (int i = 0; i < frequency_list.size(); i++)
+	//	{
+	//		//histogram1->AddPoint(i, frequency_list[i]);
+	//		f << i << "\t" << frequency_list[i] << std::endl;
+	//		//v[i] = static_cast<int>(frequency_list[i]);
+	//	}
+	//}
 
 	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
@@ -2345,7 +2380,7 @@ private:
 		generate_visibility_function(shiftScale);;
 		generate_LH_histogram(shiftScale);
 
-		draw_histogram_on_widget();
+		//draw_histogram_on_widget();
 
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
@@ -2977,6 +3012,12 @@ private:
 	void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
 	void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
     void on_reloadButton_clicked();
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void on_pushButton_5_clicked();
+    void on_pushButton_6_clicked();
 };
 
 #endif // MAINWINDOW_H

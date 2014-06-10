@@ -16,8 +16,7 @@ ui(new Ui::MainWindow)
 	get_vtk_layout()->addWidget(&vtk_widget);
 	get_property_layout()->addWidget(&volume_property_widget);
 	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget1);
-	ui->verticalLayout_6->addWidget(&histogram_widget);
-
+	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget2);
 
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -115,9 +114,14 @@ ui(new Ui::MainWindow)
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 	update_colour_palette();
 
-	histogram_function = vtkSmartPointer<vtkPiecewiseFunction>::New();
-	histogram_function->DeepCopy(scalar_opacity);
-	get_histogram_view()->addOpacityFunction(histogram_function);
+	opacity_function_1 = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	opacity_function_1->DeepCopy(scalar_opacity);
+	//ctkVTKScalarsToColorsWidget1.view()->addColorTransferFunction(scalar_color);
+	ctkVTKScalarsToColorsWidget1.view()->addOpacityFunction(opacity_function_1);
+	opacity_function_2 = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	opacity_function_2->DeepCopy(scalar_opacity);
+	//ctkVTKScalarsToColorsWidget2.view()->addColorTransferFunction(scalar_color);
+	ctkVTKScalarsToColorsWidget2.view()->addOpacityFunction(opacity_function_2);
 	//get_histogram_widget()->setEditColors(false);
 
 	// use HSV without squaring distance
@@ -1097,6 +1101,8 @@ void MainWindow::on_action_Test_triggered()
 			}
 		}
 	}
+
+	gaussian_kernel_1d();
 }
 
 void MainWindow::on_drawWeightButton_clicked()
@@ -1141,29 +1147,119 @@ void MainWindow::on_drawWeightButton_clicked()
 
 void MainWindow::on_action_VtkSmartVolumeMapper_triggered()
 {
-    ui->action_VtkSmartVolumeMapper->setChecked(true);
-    ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
-    ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
+	ui->action_VtkSmartVolumeMapper->setChecked(true);
+	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
 	Volume_mapper_index(0);
 }
 
 void MainWindow::on_action_VtkSlicerGPURayCastVolumeMapper_triggered()
 {
-    ui->action_VtkSmartVolumeMapper->setChecked(false);
-    ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(true);
-    ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
+	ui->action_VtkSmartVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(true);
+	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
 	Volume_mapper_index(1);
 }
 
 void MainWindow::on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered()
 {
-    ui->action_VtkSmartVolumeMapper->setChecked(false);
-    ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
-    ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(true);
+	ui->action_VtkSmartVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(true);
 	Volume_mapper_index(2);
 }
 
 void MainWindow::on_reloadButton_clicked()
 {
 	reload_transfer_function_from_file();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+	opacity_function_1->DeepCopy(scalar_opacity);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+	opacity_function_2->DeepCopy(scalar_opacity);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+	scalar_opacity->DeepCopy(opacity_function_1);
+	updateOpacityArrayFromTFWidget();
+	updateTFWidgetFromOpacityArrays();
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+	scalar_opacity->DeepCopy(opacity_function_2);
+	updateOpacityArrayFromTFWidget();
+	updateTFWidgetFromOpacityArrays();
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+	double rate1 = ui->doubleSpinBox->value();
+	double rate2 = ui->doubleSpinBox_2->value();
+	int size1 = opacity_function_1->GetSize();
+	int size2 = opacity_function_2->GetSize();
+	int size = size1 < size2 ? size1 : size2;
+	std::cout << "merge opacity function size=" << size << " rate1=" << rate1 << " rate2=" << rate2 << std::endl;
+	auto merger = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	const int N = 4;
+	for (int i = 0; i < size; i++)
+	{
+		double xy1[N], xy2[N], xy[N];
+		opacity_function_1->GetNodeValue(i, xy1);
+		opacity_function_2->GetNodeValue(i, xy2);
+		for (int j = 0; j < N; j++)
+		{
+			xy[j] = rate1 * xy1[j] + rate2 * xy2[j];
+		}
+		merger->AddPoint(xy[0], clamp(xy[1], 0, 1));
+	}
+	scalar_opacity->DeepCopy(merger);
+
+	updateOpacityArrayFromTFWidget();
+	updateTFWidgetFromOpacityArrays();
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+	int n = 5;
+	double sigma = 1;
+	bool ok;
+	QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+		tr("n and sigma for Gaussian kernel"), QLineEdit::Normal,
+		"5 1", &ok);
+	if (ok && !text.isEmpty())
+	{
+		auto list = text.split(QString(" "));
+		if (list.size() >= 2)
+		{
+			n = atoi(list.at(0).toLocal8Bit().constData());
+			sigma = atoi(list.at(1).toLocal8Bit().constData());
+		}
+		std::cout << "n=" << n << " sigma=" << sigma << std::endl;
+	}
+
+	int half = n / 2;
+	auto kernel = gaussian_kernel_1d(n, sigma);
+	std::vector<double> opacity_new = opacity_list;
+	for (int i = half; i < opacity_new.size() - half; i++)
+	{
+		double sum = 0;
+		for (int j = 0; j < n; j++)
+		{
+			int offset = j - half;
+			int k = i + offset;
+			sum += kernel[j] * get_opacity(k);
+		}
+		opacity_new[i] = sum;
+	}
+	opacity_list = opacity_new;
+
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
 }
