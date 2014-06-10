@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Volume Renderer</string>
+   <string>Volume Visualizer</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -411,7 +411,7 @@
         <number>0</number>
        </property>
        <property name="rightMargin">
-        <number>22</number>
+        <number>26</number>
        </property>
        <item>
         <widget class="QGraphicsView" name="graphicsView_2">
