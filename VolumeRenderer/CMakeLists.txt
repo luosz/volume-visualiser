@@ -85,10 +85,19 @@ set(volume_files voxel_utility.h lh_histogram.h K_Means_PP_Generic.h volume_util
 source_group(volume FILES ${volume_files})
 
 # Qt and project source code
-set(Project_source_files main.cpp mainwindow.cpp)
-set(Project_header_files mainwindow.h transfer_function_xml.h)
+#set(Project_source_files main.cpp mainwindow.cpp)
+#set(Project_header_files mainwindow.h transfer_function_xml.h)
+file(GLOB Project_source_files
+	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+)
+file(GLOB Project_header_files
+	${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
 QT4_WRAP_CPP(Project_moc_source_files ${Project_header_files})
-set(Project_ui_files mainwindow.ui)
+#set(Project_ui_files mainwindow.ui)
+file(GLOB Project_ui_files
+	${CMAKE_CURRENT_SOURCE_DIR}/*.ui
+)
 QT4_WRAP_UI(Project_ui_header_files ${Project_ui_files})
 source_group(ui FILES ${Project_ui_files} ${Project_ui_header_files})
 source_group(moc FILES ${Project_moc_source_files})

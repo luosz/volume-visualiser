@@ -81,6 +81,7 @@
 #include "tinyxml2/tinyxml2.h"
 
 #include "ui_mainwindow.h"
+#include "widget.h"
 
 #include "transfer_function_xml.h"
 
@@ -110,6 +111,8 @@ protected:
 
 private:
 	Ui::MainWindow *ui;
+
+	Widget widget;
 
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget2;

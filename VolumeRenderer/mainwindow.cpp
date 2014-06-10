@@ -1104,9 +1104,11 @@ void MainWindow::on_action_Test_triggered()
 
 	gaussian_kernel_1d();
 
-	auto originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-	ui->label->setPixmap(originalPixmap.scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	//auto originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+	//ui->label->setPixmap(originalPixmap.scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	//updateScreenshotLabel();
+
+	widget.showFullScreen();
 }
 
 void MainWindow::on_drawWeightButton_clicked()
