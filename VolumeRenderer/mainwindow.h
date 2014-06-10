@@ -12,6 +12,7 @@
 #include <QTime>
 #include <QStandardItemModel>
 #include <QVector>
+#include <QDesktopWidget>
 
 #include <iostream>
 #include <memory>
@@ -2688,7 +2689,7 @@ private:
 		//int n = Number_of_colours_in_spectrum();
 		auto tf = scalar_color;
 		int n = tf->GetSize();
-		const double width = 320;
+		const double width = 340;
 		const double height = 16;
 		double w = width / n;
 		QGraphicsScene *scene = get_GraphicsScene_for_spectrum();
