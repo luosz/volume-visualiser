@@ -1108,7 +1108,7 @@ void MainWindow::on_action_Test_triggered()
 	//ui->label->setPixmap(originalPixmap.scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	//updateScreenshotLabel();
 
-	widget.showFullScreen();
+	widget.show();
 }
 
 void MainWindow::on_drawWeightButton_clicked()
