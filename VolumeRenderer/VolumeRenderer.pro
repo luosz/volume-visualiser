@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    widget.cpp
+    widget.cpp \
+    screenshotwidget.cpp
 
 HEADERS  += mainwindow.h \
-    widget.h
+    widget.h \
+    screenshotwidget.h
 
 FORMS    += mainwindow.ui \
-    widget.ui
+    widget.ui \
+    screenshotwidget.ui

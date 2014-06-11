@@ -81,7 +81,7 @@
 #include "tinyxml2/tinyxml2.h"
 
 #include "ui_mainwindow.h"
-#include "widget.h"
+#include "screenshotwidget.h"
 
 #include "transfer_function_xml.h"
 
@@ -112,7 +112,7 @@ protected:
 private:
 	Ui::MainWindow *ui;
 
-	Widget widget;
+	ScreenshotWidget screenshot_widget;
 
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget1;
 	ctkVTKScalarsToColorsWidget ctkVTKScalarsToColorsWidget2;
@@ -3022,6 +3022,7 @@ private:
     void on_pushButton_4_clicked();
     void on_pushButton_5_clicked();
     void on_pushButton_6_clicked();
+    void on_action_Screenshot_triggered();
 };
 
 #endif // MAINWINDOW_H

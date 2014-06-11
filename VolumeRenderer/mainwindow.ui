@@ -71,9 +71,9 @@
     <addaction name="action_About"/>
     <addaction name="action_Test"/>
    </widget>
-   <widget class="QMenu" name="menu_Tools">
+   <widget class="QMenu" name="menu_Rendering">
     <property name="title">
-     <string>&amp;Tools</string>
+     <string>&amp;Rendering</string>
     </property>
     <addaction name="action_Compute_Distance"/>
     <addaction name="action_Compute_Squared_Distance"/>
@@ -84,11 +84,19 @@
     <addaction name="action_Spectrum_Ramp_Transfer_Function"/>
     <addaction name="action_Pick_a_colour_and_optimise_transfer_function"/>
     <addaction name="action_Genearte_transfer_functions_for_spectrum"/>
+    <addaction name="separator"/>
     <addaction name="action_VtkSmartVolumeMapper"/>
     <addaction name="action_VtkSlicerGPURayCastVolumeMapper"/>
     <addaction name="action_VtkSlicerGPURayCastMultiVolumeMapper"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_Screenshot"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Rendering"/>
    <addaction name="menu_Tools"/>
    <addaction name="menu_Help"/>
   </widget>
@@ -813,6 +821,11 @@
    </property>
    <property name="text">
     <string>vtkSlicerGPURayCastMultiVolumeMapper</string>
+   </property>
+  </action>
+  <action name="action_Screenshot">
+   <property name="text">
+    <string>&amp;Screenshot</string>
    </property>
   </action>
  </widget>
