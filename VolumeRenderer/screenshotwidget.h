@@ -70,7 +70,6 @@ public slots:
 	virtual void mousePressEvent(QMouseEvent *e)
 	{
 		//std::cout << "mousePressEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
-
 		if (e->button() == Qt::RightButton)
 		{
 			contextMenu.exec(this->mapToGlobal(e->pos()));
@@ -80,18 +79,13 @@ public slots:
 	virtual void mouseMoveEvent(QMouseEvent *e)
 	{
 		//std::cout << "mouseMoveEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
-
-		if (selectionStarted)
-		{
-			point2 = e->pos();
-			repaint();
-		}
+		point2 = e->pos();
+		repaint();
 	}
 
 	virtual void mouseReleaseEvent(QMouseEvent *e)
 	{
 		//std::cout << "mouseReleaseEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
-
 		selectionStarted = !selectionStarted;
 		if (selectionStarted)
 		{
@@ -100,10 +94,11 @@ public slots:
 		else
 		{
 			QRect rect(point1, point2);
-			rect = adjust_rect(rect, e->pos());
-			if (rect.width() > 1 && rect.height() > 1)
+			rect = get_valid_rect(rect, e->pos());
+			if (rect.width() > 1 || rect.height() > 1)
 			{
-				saveSlot();
+				save(default_filename());
+				closeSlot();
 			}
 		}
 		repaint();
@@ -112,20 +107,27 @@ public slots:
 	virtual void paintEvent(QPaintEvent *e)
 	{
 		QWidget::paintEvent(e);
-		QPainter painter(this);
 
+		QPainter painter(this);
 		painter.drawPixmap(this->rect(), pixmap.copy(this->rect()));
+		QPen inverter(Qt::white);
+		inverter.setWidth(Pen_size());
 
 		if (selectionStarted)
 		{
 			QRect rect(point1, point2);
-			rect = adjust_rect(rect);
+			rect = get_valid_rect(rect);
 			painter.drawPixmap(rect.topLeft(), pixmap.copy(rect));
 			painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
-			QPen inverter(Qt::white);
-			inverter.setWidth(5);
 			painter.setPen(inverter);
 			painter.drawRect(rect);
+		}
+		else
+		{
+			painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+			painter.setPen(inverter);
+			painter.drawLine(0, point2.y(), this->width(), point2.y());
+			painter.drawLine(point2.x(), 0, point2.x(), this->height());
 		}
 	}
 
@@ -143,19 +145,28 @@ public slots:
 
 	void saveSlot()
 	{
-		//QString filename = QFileDialog::getSaveFileName(this, QObject::tr("Save File"), "../../images/~.png", QObject::tr("Images (*.png)"));
-		QString filename("../../images/~.png");
-		if (!filename.trimmed().isEmpty())
+		QString filename_backup = filename;
+		filename_backup = QFileDialog::getSaveFileName(this, QObject::tr("Save File"), filename_backup, QObject::tr("Images (*.png)"));
+		if (!filename_backup.trimmed().isEmpty())
 		{
-			QRect rect(point1, point2);
-			rect = adjust_rect(rect);
-			pixmap.copy(rect).save(filename);
-			closeSlot();
+			filename = filename_backup;
+		}
+		else
+		{
+			return;
+		}
 
-			if (Auto_open_selected_image())
-			{
-				emit region_selected(filename);
-			}
+		save(filename_backup);
+	}
+
+	void save(QString filename0)
+	{
+		QRect rect(point1, point2);
+		rect = get_valid_rect(rect);
+		pixmap.copy(rect).save(filename0);
+		if (Auto_open_selected_image())
+		{
+			emit region_selected(filename0);
 		}
 	}
 
@@ -171,9 +182,14 @@ private:
 	QPoint point1, point2;
 	QMenu contextMenu;
 	QPixmap pixmap;
+	QString filename;
+	QString Filename() const { return filename; }
+	void Filename(QString val) { filename = val; }
 	bool auto_open_selected_image;
-
-	QRect adjust_rect(QRect rect)
+	int pen_size;
+	int Pen_size() const { return pen_size; }
+	void Pen_size(int val) { pen_size = val; }
+	QRect get_valid_rect(QRect rect)
 	{
 		std::vector<int> xv, yv;
 		xv.push_back(rect.topLeft().x());
@@ -186,7 +202,7 @@ private:
 		return r;
 	}
 
-	QRect adjust_rect(QRect rect, QPoint p)
+	QRect get_valid_rect(QRect rect, QPoint p)
 	{
 		std::vector<int> xv, yv;
 		xv.push_back(rect.topLeft().x());
@@ -199,6 +215,11 @@ private:
 		std::sort(yv.begin(), yv.end());
 		QRect r(QPoint(xv[0], yv[0]), QPoint(xv[2], yv[2]));
 		return r;
+	}
+
+	QString default_filename()
+	{
+		return QString("../../images/~.png");
 	}
 };
 

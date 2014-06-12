@@ -9,7 +9,9 @@ ui(new Ui::ScreenshotWidget)
 
 	selectionStarted = false;
 	auto_open_selected_image = true;
-	QAction *saveAction = contextMenu.addAction("&Save");
+	Pen_size(3);
+	Filename(default_filename());
+	QAction *saveAction = contextMenu.addAction("&Save as...");
 	QAction *closeAction = contextMenu.addAction("&Close");
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(saveSlot()));
 	connect(closeAction, SIGNAL(triggered()), this, SLOT(closeSlot()));

@@ -1268,7 +1268,7 @@ void MainWindow::on_pushButton_6_clicked()
 
 void MainWindow::on_action_Screenshot_triggered()
 {
-	screenshot_widget.showMaximized();
+	screenshot_widget.showFullScreen();
 }
 
 void MainWindow::on_action_Auto_open_selected_region_triggered()
