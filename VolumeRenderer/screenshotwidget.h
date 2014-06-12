@@ -39,31 +39,31 @@ public slots:
 
 	virtual void show()
 	{
-		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+		capture();
 		QWidget::show();
 	}
 
 	virtual void showMinimized()
 	{
-		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+		capture();
 		QWidget::showMinimized();
 	}
 
 	virtual void showMaximized()
 	{
-		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+		capture();
 		QWidget::showMaximized();
 	}
 
 	virtual void showFullScreen()
 	{
-		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+		capture();
 		QWidget::showFullScreen();
 	}
 
 	virtual void showNormal()
 	{
-		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+		capture();
 		QWidget::showNormal();
 	}
 
@@ -73,6 +73,28 @@ public slots:
 		if (e->button() == Qt::RightButton)
 		{
 			contextMenu.exec(this->mapToGlobal(e->pos()));
+		}
+		else
+		{
+			if (e->button() == Qt::LeftButton)
+			{
+				Selection_started(!Selection_started());
+				if (Selection_started())
+				{
+					point1 = point2 = e->pos();
+				}
+				else
+				{
+					QRect rect(point1, point2);
+					rect = get_valid_rect(rect, e->pos());
+					if (rect.width() > 1 || rect.height() > 1)
+					{
+						save(default_filename());
+						close_slot();
+					}
+				}
+				repaint();
+			}
 		}
 	}
 
@@ -86,22 +108,6 @@ public slots:
 	virtual void mouseReleaseEvent(QMouseEvent *e)
 	{
 		//std::cout << "mouseReleaseEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
-		selectionStarted = !selectionStarted;
-		if (selectionStarted)
-		{
-			point1 = point2 = e->pos();
-		} 
-		else
-		{
-			QRect rect(point1, point2);
-			rect = get_valid_rect(rect, e->pos());
-			if (rect.width() > 1 || rect.height() > 1)
-			{
-				save(default_filename());
-				closeSlot();
-			}
-		}
-		repaint();
 	}
 
 	virtual void paintEvent(QPaintEvent *e)
@@ -113,7 +119,7 @@ public slots:
 		QPen inverter(Qt::white);
 		inverter.setWidth(Pen_size());
 
-		if (selectionStarted)
+		if (Selection_started())
 		{
 			QRect rect(point1, point2);
 			rect = get_valid_rect(rect);
@@ -139,11 +145,11 @@ public slots:
 		}
 		else
 		{
-			closeSlot();
+			close_slot();
 		}
 	}
 
-	void saveSlot()
+	void save_slot()
 	{
 		QString filename_backup = filename;
 		filename_backup = QFileDialog::getSaveFileName(this, QObject::tr("Save File"), filename_backup, QObject::tr("Images (*.png)"));
@@ -159,18 +165,18 @@ public slots:
 		save(filename_backup);
 	}
 
-	void save(QString filename0)
+	void save(QString target_filename)
 	{
 		QRect rect(point1, point2);
 		rect = get_valid_rect(rect);
-		pixmap.copy(rect).save(filename0);
+		pixmap.copy(rect).save(target_filename);
 		if (Auto_open_selected_image())
 		{
-			emit region_selected(filename0);
+			emit region_selected(target_filename);
 		}
 	}
 
-	void closeSlot()
+	void close_slot()
 	{
 		this->close();
 	}
@@ -178,17 +184,20 @@ public slots:
 private:
 	Ui::ScreenshotWidget *ui;
 
-	bool selectionStarted;
 	QPoint point1, point2;
 	QMenu contextMenu;
 	QPixmap pixmap;
+	bool auto_open_selected_image;
+	bool selection_started;
+	bool Selection_started() const { return selection_started; }
+	void Selection_started(bool val) { selection_started = val; }
 	QString filename;
 	QString Filename() const { return filename; }
 	void Filename(QString val) { filename = val; }
-	bool auto_open_selected_image;
 	int pen_size;
 	int Pen_size() const { return pen_size; }
 	void Pen_size(int val) { pen_size = val; }
+
 	QRect get_valid_rect(QRect rect)
 	{
 		std::vector<int> xv, yv;
@@ -220,6 +229,11 @@ private:
 	QString default_filename()
 	{
 		return QString("../../images/~.png");
+	}
+
+	void capture()
+	{
+		pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
 	}
 };
 

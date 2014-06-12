@@ -7,14 +7,14 @@ ui(new Ui::ScreenshotWidget)
 {
 	ui->setupUi(this);
 
-	selectionStarted = false;
-	auto_open_selected_image = true;
+	Selection_started(false);
+	Auto_open_selected_image(true);
 	Pen_size(3);
 	Filename(default_filename());
-	QAction *saveAction = contextMenu.addAction("&Save as...");
-	QAction *closeAction = contextMenu.addAction("&Close");
-	connect(saveAction, SIGNAL(triggered()), this, SLOT(saveSlot()));
-	connect(closeAction, SIGNAL(triggered()), this, SLOT(closeSlot()));
+	QAction *save_action = contextMenu.addAction("&Save as...");
+	QAction *close_action = contextMenu.addAction("&Close");
+	connect(save_action, SIGNAL(triggered()), this, SLOT(save_slot()));
+	connect(close_action, SIGNAL(triggered()), this, SLOT(close_slot()));
 }
 
 ScreenshotWidget::~ScreenshotWidget()
