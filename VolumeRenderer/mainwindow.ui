@@ -94,6 +94,7 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="action_Screenshot"/>
+    <addaction name="action_Auto_open_selected_region"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Rendering"/>
@@ -826,6 +827,17 @@
   <action name="action_Screenshot">
    <property name="text">
     <string>&amp;Screenshot</string>
+   </property>
+  </action>
+  <action name="action_Auto_open_selected_region">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Auto open selected region</string>
    </property>
   </action>
  </widget>

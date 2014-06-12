@@ -136,6 +136,8 @@ ui(new Ui::MainWindow)
 	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
 	QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
 
+	QObject::connect(&screenshot_widget, SIGNAL(region_selected(QString)), this, SLOT(slot_region_selected(QString)));
+
 	ui->listView->setModel(&model_for_listview);
 
 	colour_for_optimization = Qt::blue;
@@ -1267,4 +1269,9 @@ void MainWindow::on_pushButton_6_clicked()
 void MainWindow::on_action_Screenshot_triggered()
 {
 	screenshot_widget.showMaximized();
+}
+
+void MainWindow::on_action_Auto_open_selected_region_triggered()
+{
+	screenshot_widget.Auto_open_selected_image(ui->action_Auto_open_selected_region->isChecked());
 }

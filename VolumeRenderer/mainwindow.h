@@ -2977,6 +2977,25 @@ private:
 		}
 	}
 
+	void slot_region_selected(QString filename)
+	{
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = selected_region_filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+		std::cout << "slot_region_selected " << filename_str << std::endl;
+
+		if (!filename.trimmed().isEmpty())
+		{
+			selected_region_filename = filename;
+		}
+		else
+		{
+			return;
+		}
+
+		read_region_image_and_compute_distance(1);
+	}
+
 	void on_entropyButton_clicked();
 	void on_frequencyButton_clicked();
 	void on_opacityButton_clicked();
@@ -3023,6 +3042,7 @@ private:
     void on_pushButton_5_clicked();
     void on_pushButton_6_clicked();
     void on_action_Screenshot_triggered();
+    void on_action_Auto_open_selected_region_triggered();
 };
 
 #endif // MAINWINDOW_H

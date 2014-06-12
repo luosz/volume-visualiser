@@ -8,6 +8,7 @@ ui(new Ui::ScreenshotWidget)
 	ui->setupUi(this);
 
 	selectionStarted = false;
+	auto_open_selected_image = true;
 	QAction *saveAction = contextMenu.addAction("&Save");
 	QAction *closeAction = contextMenu.addAction("&Close");
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(saveSlot()));

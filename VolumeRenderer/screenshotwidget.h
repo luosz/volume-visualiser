@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <QMenu>
+#include <QApplication>
 
 namespace Ui {
 	class ScreenshotWidget;
@@ -28,7 +29,13 @@ public:
 	explicit ScreenshotWidget(QWidget *parent = 0);
 	~ScreenshotWidget();
 
-	public slots:
+	bool Auto_open_selected_image() const { return auto_open_selected_image; }
+	void Auto_open_selected_image(bool val) { auto_open_selected_image = val; }
+
+signals:
+	void region_selected(QString filename);
+
+public slots:
 
 	virtual void show()
 	{
@@ -62,61 +69,63 @@ public:
 
 	virtual void mousePressEvent(QMouseEvent *e)
 	{
-		std::cout << "mousePressEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
+		//std::cout << "mousePressEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
 
 		if (e->button() == Qt::RightButton)
 		{
 			contextMenu.exec(this->mapToGlobal(e->pos()));
 		}
-		else
-		{
-			selectionStarted = true;
-			selectionRect.setTopLeft(e->pos());
-			selectionRect.setBottomRight(e->pos());
-		}
 	}
 
 	virtual void mouseMoveEvent(QMouseEvent *e)
 	{
-		std::cout << "mouseMoveEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
+		//std::cout << "mouseMoveEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
 
 		if (selectionStarted)
 		{
-			selectionRect = get_rect(selectionRect, e->pos());
+			point2 = e->pos();
 			repaint();
 		}
 	}
 
 	virtual void mouseReleaseEvent(QMouseEvent *e)
 	{
-		std::cout << "mouseReleaseEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
-		selectionStarted = false;
-		std::cout << "rect " << selectionRect.x() << " " << selectionRect.y() << " " << selectionRect.width() << " " << selectionRect.height() << std::endl;
-		selectionRect = get_rect(selectionRect, e->pos());
-		repaint();
+		//std::cout << "mouseReleaseEvent " << e->pos().x() << " " << e->pos().y() << std::endl;
 
-		if (selectionRect.width() > 0 && selectionRect.height() > 0)
+		selectionStarted = !selectionStarted;
+		if (selectionStarted)
 		{
-			saveSlot();
+			point1 = point2 = e->pos();
+		} 
+		else
+		{
+			QRect rect(point1, point2);
+			rect = adjust_rect(rect, e->pos());
+			if (rect.width() > 1 && rect.height() > 1)
+			{
+				saveSlot();
+			}
 		}
+		repaint();
 	}
 
 	virtual void paintEvent(QPaintEvent *e)
 	{
 		QWidget::paintEvent(e);
-		std::cout << "paintEvent" << std::endl;
 		QPainter painter(this);
 
 		painter.drawPixmap(this->rect(), pixmap.copy(this->rect()));
 
 		if (selectionStarted)
 		{
-			painter.drawPixmap(selectionRect.topLeft(), pixmap.copy(selectionRect));
+			QRect rect(point1, point2);
+			rect = adjust_rect(rect);
+			painter.drawPixmap(rect.topLeft(), pixmap.copy(rect));
 			painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
 			QPen inverter(Qt::white);
-			inverter.setWidth(10);
+			inverter.setWidth(5);
 			painter.setPen(inverter);
-			painter.drawRect(selectionRect);
+			painter.drawRect(rect);
 		}
 	}
 
@@ -134,10 +143,20 @@ public:
 
 	void saveSlot()
 	{
-		QString fileName = QFileDialog::getSaveFileName(this, QObject::tr("Save File"),
-			"../../images/~.png",
-			QObject::tr("Images (*.png)"));
-		pixmap.copy(selectionRect).save(fileName);
+		//QString filename = QFileDialog::getSaveFileName(this, QObject::tr("Save File"), "../../images/~.png", QObject::tr("Images (*.png)"));
+		QString filename("../../images/~.png");
+		if (!filename.trimmed().isEmpty())
+		{
+			QRect rect(point1, point2);
+			rect = adjust_rect(rect);
+			pixmap.copy(rect).save(filename);
+			closeSlot();
+
+			if (Auto_open_selected_image())
+			{
+				emit region_selected(filename);
+			}
+		}
 	}
 
 	void closeSlot()
@@ -149,11 +168,25 @@ private:
 	Ui::ScreenshotWidget *ui;
 
 	bool selectionStarted;
-	QRect selectionRect;
+	//QRect selectionRect;
+	QPoint point1, point2;
 	QMenu contextMenu;
 	QPixmap pixmap;
+	bool auto_open_selected_image;
+	QRect adjust_rect(QRect rect)
+	{
+		std::vector<int> xv, yv;
+		xv.push_back(rect.topLeft().x());
+		yv.push_back(rect.topLeft().y());
+		xv.push_back(rect.bottomRight().x());
+		yv.push_back(rect.bottomRight().y());
+		std::sort(xv.begin(), xv.end());
+		std::sort(yv.begin(), yv.end());
+		QRect r(QPoint(xv[0], yv[0]), QPoint(xv[1], yv[1]));
+		return r;
+	}
 
-	QRect get_rect(QRect rect, QPoint p)
+	QRect adjust_rect(QRect rect, QPoint p)
 	{
 		std::vector<int> xv, yv;
 		xv.push_back(rect.topLeft().x());
