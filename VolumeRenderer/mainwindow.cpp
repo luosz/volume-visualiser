@@ -11,6 +11,7 @@ QMainWindow(parent),
 ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+	Window_title(this->windowTitle());
 
 	// add VTK widgets
 	get_vtk_layout()->addWidget(&vtk_widget);

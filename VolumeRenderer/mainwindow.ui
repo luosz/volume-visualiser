@@ -223,7 +223,7 @@
        <item>
         <widget class="QPushButton" name="entropyButton">
          <property name="text">
-          <string>draw &amp;Entropy</string>
+          <string>Draw &amp;Entropy</string>
          </property>
         </widget>
        </item>
@@ -271,7 +271,7 @@
        <item>
         <widget class="QPushButton" name="drawWeightButton">
          <property name="text">
-          <string>draw &amp;Weights</string>
+          <string>Draw &amp;Weights</string>
          </property>
         </widget>
        </item>
@@ -508,28 +508,28 @@
            <item>
             <widget class="QPushButton" name="pushButton">
              <property name="text">
-              <string>save to 1</string>
+              <string>Save to TF1</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_2">
              <property name="text">
-              <string>save to 2</string>
+              <string>Save to TF2</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_3">
              <property name="text">
-              <string>load from 1</string>
+              <string>Load TF1</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_4">
              <property name="text">
-              <string>load from 2</string>
+              <string>Load TF2</string>
              </property>
             </widget>
            </item>
@@ -566,14 +566,14 @@
            <item>
             <widget class="QPushButton" name="pushButton_5">
              <property name="text">
-              <string>merge</string>
+              <string>Merge TFs</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_6">
              <property name="text">
-              <string>gaussian blur</string>
+              <string>Gaussian Kernel</string>
              </property>
             </widget>
            </item>

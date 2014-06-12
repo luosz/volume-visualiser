@@ -147,6 +147,9 @@ private:
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview;
 	QColor colour_for_optimization;
+	QString window_title;
+	QString Window_title() const { return window_title; }
+	void Window_title(QString val) { window_title = val; }
 
 	// threshold and domain as in voreen transfer function (.tfi) files
 	double threshold_x, threshold_y;
@@ -2306,7 +2309,7 @@ private:
 	void open_volume(QString filename)
 	{
 		// show filename on window title
-		this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + filename);
+		this->setWindowTitle(Window_title() + QString::fromUtf8(" - ") + filename);
 
 		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 		QByteArray ba = filename.toLocal8Bit();
