@@ -168,11 +168,11 @@ private:
 	Ui::ScreenshotWidget *ui;
 
 	bool selectionStarted;
-	//QRect selectionRect;
 	QPoint point1, point2;
 	QMenu contextMenu;
 	QPixmap pixmap;
 	bool auto_open_selected_image;
+
 	QRect adjust_rect(QRect rect)
 	{
 		std::vector<int> xv, yv;
