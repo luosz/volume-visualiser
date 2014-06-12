@@ -17,18 +17,18 @@
 #include <QMenu>
 
 namespace Ui {
-class ScreenshotWidget;
+	class ScreenshotWidget;
 }
 
 class ScreenshotWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit ScreenshotWidget(QWidget *parent = 0);
-    ~ScreenshotWidget();
+	explicit ScreenshotWidget(QWidget *parent = 0);
+	~ScreenshotWidget();
 
-public slots:
+	public slots:
 
 	virtual void show()
 	{
