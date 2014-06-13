@@ -17,6 +17,9 @@
 #include <vtkMetaImageReader.h>
 #include <vtkPiecewiseFunction.h>
 #include <vtkColorTransferFunction.h>
+#include <vtkImageMandelbrotSource.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkImageData.h>
 
 // This does the actual work.
 // Callback for the interaction
@@ -111,18 +114,10 @@ int main(int, char *[])
     vtkSmartPointer<vtkRenderWindowInteractor>::New();
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  vtkSmartPointer<vtkBoxWidget2> boxWidget = 
-    vtkSmartPointer<vtkBoxWidget2>::New();
-  boxWidget->SetInteractor(renderWindowInteractor);
-  //boxWidget->CreateDefaultRepresentation();
-  
-  vtkSmartPointer<vtkBoxRepresentation> boxRepresentation = 
-    vtkSmartPointer<vtkBoxRepresentation>::New();
-  boxWidget->SetRepresentation(boxRepresentation);
-  
-  vtkSmartPointer<vtkBoxCallback> boxCallback = 
-    vtkSmartPointer<vtkBoxCallback>::New();
-  //boxCallback->SphereSource = sphereSource;
+  // allow the user to interactively manipulate (rotate, pan, etc.) the camera, the viewpoint of the scene.
+  auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+  renderWindowInteractor->SetInteractorStyle(style);
+  renderWindowInteractor->SetStillUpdateRate(1);
 
   // Create transfer mapping scalar value to opacity.
   auto scalar_opacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
@@ -166,16 +161,43 @@ int main(int, char *[])
   auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
   volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
 
+  //vtkSmartPointer<vtkImageMandelbrotSource> source =
+	 // vtkSmartPointer<vtkImageMandelbrotSource>::New();
+  //source->Update();
+
+  int extent[6];
+  reader->GetOutput()->GetExtent(extent);
+  std::cout << "extent " << extent[0] << " " << extent[1] << " " << extent[2] << " " << extent[3] << " " << extent[4] << " " << extent[5] << std::endl;
+  int dim[3];
+  reader->GetOutput()->GetDimensions(dim);
+  std::cout << "dimension " << dim[0] << " " << dim[1] << " " << dim[2] << std::endl;
+
   volumeMapper->SetInputConnection(reader->GetOutputPort());
 
   auto volume = vtkSmartPointer<vtkVolume>::New();
   volume->SetMapper(volumeMapper);
   volume->SetProperty(volumeProperty);
+  
+  vtkSmartPointer<vtkBoxCallback> boxCallback = 
+    vtkSmartPointer<vtkBoxCallback>::New();
+  //boxCallback->SphereSource = sphereSource;
 
   boxCallback->SetVolume(volume);
   renderer->AddVolume(volume);
+
+  vtkSmartPointer<vtkBoxWidget2> boxWidget =
+	  vtkSmartPointer<vtkBoxWidget2>::New();
+  boxWidget->SetInteractor(renderWindowInteractor);
+  //boxWidget->CreateDefaultRepresentation();
+
+  vtkSmartPointer<vtkBoxRepresentation> boxRepresentation =
+	  vtkSmartPointer<vtkBoxRepresentation>::New();
+  boxWidget->SetRepresentation(boxRepresentation);
+
+  double bounds[] = { 0, 379, 0, 229, 0, 305 };
+  boxRepresentation->PlaceWidget(bounds);
  
-  boxWidget->AddObserver(vtkCommand::InteractionEvent,boxCallback);
+  boxWidget->AddObserver(vtkCommand::InteractionEvent, boxCallback);
   
   // Render
   renderWindow->Render();
