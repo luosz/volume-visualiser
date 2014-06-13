@@ -56,6 +56,7 @@
 #include <vtkMetaImageWriter.h>
 #include <vtkBoxWidget2.h>
 #include <vtkBoxRepresentation.h>
+#include <vtkVolumeCollection.h>
 
 // CTK
 #include "ctkTransferFunction.h"
@@ -127,6 +128,9 @@ private:
 	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
+	vtkSmartPointer<vtkVolume> volume0;
+	vtkSmartPointer<vtkVolume> Volume() const { return volume0; }
+	void Volume(vtkSmartPointer<vtkVolume> val) { volume0 = val; }
 	QVTKWidget vtk_widget;
 	ctkVTKVolumePropertyWidget volume_property_widget;
 	std::vector<double> intensity_list;
@@ -2396,15 +2400,13 @@ private:
 		volumeProperty->SetScalarOpacity(scalar_opacity);
 		volumeProperty->SetGradientOpacity(gradient_opacity);
 		volumeProperty->SetColor(scalar_color);
-		volumeProperty->ShadeOff();
+		//volumeProperty->ShadeOff();
 		volumeProperty->SetInterpolationTypeToLinear();
 
 		// assign volume property to the volume property widget
 		volume_property_widget.setVolumeProperty(volumeProperty);
 
 		// The mapper that renders the volume data.
-		//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-		//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
 		vtkSmartPointer<vtkVolumeMapper> volumeMapper;
 
 		switch (Volume_mapper_index())
@@ -2425,9 +2427,10 @@ private:
 
 		// The volume holds the mapper and the property and can be used to position/orient the volume.
 		auto volume = vtkSmartPointer<vtkVolume>::New();
+		Volume(volume);
 		volume->SetMapper(volumeMapper);
 		volume->SetProperty(volumeProperty);
-
+		
 		// add the volume into the renderer
 		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
 		renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -3048,6 +3051,7 @@ private:
     void on_pushButton_6_clicked();
     void on_action_Screenshot_triggered();
     void on_action_Auto_open_selected_region_triggered();
+    void on_checkBox_clicked();
 };
 
 #endif // MAINWINDOW_H

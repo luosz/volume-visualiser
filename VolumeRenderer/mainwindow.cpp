@@ -1276,3 +1276,47 @@ void MainWindow::on_action_Auto_open_selected_region_triggered()
 {
 	screenshot_widget.Auto_open_selected_image(ui->action_Auto_open_selected_region->isChecked());
 }
+
+void MainWindow::on_checkBox_clicked()
+{
+	//ui->checkBox
+	//double planes[6] = { 0, 100, 0, 100, 0, 100 };
+	//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetCropping(1);
+	//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetCroppingRegionPlanes(planes);
+
+	auto volume = Volume();
+	if (ui->checkBox->isChecked())
+	{
+		std::cout << "checked" << std::endl;
+		if (volume)
+		{
+			double planes[6] = { 0, 100, 0, 100, 0, 100 };
+			planes[0] = ui->doubleSpinBox_3->value();
+			planes[1] = ui->doubleSpinBox_4->value();
+			planes[2] = ui->doubleSpinBox_5->value();
+			planes[3] = ui->doubleSpinBox_6->value();
+			planes[4] = ui->doubleSpinBox_7->value();
+			planes[5] = ui->doubleSpinBox_8->value();
+			auto mapper = static_cast<vtkVolumeMapper *>(volume->GetMapper());
+			mapper->SetCropping(1);
+			mapper->SetCroppingRegionPlanes(planes);
+		}
+		else
+		{
+			std::cout << "empty volume" << std::endl;
+		}
+	} 
+	else
+	{
+		std::cout << "unchecked" << std::endl;
+		if (volume)
+		{
+			auto mapper = static_cast<vtkVolumeMapper *>(volume->GetMapper());
+			mapper->SetCropping(0);
+		}
+		else
+		{
+			std::cout << "empty volume" << std::endl;
+		}
+	}
+}
