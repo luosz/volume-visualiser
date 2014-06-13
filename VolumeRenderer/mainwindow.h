@@ -54,6 +54,8 @@
 #include <vtkPNGReader.h>
 #include <vtkMath.h>
 #include <vtkMetaImageWriter.h>
+#include <vtkBoxWidget2.h>
+#include <vtkBoxRepresentation.h>
 
 // CTK
 #include "ctkTransferFunction.h"

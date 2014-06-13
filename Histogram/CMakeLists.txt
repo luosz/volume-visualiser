@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.8)
-set(VTK_DIR "D:/VTK-6.1.0/VTK-build" CACHE PATH "VTK directory")
+set(VTK_DIR "D:/VTK/VTK-build" CACHE PATH "VTK directory")
 
 project(HistogramBarChart)
 find_package(VTK 6.1 REQUIRED NO_MODULE)

@@ -46,14 +46,14 @@ ui(new Ui::MainWindow)
 
 	// Create transfer mapping scalar value to color.
 	scalar_color = vtkSmartPointer<vtkColorTransferFunction>::New();
-	//color_tf->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
-	//color_tf->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
-	//color_tf->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
-	//color_tf->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
-	//color_tf->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
-	//color_tf->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
-	//color_tf->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
-	//color_tf->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
+	//scalar_color->AddRGBPoint(0.0, 0.0, 0.0, 0.0);
+	//scalar_color->AddRGBPoint(36.0, 1.0, 0.0, 0.0);
+	//scalar_color->AddRGBPoint(72.0, 1.0, 1.0, 0.0);
+	//scalar_color->AddRGBPoint(108.0, 0.0, 1.0, 0.0);
+	//scalar_color->AddRGBPoint(144.0, 0.0, 1.0, 1.0);
+	//scalar_color->AddRGBPoint(180.0, 0.0, 0.0, 1.0);
+	//scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
+	//scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
 	volume_filename = "../../data/CT-Knee.mhd";
 	transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
