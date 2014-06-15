@@ -90,6 +90,7 @@
     <addaction name="action_VtkSmartVolumeMapper"/>
     <addaction name="action_VtkSlicerGPURayCastVolumeMapper"/>
     <addaction name="action_VtkSlicerGPURayCastMultiVolumeMapper"/>
+    <addaction name="action_VtkMyGPURayCastVolumeMapper"/>
    </widget>
    <widget class="QMenu" name="menu_Tools">
     <property name="title">
@@ -899,6 +900,14 @@
    </property>
    <property name="text">
     <string>&amp;Auto open selected region</string>
+   </property>
+  </action>
+  <action name="action_VtkMyGPURayCastVolumeMapper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>vtkMyGPURayCastVolumeMapper</string>
    </property>
   </action>
  </widget>

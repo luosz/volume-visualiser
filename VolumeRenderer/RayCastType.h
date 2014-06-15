@@ -6,6 +6,19 @@
 
 namespace vtkMRMLVolumeRenderingDisplayNode
 {
+	/// Quality used for PerformanceControl
+	enum Quality
+	{
+		Adaptative = 0,
+		MaximumQuality
+	};
+
+	/// Performance Control method
+	/// 0: Adaptive
+	/// 1: Maximum Quality
+	/// 2: Fixed Framerate // unsupported yet
+	//int PerformanceControl;
+
 	enum RayCastType
 	{
 		Composite = 0, // composite with directional lighting (default)
@@ -16,11 +29,6 @@ namespace vtkMRMLVolumeRenderingDisplayNode
 		IllustrativeContextPreservingExploration
 	};
 }
-
-/// Performance Control method
-/// 0: Adaptive
-/// 1: Maximum Quality
-/// 2: Fixed Framerate // unsupported yet
 
 #endif // __vtkMRMLVolumeRenderingDisplayNode_h
 

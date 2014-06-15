@@ -153,8 +153,10 @@ protected:
 
   void SetupRayCastParameters( vtkRenderer *pRen, vtkVolume *pVol);
 
-  void LoadVertexShader();
-  void LoadFragmentShaders();
+  //void LoadVertexShader();
+  //void LoadFragmentShaders();
+  virtual void LoadVertexShader();
+  virtual void LoadFragmentShaders();
 
   void LoadRayCastProgram();
 

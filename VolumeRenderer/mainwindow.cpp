@@ -130,8 +130,8 @@ ui(new Ui::MainWindow)
 	// use HSV without squaring distance
 	on_action_Compute_Distance_HSV_triggered();
 
-	// use VtkSlicerGPURayCastVolumeMapper by default
-	on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
+	// set up default volume mapper
+	on_action_VtkMyGPURayCastVolumeMapper_triggered();
 
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
@@ -1155,6 +1155,7 @@ void MainWindow::on_action_VtkSmartVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(true);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
+	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(0);
 }
 
@@ -1163,6 +1164,7 @@ void MainWindow::on_action_VtkSlicerGPURayCastVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(true);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
+	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(1);
 }
 
@@ -1171,7 +1173,17 @@ void MainWindow::on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(true);
+	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(2);
+}
+
+void MainWindow::on_action_VtkMyGPURayCastVolumeMapper_triggered()
+{
+	ui->action_VtkSmartVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
+	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
+	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(true);
+	Volume_mapper_index(3);
 }
 
 void MainWindow::on_reloadButton_clicked()

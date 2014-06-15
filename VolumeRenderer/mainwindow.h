@@ -88,6 +88,7 @@
 
 #include "transfer_function_xml.h"
 #include "RayCastType.h"
+#include "vtkMyGPURayCastVolumeMapper.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -2423,6 +2424,9 @@ private:
 		case 2:
 			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
 			break;
+		case 3:
+			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
+			break;
 		default:
 			volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
 			((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
@@ -3072,6 +3076,7 @@ private:
     void on_action_Auto_open_selected_region_triggered();
     void on_checkBox_clicked();
     void on_comboBox_currentIndexChanged(int index);
+    void on_action_VtkMyGPURayCastVolumeMapper_triggered();
 };
 
 #endif // MAINWINDOW_H
