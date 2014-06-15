@@ -2915,14 +2915,12 @@ private:
 	void populateRenderingTechniqueComboBox()
 	{
 		RenderingTechniqueComboBox()->clear();
-		RenderingTechniqueComboBox()->addItem(
-			"Composite With Shading", vtkMRMLVolumeRenderingDisplayNode::Composite);
-		RenderingTechniqueComboBox()->addItem(
-			"Maximum Intensity Projection",
-			vtkMRMLVolumeRenderingDisplayNode::MaximumIntensityProjection);
-		RenderingTechniqueComboBox()->addItem(
-			"Minimum Intensity Projection",
-			vtkMRMLVolumeRenderingDisplayNode::MinimumIntensityProjection);
+		RenderingTechniqueComboBox()->addItem("Composite With Shading", vtkMRMLVolumeRenderingDisplayNode::Composite);
+		RenderingTechniqueComboBox()->addItem("CompositeEdgeColoring", vtkMRMLVolumeRenderingDisplayNode::CompositeEdgeColoring);
+		RenderingTechniqueComboBox()->addItem("Maximum Intensity Projection", vtkMRMLVolumeRenderingDisplayNode::MaximumIntensityProjection);
+		RenderingTechniqueComboBox()->addItem("Minimum Intensity Projection", vtkMRMLVolumeRenderingDisplayNode::MinimumIntensityProjection);
+		RenderingTechniqueComboBox()->addItem("GradiantMagnitudeOpacityModulation", vtkMRMLVolumeRenderingDisplayNode::GradiantMagnitudeOpacityModulation);
+		RenderingTechniqueComboBox()->addItem("IllustrativeContextPreservingExploration", vtkMRMLVolumeRenderingDisplayNode::IllustrativeContextPreservingExploration);
 	}
 
 	private slots:
