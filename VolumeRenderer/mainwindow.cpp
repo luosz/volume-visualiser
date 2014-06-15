@@ -60,7 +60,7 @@ ui(new Ui::MainWindow)
 	volume_filename = "../../data/CT-Knee.mhd";
 	transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
 	transfer_function_filename_save = "../../transfer_function/save_as.tfi";
-	selected_region_filename = "../../images/~.png";
+	selected_region_filename = "../../images/region.png";
 
 	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
 
