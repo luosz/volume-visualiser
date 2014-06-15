@@ -87,6 +87,7 @@
 #include "screenshotwidget.h"
 
 #include "transfer_function_xml.h"
+#include "RayCastType.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -181,6 +182,11 @@ private:
 	int volume_mapper_index;
 	int Volume_mapper_index() const { return volume_mapper_index; }
 	void Volume_mapper_index(int val) { volume_mapper_index = val; }
+
+	QComboBox * RenderingTechniqueComboBox()
+	{
+		return ui->comboBox;
+	}
 
 	static double EPSILON()
 	{
@@ -2902,6 +2908,19 @@ private:
 		update_colour_palette();
 	}
 
+	void populateRenderingTechniqueComboBox()
+	{
+		RenderingTechniqueComboBox()->clear();
+		RenderingTechniqueComboBox()->addItem(
+			"Composite With Shading", vtkMRMLVolumeRenderingDisplayNode::Composite);
+		RenderingTechniqueComboBox()->addItem(
+			"Maximum Intensity Projection",
+			vtkMRMLVolumeRenderingDisplayNode::MaximumIntensityProjection);
+		RenderingTechniqueComboBox()->addItem(
+			"Minimum Intensity Projection",
+			vtkMRMLVolumeRenderingDisplayNode::MinimumIntensityProjection);
+	}
+
 	private slots:
 
 	void slot_GraphicsScene_selectionChanged()
@@ -3052,6 +3071,7 @@ private:
     void on_action_Screenshot_triggered();
     void on_action_Auto_open_selected_region_triggered();
     void on_checkBox_clicked();
+    void on_comboBox_currentIndexChanged(int index);
 };
 
 #endif // MAINWINDOW_H

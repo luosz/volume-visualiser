@@ -13,6 +13,8 @@ ui(new Ui::MainWindow)
 	ui->setupUi(this);
 	Window_title(this->windowTitle());
 
+	populateRenderingTechniqueComboBox();
+
 	// add VTK widgets
 	get_vtk_layout()->addWidget(&vtk_widget);
 	get_property_layout()->addWidget(&volume_property_widget);
@@ -1305,7 +1307,7 @@ void MainWindow::on_checkBox_clicked()
 		{
 			std::cout << "empty volume" << std::endl;
 		}
-	} 
+	}
 	else
 	{
 		std::cout << "unchecked" << std::endl;
@@ -1319,4 +1321,24 @@ void MainWindow::on_checkBox_clicked()
 			std::cout << "empty volume" << std::endl;
 		}
 	}
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+	if (index != -1)
+	{
+		auto volume = Volume();
+		if (volume)
+		{
+			auto mapper = dynamic_cast<vtkSlicerGPURayCastVolumeMapper *>(volume->GetMapper());
+			if (mapper)
+			{
+				int technique = RenderingTechniqueComboBox()->itemData(index).toInt();
+				std::cout << "technique=" << technique << std::endl;
+				mapper->SetTechnique(technique);
+				vtk_widget.repaint();
+			}
+		}
+	}
+	std::cout << "RenderingTechniqueComboBox currentIndex=" << RenderingTechniqueComboBox()->currentIndex() << std::endl;
 }
