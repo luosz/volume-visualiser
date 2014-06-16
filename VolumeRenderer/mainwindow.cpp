@@ -180,7 +180,7 @@ void MainWindow::on_opacityButton_clicked()
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list_size() > 0)
 	{
-		for (unsigned int i = 0; i < intensity_list_size(); i++)
+		for (int i = 0; i < intensity_list_size(); i++)
 		{
 			double intensity = denormalise_intensity(get_intensity(i));
 			auto line = scene->addLine(intensity, height, intensity + 1, (1 - get_opacity(i))*height);
@@ -198,7 +198,7 @@ void MainWindow::on_visibilityButton_clicked()
 	scene->addText("Visibility " + QTime::currentTime().toString());
 	if (intensity_list_size() > 0)
 	{
-		for (unsigned int i = 0; i < intensity_list_size(); i++)
+		for (int i = 0; i < intensity_list_size(); i++)
 		{
 			double intensity = denormalise_intensity(get_intensity(i));
 			auto line = scene->addLine(intensity, height, intensity + 1, (1 - get_visibility(i) * 16)*height);

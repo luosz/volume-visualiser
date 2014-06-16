@@ -965,7 +965,7 @@ private:
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
 		//const double epsilon = 1. / 256.;
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1017,7 +1017,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1072,7 +1072,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1122,7 +1122,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size() - 1; i++)
+		for (int i = 0; i<intensity_list_size() - 1; i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1190,7 +1190,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size() - 1; i++)
+		for (int i = 0; i<intensity_list_size() - 1; i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1256,7 +1256,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1304,7 +1304,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1352,7 +1352,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1400,7 +1400,7 @@ private:
 		//const double epsilon = 1. / 256.;
 		//const double epsilon = 1e-6;
 
-		for (unsigned int i = 0; i<intensity_list_size(); i++)
+		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
@@ -1466,7 +1466,7 @@ private:
 
 		// add Keys
 		auto keys = doc.NewElement("Keys");
-		for (unsigned int i = 0; i < intensity_list_size(); i++)
+		for (int i = 0; i < intensity_list_size(); i++)
 		{
 			auto key = doc.NewElement("key");
 			key->SetAttribute("type", "TransFuncMappingKey");
@@ -2222,7 +2222,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list_size(); i++)
+		for (int i = 0; i < intensity_list_size(); i++)
 		{
 			double w = get_neighbour_area_entropy(i);
 			sum += w;
@@ -2248,7 +2248,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list_size() - 1; i++)
+		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
 			double w = get_area_entropy(i);
 			sum += w;
@@ -2274,7 +2274,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list_size(); i++)
+		for (int i = 0; i < intensity_list_size(); i++)
 		{
 			double w = get_weighted_neighbour_area_entropy(i);
 			sum += w;
@@ -2300,7 +2300,7 @@ private:
 
 		// compute the mean
 		double sum = 0;
-		for (unsigned int i = 0; i < intensity_list_size() - 1; i++)
+		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
 			double w = get_weighted_area_entropy(i);
 			sum += w;
@@ -2601,7 +2601,7 @@ private:
 		// compute region weights based on the selected image
 		control_point_weight_list.clear();
 		double sum = 0;
-		for (unsigned int i = 0; i<colour_list_size(); i++)
+		for (int i = 0; i<colour_list_size(); i++)
 		{
 			double r = get_colour_r(i);
 			double g = get_colour_g(i);
@@ -2631,7 +2631,7 @@ private:
 		{
 			scalar_opacity->RemoveAllPoints();
 			//scalar_color->RemoveAllPoints();
-			for (unsigned int i = 0; i < intensity_list_size(); i++)
+			for (int i = 0; i < intensity_list_size(); i++)
 			{
 				scalar_opacity->AddPoint(denormalise_intensity(get_intensity(i)), get_opacity(i));
 				//scalar_color->AddRGBPoint(denormalise_intensity(get_intensity(i)), get_colour_r(i), get_colour_g(i), get_colour_b(i));
@@ -2748,7 +2748,7 @@ private:
 		// compute region weights based on the selected image
 		control_point_weight_list.clear();
 		double sum = 0;
-		for (unsigned int i = 0; i < colour_list_size(); i++)
+		for (int i = 0; i < colour_list_size(); i++)
 		{
 			double r = get_colour_r(i);
 			double g = get_colour_g(i);

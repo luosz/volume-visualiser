@@ -565,7 +565,7 @@ namespace volume_utility
 		if (out.is_open())
 		{
 			out<<type_size<<" "<<count<<" "<<size_x<<" "<<size_y<<" "<<size_z<<endl;
-			for (int i=0; i<count; i++)
+			for (unsigned int i=0; i<count; i++)
 			{
 				out<<gradient[i].x<<" "<<gradient[i].y<<" "<<gradient[i].z<<endl;
 			}
@@ -580,7 +580,7 @@ namespace volume_utility
 		if (out.is_open())
 		{
 			out<<type_size<<" "<<count<<" "<<size_x<<" "<<size_y<<" "<<size_z<<endl;
-			for (int i=0; i<count; i++)
+			for (unsigned int i=0; i<count; i++)
 			{
 				out<<scalar_value[i]<<endl;
 			}
