@@ -613,7 +613,7 @@
        </widget>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
-         <string>Files</string>
+         <string>Time-Varying</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <property name="leftMargin">
