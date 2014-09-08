@@ -6,5 +6,4 @@ Transfer function widgets from CTK (www.commontk.org) are used in this project.
 This project can be built using CMake, VTK 6.1, Qt 4.8 and Visual Studio 2013.
 
 ### Screenshot ###
-* 2014-9-8
-![volume_visualizer.png](https://bitbucket.org/repo/d5Xrn6/images/2362565755-volume_visualizer.png)
+* ![volume_visualizer.png](https://bitbucket.org/repo/d5Xrn6/images/2362565755-volume_visualizer.png)
