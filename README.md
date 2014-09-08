@@ -1,29 +1,12 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Volume Visualiser is an enhanced version of Volume Renderer, which is a volume rendering program based on VTK and Qt.
+Volume Visualiser can handle multiple volume data sets as well as time-varying volume data sets.
+Transfer function widgets from CTK (www.commontk.org) are used in this project.
+This project can be built using CMake, VTK 6.1, Qt 4.8 and Visual Studio 2013.
 
-### What is this repository for? ###
+### Screenshot ###
 
 * Quick summary
 * Version
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
