@@ -413,18 +413,6 @@ void MainWindow::on_action_About_triggered()
 	QMessageBox msgBox;
 	msgBox.setText(QString::fromUtf8("Volume Renderer\nCopyright (c) 2014 by Shengzhou Luo at Trinity College Dublin.\nAll rights reserved."));
 	msgBox.exec();
-
-	auto window = vtk_widget.GetRenderWindow();
-	auto collection = window->GetRenderers();
-	auto item = collection->GetNextItem();
-	while (item != NULL)
-	{
-		//window->RemoveRenderer(item);
-		auto fp = item->GetActiveCamera()->GetFocalPoint();
-		auto p = item->GetActiveCamera()->GetPosition();
-		std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
-		item = collection->GetNextItem();
-	}
 }
 
 void MainWindow::on_action_Exit_triggered()
@@ -1086,40 +1074,57 @@ void MainWindow::on_action_Test_triggered()
 	//model_for_listview.clear();
 	//model_for_listview.appendColumn(list1);
 
-	std::cout << "weights" << std::endl;
-	for (int i = 0; i < control_point_weight_list.size(); i++)
-	{
-		std::cout << control_point_weight_list[i] << std::endl;
-	}
+	//////////////////////////////////////////////////////////////////////////
 
-	double a, b;
-	for (int index = 0; index < intensity_list_size() - 1; index++)
-	{
-		std::cout << "interpolation index=" << index << std::endl;
-		if (index == intensity_list_size() - 1)
-		{
-			a = get_intensity(index);
-			b = 1;
-		}
-		else
-		{
-			a = get_intensity(index);
-			b = get_intensity(index + 1);
-		}
-		a = denormalise_intensity(a);
-		b = denormalise_intensity(b);
+	//std::cout << "weights" << std::endl;
+	//for (int i = 0; i < control_point_weight_list.size(); i++)
+	//{
+	//	std::cout << control_point_weight_list[i] << std::endl;
+	//}
 
-		for (int intensity = (int)a; intensity < b; intensity++)
-		{
-			if (intensity >= a)
-			{
-				double normalised = normalise_intensity(intensity);
-				std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
-			}
-		}
-	}
+	//double a, b;
+	//for (int index = 0; index < intensity_list_size() - 1; index++)
+	//{
+	//	std::cout << "interpolation index=" << index << std::endl;
+	//	if (index == intensity_list_size() - 1)
+	//	{
+	//		a = get_intensity(index);
+	//		b = 1;
+	//	}
+	//	else
+	//	{
+	//		a = get_intensity(index);
+	//		b = get_intensity(index + 1);
+	//	}
+	//	a = denormalise_intensity(a);
+	//	b = denormalise_intensity(b);
 
-	gaussian_kernel_1d();
+	//	for (int intensity = (int)a; intensity < b; intensity++)
+	//	{
+	//		if (intensity >= a)
+	//		{
+	//			double normalised = normalise_intensity(intensity);
+	//			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
+	//		}
+	//	}
+	//}
+
+	//gaussian_kernel_1d();
+
+	//////////////////////////////////////////////////////////////////////////
+
+	renderer->ResetCamera();
+	auto camera = renderer->GetActiveCamera();
+	auto fp = camera->GetFocalPoint();
+	auto p = camera->GetPosition();
+	std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
+	auto dist = sqrt((p[0] - fp[0])*(p[0] - fp[0]) + (p[1] - fp[1])*(p[1] - fp[1]) + (p[2] - fp[2])*(p[2] - fp[2]));
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetPosition(0, 0, dist);
+	camera->SetViewUp(0.0, 1.0, 0.0);
+	fp = camera->GetFocalPoint();
+	p = camera->GetPosition();
+	std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
 }
 
 void MainWindow::on_drawWeightButton_clicked()
