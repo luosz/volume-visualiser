@@ -323,7 +323,13 @@ private:
 
 	int denormalise_rgba(double n)
 	{
-		return map_to_range(n, 0, 1, 0, 255);
+		return static_cast<int>(map_to_range(n, 0, 1, 0, 255));
+	}
+
+	template<class T>
+	unsigned char denormalise_rgba(double n)
+	{
+		return static_cast<T>(map_to_range(n, 0, 1, 0, 255));
 	}
 
 	double get_distance_between_colour_and_pixels(double r, double g, double b, unsigned char * pixels, int count, int numComponents)
