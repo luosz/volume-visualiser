@@ -1119,12 +1119,14 @@ void MainWindow::on_action_Test_triggered()
 	auto p = camera->GetPosition();
 	std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
 	auto dist = sqrt((p[0] - fp[0])*(p[0] - fp[0]) + (p[1] - fp[1])*(p[1] - fp[1]) + (p[2] - fp[2])*(p[2] - fp[2]));
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetPosition(0, 0, dist);
+	camera->SetPosition(fp[0], fp[1], fp[2] + dist);
 	camera->SetViewUp(0.0, 1.0, 0.0);
 	fp = camera->GetFocalPoint();
 	p = camera->GetPosition();
 	std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
+	std::cout << "distance " << dist << std::endl;
+	// update vtk widget
+	vtk_widget.repaint();
 }
 
 void MainWindow::on_drawWeightButton_clicked()
