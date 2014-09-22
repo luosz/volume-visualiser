@@ -57,6 +57,7 @@
 #include <vtkBoxWidget2.h>
 #include <vtkBoxRepresentation.h>
 #include <vtkVolumeCollection.h>
+#include <vtkCamera.h>
 
 // CTK
 #include "ctkTransferFunction.h"

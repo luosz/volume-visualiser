@@ -413,6 +413,18 @@ void MainWindow::on_action_About_triggered()
 	QMessageBox msgBox;
 	msgBox.setText(QString::fromUtf8("Volume Renderer\nCopyright (c) 2014 by Shengzhou Luo at Trinity College Dublin.\nAll rights reserved."));
 	msgBox.exec();
+
+	auto window = vtk_widget.GetRenderWindow();
+	auto collection = window->GetRenderers();
+	auto item = collection->GetNextItem();
+	while (item != NULL)
+	{
+		//window->RemoveRenderer(item);
+		auto fp = item->GetActiveCamera()->GetFocalPoint();
+		auto p = item->GetActiveCamera()->GetPosition();
+		std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
+		item = collection->GetNextItem();
+	}
 }
 
 void MainWindow::on_action_Exit_triggered()
