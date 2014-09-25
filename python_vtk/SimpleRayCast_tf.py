@@ -22,7 +22,7 @@ def get_volume_filename():
     root.withdraw()
     filename = tkFileDialog.askopenfilename(parent=root, filetypes=[('Metaimage', '*.mhd'), ('all files', '*')], title='Select a volume data set')
     if len(filename ) == 0:
-        filename = "D:/_data/CT-Knee.mhd"
+        filename = "../data/nucleon.mhd"
     return filename
 
 def load_transfer_function():
@@ -30,7 +30,7 @@ def load_transfer_function():
     root.withdraw()
     filename = tkFileDialog.askopenfilename(parent=root, filetypes=[('Voreen transfer functions', '*.tfi'), ('all files', '*')], title='Select a transfer function')
     if len(filename ) == 0:
-        filename = "tf_optimized.tfi"
+        filename = "../transferfuncs/nucleon.tfi"
         
     tree = ET.parse(filename)
     root = tree.getroot()

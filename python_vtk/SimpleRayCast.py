@@ -27,7 +27,7 @@ iren.SetRenderWindow(renWin)
 #reader = vtk.vtkStructuredPointsReader()
 #reader.SetFileName(VTK_DATA_ROOT + "/Data/ironProt.vtk")
 reader = vtk.vtkMetaImageReader()
-reader.SetFileName("D:/_data/VisMale.mhd")
+reader.SetFileName("../data/nucleon.mhd")
  
 # Create transfer mapping scalar value to opacity
 opacityTransferFunction = vtk.vtkPiecewiseFunction()
