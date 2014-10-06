@@ -32,6 +32,7 @@
 #include <vtkColorTransferFunction.h>
 #include <vtkPiecewiseFunction.h>
 #include <vtkSmartVolumeMapper.h>
+#include <vtkGPUVolumeRayCastMapper.h>
 #include <vtkColorTransferFunction.h>
 #include <vtkPiecewiseFunction.h>
 #include <vtkVolumeProperty.h>
@@ -2435,8 +2436,9 @@ private:
 			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
 			break;
 		default:
-			volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			//volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+			//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			volumeMapper = vtkSmartPointer<vtkGPUVolumeRayCastMapper>::New();
 			break;
 		}
 

@@ -864,7 +864,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>vtkSmartVolumeMapper (GPURenderMode)</string>
+    <string>vtkGPUVolumeRayCastMapper</string>
    </property>
   </action>
   <action name="action_VtkSlicerGPURayCastVolumeMapper">
