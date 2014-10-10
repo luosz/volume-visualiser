@@ -1,0 +1,1 @@
+Transfer functions in this folder are in Voreen format. Those in sub-folders are in the formats of Slicer, MITK, or ParaView, as the folder name suggested.
