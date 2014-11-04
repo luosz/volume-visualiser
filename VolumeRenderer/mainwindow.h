@@ -1013,6 +1013,7 @@ private:
 
 	// global optimization
 	// old and deprecated. it's kept for testing purpose.
+	// please use balance_transfer_function_edge() instead.
 	void balance_opacity()
 	{
 		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
@@ -1068,6 +1069,7 @@ private:
 
 	// region-based or hue-based optimization
 	// old and deprecated. it's kept for testing purpose.
+	// please use balance_transfer_function_edge_for_region() instead.
 	void balance_opacity_for_region()
 	{
 		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
