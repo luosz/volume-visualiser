@@ -632,13 +632,13 @@ private:
 		{
 			if (i1 == -1)
 			{
-				return get_intensity(i2);
+				return get_opacity(i2);
 			}
 			else
 			{
 				if (i1 == intensity_list_size() - 1)
 				{
-					return get_intensity(i1);
+					return get_opacity(i1);
 				}
 				else
 				{
