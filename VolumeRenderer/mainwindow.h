@@ -1225,8 +1225,8 @@ private:
 					auto min_index = i;
 					// get the lower vertex of an edge
 					int min_index_next = min_index + 1;
-					double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
-					double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
+					double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+					double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
 					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 					{
 						min_index++;
