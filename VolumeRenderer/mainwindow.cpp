@@ -1373,3 +1373,34 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 	}
 	std::cout << "RenderingTechniqueComboBox currentIndex=" << RenderingTechniqueComboBox()->currentIndex() << std::endl;
 }
+
+void MainWindow::on_BalanceButton_clicked()
+{
+	updateOpacityArrayFromTFWidget();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > max_iteration_count)
+	{
+		n = 1;
+	}
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout << "energy function file " << filename << std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
+	while (n-- > 0)
+	{
+#ifdef OUTPUT_TO_FILE
+		out << iteration_count << "," << get_energy_function_edge() << std::endl;
+		iteration_count++;
+#endif
+		//balance_opacity();
+		balance_transfer_function_edge_newton();
+	}
+#ifdef OUTPUT_TO_FILE
+	out << iteration_count << "," << get_energy_function_edge() << std::endl;
+	out.close();
+#endif
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
+}

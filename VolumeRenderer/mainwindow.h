@@ -1153,8 +1153,8 @@ private:
 		{
 			// get the upper vertex of an edge
 			int max_index_next = max_index + 1;
-			double weight_max_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
-			double weight_max_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
+			double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+			double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
 			if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 			{
 				max_index++;
@@ -1162,8 +1162,8 @@ private:
 
 			// get the lower vertex of an edge
 			int min_index_next = min_index + 1;
-			double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
-			double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
+			double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+			double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
 			if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 			{
 				min_index++;
@@ -1183,6 +1183,62 @@ private:
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new); // update opacity
 			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
+		}
+	}
+
+	void balance_transfer_function_edge_newton()
+	{
+		std::vector<double> area_list;
+		double mean_area = 0;
+		for (int i = 0; i < intensity_list_size() - 1; i++)
+		{
+			auto area = get_area_entropy(i);
+			area_list.push_back(area);
+			mean_area += area;
+		}
+		mean_area = mean_area / area_list.size();
+		for (int i = 0; i < area_list.size(); i++)
+		{
+			// move only non-zero control points
+			if (get_opacity(i) > EPSILON())
+			{
+				if (area_list[i] > mean_area)
+				{
+					// get the upper vertex of an edge
+					auto max_index = i;
+					int max_index_next = max_index + 1;
+					double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+					double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
+					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
+					{
+						max_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_max = get_opacity(max_index);
+					double height_max_new = height_max - step_size;
+					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					set_opacity(max_index, height_max_new); // update opacity
+				}
+				if (area_list[i] < mean_area)
+				{
+					auto min_index = i;
+					// get the lower vertex of an edge
+					int min_index_next = min_index + 1;
+					double weight_min_1 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+					double weight_min_2 = get_weighted_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
+					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
+					{
+						min_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_min = get_opacity(min_index);
+					double height_min_new = height_min + step_size;
+					height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					set_opacity(min_index, height_min_new); // update opacity
+				}
+			}
 		}
 	}
 
@@ -3086,6 +3142,7 @@ private:
     void on_checkBox_clicked();
     void on_comboBox_currentIndexChanged(int index);
     void on_action_VtkMyGPURayCastVolumeMapper_triggered();
+    void on_BalanceButton_clicked();
 };
 
 #endif // MAINWINDOW_H

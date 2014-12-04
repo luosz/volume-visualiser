@@ -146,7 +146,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>316</width>
+     <width>361</width>
      <height>204</height>
     </size>
    </property>
@@ -286,21 +286,28 @@
        <item>
         <widget class="QPushButton" name="balanceOpacityButton">
          <property name="text">
-          <string>Balance &amp;Opacity</string>
+          <string>Balance &amp;Edge</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="increaseOpacityButton">
          <property name="text">
-          <string>&amp;Increase Opacity</string>
+          <string>&amp;Increase</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="reduceOpacityButton">
          <property name="text">
-          <string>Re&amp;duce Opacity</string>
+          <string>&amp;Decrease</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BalanceButton">
+         <property name="text">
+          <string>&amp;Gradient Decent</string>
          </property>
         </widget>
        </item>
@@ -582,6 +589,28 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Time</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QListView" name="listView"/>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
          <string>Visibility</string>
@@ -611,31 +640,26 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="tab_5">
         <attribute name="title">
-         <string>Time-Varying</string>
+         <string>Misc</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_13">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QListView" name="listView"/>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Rendering Technique</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox"/>
          </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
-         <string>Cropping</string>
+         <string>Crop</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
@@ -695,23 +719,6 @@
             <double>100.000000000000000</double>
            </property>
           </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_5">
-        <attribute name="title">
-         <string>Misc</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Rendering Technique</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox"/>
          </item>
         </layout>
        </widget>
