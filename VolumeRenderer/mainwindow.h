@@ -1224,8 +1224,22 @@ private:
 					auto area_diff = areas[i] - get_area_entropy(i);
 					if (area_diff > 0)
 					{
-						auto slope = (mean_area - areas[i]) / area_diff;
-						height_max_new = height_max + step_size * slope;
+						// Newton's method in optimization
+						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
+						auto h = step_size;
+						auto f_x = areas[i];
+						set_opacity(max_index, height_max - h);
+						auto f_x_minus_h = get_area_entropy(i);
+						set_opacity(max_index, height_max + h);
+						auto f_x_plus_h = get_area_entropy(i);
+						set_opacity(max_index, height_max - h / 2);
+						auto f_x_minus_half_h = get_area_entropy(i);
+						set_opacity(max_index, height_max + h / 2);
+						auto f_x_plus_half_h = get_area_entropy(i);
+						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
+						height_max_new = height_max - step;
+						//auto slope = (mean_area - areas[i]) / area_diff;
+						//height_max_new = height_max + step_size * slope;
 						//auto gradient = -2 * (areas[i] - mean_area);
 						//std::cout << "max step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 						height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
@@ -1264,8 +1278,22 @@ private:
 					auto area_diff = get_area_entropy(i) - areas[i];
 					if (area_diff > 0)
 					{
-						auto slope = (mean_area - areas[i]) / area_diff;
-						height_min_new = height_min + step_size * slope;
+						// Newton's method in optimization
+						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
+						auto h = step_size;
+						auto f_x = areas[i];
+						set_opacity(min_index, height_min - h);
+						auto f_x_minus_h = get_area_entropy(i);
+						set_opacity(min_index, height_min + h);
+						auto f_x_plus_h = get_area_entropy(i);
+						set_opacity(min_index, height_min - h / 2);
+						auto f_x_minus_half_h = get_area_entropy(i);
+						set_opacity(min_index, height_min + h / 2);
+						auto f_x_plus_half_h = get_area_entropy(i);
+						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
+						height_min_new = height_min - step;
+						//auto slope = (mean_area - areas[i]) / area_diff;
+						//height_min_new = height_min + step_size * slope;
 						//auto gradient = -2 * (areas[i] - mean_area);
 						//std::cout << "min step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 						height_min_new = height_min_new > 1 ? 1 : height_min_new;
