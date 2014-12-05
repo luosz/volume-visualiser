@@ -1188,21 +1188,22 @@ private:
 
 	void balance_transfer_function_edge_newton()
 	{
-		std::vector<double> area_list;
+		std::vector<double> areas;
 		double mean_area = 0;
 		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
 			auto area = get_area_entropy(i);
-			area_list.push_back(area);
+			areas.push_back(area);
 			mean_area += area;
 		}
-		mean_area = mean_area / area_list.size();
-		for (int i = 0; i < area_list.size(); i++)
+		mean_area = mean_area / areas.size();
+		double carry = 0;
+		for (int i = 0; i < areas.size(); i++)
 		{
 			// move only non-zero control points
 			if (get_opacity(i) > EPSILON())
 			{
-				if (area_list[i] > mean_area)
+				if (areas[i] > mean_area)
 				{
 					// get the upper vertex of an edge
 					auto max_index = i;
@@ -1219,8 +1220,30 @@ private:
 					double height_max_new = height_max - step_size;
 					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
 					set_opacity(max_index, height_max_new); // update opacity
+
+					auto area_diff = areas[i] - get_area_entropy(i);
+					if (area_diff > 0)
+					{
+						auto slope = (mean_area - areas[i]) / area_diff;
+						height_max_new = height_max + step_size * slope;
+						//auto gradient = -2 * (areas[i] - mean_area);
+						//std::cout << "max step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+						height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+						set_opacity(max_index, height_max_new); // update opacity
+					}
+
+					if (carry > 0)
+					{
+						// if carry>0 then i>0 so i-1>=0
+						auto a = std::abs(areas[i - 1] - mean_area);
+						auto b = std::abs(areas[i] - mean_area);
+						auto sum = a + b;
+						auto lerp = (carry*a + height_max_new*b) / sum;
+						set_opacity(max_index, lerp);
+					}
+					carry = max_index > i ? height_max_new : 0;
 				}
-				if (area_list[i] < mean_area)
+				if (areas[i] < mean_area)
 				{
 					auto min_index = i;
 					// get the lower vertex of an edge
@@ -1237,6 +1260,244 @@ private:
 					double height_min_new = height_min + step_size;
 					height_min_new = height_min_new > 1 ? 1 : height_min_new;
 					set_opacity(min_index, height_min_new); // update opacity
+
+					auto area_diff = get_area_entropy(i) - areas[i];
+					if (area_diff > 0)
+					{
+						auto slope = (mean_area - areas[i]) / area_diff;
+						height_min_new = height_min + step_size * slope;
+						//auto gradient = -2 * (areas[i] - mean_area);
+						//std::cout << "min step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+						height_min_new = height_min_new > 1 ? 1 : height_min_new;
+						set_opacity(min_index, height_min_new); // update opacity
+					}
+
+					if (carry > 0)
+					{
+						// if carry>0 then i>0 so i-1>=0
+						auto a = std::abs(areas[i - 1] - mean_area);
+						auto b = std::abs(areas[i] - mean_area);
+						auto sum = a + b;
+						auto lerp = (carry*a + height_min_new*b) / sum;
+						set_opacity(min_index, lerp);
+					}
+					carry = min_index > i ? height_min_new : 0;
+				}
+			}
+		}
+	}
+
+	void balance_transfer_function_edge_gradient_descent()
+	{
+		std::vector<double> areas;
+		double mean_area = 0;
+		for (int i = 0; i < intensity_list_size() - 1; i++)
+		{
+			auto area = get_area_entropy(i);
+			areas.push_back(area);
+			mean_area += area;
+		}
+		mean_area = mean_area / areas.size();
+		double carry = 0;
+		for (int i = 0; i < areas.size(); i++)
+		{
+			// move only non-zero control points
+			if (get_opacity(i) > EPSILON())
+			{
+				if (areas[i] > mean_area)
+				{
+					// get the upper vertex of an edge
+					auto max_index = i;
+					int max_index_next = max_index + 1;
+					double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+					double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
+					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
+					{
+						max_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_max = get_opacity(max_index);
+					//double height_max_new = height_max - step_size;
+					auto gradient = -2 * (areas[i] - mean_area);
+					double height_max_new = height_max + gradient;
+					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					set_opacity(max_index, height_max_new); // update opacity
+
+					//auto area_diff = areas[i] - get_area_entropy(i);
+					//if (area_diff > 0)
+					//{
+					//	//auto slope = (mean_area - areas[i]) / area_diff;
+					//	//height_max_new = height_max + step_size * slope;
+					//	auto gradient = -2 * (areas[i] - mean_area);
+					//	height_max_new = height_max + gradient;
+					//	//std::cout << "max step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//	height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					//	set_opacity(max_index, height_max_new); // update opacity
+					//}
+
+					if (carry > 0)
+					{
+						// if carry>0 then i>0 so i-1>=0
+						auto a = std::abs(areas[i - 1] - mean_area);
+						auto b = std::abs(areas[i] - mean_area);
+						auto sum = a + b;
+						auto lerp = (carry*a + height_max_new*b) / sum;
+						set_opacity(max_index, lerp);
+					}
+					carry = max_index > i ? height_max_new : 0;
+				}
+				if (areas[i] < mean_area)
+				{
+					auto min_index = i;
+					// get the lower vertex of an edge
+					int min_index_next = min_index + 1;
+					double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+					double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
+					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
+					{
+						min_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_min = get_opacity(min_index);
+					//double height_min_new = height_min + step_size;
+					auto gradient = -2 * (areas[i] - mean_area);
+					double height_min_new = height_min + gradient;
+					height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					set_opacity(min_index, height_min_new); // update opacity
+
+					//auto area_diff = get_area_entropy(i) - areas[i];
+					//if (area_diff > 0)
+					//{
+					//	//auto slope = (mean_area - areas[i]) / area_diff;
+					//	//height_min_new = height_min + step_size * slope;
+					//	auto gradient = -2 * (areas[i] - mean_area);
+					//	height_min_new = height_min + gradient;
+					//	//std::cout << "min step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//	height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					//	set_opacity(min_index, height_min_new); // update opacity
+					//}
+
+					if (carry > 0)
+					{
+						// if carry>0 then i>0 so i-1>=0
+						auto a = std::abs(areas[i - 1] - mean_area);
+						auto b = std::abs(areas[i] - mean_area);
+						auto sum = a + b;
+						auto lerp = (carry*a + height_min_new*b) / sum;
+						set_opacity(min_index, lerp);
+					}
+					carry = min_index > i ? height_min_new : 0;
+				}
+			}
+		}
+	}
+
+	void balance_transfer_function_edge_fixed_step_size()
+	{
+		std::vector<double> areas;
+		double mean_area = 0;
+		for (int i = 0; i < intensity_list_size() - 1; i++)
+		{
+			auto area = get_area_entropy(i);
+			areas.push_back(area);
+			mean_area += area;
+		}
+		mean_area = mean_area / areas.size();
+		double carry = 0;
+		for (int i = 0; i < areas.size(); i++)
+		{
+			// move only non-zero control points
+			if (get_opacity(i) > EPSILON())
+			{
+				if (areas[i] > mean_area)
+				{
+					// get the upper vertex of an edge
+					auto max_index = i;
+					int max_index_next = max_index + 1;
+					double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
+					double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
+					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
+					{
+						max_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_max = get_opacity(max_index);
+					double height_max_new = height_max - step_size;
+					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					//if (carry == 0)
+					{
+						set_opacity(max_index, height_max_new); // update opacity
+					}
+
+					//auto area_diff = areas[i] - get_area_entropy(i);
+					//if (area_diff > 0)
+					//{
+					//	auto slope = (mean_area - areas[i]) / area_diff;
+					//	//height_max_new = height_max + step_size * slope;
+					//	auto gradient = -2 * (areas[i] - mean_area);
+					//	height_max_new = height_max + gradient;
+					//	std::cout << "max step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//	height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					//	set_opacity(max_index, height_max_new); // update opacity
+					//}
+
+					//if (carry > 0)
+					//{
+					//	// if carry>0 then i>0 so i-1>=0
+					//	auto a = std::abs(areas[i - 1] - mean_area);
+					//	auto b = std::abs(areas[i] - mean_area);
+					//	auto sum = a + b;
+					//	auto lerp = (carry*a + height_max_new*b) / sum;
+					//	set_opacity(max_index, lerp);
+					//}
+					carry = max_index > i ? height_max_new : 0;
+				}
+				if (areas[i] < mean_area)
+				{
+					auto min_index = i;
+					// get the lower vertex of an edge
+					int min_index_next = min_index + 1;
+					double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
+					double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
+					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
+					{
+						min_index++;
+					}
+
+					const double step_size = get_stepsize();
+					double height_min = get_opacity(min_index);
+					double height_min_new = height_min + step_size;
+					height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					//if (carry == 0)
+					{
+						set_opacity(min_index, height_min_new); // update opacity
+					}
+
+					//auto area_diff = get_area_entropy(i) - areas[i];
+					//if (area_diff > 0)
+					//{
+					//	auto slope = (mean_area - areas[i]) / area_diff;
+					//	//height_min_new = height_min + step_size * slope;
+					//	auto gradient = -2 * (areas[i] - mean_area);
+					//	height_min_new = height_min + gradient;
+					//	std::cout << "min step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//	height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					//	set_opacity(min_index, height_min_new); // update opacity
+					//}
+
+					//if (carry > 0)
+					//{
+					//	// if carry>0 then i>0 so i-1>=0
+					//	auto a = std::abs(areas[i - 1] - mean_area);
+					//	auto b = std::abs(areas[i] - mean_area);
+					//	auto sum = a + b;
+					//	auto lerp = (carry*a + height_min_new*b) / sum;
+					//	set_opacity(min_index, lerp);
+					//}
+					carry = min_index > i ? height_min_new : 0;
 				}
 			}
 		}
@@ -2507,7 +2768,7 @@ private:
 		Volume(volume);
 		volume->SetMapper(volumeMapper);
 		volume->SetProperty(volumeProperty);
-		
+
 		// add the volume into the renderer
 		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
 		renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -3100,7 +3361,7 @@ private:
 	void on_balanceButton_clicked();
 	void on_reduceOpacityButton_clicked();
 	void on_lhHistogramButton_clicked();
-	void on_balanceOpacityButton_clicked();
+	void on_balanceEdgeButton_clicked();
 	void on_increaseOpacityButton_clicked();
 	void on_enhanceRegionButton_clicked();
 	void on_weakenRegionButton_clicked();
@@ -3130,19 +3391,21 @@ private:
 	void on_action_VtkSmartVolumeMapper_triggered();
 	void on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
 	void on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered();
-    void on_reloadButton_clicked();
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
-    void on_pushButton_3_clicked();
-    void on_pushButton_4_clicked();
-    void on_pushButton_5_clicked();
-    void on_pushButton_6_clicked();
-    void on_action_Screenshot_triggered();
-    void on_action_Auto_open_selected_region_triggered();
-    void on_checkBox_clicked();
-    void on_comboBox_currentIndexChanged(int index);
-    void on_action_VtkMyGPURayCastVolumeMapper_triggered();
-    void on_BalanceButton_clicked();
+	void on_reloadButton_clicked();
+	void on_pushButton_clicked();
+	void on_pushButton_2_clicked();
+	void on_pushButton_3_clicked();
+	void on_pushButton_4_clicked();
+	void on_pushButton_5_clicked();
+	void on_pushButton_6_clicked();
+	void on_action_Screenshot_triggered();
+	void on_action_Auto_open_selected_region_triggered();
+	void on_checkBox_clicked();
+	void on_comboBox_currentIndexChanged(int index);
+	void on_action_VtkMyGPURayCastVolumeMapper_triggered();
+	void on_newtonButton_clicked();
+	void on_gradientDescentButton_clicked();
+	void on_fixedStepButton_clicked();
 };
 
 #endif // MAINWINDOW_H

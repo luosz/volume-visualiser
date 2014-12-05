@@ -2,9 +2,9 @@
 #include "ui_mainwindow.h"
 #include "voxel_utility.h"
 
-#ifndef OUTPUT_TO_FILE
-#define OUTPUT_TO_FILE
-#endif // OUTPUT_TO_FILE
+//#ifndef OUTPUT_TO_FILE
+//#define OUTPUT_TO_FILE
+//#endif // OUTPUT_TO_FILE
 
 MainWindow::MainWindow(QWidget *parent) :
 QMainWindow(parent),
@@ -308,7 +308,7 @@ void MainWindow::on_increaseOpacityButton_clicked()
 	updateOpacityArrayFromTFWidget();
 }
 
-void MainWindow::on_balanceOpacityButton_clicked()
+void MainWindow::on_balanceEdgeButton_clicked()
 {
 	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
@@ -1374,7 +1374,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 	std::cout << "RenderingTechniqueComboBox currentIndex=" << RenderingTechniqueComboBox()->currentIndex() << std::endl;
 }
 
-void MainWindow::on_BalanceButton_clicked()
+void MainWindow::on_newtonButton_clicked()
 {
 	updateOpacityArrayFromTFWidget();
 	int n = ui->spinBox->value();
@@ -1394,8 +1394,67 @@ void MainWindow::on_BalanceButton_clicked()
 		out << iteration_count << "," << get_energy_function_edge() << std::endl;
 		iteration_count++;
 #endif
-		//balance_opacity();
 		balance_transfer_function_edge_newton();
+	}
+#ifdef OUTPUT_TO_FILE
+	out << iteration_count << "," << get_energy_function_edge() << std::endl;
+	out.close();
+#endif
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
+}
+
+void MainWindow::on_gradientDescentButton_clicked()
+{
+	updateOpacityArrayFromTFWidget();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > max_iteration_count)
+	{
+		n = 1;
+	}
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout << "energy function file " << filename << std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
+	while (n-- > 0)
+	{
+#ifdef OUTPUT_TO_FILE
+		out << iteration_count << "," << get_energy_function_edge() << std::endl;
+		iteration_count++;
+#endif
+		balance_transfer_function_edge_gradient_descent();
+	}
+#ifdef OUTPUT_TO_FILE
+	out << iteration_count << "," << get_energy_function_edge() << std::endl;
+	out.close();
+#endif
+	updateTFWidgetFromOpacityArrays();
+	updateOpacityArrayFromTFWidget();
+}
+
+void MainWindow::on_fixedStepButton_clicked()
+{
+	updateOpacityArrayFromTFWidget();
+	int n = ui->spinBox->value();
+	if (n < 1 || n > max_iteration_count)
+	{
+		n = 1;
+	}
+#ifdef OUTPUT_TO_FILE
+	char filename[32] = "../energy_function.csv";
+	std::cout << "energy function file " << filename << std::endl;
+	std::ofstream out(filename);
+	int iteration_count = 0;
+#endif
+	while (n-- > 0)
+	{
+#ifdef OUTPUT_TO_FILE
+		out << iteration_count << "," << get_energy_function_edge() << std::endl;
+		iteration_count++;
+#endif
+		balance_transfer_function_edge_fixed_step_size();
 	}
 #ifdef OUTPUT_TO_FILE
 	out << iteration_count << "," << get_energy_function_edge() << std::endl;
