@@ -1198,14 +1198,13 @@ private:
 		}
 		mean_area = mean_area / areas.size();
 		double carry = 0;
+		// for use in Newton's method
+		auto h = 1e-9;
 		for (int i = 0; i < areas.size(); i++)
 		{
 			// move only non-zero control points
-			if (get_opacity(i) > EPSILON())
+			//if (get_opacity(i) > EPSILON())
 			{
-				// for use in Newton's method
-				auto h = 1e-9;
-
 				if (areas[i] > mean_area)
 				{
 					// get the upper vertex of an edge
@@ -1216,6 +1215,7 @@ private:
 					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 					{
 						max_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
@@ -1229,20 +1229,24 @@ private:
 					{
 						// Newton's method in optimization
 						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
-						auto f_x = areas[i];
+						auto f_x = areas[i] - mean_area;
 						set_opacity(max_index, height_max - h);
-						auto f_x_minus_h = get_area_entropy(i);
+						auto f_x_minus_h = get_area_entropy(i) - mean_area;
 						set_opacity(max_index, height_max + h);
-						auto f_x_plus_h = get_area_entropy(i);
+						auto f_x_plus_h = get_area_entropy(i) - mean_area;
 						set_opacity(max_index, height_max - h / 2);
-						auto f_x_minus_half_h = get_area_entropy(i);
+						auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
 						set_opacity(max_index, height_max + h / 2);
-						auto f_x_plus_half_h = get_area_entropy(i);
+						auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
 						height_max_new = height_max - step;
 						height_max_new = std::max(height_max_new, EPSILON());
 						height_max_new = std::min(height_max_new, 1.);
 						set_opacity(max_index, height_max_new); // update opacity
+
+						auto gradient = 2 * (areas[i] - mean_area);
+						auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
+						std::cout << "max slope=" << slope*step_size << " gradient=" << gradient*step_size << " newton=" << step << " step_size=" << step_size << std::endl;
 					}
 
 					if (carry > 0)
@@ -1266,6 +1270,7 @@ private:
 					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 					{
 						min_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
@@ -1279,20 +1284,24 @@ private:
 					{
 						// Newton's method in optimization
 						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
-						auto f_x = areas[i];
+						auto f_x = areas[i] - mean_area;
 						set_opacity(min_index, height_min - h);
-						auto f_x_minus_h = get_area_entropy(i);
+						auto f_x_minus_h = get_area_entropy(i) - mean_area;
 						set_opacity(min_index, height_min + h);
-						auto f_x_plus_h = get_area_entropy(i);
+						auto f_x_plus_h = get_area_entropy(i) - mean_area;
 						set_opacity(min_index, height_min - h / 2);
-						auto f_x_minus_half_h = get_area_entropy(i);
+						auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
 						set_opacity(min_index, height_min + h / 2);
-						auto f_x_plus_half_h = get_area_entropy(i);
+						auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
 						height_min_new = height_min - step;
 						height_min_new = std::max(height_min_new, EPSILON());
 						height_min_new = std::min(height_min_new, 1.);
 						set_opacity(min_index, height_min_new); // update opacity
+
+						auto gradient = 2 * (areas[i] - mean_area);
+						auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
+						std::cout << "min slope=" << slope*step_size << " gradient=" << gradient*step_size << " newton=" << step << " step_size=" << step_size << std::endl;
 					}
 
 					if (carry > 0)
@@ -1322,6 +1331,7 @@ private:
 		}
 		mean_area = mean_area / areas.size();
 		double carry = 0;
+		auto h = 1e-9;
 		for (int i = 0; i < areas.size(); i++)
 		{
 			// move only non-zero control points
@@ -1337,27 +1347,25 @@ private:
 					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 					{
 						max_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
 					double height_max = get_opacity(max_index);
 					//double height_max_new = height_max - step_size;
-					auto gradient = -2 * (areas[i] - mean_area);
-					double height_max_new = height_max + gradient;
-					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					set_opacity(max_index, height_max - h / 2);
+					auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
+					set_opacity(max_index, height_max + h / 2);
+					auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
+					auto gradient = 2 * (areas[i] - mean_area);
+					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
+					std::cout << "max slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//double height_max_new = height_max - gradient;
+					double height_max_new = height_max - slope;
+					//height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
+					height_max_new = std::max(height_max_new, EPSILON());
+					height_max_new = std::min(height_max_new, 1.);
 					set_opacity(max_index, height_max_new); // update opacity
-
-					//auto area_diff = areas[i] - get_area_entropy(i);
-					//if (area_diff > 0)
-					//{
-					//	//auto slope = (mean_area - areas[i]) / area_diff;
-					//	//height_max_new = height_max + step_size * slope;
-					//	auto gradient = -2 * (areas[i] - mean_area);
-					//	height_max_new = height_max + gradient;
-					//	//std::cout << "max step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
-					//	height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
-					//	set_opacity(max_index, height_max_new); // update opacity
-					//}
 
 					if (carry > 0)
 					{
@@ -1380,27 +1388,25 @@ private:
 					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 					{
 						min_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
 					double height_min = get_opacity(min_index);
 					//double height_min_new = height_min + step_size;
-					auto gradient = -2 * (areas[i] - mean_area);
-					double height_min_new = height_min + gradient;
-					height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					set_opacity(min_index, height_min - h / 2);
+					auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
+					set_opacity(min_index, height_min + h / 2);
+					auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
+					auto gradient = 2 * (areas[i] - mean_area);
+					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
+					std::cout << "min slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
+					//double height_min_new = height_min - gradient;
+					double height_min_new = height_min - slope;
+					//height_min_new = height_min_new > 1 ? 1 : height_min_new;
+					height_min_new = std::max(height_min_new, EPSILON());
+					height_min_new = std::min(height_min_new, 1.);
 					set_opacity(min_index, height_min_new); // update opacity
-
-					//auto area_diff = get_area_entropy(i) - areas[i];
-					//if (area_diff > 0)
-					//{
-					//	//auto slope = (mean_area - areas[i]) / area_diff;
-					//	//height_min_new = height_min + step_size * slope;
-					//	auto gradient = -2 * (areas[i] - mean_area);
-					//	height_min_new = height_min + gradient;
-					//	//std::cout << "min step_size*slope=" << step_size * slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
-					//	height_min_new = height_min_new > 1 ? 1 : height_min_new;
-					//	set_opacity(min_index, height_min_new); // update opacity
-					//}
 
 					if (carry > 0)
 					{
@@ -1444,6 +1450,7 @@ private:
 					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
 					{
 						max_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
@@ -1488,6 +1495,7 @@ private:
 					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
 					{
 						min_index++;
+						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
