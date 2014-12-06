@@ -1342,7 +1342,7 @@ private:
 		for (int i = 0; i < areas.size(); i++)
 		{
 			// move only non-zero control points
-			if (get_opacity(i) > EPSILON())
+			//if (get_opacity(i) > EPSILON())
 			{
 				if (areas[i] > mean_area)
 				{
@@ -1368,7 +1368,7 @@ private:
 					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
 					std::cout << "max slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 					//double height_max_new = height_max - gradient;
-					double height_new = height - slope; // should be height - slope*step where step is 1 here
+					double height_new = height - slope + step_size * 2; // should be height - slope*step where step is 1 here
 					//height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
 					height_new = std::max(height_new, EPSILON());
 					height_new = std::min(height_new, 1.);
@@ -1410,7 +1410,7 @@ private:
 					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
 					std::cout << "min slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 					//double height_min_new = height_min - gradient;
-					double height_new = height - slope; // should be height - slope*step where step is 1 here
+					double height_new = height - slope + step_size * 2; // should be height - slope*step where step is 1 here
 					//height_min_new = height_min_new > 1 ? 1 : height_min_new;
 					height_new = std::max(height_new, EPSILON());
 					height_new = std::min(height_new, 1.);
