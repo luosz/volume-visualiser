@@ -1189,6 +1189,7 @@ private:
 	void balance_transfer_function_edge_newton()
 	{
 		std::vector<double> areas;
+		std::vector<double> result_opacity_list = opacity_list;
 		double mean_area = 0;
 		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
@@ -1208,21 +1209,21 @@ private:
 				if (areas[i] > mean_area)
 				{
 					// get the upper vertex of an edge
-					auto max_index = i;
-					int max_index_next = max_index + 1;
-					double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
-					double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
-					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
+					auto index = i;
+					int index_next = index + 1;
+					double weight1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index)), index);
+					double weight2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index_next)), index_next);
+					if (get_opacity(index_next) > EPSILON() && get_opacity(index_next) < 1 && weight2 > weight1)
 					{
-						max_index++;
+						index++;
 						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
-					double height_max = get_opacity(max_index);
-					double height_max_new = height_max - step_size;
-					height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
-					set_opacity(max_index, height_max_new); // update opacity
+					double height = get_opacity(index);
+					double height_new = height - step_size;
+					height_new = height_new < EPSILON() ? EPSILON() : height_new;
+					set_opacity(index, height_new); // update opacity
 
 					auto area_diff = areas[i] - get_area_entropy(i);
 					if (area_diff > 0)
@@ -1230,19 +1231,20 @@ private:
 						// Newton's method in optimization
 						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
 						auto f_x = areas[i] - mean_area;
-						set_opacity(max_index, height_max - h);
+						set_opacity(index, height - h);
 						auto f_x_minus_h = get_area_entropy(i) - mean_area;
-						set_opacity(max_index, height_max + h);
+						set_opacity(index, height + h);
 						auto f_x_plus_h = get_area_entropy(i) - mean_area;
-						set_opacity(max_index, height_max - h / 2);
+						set_opacity(index, height - h / 2);
 						auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
-						set_opacity(max_index, height_max + h / 2);
+						set_opacity(index, height + h / 2);
 						auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
-						height_max_new = height_max - step;
-						height_max_new = std::max(height_max_new, EPSILON());
-						height_max_new = std::min(height_max_new, 1.);
-						set_opacity(max_index, height_max_new); // update opacity
+						height_new = height - step;
+						height_new = std::max(height_new, EPSILON());
+						height_new = std::min(height_new, 1.);
+						set_opacity(index, height); // reset opacity for later use
+						result_opacity_list[index] = height_new; // store result opacity here
 
 						auto gradient = 2 * (areas[i] - mean_area);
 						auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
@@ -1255,29 +1257,29 @@ private:
 						auto a = std::abs(areas[i - 1] - mean_area);
 						auto b = std::abs(areas[i] - mean_area);
 						auto sum = a + b;
-						auto lerp = (carry*a + height_max_new*b) / sum;
-						set_opacity(max_index, lerp);
+						auto lerp = (carry*a + height_new*b) / sum;
+						result_opacity_list[index] = lerp;
 					}
-					carry = max_index > i ? height_max_new : 0;
+					carry = index > i ? height_new : 0;
 				}
 				if (areas[i] < mean_area)
 				{
-					auto min_index = i;
+					auto index = i;
 					// get the lower vertex of an edge
-					int min_index_next = min_index + 1;
-					double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
-					double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
-					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
+					int index_next = index + 1;
+					double weight1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index)), index);
+					double weight2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index_next)), index_next);
+					if (get_opacity(index_next) > EPSILON() && get_opacity(index_next) < 1 && weight2 < weight1)
 					{
-						min_index++;
+						index++;
 						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
-					double height_min = get_opacity(min_index);
-					double height_min_new = height_min + step_size;
-					height_min_new = height_min_new > 1 ? 1 : height_min_new;
-					set_opacity(min_index, height_min_new); // update opacity
+					double height = get_opacity(index);
+					double height_new = height + step_size;
+					height_new = height_new > 1 ? 1 : height_new;
+					set_opacity(index, height_new); // update opacity
 
 					auto area_diff = get_area_entropy(i) - areas[i];
 					if (area_diff > 0)
@@ -1285,19 +1287,20 @@ private:
 						// Newton's method in optimization
 						// http://en.wikipedia.org/wiki/Newton's_method_in_optimization
 						auto f_x = areas[i] - mean_area;
-						set_opacity(min_index, height_min - h);
+						set_opacity(index, height - h);
 						auto f_x_minus_h = get_area_entropy(i) - mean_area;
-						set_opacity(min_index, height_min + h);
+						set_opacity(index, height + h);
 						auto f_x_plus_h = get_area_entropy(i) - mean_area;
-						set_opacity(min_index, height_min - h / 2);
+						set_opacity(index, height - h / 2);
 						auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
-						set_opacity(min_index, height_min + h / 2);
+						set_opacity(index, height + h / 2);
 						auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 						auto step = h * (f_x_plus_half_h - f_x_minus_half_h) / (f_x_plus_h - 2 * f_x + f_x_minus_h);
-						height_min_new = height_min - step;
-						height_min_new = std::max(height_min_new, EPSILON());
-						height_min_new = std::min(height_min_new, 1.);
-						set_opacity(min_index, height_min_new); // update opacity
+						height_new = height - step;
+						height_new = std::max(height_new, EPSILON());
+						height_new = std::min(height_new, 1.);
+						set_opacity(index, height); // reset opacity for later use
+						result_opacity_list[index] = height_new; // store result opacity here
 
 						auto gradient = 2 * (areas[i] - mean_area);
 						auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
@@ -1310,18 +1313,22 @@ private:
 						auto a = std::abs(areas[i - 1] - mean_area);
 						auto b = std::abs(areas[i] - mean_area);
 						auto sum = a + b;
-						auto lerp = (carry*a + height_min_new*b) / sum;
-						set_opacity(min_index, lerp);
+						auto lerp = (carry*a + height_new*b) / sum;
+						result_opacity_list[index] = lerp;
 					}
-					carry = min_index > i ? height_min_new : 0;
+					carry = index > i ? height_new : 0;
 				}
 			}
 		}
+		opacity_list = result_opacity_list;
 	}
 
 	void balance_transfer_function_edge_gradient_descent()
 	{
 		std::vector<double> areas;
+		std::vector<double> result_opacity_list = opacity_list;
+		//std::cout << (&opacity_list) << std::endl;
+		//std::cout << (&result_opacity_list) << std::endl;
 		double mean_area = 0;
 		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
@@ -1340,32 +1347,33 @@ private:
 				if (areas[i] > mean_area)
 				{
 					// get the upper vertex of an edge
-					auto max_index = i;
-					int max_index_next = max_index + 1;
-					double weight_max_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index)), max_index);
-					double weight_max_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_index_next)), max_index_next);
-					if (get_opacity(max_index_next) > EPSILON() && get_opacity(max_index_next) < 1 && weight_max_2 > weight_max_1)
+					auto index = i;
+					int max_next = index + 1;
+					double weight1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index)), index);
+					double weight2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(max_next)), max_next);
+					if (get_opacity(max_next) > EPSILON() && get_opacity(max_next) < 1 && weight2 > weight1)
 					{
-						max_index++;
+						index++;
 						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
-					double height_max = get_opacity(max_index);
+					double height = get_opacity(index);
 					//double height_max_new = height_max - step_size;
-					set_opacity(max_index, height_max - h / 2);
+					set_opacity(index, height - h / 2);
 					auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
-					set_opacity(max_index, height_max + h / 2);
+					set_opacity(index, height + h / 2);
 					auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 					auto gradient = 2 * (areas[i] - mean_area);
 					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
 					std::cout << "max slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 					//double height_max_new = height_max - gradient;
-					double height_max_new = height_max - slope;
+					double height_new = height - slope; // should be height - slope*step where step is 1 here
 					//height_max_new = height_max_new < EPSILON() ? EPSILON() : height_max_new;
-					height_max_new = std::max(height_max_new, EPSILON());
-					height_max_new = std::min(height_max_new, 1.);
-					set_opacity(max_index, height_max_new); // update opacity
+					height_new = std::max(height_new, EPSILON());
+					height_new = std::min(height_new, 1.);
+					set_opacity(index, height); // reset to original opacity
+					result_opacity_list[index] = height_new; // update opacity
 
 					if (carry > 0)
 					{
@@ -1373,40 +1381,41 @@ private:
 						auto a = std::abs(areas[i - 1] - mean_area);
 						auto b = std::abs(areas[i] - mean_area);
 						auto sum = a + b;
-						auto lerp = (carry*a + height_max_new*b) / sum;
-						set_opacity(max_index, lerp);
+						auto lerp = (carry*a + height_new*b) / sum;
+						result_opacity_list[index] = lerp;
 					}
-					carry = max_index > i ? height_max_new : 0;
+					carry = index > i ? height_new : 0;
 				}
 				if (areas[i] < mean_area)
 				{
-					auto min_index = i;
+					auto index = i;
 					// get the lower vertex of an edge
-					int min_index_next = min_index + 1;
-					double weight_min_1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index)), min_index);
-					double weight_min_2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(min_index_next)), min_index_next);
-					if (get_opacity(min_index_next) > EPSILON() && get_opacity(min_index_next) < 1 && weight_min_2 < weight_min_1)
+					int index_next = index + 1;
+					double weight1 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index)), index);
+					double weight2 = get_entropy_opacity_by_index(denormalise_intensity(get_intensity(index_next)), index_next);
+					if (get_opacity(index_next) > EPSILON() && get_opacity(index_next) < 1 && weight2 < weight1)
 					{
-						min_index++;
+						index++;
 						carry = 0;
 					}
 
 					const double step_size = get_stepsize();
-					double height_min = get_opacity(min_index);
+					double height = get_opacity(index);
 					//double height_min_new = height_min + step_size;
-					set_opacity(min_index, height_min - h / 2);
+					set_opacity(index, height - h / 2);
 					auto f_x_minus_half_h = get_area_entropy(i) - mean_area;
-					set_opacity(min_index, height_min + h / 2);
+					set_opacity(index, height + h / 2);
 					auto f_x_plus_half_h = get_area_entropy(i) - mean_area;
 					auto gradient = 2 * (areas[i] - mean_area);
 					auto slope = (f_x_plus_half_h - f_x_minus_half_h) / h;
 					std::cout << "min slope=" << slope << " gradient=" << gradient << " step_size=" << step_size << std::endl;
 					//double height_min_new = height_min - gradient;
-					double height_min_new = height_min - slope;
+					double height_new = height - slope; // should be height - slope*step where step is 1 here
 					//height_min_new = height_min_new > 1 ? 1 : height_min_new;
-					height_min_new = std::max(height_min_new, EPSILON());
-					height_min_new = std::min(height_min_new, 1.);
-					set_opacity(min_index, height_min_new); // update opacity
+					height_new = std::max(height_new, EPSILON());
+					height_new = std::min(height_new, 1.);
+					set_opacity(index, height); // reset to original opacity
+					result_opacity_list[index] = height_new; // update opacity
 
 					if (carry > 0)
 					{
@@ -1414,13 +1423,14 @@ private:
 						auto a = std::abs(areas[i - 1] - mean_area);
 						auto b = std::abs(areas[i] - mean_area);
 						auto sum = a + b;
-						auto lerp = (carry*a + height_min_new*b) / sum;
-						set_opacity(min_index, lerp);
+						auto lerp = (carry*a + height_new*b) / sum;
+						result_opacity_list[index] = lerp;
 					}
-					carry = min_index > i ? height_min_new : 0;
+					carry = index > i ? height_new : 0;
 				}
 			}
 		}
+		opacity_list = result_opacity_list;
 	}
 
 	void balance_transfer_function_edge_fixed_step_size()
