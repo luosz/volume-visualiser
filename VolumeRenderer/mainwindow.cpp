@@ -109,7 +109,7 @@ ui(new Ui::MainWindow)
 	Range_y(255);
 	count_of_voxels = 0;
 	volume_ptr = NULL;
-	batch_patch = "D:/_uchar/vortex/";
+	batch_patch = "E:/_uchar/vortex/";
 
 	//generate_default_transfer_function();
 	//set_colour_number_in_spectrum(16);
@@ -853,9 +853,12 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 
 			// split filename and extension
 			QStringList str_list = files[i].split(".", QString::SkipEmptyParts);
-
+			if (str_list.size()>1)
+			{
+				str_list.removeLast();
+			}
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-			QByteArray ba = str_list[0].toLocal8Bit();
+			QByteArray ba = str_list.join(".").toLocal8Bit();
 			const char *filename_no_suffix = ba.data();
 
 			QByteArray ba1 = filepath.toLocal8Bit();
@@ -948,10 +951,13 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 			updateOpacityArrayFromTFWidget();
 
 			// split filename and extension
-			QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-
+			QStringList str_list = files[i].split(".", QString::SkipEmptyParts);
+			if (str_list.size() > 1)
+			{
+				str_list.removeLast();
+			}
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-			QByteArray ba = list1[0].toLocal8Bit();
+			QByteArray ba = str_list.join(".").toLocal8Bit();
 			const char *filename_no_suffix = ba.data();
 
 			QByteArray ba1 = filepath.toLocal8Bit();
@@ -1028,10 +1034,13 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 			optimise_transfer_function_for_colour(colour_for_optimization);
 
 			// split filename and extension
-			QStringList list1 = files[i].split(".", QString::SkipEmptyParts);
-
+			QStringList str_list = files[i].split(".", QString::SkipEmptyParts);
+			if (str_list.size() > 1)
+			{
+				str_list.removeLast();
+			}
 			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-			QByteArray ba = list1[0].toLocal8Bit();
+			QByteArray ba = str_list.join(".").toLocal8Bit();
 			const char *filename_no_suffix = ba.data();
 
 			QByteArray ba1 = filepath.toLocal8Bit();
