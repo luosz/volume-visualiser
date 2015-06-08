@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.8)
 
 # use Qt 4.8.6 by default
-set(QT_QMAKE_EXECUTABLE "C:/Qt/4.8.6/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(VTK_DIR "D:/VTK/VTK-build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "E:/Qt/4.8.6/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(VTK_DIR "E:/VTK/VTK-6.2.0/build" CACHE PATH "VTK directory")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
@@ -39,7 +39,7 @@ project(VolumeVisualizer)
 
 ## VTK 6.x is required
 #find_package(VTK REQUIRED)
-find_package(VTK 6.1 REQUIRED NO_MODULE)
+find_package(VTK 6.0 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 
 #find_package(Qt4 REQUIRED)
