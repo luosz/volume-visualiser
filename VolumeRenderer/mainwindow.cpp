@@ -57,9 +57,9 @@ ui(new Ui::MainWindow)
 	//scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	//scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	volume_filename = "D:/document/work/artivvis-development-repository/Samples/Tooth/tooth.mhd";
-	transfer_function_filename = "D:/document/work/artivvis-development-repository/Samples/Tooth/tooth.tfi";
-	transfer_function_filename_save = "D:/document/work/artivvis-development-repository/Samples/Tooth/save_as.tfi";
+	volume_filename = "D:/document/work/artivvis-development-repository/data/tooth.mhd";
+	transfer_function_filename = "D:/document/work/artivvis-development-repository/data/tooth.tfi";
+	transfer_function_filename_save = "D:/document/work/artivvis-development-repository/data/save_as.tfi";
 	//volume_filename = "../../data/CT-Knee.mhd";
 	//transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
 	//transfer_function_filename_save = "../../transfer_function/save_as.tfi";
