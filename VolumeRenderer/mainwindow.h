@@ -24,6 +24,10 @@
 #include <string.h>
 #include <cmath>
 
+// cereal - A C++11 library for serialization
+#include <cereal/archives/xml.hpp>
+#include <cereal/types/vector.hpp>
+
 #include <QVTKWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
@@ -1007,7 +1011,7 @@ private:
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new);
 
-			std::cout << "balance TF max index=" << max_index << " min index=" << min_index << " opacity=" << height_max << " new opacity=" << height_max_new << " area=" << area << " new area=" << new_area << " height=" << height_min << " new height=" << height_min_new << endl;
+			//std::cout << "balance TF max index=" << max_index << " min index=" << min_index << " opacity=" << height_max << " new opacity=" << height_max_new << " area=" << area << " new area=" << new_area << " height=" << height_min << " new height=" << height_min_new << endl;
 		}
 	}
 
@@ -3392,6 +3396,38 @@ private:
 		}
 
 		read_region_image_and_compute_distance(1);
+	}
+
+	void save_path_to_xml()
+	{
+		std::ofstream os("path.xml");
+		cereal::XMLOutputArchive archive(os);
+		std::string s1 = volume_filename.toLocal8Bit().constData();
+		std::string s2 = transfer_function_filename.toLocal8Bit().constData();
+		std::string s3 = transfer_function_filename_save.toLocal8Bit().constData();
+		archive(s1, s2, s3);
+	}
+
+	void load_path_from_xml()
+	{
+		std::ifstream is("path.xml");
+		if (is.is_open())
+		{
+			cereal::XMLInputArchive archive(is);
+			std::string s1, s2, s3;
+			archive(s1, s2, s3);
+			std::cout << "path.xml" << std::endl << s1 << std::endl << s2 << std::endl << s3 << std::endl;
+			volume_filename = QString::fromStdString(s1);
+			transfer_function_filename = QString::fromStdString(s2);
+			transfer_function_filename_save = QString::fromStdString(s3);
+		}
+		else
+		{
+			volume_filename = "D:/document/work/artivvis-development-repository/data/tooth.mhd";
+			transfer_function_filename = "D:/document/work/artivvis-development-repository/data/tooth.tfi";
+			transfer_function_filename_save = "D:/document/work/artivvis-development-repository/data/save_as.tfi";
+			save_path_to_xml();
+		}
 	}
 
 	void on_entropyButton_clicked();

@@ -57,9 +57,7 @@ ui(new Ui::MainWindow)
 	//scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	//scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	volume_filename = "D:/document/work/artivvis-development-repository/data/tooth.mhd";
-	transfer_function_filename = "D:/document/work/artivvis-development-repository/data/tooth.tfi";
-	transfer_function_filename_save = "D:/document/work/artivvis-development-repository/data/save_as.tfi";
+	load_path_from_xml();
 	//volume_filename = "../../data/CT-Knee.mhd";
 	//transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
 	//transfer_function_filename_save = "../../transfer_function/save_as.tfi";
@@ -432,6 +430,7 @@ void MainWindow::on_action_Open_Volume_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		volume_filename = filename_backup;
+		save_path_to_xml();
 	}
 	else
 	{
@@ -446,8 +445,14 @@ void MainWindow::on_action_Append_Volume_triggered()
 {
 	// show file dialog
 	QString filter("UNC MetaImage (*.mhd *.mha)");
-	volume_filename = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), volume_filename, filter);
-	if (volume_filename.isEmpty())
+	QString filename_backup = volume_filename;
+	filename_backup = QFileDialog::getOpenFileName(this, QString(tr("Open a volume data set")), filename_backup, filter);
+	if (!filename_backup.trimmed().isEmpty())
+	{
+		volume_filename = filename_backup;
+		save_path_to_xml();
+	}
+	else
 	{
 		return;
 	}
@@ -522,6 +527,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		transfer_function_filename = filename_backup;
+		save_path_to_xml();
 	}
 	else
 	{
@@ -585,6 +591,7 @@ void MainWindow::on_action_Save_Transfer_Function_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		transfer_function_filename_save = filename_backup;
+		save_path_to_xml();
 	}
 	else
 	{
