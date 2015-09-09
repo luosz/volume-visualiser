@@ -80,6 +80,20 @@ file(GLOB nvMath_files
 )
 source_group(nvMath FILES ${nvMath_files})
 
+# cereal
+set(cereal_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cereal)
+file(GLOB cereal_files
+    ${cereal_DIR}/cereal/*.hpp
+    ${cereal_DIR}/cereal/archives/*.hpp
+    ${cereal_DIR}/cereal/details/*.hpp
+    ${cereal_DIR}/cereal/types/*.hpp
+    ${cereal_DIR}/cereal/external/*.hpp
+    ${cereal_DIR}/cereal/external/rapidxml/*.hpp
+    ${cereal_DIR}/cereal/external/rapidjson/*.hpp
+    ${cereal_DIR}/cereal/external/rapidjson/internal/*.hpp
+ )
+source_group(cereal FILES ${cereal_files})
+
 # volume
 set(volume_files voxel_utility.h lh_histogram.h K_Means_PP_Generic.h volume_utility.h)
 source_group(volume FILES ${volume_files})
@@ -115,6 +129,7 @@ include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${tinyxml2_DIR}
 	${nvMath_DIR}
 	${Slicer_DIR}
+	${cereal_DIR}
 )
 
 add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files}
@@ -125,6 +140,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${nvMath_files}
 	${volume_files}
 	${Slicer_files}
+	${cereal_files}
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES})
