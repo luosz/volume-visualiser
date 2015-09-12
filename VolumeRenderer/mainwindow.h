@@ -970,8 +970,7 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_transfer_function()
 	{
-		std::cout << "colour_list size=" << colour_list_size()
-			<< " intensity_list size=" << intensity_list_size() << std::endl;
+		//std::cout << "colour_list size=" << colour_list_size() << " intensity_list size=" << intensity_list_size() << std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
