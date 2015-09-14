@@ -18,36 +18,31 @@
 
 =========================================================================*/
 
-#ifndef __ctkVTKColorTransferFunction_h
-#define __ctkVTKColorTransferFunction_h
+#ifndef __ctkVTKPiecewiseFunction_h
+#define __ctkVTKPiecewiseFunction_h
 
 // CTK includes
 #include "ctkTransferFunction.h"
 #include "ctkPimpl.h"
-#include "ctkVisualizationVTKCoreExport.h"
+#include "ctkVisualizationVTKWidgetsExport.h"
 #include "ctkVTKObject.h"
 
-class vtkColorTransferFunction;
-class ctkVTKColorTransferFunctionPrivate;
+class vtkPiecewiseFunction;
+class ctkVTKPiecewiseFunctionPrivate;
 
-/// \ingroup Visualization_VTK_Core
+/// \ingroup Visualization_VTK_Widgets
 ///
-/// Transfer function for a vtkColorTransferFunction. 
-/// The value is an RGB QColor (no alpha supported)
-class CTK_VISUALIZATION_VTK_CORE_EXPORT ctkVTKColorTransferFunction: public ctkTransferFunction
+/// Transfer function for a vtkPiecewiseFunction
+
+class CTK_VISUALIZATION_VTK_WIDGETS_EXPORT ctkVTKPiecewiseFunction: public ctkTransferFunction
 {
   Q_OBJECT;
   QVTK_OBJECT;
 public:
-  /// Please note that ctkVTKColorTransferFunction methods only work only if
-  /// colorTransferFunction is set.
-  ctkVTKColorTransferFunction(QObject* parent = 0);
-  ctkVTKColorTransferFunction(vtkColorTransferFunction* colorTransferFunction, 
+  ctkVTKPiecewiseFunction(vtkPiecewiseFunction* piecewiserFunction,
                               QObject* parent = 0);
-  virtual ~ctkVTKColorTransferFunction();
-  
-  /// Please note that controlPoint methods only works if you have at least one
-  /// ControlPoint.
+  virtual ~ctkVTKPiecewiseFunction();
+
   virtual ctkControlPoint* controlPoint(int index)const;
   virtual QVariant value(qreal pos)const;
   virtual int count()const;
@@ -63,17 +58,17 @@ public:
 
   virtual void setControlPointPos(int index, qreal pos);
   virtual void setControlPointValue(int index, const QVariant& value);
-  
+
   virtual void removeControlPoint( qreal pos );
 
-  void setColorTransferFunction(vtkColorTransferFunction* colorTransferFunction);
-  vtkColorTransferFunction* colorTransferFunction()const;
+  void setPiecewiseFunction(vtkPiecewiseFunction* piecewiseFunction);
+  vtkPiecewiseFunction* piecewiseFunction()const;
 protected:
-  QScopedPointer<ctkVTKColorTransferFunctionPrivate> d_ptr;
+  QScopedPointer<ctkVTKPiecewiseFunctionPrivate> d_ptr;
 
 private:
-  Q_DECLARE_PRIVATE(ctkVTKColorTransferFunction);
-  Q_DISABLE_COPY(ctkVTKColorTransferFunction);
+  Q_DECLARE_PRIVATE(ctkVTKPiecewiseFunction);
+  Q_DISABLE_COPY(ctkVTKPiecewiseFunction);
 };
 
 #endif
