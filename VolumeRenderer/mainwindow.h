@@ -23,6 +23,7 @@
 #include <string>
 #include <string.h>
 #include <cmath>
+#include <ctime>
 
 // cereal - A C++11 library for serialization
 #include <cereal/archives/xml.hpp>
