@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8.8)
 
-set(QT_QMAKE_EXECUTABLE "E:/Qt/Qt5.5.0/5.5/msvc2013/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(VTK_DIR "E:/VTK/VTK-6.3.0/build" CACHE PATH "VTK directory")
+set(VTK_DIR "C:/VTK/VTK-6.3.0/build" CACHE PATH "VTK directory")
+set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/msvc2013" CACHE PATH "CMAKE_PREFIX_PATH")
+set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.5.1/5.5/msvc2013/bin/qmake.exe" CACHE PATH "QT_QMAKE_EXECUTABLE")
+set(VTK_QT_VERSION 5 CACHE PATH "VTK_QT_VERSION")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")

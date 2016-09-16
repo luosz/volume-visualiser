@@ -323,6 +323,9 @@ void MainWindow::on_balanceEdgeButton_clicked()
 	std::ofstream out(filename);
 	int iteration_count = 0;
 #endif
+
+	clock_t begin = clock();
+
 	while (n-- > 0)
 	{
 #ifdef OUTPUT_TO_FILE
@@ -332,6 +335,11 @@ void MainWindow::on_balanceEdgeButton_clicked()
 		//balance_opacity();
 		balance_transfer_function_edge();
 	}
+
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+	std::cout << elapsed_secs << std::endl;
+
 #ifdef OUTPUT_TO_FILE
 	out << iteration_count << "," << get_energy_function_edge() << std::endl;
 	out.close();
