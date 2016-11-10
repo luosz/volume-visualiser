@@ -3483,6 +3483,7 @@ private:
 	void on_newtonButton_clicked();
 	void on_gradientDescentButton_clicked();
 	void on_fixedStepButton_clicked();
+    void on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered();
 };
 
 #endif // MAINWINDOW_H

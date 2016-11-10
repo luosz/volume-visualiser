@@ -1490,3 +1490,100 @@ void MainWindow::on_fixedStepButton_clicked()
 	updateTFWidgetFromOpacityArrays();
 	updateOpacityArrayFromTFWidget();
 }
+
+void MainWindow::on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered()
+{
+	bool ok;
+	QString path = batch_patch;
+	path = QInputDialog::getText(this, tr("Global optimization"),
+		tr("Path to open:"), QLineEdit::Normal,
+		path, &ok);
+	if (ok && !path.isEmpty())
+	{
+		// get filename separator position
+		// a valid path must contain either / or \\. if not, it's invalid
+		int index = path.lastIndexOf("/");
+		if (index == -1)
+		{
+			index = path.lastIndexOf("\\");
+		}
+
+		// a valid path must contain either / or \\. otherwise it's invalid.
+		// split filename and path
+		QString filepath = path;
+		QString filename;
+		if (index != -1)
+		{
+			filepath = path.left(index + 1);
+			filename = path.right(path.length() - 1 - index);
+			if (filename.isEmpty())
+			{
+				filename = "*.mhd";
+			}
+		}
+		else
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Invalid path! Please put either a \\ or a / to the end of the path");
+			int ret = msgBox.exec();
+			return;
+		}
+
+		// save the path for next time
+		batch_patch = path;
+
+		// get filenames under the folder
+		QDir dir = QDir(filepath);
+		QStringList files = dir.entryList(QStringList(filename), QDir::Files | QDir::NoSymLinks);
+
+		// a QList to be put in QStandardItemModel
+		QList<QStandardItem *> filename_list;
+
+		for (int i = 0; i < files.size(); i++)
+		{
+			filename_list.append(new QStandardItem(QString(filepath + files[i])));
+
+			// load volume
+			open_volume_no_rendering(filepath + files[i]);
+
+			reset_transfer_function();
+
+			int n = ui->spinBox->value();
+			if (n < 1 || n > max_iteration_count)
+			{
+				n = 1;
+			}
+
+			while (n-- > 0)
+			{
+				//balance_opacity();
+				balance_transfer_function_edge();
+			}
+
+			updateTFWidgetFromOpacityArrays();
+			updateOpacityArrayFromTFWidget();
+
+			// split filename and extension
+			QStringList str_list = files[i].split(".", QString::SkipEmptyParts);
+			if (str_list.size()>1)
+			{
+				str_list.removeLast();
+			}
+			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+			QByteArray ba = str_list.join(".").toLocal8Bit();
+			const char *filename_no_suffix = ba.data();
+
+			QByteArray ba1 = filepath.toLocal8Bit();
+			const char *path1 = ba1.data();
+
+			// save the transfer function to file
+			char filename_str[_MAX_PATH];
+			sprintf(filename_str, "%s%s.tfi", path1, filename_no_suffix);
+			std::cout << "transfer function file: " << filename_str << endl;
+			saveTransferFunctionToVoreenXML(filename_str);
+		}
+
+		model_for_listview.clear();
+		model_for_listview.appendColumn(filename_list);
+	}
+}
