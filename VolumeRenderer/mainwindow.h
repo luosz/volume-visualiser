@@ -103,6 +103,29 @@
 //#define OUTPUT_TO_FILE
 //#endif // OUTPUT_TO_FILE
 
+//// http://stackoverflow.com/questions/3831439/how-to-give-a-delay-in-loop-execution-using-qt
+#include <QThread>    
+
+struct Sleeper : public QThread
+{
+	static const bool enable_sleep = false;
+
+	static void usleep(unsigned long usecs)
+	{
+		if (enable_sleep) QThread::usleep(usecs);
+	}
+
+	static void msleep(unsigned long msecs)
+	{ 
+		if (enable_sleep) QThread::msleep(msecs); 
+	}
+
+	static void sleep(unsigned long secs)
+	{ 
+		if (enable_sleep) QThread::sleep(secs);
+	}
+};
+
 namespace Ui {
 	class MainWindow;
 }
@@ -139,6 +162,7 @@ private:
 	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
+	vtkSmartPointer<vtkAbstractVolumeMapper> mapper;
 	vtkSmartPointer<vtkVolume> volume0;
 	vtkSmartPointer<vtkVolume> Volume() const { return volume0; }
 	void Volume(vtkSmartPointer<vtkVolume> val) { volume0 = val; }
@@ -162,7 +186,7 @@ private:
 	void Number_of_colours_in_spectrum(int val) { number_of_colours_in_spectrum = val; }
 	QString batch_patch;
 	int enable_spectrum_ramp;
-	QStandardItemModel model_for_listview;
+	QStandardItemModel model_for_listview, model_for_listview2;
 	QColor colour_for_optimization;
 	QString window_title;
 	QString Window_title() const { return window_title; }
@@ -1983,6 +2007,8 @@ private:
 	/// open Voreen transfer functions
 	void openTransferFunctionFromVoreenXML(const char *filename)
 	{
+		ui->statusBar->showMessage(QString(filename));
+
 		tinyxml2::XMLDocument doc;
 		auto r = doc.LoadFile(filename);
 
@@ -2809,6 +2835,7 @@ private:
 		}
 
 		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+		mapper = volumeMapper;
 
 		// The volume holds the mapper and the property and can be used to position/orient the volume.
 		auto volume = vtkSmartPointer<vtkVolume>::New();
@@ -2876,6 +2903,8 @@ private:
 		//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
 		//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
 		//volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+
+		mapper->SetInputConnection(shiftScale->GetOutputPort());
 
 		//// The volume holds the mapper and the property and can be used to position/orient the volume.
 		//auto volume = vtkSmartPointer<vtkVolume>::New();
@@ -3485,8 +3514,13 @@ private:
 	void on_newtonButton_clicked();
 	void on_gradientDescentButton_clicked();
 	void on_fixedStepButton_clicked();
-    void on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered();
     void on_listView_clicked(const QModelIndex &index);
+    void on_listView_2_clicked(const QModelIndex &index);
+    void on_listView_2_doubleClicked(const QModelIndex &index);
+    void on_listView_doubleClicked(const QModelIndex &index);
+    void on_listView_activated(const QModelIndex &index);
+    void on_listView_2_activated(const QModelIndex &index);
+    void on_action_Open_time_varying_data_and_transfer_functions_triggered();
 };
 
 #endif // MAINWINDOW_H
