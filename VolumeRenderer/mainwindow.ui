@@ -60,7 +60,7 @@
     <addaction name="action_Open_path_and_generate_transfer_functions_for_region"/>
     <addaction name="action_Open_path_and_generate_transfer_functions_for_colour"/>
     <addaction name="separator"/>
-    <addaction name="action_Open_paths_of_time_varying_data_and_transfer_functions"/>
+    <addaction name="action_Open_time_varying_data_and_transfer_functions"/>
     <addaction name="separator"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="separator"/>
@@ -528,7 +528,7 @@
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>TFs</string>
+         <string>Tool</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <property name="leftMargin">
@@ -623,7 +623,7 @@
        </widget>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
-         <string>Time</string>
+         <string>Data</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <property name="leftMargin">
@@ -640,6 +640,28 @@
          </property>
          <item>
           <widget class="QListView" name="listView"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_6">
+        <attribute name="title">
+         <string>TFs</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QListView" name="listView_2"/>
          </item>
         </layout>
        </widget>
@@ -949,9 +971,9 @@
     <string>vtkMyGPURayCastVolumeMapper</string>
    </property>
   </action>
-  <action name="action_Open_paths_of_time_varying_data_and_transfer_functions">
+  <action name="action_Open_time_varying_data_and_transfer_functions">
    <property name="text">
-    <string>Open paths of time-varying data and transfer functions</string>
+    <string>Open time-varying data and transfer functions</string>
    </property>
   </action>
  </widget>

@@ -31,25 +31,25 @@ struct TimeVaryingData
 
 	int min_index()
 	{
-		return 1;
+		return 0;
 	}
 
 	int max_index()
 	{
-		return 99;
+		return 98;
 	}
 
-	std::string transferfunction_filename(int index)
+	std::string transferfunction(int index)
 	{
 		std::stringstream ss;
-		ss << tfi << std::to_string(index) << tfi2;
+		ss << tfi << std::to_string(index+1) << tfi2;
 		return ss.str();
 	}
 
-	std::string volume_filename(int index)
+	std::string volume(int index)
 	{
 		std::stringstream ss;
-		ss << mhd << std::to_string(index) << mhd2;
+		ss << mhd << std::to_string(index+1) << mhd2;
 		return ss.str();
 	}
 };

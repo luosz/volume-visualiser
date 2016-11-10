@@ -143,6 +143,7 @@ ui(new Ui::MainWindow)
 	QObject::connect(&screenshot_widget, SIGNAL(region_selected(QString)), this, SLOT(slot_region_selected(QString)));
 
 	ui->listView->setModel(&model_for_listview);
+	ui->listView_2->setModel(&model_for_listview2);
 
 	colour_for_optimization = Qt::blue;
 
@@ -1491,35 +1492,40 @@ void MainWindow::on_fixedStepButton_clicked()
 	updateOpacityArrayFromTFWidget();
 }
 
-void MainWindow::on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered()
+void MainWindow::on_action_Open_time_varying_data_and_transfer_functions_triggered()
 {
 	// a QList to be put in QStandardItemModel
-	QList<QStandardItem *> filename_list;
+	QList<QStandardItem *> filename_list, tf_list;
 
-	TimeVaryingData data;
-	for (auto i = data.min_index(); i <= data.max_index(); i++)
+	TimeVaryingData time_varying_data;
+	for (auto i = time_varying_data.min_index(); i <= time_varying_data.max_index(); i++)
 	{
-		std::cout << data.volume_filename(i) << "\t" << data.transferfunction_filename(i) << std::endl;
-		filename_list.append(new QStandardItem(QString::fromStdString(data.volume_filename(i))));
+		std::cout << std::endl << time_varying_data.volume(i) << "\t" << time_varying_data.transferfunction(i) << std::endl;
+		filename_list.append(new QStandardItem(QString::fromStdString(time_varying_data.volume(i))));
+		tf_list.append(new QStandardItem(QString::fromStdString(time_varying_data.transferfunction(i))));
 
 		// load volume
-		open_volume_no_rendering(QString::fromStdString(data.volume_filename(i)));
-		//open_volume(QString::fromStdString(data.volume_filename(i)));
+		open_volume_no_rendering(QString::fromStdString(time_varying_data.volume(i)));
+		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
 
-		openTransferFunctionFromVoreenXML(data.transferfunction_filename(i).c_str());
+		openTransferFunctionFromVoreenXML(time_varying_data.transferfunction(i).c_str());
 
 		updateTFWidgetFromOpacityArrays();
 		updateOpacityArrayFromTFWidget();
+
+		Sleeper::msleep(100);
 	}
 
 	model_for_listview.clear();
 	model_for_listview.appendColumn(filename_list);
+	model_for_listview2.clear();
+	model_for_listview2.appendColumn(tf_list);
 }
 
 void MainWindow::on_listView_clicked(const QModelIndex &index)
 {
-	std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
-
+	std::cout << std::endl << "on_listView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
+	
 	auto item = model_for_listview.itemFromIndex(index);
 	if (item != NULL)
 	{
@@ -1534,4 +1540,80 @@ void MainWindow::on_listView_clicked(const QModelIndex &index)
 	{
 		std::cout << "invalid index" << std::endl;
 	}
+}
+
+void MainWindow::on_listView_2_clicked(const QModelIndex &index)
+{
+	std::cout << std::endl << "on_listView_2_clicked row=" << index.row() << " column=" << index.column() << std::endl;
+	
+    auto item = model_for_listview2.itemFromIndex(index);
+    if (item != NULL)
+    {
+        auto filename = item->text();
+        // get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+        QByteArray ba = filename.toLocal8Bit();
+        const char *filename_str = ba.data();
+        std::cout << "text=" << filename_str << std::endl;
+		openTransferFunctionFromVoreenXML(filename_str);
+
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
+    }
+    else
+    {
+        std::cout << "invalid index" << std::endl;
+    }
+}
+
+void MainWindow::on_listView_2_doubleClicked(const QModelIndex &index)
+{
+	std::cout << std::endl << model_for_listview2.rowCount() << std::endl;
+	for (int i = 0; i < model_for_listview2.rowCount();i++)
+	{
+		on_listView_2_clicked(model_for_listview2.index(i, 0));
+		Sleeper::msleep(100);
+		//auto item = model_for_listview2.itemFromIndex(model_for_listview2.index(i, 0));
+		//if (item != NULL)
+		//{
+		//	auto filename = item->text();
+		//	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+		//	QByteArray ba = filename.toLocal8Bit();
+		//	const char *filename_str = ba.data();
+		//	std::cout << "text=" << filename_str << std::endl;
+		//	openTransferFunctionFromVoreenXML(filename_str);
+
+		//	updateTFWidgetFromOpacityArrays();
+		//	updateOpacityArrayFromTFWidget();
+		//}
+	}
+}
+
+void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
+{
+	std::cout << std::endl << model_for_listview.rowCount() << std::endl;
+	for (int i = 0; i < model_for_listview.rowCount(); i++)
+	{
+		on_listView_clicked(model_for_listview.index(i, 0));
+		Sleeper::msleep(100);
+		//auto item = model_for_listview.itemFromIndex(model_for_listview.index(i, 0));
+		//if (item != NULL)
+		//{
+		//	auto filename = item->text();
+		//	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
+		//	QByteArray ba = filename.toLocal8Bit();
+		//	const char *filename_str = ba.data();
+		//	std::cout << "text=" << filename_str << std::endl;
+		//	open_volume(filename_str);
+		//}
+	}
+}
+
+void MainWindow::on_listView_activated(const QModelIndex &index)
+{
+    on_listView_clicked(index);
+}
+
+void MainWindow::on_listView_2_activated(const QModelIndex &index)
+{
+    on_listView_2_clicked(index);
 }
