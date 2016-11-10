@@ -97,6 +97,8 @@
 #include "RayCastType.h"
 #include "vtkMyGPURayCastVolumeMapper.h"
 
+#include "TimeVaryingData.h"
+
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
 //#endif // OUTPUT_TO_FILE
@@ -3359,25 +3361,25 @@ private:
 		std::cout << "slot_GraphicsScene_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
 	}
 
-	void slot_ListView_activated(const QModelIndex & index)
-	{
-		std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
+	//void slot_ListView_activated(const QModelIndex & index)
+	//{
+	//	std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
 
-		auto item = model_for_listview.itemFromIndex(index);
-		if (item != NULL)
-		{
-			auto filename = item->text();
-			// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-			QByteArray ba = filename.toLocal8Bit();
-			const char *filename_str = ba.data();
-			std::cout << "text=" << filename_str << std::endl;
-			open_volume(filename);
-		}
-		else
-		{
-			std::cout << "invalid index" << std::endl;
-		}
-	}
+	//	auto item = model_for_listview.itemFromIndex(index);
+	//	if (item != NULL)
+	//	{
+	//		auto filename = item->text();
+	//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+	//		QByteArray ba = filename.toLocal8Bit();
+	//		const char *filename_str = ba.data();
+	//		std::cout << "text=" << filename_str << std::endl;
+	//		open_volume(filename);
+	//	}
+	//	else
+	//	{
+	//		std::cout << "invalid index" << std::endl;
+	//	}
+	//}
 
 	void slot_region_selected(QString filename)
 	{
@@ -3483,6 +3485,8 @@ private:
 	void on_newtonButton_clicked();
 	void on_gradientDescentButton_clicked();
 	void on_fixedStepButton_clicked();
+    void on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered();
+    void on_listView_clicked(const QModelIndex &index);
 };
 
 #endif // MAINWINDOW_H
