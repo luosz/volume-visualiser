@@ -23,6 +23,7 @@
 #include <string>
 #include <string.h>
 #include <cmath>
+#include <ctime>
 
 // cereal - A C++11 library for serialization
 #include <cereal/archives/xml.hpp>
@@ -83,8 +84,8 @@
 #include "ctkVTKScalarsToColorsView.h"
 
 // Slicer
-#include "vtkSlicerGPURayCastVolumeMapper.h"
-#include "vtkSlicerGPURayCastMultiVolumeMapper.h"
+//#include "vtkSlicerGPURayCastVolumeMapper.h"
+//#include "vtkSlicerGPURayCastMultiVolumeMapper.h"
 
 // TinyXML-2
 #include "tinyxml2/tinyxml2.h"
@@ -94,7 +95,7 @@
 
 #include "transfer_function_xml.h"
 #include "RayCastType.h"
-#include "vtkMyGPURayCastVolumeMapper.h"
+//#include "vtkMyGPURayCastVolumeMapper.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -2789,15 +2790,15 @@ private:
 
 		switch (Volume_mapper_index())
 		{
-		case 1:
-			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastVolumeMapper>::New();
-			break;
-		case 2:
-			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
-			break;
-		case 3:
-			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
-			break;
+		//case 1:
+		//	volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastVolumeMapper>::New();
+		//	break;
+		//case 2:
+		//	volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
+		//	break;
+		//case 3:
+		//	volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
+		//	break;
 		default:
 			//volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
 			//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
@@ -3198,6 +3199,9 @@ private:
 		//pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
 		//std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 		//std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
+		
+		// time the optimization
+		clock_t begin = clock();
 
 		compute_distance_and_weights_by_intensity(normalized_intensity);
 
@@ -3212,6 +3216,12 @@ private:
 			//balance_opacity_for_region();
 			balance_transfer_function_edge_for_region();
 		}
+
+		// time the optimization
+		clock_t end = clock();
+		double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+		std::cout << elapsed_secs << " seconds" << std::endl;
+
 		updateTFWidgetFromOpacityArrays();
 		updateOpacityArrayFromTFWidget();
 	}

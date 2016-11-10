@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.11)
 
-set(QT_QMAKE_EXECUTABLE "E:/Qt/Qt5.5.0/5.5/msvc2013/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(VTK_DIR "E:/VTK/VTK-6.3.0/build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "E:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(CMAKE_PREFIX_PATH "E:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "CMAKE_PREFIX_PATH")
+set(VTK_DIR "E:/VTK/VTK-7.0.0/build" CACHE PATH "VTK build directory")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
@@ -37,13 +38,14 @@ file(GLOB CTK_ui_files
 project(VolumeVisualizer)
 
 # VTK 6.x is required
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+# find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(VTK 7.0 REQUIRED NO_MODULE)
 include(${VTK_USE_FILE})
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-## Instruct CMake to run moc automatically when needed.
-#set(CMAKE_AUTOMOC ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
 
 # Find the QtWidgets library
 find_package(Qt5Widgets)
@@ -142,6 +144,7 @@ include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${cereal_DIR}
 )
 
+# Tell CMake to create the executable
 add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files}
 	${Project_header_files} ${Project_moc_source_files}
 	#${Project_qrc_compiled}
@@ -153,7 +156,7 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${cereal_files}
 )
 
-qt5_use_modules(${PROJECT_NAME} Widgets OpenGL)
+# Use the Widgets module from Qt 5.
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES})
 
 if(WIN32) # Check if we are on Windows
