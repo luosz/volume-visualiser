@@ -137,8 +137,8 @@ ui(new Ui::MainWindow)
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
 
-	QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
-	QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
+	//QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
+	//QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
 
 	QObject::connect(&screenshot_widget, SIGNAL(region_selected(QString)), this, SLOT(slot_region_selected(QString)));
 
@@ -1489,4 +1489,49 @@ void MainWindow::on_fixedStepButton_clicked()
 #endif
 	updateTFWidgetFromOpacityArrays();
 	updateOpacityArrayFromTFWidget();
+}
+
+void MainWindow::on_action_Open_paths_of_time_varying_data_and_transfer_functions_triggered()
+{
+	// a QList to be put in QStandardItemModel
+	QList<QStandardItem *> filename_list;
+
+	TimeVaryingData data;
+	for (auto i = data.min_index(); i <= data.max_index(); i++)
+	{
+		std::cout << data.volume_filename(i) << "\t" << data.transferfunction_filename(i) << std::endl;
+		filename_list.append(new QStandardItem(QString::fromStdString(data.volume_filename(i))));
+
+		// load volume
+		open_volume_no_rendering(QString::fromStdString(data.volume_filename(i)));
+		//open_volume(QString::fromStdString(data.volume_filename(i)));
+
+		openTransferFunctionFromVoreenXML(data.transferfunction_filename(i).c_str());
+
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
+	}
+
+	model_for_listview.clear();
+	model_for_listview.appendColumn(filename_list);
+}
+
+void MainWindow::on_listView_clicked(const QModelIndex &index)
+{
+	std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
+
+	auto item = model_for_listview.itemFromIndex(index);
+	if (item != NULL)
+	{
+		auto filename = item->text();
+		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
+		QByteArray ba = filename.toLocal8Bit();
+		const char *filename_str = ba.data();
+		std::cout << "text=" << filename_str << std::endl;
+		open_volume(filename);
+	}
+	else
+	{
+		std::cout << "invalid index" << std::endl;
+	}
 }
