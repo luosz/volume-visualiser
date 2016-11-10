@@ -60,6 +60,8 @@
     <addaction name="action_Open_path_and_generate_transfer_functions_for_region"/>
     <addaction name="action_Open_path_and_generate_transfer_functions_for_colour"/>
     <addaction name="separator"/>
+    <addaction name="action_Open_paths_of_time_varying_data_and_transfer_functions"/>
+    <addaction name="separator"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
@@ -945,6 +947,11 @@
    </property>
    <property name="text">
     <string>vtkMyGPURayCastVolumeMapper</string>
+   </property>
+  </action>
+  <action name="action_Open_paths_of_time_varying_data_and_transfer_functions">
+   <property name="text">
+    <string>Open paths of time-varying data and transfer functions</string>
    </property>
   </action>
  </widget>
