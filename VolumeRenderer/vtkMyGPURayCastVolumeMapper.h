@@ -11,9 +11,8 @@
 #include "vtkTimerLog.h"
 #include "vtkVolumeProperty.h"
 #include "vtkTransform.h"
-//#include "vtkOpenGLExtensionManager.h"
-//#include "vtkgl.h"
-#include "vtk_glew.h"
+#include "vtkOpenGLExtensionManager.h"
+#include "vtkgl.h"
 
 #include "vtkSlicerGPURayCastVolumeMapper.h"
 
