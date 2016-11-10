@@ -132,7 +132,8 @@ ui(new Ui::MainWindow)
 	on_action_Compute_Distance_HSV_triggered();
 
 	// set up default volume mapper
-	on_action_VtkMyGPURayCastVolumeMapper_triggered();
+	//on_action_VtkMyGPURayCastVolumeMapper_triggered();
+	on_action_VtkSmartVolumeMapper_triggered();
 
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
@@ -1380,12 +1381,13 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 		auto volume = Volume();
 		if (volume)
 		{
-			auto mapper = dynamic_cast<vtkSlicerGPURayCastVolumeMapper *>(volume->GetMapper());
+			//auto mapper = dynamic_cast<vtkSlicerGPURayCastVolumeMapper *>(volume->GetMapper());
+			auto mapper = dynamic_cast<vtkVolumeMapper *>(volume->GetMapper());
 			if (mapper)
 			{
 				int technique = RenderingTechniqueComboBox()->itemData(index).toInt();
 				std::cout << "technique=" << technique << std::endl;
-				mapper->SetTechnique(technique);
+				//mapper->SetTechnique(technique);
 				vtk_widget.repaint();
 			}
 		}
