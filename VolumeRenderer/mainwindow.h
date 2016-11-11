@@ -3522,9 +3522,11 @@ private:
     void on_listView_doubleClicked(const QModelIndex &index);
     void on_listView_activated(const QModelIndex &index);
     void on_listView_2_activated(const QModelIndex &index);
-    void on_action_Open_time_varying_data_and_transfer_functions_triggered();
     void on_action_Reset_Renderer_triggered();
     void on_action_Remove_Renderer_triggered();
+    void on_action_Open_dynamically_optimized_vortex_triggered();
+    void on_action_Open_vortex_triggered();
+    void on_action_Open_statically_optimized_vortex_triggered();
 };
 
 #endif // MAINWINDOW_H

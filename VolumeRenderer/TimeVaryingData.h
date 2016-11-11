@@ -22,7 +22,7 @@ inline std::string base_filename(std::string const & path)
 	return filename.substr(0, filename.find_last_of('.'));
 }
 
-struct TimeVaryingData
+struct DynamicVortex
 {
 	std::string mhd = "D:/_time_varying_data/vortex_raw/vorts";
 	std::string mhd2 = ".mhd";
@@ -50,6 +50,66 @@ struct TimeVaryingData
 	{
 		std::stringstream ss;
 		ss << mhd << std::to_string(index+1) << mhd2;
+		return ss.str();
+	}
+};
+
+struct StaticVortex
+{
+	std::string mhd = "D:/_time_varying_data/vortex_raw/vorts";
+	std::string mhd2 = ".mhd";
+	std::string tfi = "D:/document/work/time-varying-visualization/~plot/vorts";
+	std::string tfi2 = "_optimized_parallelsearch.tfi";
+
+	int min_index()
+	{
+		return 0;
+	}
+
+	int max_index()
+	{
+		return 98;
+	}
+
+	std::string transferfunction(int index)
+	{
+		return std::string("D:/document/work/time-varying-visualization/feature_transfer_function/vortex_naive_proportional_optimized_linesearch.tfi");
+	}
+
+	std::string volume(int index)
+	{
+		std::stringstream ss;
+		ss << mhd << std::to_string(index + 1) << mhd2;
+		return ss.str();
+	}
+};
+
+struct NaiveVortex
+{
+	std::string mhd = "D:/_time_varying_data/vortex_raw/vorts";
+	std::string mhd2 = ".mhd";
+	std::string tfi = "D:/document/work/time-varying-visualization/~plot/vorts";
+	std::string tfi2 = "_optimized_parallelsearch.tfi";
+
+	int min_index()
+	{
+		return 0;
+	}
+
+	int max_index()
+	{
+		return 98;
+	}
+
+	std::string transferfunction(int index)
+	{
+		return std::string("D:/document/work/time-varying-visualization/feature_transfer_function/vortex_naive_proportional.tfi");
+	}
+
+	std::string volume(int index)
+	{
+		std::stringstream ss;
+		ss << mhd << std::to_string(index + 1) << mhd2;
 		return ss.str();
 	}
 };

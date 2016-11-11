@@ -1496,36 +1496,6 @@ void MainWindow::on_fixedStepButton_clicked()
 	updateOpacityArrayFromTFWidget();
 }
 
-void MainWindow::on_action_Open_time_varying_data_and_transfer_functions_triggered()
-{
-	// a QList to be put in QStandardItemModel
-	QList<QStandardItem *> filename_list, tf_list;
-
-	TimeVaryingData time_varying_data;
-	for (auto i = time_varying_data.min_index(); i <= time_varying_data.max_index(); i++)
-	{
-		std::cout << std::endl << time_varying_data.volume(i) << "\t" << time_varying_data.transferfunction(i) << std::endl;
-		filename_list.append(new QStandardItem(QString::fromStdString(time_varying_data.volume(i))));
-		tf_list.append(new QStandardItem(QString::fromStdString(time_varying_data.transferfunction(i))));
-
-		// load volume
-		open_volume_no_rendering(QString::fromStdString(time_varying_data.volume(i)));
-		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
-
-		openTransferFunctionFromVoreenXML(time_varying_data.transferfunction(i).c_str());
-
-		updateTFWidgetFromOpacityArrays();
-		updateOpacityArrayFromTFWidget();
-
-		Sleeper::msleep(100);
-	}
-
-	model_for_listview.clear();
-	model_for_listview.appendColumn(filename_list);
-	model_for_listview2.clear();
-	model_for_listview2.appendColumn(tf_list);
-}
-
 void MainWindow::on_listView_clicked(const QModelIndex &index)
 {
 	std::cout << std::endl << "on_listView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
@@ -1632,4 +1602,89 @@ void MainWindow::on_action_Remove_Renderer_triggered()
 	}
 	window->AddRenderer(renderer);
 	window->Render();
+}
+
+void MainWindow::on_action_Open_dynamically_optimized_vortex_triggered()
+{
+    // a QList to be put in QStandardItemModel
+    QList<QStandardItem *> filename_list, tf_list;
+    DynamicVortex tvdata;
+
+    for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+    {
+        filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(i))));
+        tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(i))));
+
+        // load volume
+        open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
+        //open_volume(QString::fromStdString(time_varying_data.volume(i)));
+
+        openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
+
+        updateTFWidgetFromOpacityArrays();
+        updateOpacityArrayFromTFWidget();
+
+        Sleeper::msleep(100);
+    }
+
+    model_for_listview.clear();
+    model_for_listview.appendColumn(filename_list);
+    model_for_listview2.clear();
+    model_for_listview2.appendColumn(tf_list);
+}
+
+void MainWindow::on_action_Open_vortex_triggered()
+{
+	// a QList to be put in QStandardItemModel
+	QList<QStandardItem *> filename_list, tf_list;
+	NaiveVortex tvdata;
+	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.min_index()))));
+	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.min_index()))));
+
+	for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+	{
+		// load volume
+		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
+		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
+
+		openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
+
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
+
+		Sleeper::msleep(100);
+	}
+
+	model_for_listview.clear();
+	model_for_listview.appendColumn(filename_list);
+	model_for_listview2.clear();
+	model_for_listview2.appendColumn(tf_list);
+}
+
+void MainWindow::on_action_Open_statically_optimized_vortex_triggered()
+{
+	// a QList to be put in QStandardItemModel
+	QList<QStandardItem *> filename_list, tf_list;
+	StaticVortex tvdata;
+	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.min_index()))));
+	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.min_index()))));
+
+	for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+	{
+		// load volume
+		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
+		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
+
+		openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
+
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
+
+		Sleeper::msleep(100);
+	}
+
+	model_for_listview.clear();
+	model_for_listview.appendColumn(filename_list);
+	model_for_listview2.clear();
+	model_for_listview2.appendColumn(tf_list);
 }
