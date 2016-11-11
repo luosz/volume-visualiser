@@ -77,6 +77,9 @@
     <property name="title">
      <string>&amp;Rendering</string>
     </property>
+    <addaction name="action_Reset_Renderer"/>
+    <addaction name="action_Remove_Renderer"/>
+    <addaction name="separator"/>
     <addaction name="action_Compute_Distance"/>
     <addaction name="action_Compute_Squared_Distance"/>
     <addaction name="action_Compute_Distance_HSV"/>
@@ -974,6 +977,16 @@
   <action name="action_Open_time_varying_data_and_transfer_functions">
    <property name="text">
     <string>Open time-varying data and transfer functions</string>
+   </property>
+  </action>
+  <action name="action_Reset_Renderer">
+   <property name="text">
+    <string>Reset Renderer</string>
+   </property>
+  </action>
+  <action name="action_Remove_Renderer">
+   <property name="text">
+    <string>Remove Renderer</string>
    </property>
   </action>
  </widget>
