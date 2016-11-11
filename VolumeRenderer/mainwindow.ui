@@ -60,7 +60,9 @@
     <addaction name="action_Open_path_and_generate_transfer_functions_for_region"/>
     <addaction name="action_Open_path_and_generate_transfer_functions_for_colour"/>
     <addaction name="separator"/>
-    <addaction name="action_Open_time_varying_data_and_transfer_functions"/>
+    <addaction name="action_Open_vortex"/>
+    <addaction name="action_Open_statically_optimized_vortex"/>
+    <addaction name="action_Open_dynamically_optimized_vortex"/>
     <addaction name="separator"/>
     <addaction name="action_Append_Volume"/>
     <addaction name="separator"/>
@@ -974,9 +976,9 @@
     <string>vtkMyGPURayCastVolumeMapper</string>
    </property>
   </action>
-  <action name="action_Open_time_varying_data_and_transfer_functions">
+  <action name="action_Open_dynamically_optimized_vortex">
    <property name="text">
-    <string>Open time-varying data and transfer functions</string>
+    <string>Open dynamically optimized vortex</string>
    </property>
   </action>
   <action name="action_Reset_Renderer">
@@ -987,6 +989,16 @@
   <action name="action_Remove_Renderer">
    <property name="text">
     <string>Remove Renderer</string>
+   </property>
+  </action>
+  <action name="action_Open_statically_optimized_vortex">
+   <property name="text">
+    <string>Open statically optimized vortex</string>
+   </property>
+  </action>
+  <action name="action_Open_vortex">
+   <property name="text">
+    <string>Open vortex</string>
    </property>
   </action>
  </widget>
