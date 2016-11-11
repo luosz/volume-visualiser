@@ -21,6 +21,10 @@ ui(new Ui::MainWindow)
 	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget1);
 	get_histogram_layout()->addWidget(&ctkVTKScalarsToColorsWidget2);
 
+	// set up renderer
+	renderer = vtkSmartPointer<vtkRenderer>::New();
+	vtk_widget.GetRenderWindow()->AddRenderer(renderer);
+
 	// set up interactor
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	interactor->SetRenderWindow(vtk_widget.GetRenderWindow());
@@ -1572,19 +1576,6 @@ void MainWindow::on_listView_2_doubleClicked(const QModelIndex &index)
 	{
 		on_listView_2_clicked(model_for_listview2.index(i, 0));
 		Sleeper::msleep(100);
-		//auto item = model_for_listview2.itemFromIndex(model_for_listview2.index(i, 0));
-		//if (item != NULL)
-		//{
-		//	auto filename = item->text();
-		//	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-		//	QByteArray ba = filename.toLocal8Bit();
-		//	const char *filename_str = ba.data();
-		//	std::cout << "text=" << filename_str << std::endl;
-		//	openTransferFunctionFromVoreenXML(filename_str);
-
-		//	updateTFWidgetFromOpacityArrays();
-		//	updateOpacityArrayFromTFWidget();
-		//}
 	}
 }
 
@@ -1595,16 +1586,6 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
 	{
 		on_listView_clicked(model_for_listview.index(i, 0));
 		Sleeper::msleep(100);
-		//auto item = model_for_listview.itemFromIndex(model_for_listview.index(i, 0));
-		//if (item != NULL)
-		//{
-		//	auto filename = item->text();
-		//	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters)
-		//	QByteArray ba = filename.toLocal8Bit();
-		//	const char *filename_str = ba.data();
-		//	std::cout << "text=" << filename_str << std::endl;
-		//	open_volume(filename_str);
-		//}
 	}
 }
 
@@ -1616,4 +1597,39 @@ void MainWindow::on_listView_activated(const QModelIndex &index)
 void MainWindow::on_listView_2_activated(const QModelIndex &index)
 {
     on_listView_2_clicked(index);
+}
+
+void MainWindow::on_action_Reset_Renderer_triggered()
+{
+	auto window = vtk_widget.GetRenderWindow();
+	auto collection = window->GetRenderers();
+	auto item = collection->GetNextItem();
+	int rc = 0;
+	std::cout << "\nvtkRendererCollection\n";
+	while (item != NULL)
+	{
+		item->ResetCamera();
+		item->RemoveAllViewProps();
+		item = collection->GetNextItem();
+		std::cout << "\n reset vtkRenderer " << ++rc << std::endl;
+	}
+	window->Render();
+}
+
+void MainWindow::on_action_Remove_Renderer_triggered()
+{
+	// clean previous renderers and then add the current renderer
+	auto window = vtk_widget.GetRenderWindow();
+	auto collection = window->GetRenderers();
+	auto item = collection->GetNextItem();
+	int rc = 0;
+	std::cout << "\nvtkRendererCollection\n";
+	while (item != NULL)
+	{
+		window->RemoveRenderer(item);
+		item = collection->GetNextItem();
+		std::cout << "\n remove vtkRenderer " << ++rc << std::endl;
+	}
+	window->AddRenderer(renderer);
+	window->Render();
 }

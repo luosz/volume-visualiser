@@ -162,7 +162,6 @@ private:
 	QString selected_region_filename;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
-	vtkSmartPointer<vtkAbstractVolumeMapper> mapper;
 	vtkSmartPointer<vtkVolume> volume0;
 	vtkSmartPointer<vtkVolume> Volume() const { return volume0; }
 	void Volume(vtkSmartPointer<vtkVolume> val) { volume0 = val; }
@@ -2835,7 +2834,6 @@ private:
 		}
 
 		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
-		mapper = volumeMapper;
 
 		// The volume holds the mapper and the property and can be used to position/orient the volume.
 		auto volume = vtkSmartPointer<vtkVolume>::New();
@@ -2843,9 +2841,10 @@ private:
 		volume->SetMapper(volumeMapper);
 		volume->SetProperty(volumeProperty);
 
-		// add the volume into the renderer
+		//// add the volume into the renderer
 		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
-		renderer = vtkSmartPointer<vtkRenderer>::New();
+		//renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->RemoveAllViewProps();
 		renderer->AddVolume(volume);
 		renderer->SetBackground(1, 1, 1);
 
@@ -2853,10 +2852,13 @@ private:
 		auto window = vtk_widget.GetRenderWindow();
 		auto collection = window->GetRenderers();
 		auto item = collection->GetNextItem();
+		int rc = 0;
+		std::cout << "\nvtkRendererCollection\n";
 		while (item != NULL)
 		{
 			window->RemoveRenderer(item);
 			item = collection->GetNextItem();
+			std::cout << "\nremove vtkRenderer " << ++rc << std::endl;
 		}
 		window->AddRenderer(renderer);
 		window->Render();
@@ -2889,49 +2891,49 @@ private:
 		generate_visibility_function(shiftScale);
 		generate_LH_histogram(shiftScale);
 
-		//// set up volume property
-		//auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
-		//volumeProperty->SetColor(colorTransferFunction);
-		//volumeProperty->SetScalarOpacity(opacityTransferFunction);
+		// set up volume property
+		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+		volumeProperty->SetScalarOpacity(scalar_opacity);
+		volumeProperty->SetGradientOpacity(gradient_opacity);
+		volumeProperty->SetColor(scalar_color);
 		//volumeProperty->ShadeOff();
-		//volumeProperty->SetInterpolationTypeToLinear();
+		volumeProperty->SetInterpolationTypeToLinear();
 
-		//// assign volume property to the volume property widget
-		//volumePropertywidget.setVolumeProperty(volumeProperty);
+		// assign volume property to the volume property widget
+		volume_property_widget.setVolumeProperty(volumeProperty);
 
-		//// The mapper that renders the volume data.
-		//auto volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-		//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-		//volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
+		// The mapper that renders the volume data.
+		vtkSmartPointer<vtkVolumeMapper> volumeMapper;
 
-		mapper->SetInputConnection(shiftScale->GetOutputPort());
+		switch (Volume_mapper_index())
+		{
+		case 1:
+			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastVolumeMapper>::New();
+			break;
+		case 2:
+			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
+			break;
+		case 3:
+			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
+			break;
+		default:
+			//volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+			//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			volumeMapper = vtkSmartPointer<vtkGPUVolumeRayCastMapper>::New();
+			break;
+		}
 
-		//// The volume holds the mapper and the property and can be used to position/orient the volume.
-		//auto volume = vtkSmartPointer<vtkVolume>::New();
-		//volume->SetMapper(volumeMapper);
-		//volume->SetProperty(volumeProperty);
+		volumeMapper->SetInputConnection(shiftScale->GetOutputPort());
 
-		//// add the volume into the renderer
-		////auto renderer = vtkSmartPointer<vtkRenderer>::New();
-		//renderer = vtkSmartPointer<vtkRenderer>::New();
-		//renderer->AddVolume(volume);
-		//renderer->SetBackground(1, 1, 1);
+		// The volume holds the mapper and the property and can be used to position/orient the volume.
+		auto volume = vtkSmartPointer<vtkVolume>::New();
+		volume->SetMapper(volumeMapper);
+		volume->SetProperty(volumeProperty);
 
-		//// clean previous renderers and then add the current renderer
-		//auto window = widget.GetRenderWindow();
-		//auto collection = window->GetRenderers();
-		//auto item = collection->GetNextItem();
-		//while (item != NULL)
-		//{
-		//	window->RemoveRenderer(item);
-		//	item = collection->GetNextItem();
-		//}
-		//window->AddRenderer(renderer);
-		//window->Render();
-
-		//// initialize the interactor
-		//interactor->Initialize();
-		//interactor->Start();
+		renderer->RemoveAllViewProps();
+		renderer->AddVolume(volume);
+		renderer->SetBackground(1, 1, 1);
+		vtk_widget.GetRenderWindow()->Render();
 	}
 
 	/// if distance_metric==1 then compute distance with squared distance
@@ -3521,6 +3523,8 @@ private:
     void on_listView_activated(const QModelIndex &index);
     void on_listView_2_activated(const QModelIndex &index);
     void on_action_Open_time_varying_data_and_transfer_functions_triggered();
+    void on_action_Reset_Renderer_triggered();
+    void on_action_Remove_Renderer_triggered();
 };
 
 #endif // MAINWINDOW_H
