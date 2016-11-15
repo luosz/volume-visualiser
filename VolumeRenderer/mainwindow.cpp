@@ -15,6 +15,9 @@ ui(new Ui::MainWindow)
 
 	populateRenderingTechniqueComboBox();
 
+	// turn off debug, warning or error messages
+	vtkObject::GlobalWarningDisplayOff();
+
 	// add VTK widgets
 	get_vtk_layout()->addWidget(&vtk_widget);
 	get_property_layout()->addWidget(&volume_property_widget);
