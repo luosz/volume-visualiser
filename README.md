@@ -8,23 +8,23 @@ It uses the vtkSlicerGPURayCastVolumeMapper from Slicer (https://www.slicer.org/
 
 ** 2015-09-14 Update: The CTK widgets in this project are only a small subset of the CTK library downloaded on 14 September 2015 from https://github.com/commontk/CTK **
 
-** CMake settings for this project **
-set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")
-set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")
+** CMake settings for this project **  
+set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")  
+set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")  
+set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")  
 
-** Your title here... # CMake settings for building VTK **
-set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")
-set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")
-set(VTK_QT_VERSION 5 CACHE STRING "Qt version")
-set(VTK_NO_LIBRARY_VERSION ON CACHE BOOL "VTK_NO_LIBRARY_VERSION")
-set(VTK_Group_Qt ON CACHE BOOL "VTK_Group_Qt")
-set(Module_vtkGUISupportQt ON CACHE BOOL "Module_vtkGUISupportQt")
-set(Module_vtkGUISupportQtOpenGL ON CACHE BOOL "Module_vtkGUISupportQtOpenGL")
-set(Module_vtkRenderingQt ON CACHE BOOL "Module_vtkRenderingQt")
-set(BUILD_TESTING OFF CACHE BOOL "BUILD_TESTING")
-set(VTK_RENDERING_BACKEND_DEFAULT "OpenGL")
+** Your title here... # CMake settings for building VTK **  
+set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")  
+set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")  
+set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")  
+set(VTK_QT_VERSION 5 CACHE STRING "Qt version")  
+set(VTK_NO_LIBRARY_VERSION ON CACHE BOOL "VTK_NO_LIBRARY_VERSION")  
+set(VTK_Group_Qt ON CACHE BOOL "VTK_Group_Qt")  
+set(Module_vtkGUISupportQt ON CACHE BOOL "Module_vtkGUISupportQt")  
+set(Module_vtkGUISupportQtOpenGL ON CACHE BOOL "Module_vtkGUISupportQtOpenGL")  
+set(Module_vtkRenderingQt ON CACHE BOOL "Module_vtkRenderingQt")  
+set(BUILD_TESTING OFF CACHE BOOL "BUILD_TESTING")  
+set(VTK_RENDERING_BACKEND_DEFAULT "OpenGL")  
 
 ### Screenshot ###
 * ![volume_visualizer.png](https://bitbucket.org/repo/d5Xrn6/images/2362565755-volume_visualizer.png)
