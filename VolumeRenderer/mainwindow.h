@@ -1693,12 +1693,21 @@ private:
 		auto transFuncIntensity = doc.NewElement("TransFuncIntensity");
 		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
 
+		// add alphaMode
+		auto alphaMode = doc.NewElement("alphaMode");
+		alphaMode->SetAttribute("value", 1);
+		transFuncIntensity->InsertEndChild(alphaMode);
+
+		// add gammaValue
+		auto gammaValue = doc.NewElement("gammaValue");
+		gammaValue->SetAttribute("value", 1);
+		transFuncIntensity->InsertEndChild(gammaValue);
+
 		// add domain
 		auto domain = doc.NewElement("domain");
 		domain->SetAttribute("x", Domain_x());
 		domain->SetAttribute("y", Domain_y());
 		transFuncIntensity->InsertEndChild(domain);
-		//}
 
 		// add threshold
 		auto threshold = doc.NewElement("threshold");
