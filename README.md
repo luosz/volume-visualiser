@@ -6,5 +6,7 @@ It uses the vtkSlicerGPURayCastVolumeMapper from Slicer (https://www.slicer.org/
 
 ** 2016-11-13 Update: The project has been updated and successfully built with CMake 3.7, VTK 7.1, Qt 5.7 and Visual Studio 2015. **
 
+** 2015-09-14 Update: The CTK widgets in this project are only a small subset of the CTK library downloaded on 14 September 2015 from https://github.com/commontk/CTK **
+
 ### Screenshot ###
 * ![volume_visualizer.png](https://bitbucket.org/repo/d5Xrn6/images/2362565755-volume_visualizer.png)
