@@ -410,7 +410,7 @@ void MainWindow::on_balanceRegionButton_clicked()
 void MainWindow::on_action_About_triggered()
 {
 	QMessageBox msgBox;
-	msgBox.setText(QString::fromUtf8("Volume Renderer\nCopyright (c) 2014 by Shengzhou Luo at Trinity College Dublin.\nAll rights reserved."));
+	msgBox.setText(QString::fromUtf8("GV2 Volume Visualiser \nCopyright (c) 2013-2016 by Shengzhou Luo at Trinity College Dublin. \nAll rights reserved."));
 	msgBox.exec();
 }
 
