@@ -751,10 +751,10 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 			// optimize for a specific colour
 			optimise_transfer_function_for_colour(colour);
 
-			char c_str2[_MAX_PATH];
-			sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
-			saveTransferFunctionToVoreenXML(c_str2);
-			std::cout << "saved to file " << c_str2 << std::endl;
+			//char c_str2[_MAX_PATH];
+			//sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
+			//saveTransferFunctionToVoreenXML(c_str2);
+			//std::cout << "saved to file " << c_str2 << std::endl;
 		}
 	}
 }
