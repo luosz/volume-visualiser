@@ -1,9 +1,20 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.11)
+if(POLICY CMP0020)
+  cmake_policy(SET CMP0020 NEW)
+endif()
+if(POLICY CMP0025)
+  cmake_policy(SET CMP0025 NEW) # CMake 3.0
+endif()
+if(POLICY CMP0043)
+  cmake_policy(SET CMP0043 NEW) # CMake 3.0
+endif()
+if(POLICY CMP0053)
+  cmake_policy(SET CMP0053 NEW) # CMake 3.1
+endif()
 
-set(VTK_DIR "C:/VTK/VTK-6.3.0/build" CACHE PATH "VTK directory")
-set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/msvc2013" CACHE PATH "CMAKE_PREFIX_PATH")
-set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.5.1/5.5/msvc2013/bin/qmake.exe" CACHE PATH "QT_QMAKE_EXECUTABLE")
-set(VTK_QT_VERSION 5 CACHE PATH "VTK_QT_VERSION")
+set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
@@ -38,9 +49,38 @@ file(GLOB CTK_ui_files
 
 project(VolumeVisualizer)
 
-# VTK 6.x is required
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+find_package(OpenGL REQUIRED)
+message(STATUS "OPENGL_LIBRARIES=" ${OPENGL_LIBRARIES})
+
+# VTK is required
+find_package(VTK REQUIRED)
+vtk_module_config(VTK
+  vtkCommonCore
+  vtkChartsCore
+  vtkImagingCore
+  vtkImagingStatistics
+  vtkViewsContext2D
+  vtkInteractionWidgets
+  vtkGUISupportQt
+  vtkRenderingContext${VTK_RENDERING_BACKEND}
+  vtkRendering${VTK_RENDERING_BACKEND}
+  vtkRenderingVolume${VTK_RENDERING_BACKEND}
+)
 include(${VTK_USE_FILE})
+
+if("${VTK_QT_VERSION}" STREQUAL "")
+  message(FATAL_ERROR "VTK was not built with Qt")
+endif()
+
+link_directories("${VTK_DIR}/lib")
+message(STATUS "VTK_USE_FILE=" ${VTK_USE_FILE})
+message(STATUS "VTK_DEFINITIONS=" ${VTK_DEFINITIONS})
+message(STATUS "VTK_INCLUDE_DIRS=" ${VTK_INCLUDE_DIRS})
+message(STATUS "VTK_LIBRARIES=" ${VTK_LIBRARIES})
+message(STATUS "link_directories: " "${VTK_DIR}/lib")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR=" "${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_BINARY_DIR=" "${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "vtk-${VTK_VERSION} ${VTK_MAJOR_VERSION} ${VTK_MINOR_VERSION}")
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -50,9 +90,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 find_package(Qt5OpenGL)
-
-# Add the include directories for the Qt 5 Widgets module to the compile lines.
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 # Use the compile definitions defined in the Qt 5 Widgets module
 add_definitions(${Qt5Widgets_DEFINITIONS})
@@ -111,8 +148,6 @@ set(volume_files voxel_utility.h lh_histogram.h K_Means_PP_Generic.h volume_util
 source_group(volume FILES ${volume_files})
 
 # Qt and project source code
-#set(Project_source_files main.cpp mainwindow.cpp)
-#set(Project_header_files mainwindow.h transfer_function_xml.h)
 file(GLOB Project_source_files
 	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
@@ -120,7 +155,6 @@ file(GLOB Project_header_files
 	${CMAKE_CURRENT_SOURCE_DIR}/*.h
 )
 QT5_WRAP_CPP(Project_moc_source_files ${Project_header_files})
-#set(Project_ui_files mainwindow.ui)
 file(GLOB Project_ui_files
 	${CMAKE_CURRENT_SOURCE_DIR}/*.ui
 )
@@ -136,7 +170,8 @@ message(STATUS "Project_moc_source_files: " ${Project_moc_source_files})
 message(STATUS "Project_ui_files: " ${Project_ui_files}) 
 message(STATUS "Project_ui_header_files: " ${Project_ui_header_files}) 
 
-include_directories(${Project_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${Qt5Widgets_INCLUDE_DIRS}
+  ${VTK_INCLUDE_DIRS} "${VTK_DIR}/include/vtk-${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}"
 	${CTK_Libs_Core_DIR} ${CTK_Libs_Widgets_DIR} ${CTK_Libs_Visualization_VTK_Core_DIR} ${CTK_Libs_Visualization_VTK_Widgets_DIR}
 	${tinyxml2_DIR}
 	${nvMath_DIR}
@@ -155,8 +190,8 @@ add_executable(${PROJECT_NAME} ${Project_source_files} ${Project_ui_header_files
 	${cereal_files}
 )
 
-qt5_use_modules(${PROJECT_NAME} Widgets OpenGL)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES})
+# Use the Widgets module from Qt 5.
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::OpenGL ${VTK_LIBRARIES} ${OPENGL_LIBRARIES})
 
 if(WIN32) # Check if we are on Windows
     add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD

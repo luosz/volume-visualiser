@@ -95,7 +95,6 @@
 
 #include "transfer_function_xml.h"
 #include "RayCastType.h"
-#include "vtkMyGPURayCastVolumeMapper.h"
 
 #include "TimeVaryingData.h"
 
@@ -141,9 +140,9 @@ public:
 protected:
 	virtual void resizeEvent(QResizeEvent * event)
 	{
-		QWidget::resizeEvent(event);
+		QMainWindow::resizeEvent(event);
 		//vtk_widget.repaint();
-		std::cout << "resizeEvent\n";
+		std::cout << "MainWindow::resizeEvent()\n";
 	}
 
 private:
@@ -226,11 +225,6 @@ private:
 		return 1e-6;
 	}
 
-	//int get_number_of_colours_in_spectrum()
-	//{
-	//	return number_of_colours_in_spectrum;
-	//}
-
 	QGraphicsScene * get_GraphicsScene()
 	{
 		QGraphicsScene *scene = ui->graphicsView->scene();
@@ -254,16 +248,6 @@ private:
 		}
 		return scene;
 	}
-
-	//ctkVTKScalarsToColorsView * get_histogram_view()
-	//{
-	//	return ctkVTKScalarsToColorsWidget1.view();
-	//}
-
-	//ctkVTKScalarsToColorsWidget * get_histogram_widget()
-	//{
-	//	return &ctkVTKScalarsToColorsWidget1;
-	//}
 
 	QLayout * get_vtk_layout()
 	{
@@ -318,12 +302,6 @@ private:
 		return kernel;
 	}
 
-	//void set_colour_number_in_spectrum(int number_of_colours)
-	//{
-	//	number_of_colours_in_spectrum = number_of_colours;
-	//	draw_spectrum_in_graphicsview();
-	//}
-
 	/// Re-maps a number from one range to another.
 	double map_to_range(double val, double src_lower, double src_upper, double target_lower, double target_upper)
 	{
@@ -342,11 +320,6 @@ private:
 	{
 		return map_to_range(val, Range_x(), Range_y(), Domain_x(), Domain_y());
 	}
-
-	//double normalise_intensity_to_domain(double n)
-	//{
-	//	return map_to_range(n, get_domain_x(), get_domain_y(), get_threshold_x(), get_threshold_y());
-	//}
 
 	double normalise_rgba(int n)
 	{
@@ -746,10 +719,8 @@ private:
 			}
 		}
 
-		//std::cout<<"intensity "<<a<<" "<<b;
 		a = denormalise_intensity(a);
 		b = denormalise_intensity(b);
-		//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
 
 		double sum = 0;
 		// int intensity belongs to [0,255]
@@ -757,11 +728,9 @@ private:
 		{
 			if (intensity >= a)
 			{
-				//std::cout<<intensity<<" ";
 				sum += get_entropy_opacity_by_index(intensity, index);
 			}
 		}
-		//std::cout<<std::endl;
 		return sum;
 	}
 
@@ -796,10 +765,8 @@ private:
 			}
 		}
 
-		//std::cout<<"intensity "<<a<<" "<<b;
 		a = denormalise_intensity(a);
 		b = denormalise_intensity(b);
-		//std::cout<<" map to [0, 255] "<<a<<" "<<b<<std::endl;
 
 		double sum = 0;
 		// int intensity belongs to [0,255]
@@ -807,11 +774,9 @@ private:
 		{
 			if (intensity >= a)
 			{
-				//std::cout<<intensity<<" ";
 				sum += get_weighted_entropy_opacity_by_index(intensity, index);
 			}
 		}
-		//std::cout<<std::endl;
 		return sum;
 	}
 
@@ -826,11 +791,6 @@ private:
 	{
 		return get_weighted_area_entropy(index) + get_weighted_area_entropy(index - 1);
 	}
-
-	//double get_weighted_neighbour_area_entropy(int index)
-	//{
-	//	return get_neighbour_area_entropy(index) * get_control_point_weight(index);
-	//}
 
 	double get_control_point_weight(int index)
 	{
@@ -866,7 +826,6 @@ private:
 	double get_weighted_entropy_opacity_by_index(double intensity, int index)
 	{
 		double frequency = get_frequency(intensity);
-		//const double epsilon = 1e-6;
 		double probability = frequency / count_of_voxels;
 		if (probability > EPSILON())
 		{
@@ -889,7 +848,6 @@ private:
 		{
 			double normalised = normalise_intensity(intensity);
 			return probability * (-log(probability));
-			//return get_opacity_interpolation_without_index(normalised) * probability * (-log(probability));
 		}
 		else
 		{
@@ -996,12 +954,10 @@ private:
 	// old and deprecated. it's kept for testing purpose.
 	void balance_transfer_function()
 	{
-		//std::cout << "colour_list size=" << colour_list_size() << " intensity_list size=" << intensity_list_size() << std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-		//const double epsilon = 1. / 256.;
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
@@ -1035,8 +991,6 @@ private:
 			double height_min_new = height_min + height_increased;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new);
-
-			//std::cout << "balance TF max index=" << max_index << " min index=" << min_index << " opacity=" << height_max << " new opacity=" << height_max_new << " area=" << area << " new area=" << new_area << " height=" << height_min << " new height=" << height_min_new << endl;
 		}
 	}
 
@@ -1045,15 +999,10 @@ private:
 	// please use balance_transfer_function_edge() instead.
 	void balance_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
@@ -1082,12 +1031,10 @@ private:
 			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new); // update opacity
-			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1101,15 +1048,10 @@ private:
 	// please use balance_transfer_function_edge_for_region() instead.
 	void balance_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
@@ -1138,12 +1080,10 @@ private:
 			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_weighted_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new); // update opacity
-			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1151,15 +1091,10 @@ private:
 	// global optimization
 	void balance_transfer_function_edge()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size() - 1; i++)
 		{
@@ -1206,12 +1141,10 @@ private:
 			set_opacity(max_index, height_max_new); // update opacity
 			double new_area = get_neighbour_area_entropy(max_index); // calculate new area using new opacity
 			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new); // update opacity
-			//std::cout<<"balance TF entropy max index="<<max_index<<" min index="<<min_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1356,8 +1289,6 @@ private:
 	{
 		std::vector<double> areas;
 		std::vector<double> result_opacity_list = opacity_list;
-		//std::cout << (&opacity_list) << std::endl;
-		//std::cout << (&result_opacity_list) << std::endl;
 		double mean_area = 0;
 		for (int i = 0; i < intensity_list_size() - 1; i++)
 		{
@@ -1577,15 +1508,10 @@ private:
 	// region-based or hue-based optimization
 	void balance_transfer_function_edge_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
 		int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size() - 1; i++)
 		{
@@ -1643,15 +1569,8 @@ private:
 
 	void reduce_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
-		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
-		//double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
@@ -1663,11 +1582,6 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				//if (area < min_area && get_opacity(i) < 1)
-				//{
-				//	min_index = i;
-				//	min_area = area;
-				//}
 			}
 		}
 		if (-1 != max_index)
@@ -1680,37 +1594,20 @@ private:
 			set_opacity(max_index, height_max_new);
 			double new_area = get_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			//double height_min = get_opacity(min_index);
-			//double height_min_new = height_min + step_size;
-			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			//set_opacity(min_index, height_min_new);
-			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
 
 	void increase_opacity()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
-		//int max_index = -1;
 		int min_index = -1;
-		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
 
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
 				double area = get_neighbour_area_entropy(i);
-				//if (area > max_area)
-				//{
-				//	max_index = i;
-				//	max_area = area;
-				//}
 				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
@@ -1721,33 +1618,17 @@ private:
 		if (min_index != -1)
 		{
 			const double step_size = get_stepsize();
-			//double height_max = get_opacity(max_index);
-			//double height_max_new = height_max - step_size;
-			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
-			//double area = get_neighbour_area_entropy(max_index);
-			//set_opacity(max_index, height_max_new);
-			//double new_area = get_neighbour_area_entropy(max_index);
-			//double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new);
-			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
 	void reduce_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
 		int max_index = -1;
-		//int min_index = -1;
 		double max_area = std::numeric_limits<int>::min();
-		//double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
@@ -1759,11 +1640,6 @@ private:
 					max_index = i;
 					max_area = area;
 				}
-				//if (area < min_area && get_opacity(i) < 1)
-				//{
-				//	min_index = i;
-				//	min_area = area;
-				//}
 			}
 		}
 		if (-1 != max_index)
@@ -1776,37 +1652,19 @@ private:
 			set_opacity(max_index, height_max_new);
 			double new_area = get_weighted_neighbour_area_entropy(max_index);
 			double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
-			//double height_min = get_opacity(min_index);
-			//double height_min_new = height_min + step_size;
-			//height_min_new = height_min_new > 1 ? 1 : height_min_new;
-			//set_opacity(min_index, height_min_new);
-			//std::cout<<"reduceOpacity max index="<<max_index<<" opacity="<<height_max<<" new opacity="<<height_max_new<<" area="<<area<<" new area="<<new_area<<endl;
 		}
 	}
 
 	void increase_opacity_for_region()
 	{
-		//std::cout<<"colour_list size="<<colour_list_size()<<" intensity_list size="<<intensity_list_size()<<std::endl;
-		//int max_index = -1;
 		int min_index = -1;
-		//double max_area = std::numeric_limits<int>::min();
 		double min_area = std::numeric_limits<int>::max();
-
-		// move only non-zero control points
-		//const double epsilon = 1. / 256.;
-		//const double epsilon = 1e-6;
 
 		for (int i = 0; i<intensity_list_size(); i++)
 		{
 			if (get_opacity(i) > EPSILON())
 			{
 				double area = get_weighted_neighbour_area_entropy(i);
-				//if (area > max_area)
-				//{
-				//	max_index = i;
-				//	max_area = area;
-				//}
 				if (area < min_area && get_opacity(i) < 1)
 				{
 					min_index = i;
@@ -1817,19 +1675,10 @@ private:
 		if (min_index != -1)
 		{
 			const double step_size = get_stepsize();
-			//double height_max = get_opacity(max_index);
-			//double height_max_new = height_max - step_size;
-			//height_max_new = height_max_new < 0 ? 0 : height_max_new;
-			//double area = get_neighbour_area_entropy_weighted_for_region(max_index);
-			//set_opacity(max_index, height_max_new);
-			//double new_area = get_neighbour_area_entropy_weighted_for_region(max_index);
-			//double area_decreased = area - new_area;
-			//double height_increased = get_height_given_area_increment(min_index, area_decreased);
 			double height_min = get_opacity(min_index);
 			double height_min_new = height_min + step_size;
 			height_min_new = height_min_new > 1 ? 1 : height_min_new;
 			set_opacity(min_index, height_min_new);
-			//std::cout<<"increaseOpacity min index="<<min_index<<" height="<<height_min<<" new height="<<height_min_new<<endl;
 		}
 	}
 
@@ -1845,10 +1694,6 @@ private:
 		transFuncIntensity->SetAttribute("type", "TransFuncIntensity");
 
 		// add domain
-		//// I have forgotten why I need to compare domain_x, domain_y to 0, 255
-		//const double epsilon = 1e-6;
-		//if (abs(get_domain_x() - 0) > epsilon || abs(get_domain_y() - 255) > epsilon)
-		//{
 		auto domain = doc.NewElement("domain");
 		domain->SetAttribute("x", Domain_x());
 		domain->SetAttribute("y", Domain_y());
@@ -1874,9 +1719,6 @@ private:
 			auto colorL = doc.NewElement("colorL");
 			double rgb[3];
 			get_color_by_intensity(denormalise_intensity(get_intensity(i)), rgb);
-			//colorL->SetAttribute("r", denormalise_rgba(get_colour_r(i)));
-			//colorL->SetAttribute("g", denormalise_rgba(get_colour_g(i)));
-			//colorL->SetAttribute("b", denormalise_rgba(get_colour_b(i)));
 			colorL->SetAttribute("r", denormalise_rgba(rgb[0]));
 			colorL->SetAttribute("g", denormalise_rgba(rgb[1]));
 			colorL->SetAttribute("b", denormalise_rgba(rgb[2]));
@@ -2061,7 +1903,6 @@ private:
 			colour.push_back(normalise_rgba(r));
 			colour.push_back(normalise_rgba(g));
 			colour.push_back(normalise_rgba(b));
-			//colour.push_back(normalise_rgba(a));
 			colour_list_push_back(colour);
 			opacity_list_push_back(normalise_rgba(a));
 
@@ -2132,7 +1973,6 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			//v.push_back(0);
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2143,7 +1983,6 @@ private:
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(0);
-			//v.push_back(0.125);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.125);
 		}
@@ -2154,7 +1993,6 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(0);
-			//v.push_back(0.25);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.25);
 		}
@@ -2165,7 +2003,6 @@ private:
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(0);
-			//v.push_back(0.375);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.375);
 		}
@@ -2176,7 +2013,6 @@ private:
 			v.push_back(0);
 			v.push_back(1);
 			v.push_back(1);
-			//v.push_back(0.5);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.5);
 		}
@@ -2187,7 +2023,6 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(1);
-			//v.push_back(0.625);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.625);
 		}
@@ -2198,7 +2033,6 @@ private:
 			v.push_back(1);
 			v.push_back(0);
 			v.push_back(1);
-			//v.push_back(0.75);
 			colour_list_push_back(v);
 			opacity_list_push_back(0.75);
 		}
@@ -2209,7 +2043,6 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			//v.push_back(0);
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2222,17 +2055,6 @@ private:
 			std::cout << "number_of_control_points should belongs to [1,256]" << std::endl;
 			return;
 		}
-
-		//double h, s, v, r, g, b;
-		//h = s = v = 1;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be red. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
-		//h = 1/3.0;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be green. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
-		//h = 2/3.0;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be blue. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
 
 		int n = number_of_colours; // 1 to 6 groups of control points
 		std::vector<std::vector<double>> spectrum;
@@ -2275,8 +2097,6 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			//v.push_back(0);
-
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2292,7 +2112,6 @@ private:
 				v.push_back(spectrum[colour_index][0]);
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
-				//v.push_back(opacity);
 				colour_list_push_back(v);
 				opacity_list_push_back(opacity);
 			}
@@ -2304,7 +2123,6 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			//v.push_back(0);
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2317,17 +2135,6 @@ private:
 			std::cout << "number_of_control_points should belongs to [1,256]" << std::endl;
 			return;
 		}
-
-		//double h, s, v, r, g, b;
-		//h = s = v = 1;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be red. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
-		//h = 1/3.0;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be green. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
-		//h = 2/3.0;
-		//vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
-		//std::cout<<"this should be blue. hsv "<<h<<" "<<s<<" "<<v<<" rgb "<<r<<" "<<g<<" "<<b<<std::endl;
 
 		int n = number_of_colours; // 1 to 6 groups of control points
 		std::vector<std::vector<double>> spectrum;
@@ -2370,7 +2177,6 @@ private:
 			v.push_back(0);
 			v.push_back(0);
 			v.push_back(0);
-			//v.push_back(0);
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2385,7 +2191,6 @@ private:
 				v.push_back(spectrum[colour_index][0]);
 				v.push_back(spectrum[colour_index][1]);
 				v.push_back(spectrum[colour_index][2]);
-				//v.push_back(0.5/3.0);
 				colour_list_push_back(v);
 				opacity_list_push_back(0.5 / 3);
 			}
@@ -2397,7 +2202,6 @@ private:
 			v.push_back(1);
 			v.push_back(1);
 			v.push_back(1);
-			//v.push_back(0);
 			colour_list_push_back(v);
 			opacity_list_push_back(0);
 		}
@@ -2418,15 +2222,7 @@ private:
 		double xmax = 0.;
 		double ymax = 0.;
 
-		//vtkSmartPointer<vtkIntArray> redFrequencies = 
-		//	vtkSmartPointer<vtkIntArray>::New();
-		//vtkSmartPointer<vtkIntArray> greenFrequencies = 
-		//	vtkSmartPointer<vtkIntArray>::New();
-		//vtkSmartPointer<vtkIntArray> blueFrequencies = 
-		//	vtkSmartPointer<vtkIntArray>::New();
-
-		// Process the image, extracting and plotting a histogram for each
-		// component
+		// Process the image, extracting and plotting a histogram for each component
 		for (int i = 0; i < numComponents; ++i)
 		{
 			vtkSmartPointer<vtkImageExtractComponents> extract =
@@ -2450,29 +2246,6 @@ private:
 			histogram->SetIgnoreZero(ignoreZero);
 			histogram->Update();
 
-			//vtkIntArray* currentArray = 0;
-			//if( i == 0 )
-			//{
-			//	currentArray = redFrequencies;
-			//}
-			//else if( i == 1 )
-			//{
-			//	currentArray = greenFrequencies;
-			//}
-			//else
-			//{
-			//	currentArray = blueFrequencies;
-			//}
-
-			//currentArray->SetNumberOfComponents(1);
-			//currentArray->SetNumberOfTuples( 256 );
-			//int* output = static_cast<int*>(histogram->GetOutput()->GetScalarPointer());
-
-			//for( int j = 0; j < 256; ++j )
-			//{
-			//	currentArray->SetTuple1( j, *output++ );
-			//}
-
 			x_min = range[0];
 			x_max = range[1];
 			if (range[1] > xmax)
@@ -2484,18 +2257,6 @@ private:
 				ymax = histogram->GetOutput()->GetScalarRange()[1];
 			}
 			std::cout << "histogram range " << histogram->GetOutput()->GetScalarRange()[0] << " " << histogram->GetOutput()->GetScalarRange()[1] << endl;
-
-			//#if VTK_MAJOR_VERSION <= 5
-			//			plot->AddInput( histogram->GetOutput() );
-			//#else
-			//			plot->AddDataSetInputConnection( histogram->GetOutputPort() );
-			//#endif
-			//			if( numComponents > 1 )
-			//			{
-			//				plot->SetPlotColor(i,colors[i]);
-			//				plot->SetPlotLabel(i,labels[i]);
-			//				plot->LegendOn();
-			//			}
 
 			//if (i == 0)
 			{
@@ -2542,19 +2303,6 @@ private:
 		}
 	}
 
-	//void draw_histogram_on_widget()
-	//{
-	//	std::ofstream f("d:/histogram.txt");
-	//	//histogram1->RemoveAllPoints();
-	//	//QVector<int> v(frequency_list.size());
-	//	for (int i = 0; i < frequency_list.size(); i++)
-	//	{
-	//		//histogram1->AddPoint(i, frequency_list[i]);
-	//		f << i << "\t" << frequency_list[i] << std::endl;
-	//		//v[i] = static_cast<int>(frequency_list[i]);
-	//	}
-	//}
-
 	void generate_LH_histogram(vtkSmartPointer<vtkImageAlgorithm> reader)
 	{
 		int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
@@ -2587,7 +2335,7 @@ private:
 			int count_of_voxels = dimensions[0] * dimensions[1] * dimensions[2];
 			std::cout << "dimension " << dimensions[0] << " " << dimensions[1] << " " << dimensions[2] << " count=" << count_of_voxels << std::endl;
 			std::cout << "voxel type is " << imageData->GetScalarTypeAsString() << std::endl;
-			//vtkImageScalarTypeNameMacro(imageData->GetScalarType());
+
 			auto voxels = static_cast<unsigned char *>(extract->GetOutput()->GetScalarPointer());
 			volume_ptr = voxels;
 #ifdef OUTPUT_TO_FILE
@@ -2727,31 +2475,6 @@ private:
 		QByteArray ba = filename.toLocal8Bit();
 		const char *filename_str = ba.data();
 
-		//#if 1
-		//		// read Meta Image (.mhd or .mha) files
-		//		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();
-		//		reader->SetFileName(filename_str);
-		//#elif 1
-		//		// read a series of raw files in the specified folder
-		//		auto reader = vtkSmartPointer<vtkVolume16Reader>::New();
-		//		reader->SetDataDimensions(512, 512);
-		//		reader->SetImageRange(1, 361);
-		//		reader->SetDataByteOrderToBigEndian();
-		//		reader->SetFilePrefix(filename_str);
-		//		reader->SetFilePattern("%s%d");
-		//		reader->SetDataSpacing(1, 1, 1);
-		//#else
-		//		// read NRRD files
-		//		vtkNew<vtkNrrdReader> reader;
-		//		if (!reader->CanReadFile(filename_str))
-		//		{
-		//			std::cerr << "Reader reports " << filename_str << " cannot be read.";
-		//			exit(EXIT_FAILURE);
-		//		}
-		//		reader->SetFileName(filename_str);
-		//		reader->Update();
-		//#endif
-
 		vtkSmartPointer<vtkImageReader2> reader;
 		std::cout << "volume file: " << filename_str << std::endl;
 		auto p1 = strstr(filename_str, ".mhd");
@@ -2799,8 +2522,6 @@ private:
 		generate_visibility_function(shiftScale);;
 		generate_LH_histogram(shiftScale);
 
-		//draw_histogram_on_widget();
-
 		// set up volume property
 		auto volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
 		volumeProperty->SetScalarOpacity(scalar_opacity);
@@ -2823,12 +2544,7 @@ private:
 		case 2:
 			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
 			break;
-		case 3:
-			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
-			break;
 		default:
-			//volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
 			volumeMapper = vtkSmartPointer<vtkGPUVolumeRayCastMapper>::New();
 			break;
 		}
@@ -2842,8 +2558,6 @@ private:
 		volume->SetProperty(volumeProperty);
 
 		//// add the volume into the renderer
-		//auto renderer = vtkSmartPointer<vtkRenderer>::New();
-		//renderer = vtkSmartPointer<vtkRenderer>::New();
 		renderer->RemoveAllViewProps();
 		renderer->AddVolume(volume);
 		renderer->SetBackground(1, 1, 1);
@@ -2913,12 +2627,7 @@ private:
 		case 2:
 			volumeMapper = vtkSmartPointer<vtkSlicerGPURayCastMultiVolumeMapper>::New();
 			break;
-		case 3:
-			volumeMapper = vtkSmartPointer<vtkMyGPURayCastVolumeMapper>::New();
-			break;
 		default:
-			//volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
-			//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
 			volumeMapper = vtkSmartPointer<vtkGPUVolumeRayCastMapper>::New();
 			break;
 		}
@@ -3036,11 +2745,9 @@ private:
 		if (intensity_list_size() > 0 && intensity_list_size() == colour_list_size())
 		{
 			scalar_opacity->RemoveAllPoints();
-			//scalar_color->RemoveAllPoints();
 			for (int i = 0; i < intensity_list_size(); i++)
 			{
 				scalar_opacity->AddPoint(denormalise_intensity(get_intensity(i)), get_opacity(i));
-				//scalar_color->AddRGBPoint(denormalise_intensity(get_intensity(i)), get_colour_r(i), get_colour_g(i), get_colour_b(i));
 			}
 		}
 		// update vtk widget
@@ -3061,35 +2768,17 @@ private:
 			int ret = msgBox.exec();
 			return;
 		}
-		//if (scalar_color->GetSize() != scalar_opacity->GetSize())
-		//{
-		//	QMessageBox msgBox;
-		//	msgBox.setText("Error: vtkColorTransferFunction and vtkPiecewiseFunction should have the same size, but they do not.");
-		//	int ret = msgBox.exec();
-		//	return;
-		//}
 
-		//std::cout<<"update transfer function from widget"<<std::endl;
-		//colour_list_clear();
 		opacity_list_clear();
 		intensity_list_clear();
 		for (auto i = 0; i < scalar_opacity->GetSize(); i++)
 		{
-			//double xrgb[6];
-			//scalar_color->GetNodeValue(i, xrgb);
 			double xa[4];
 			scalar_opacity->GetNodeValue(i, xa);
 			double opacity = xa[1];
 			double intensity = normalise_intensity(xa[0]);
-			//std::vector<double> c;
-			//c.push_back(xrgb[1]);
-			//c.push_back(xrgb[2]);
-			//c.push_back(xrgb[3]);
-			//colour_list_push_back(c);
 			opacity_list_push_back(opacity);
 			intensity_list_push_back(intensity);
-			//std::cout<<"xrgba "<<xrgb[0]<<" "<<xrgb[1]<<" "<<xrgb[2]<<" "<<xrgb[3]<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
-			//std::cout<<"x & opacity "<<intensity<<" "<<opacity<<" "<<denormalise_intensity(opacity)<<std::endl;
 		}
 	}
 
@@ -3113,7 +2802,6 @@ private:
 
 	void draw_spectrum_in_graphicsview()
 	{
-		//int n = Number_of_colours_in_spectrum();
 		auto tf = scalar_color;
 		int n = tf->GetSize();
 		const double width = 340;
@@ -3121,7 +2809,6 @@ private:
 		double w = width / n;
 		QGraphicsScene *scene = get_GraphicsScene_for_spectrum();
 		scene->clear();
-		//scene->addText("Spectrum " + QTime::currentTime().toString());
 		QColor colour(Qt::yellow);
 		int h, s, v;
 		colour.getHsv(&h, &s, &v);
@@ -3135,7 +2822,6 @@ private:
 			double xrgb[6];
 			tf->GetNodeValue(i, xrgb);
 			QColor colour;
-			//colour.setHsv(i * 360 / n, 255, 255);
 			colour.setRgb(denormalise_rgba(xrgb[1]), denormalise_rgba(xrgb[2]), denormalise_rgba(xrgb[3]));
 			QBrush brush(colour);
 			QPen pen;
@@ -3216,7 +2902,6 @@ private:
 		}
 		while (n-- > 0)
 		{
-			//balance_opacity_for_region();
 			balance_transfer_function_edge_for_region();
 		}
 		updateTFWidgetFromOpacityArrays();
@@ -3226,13 +2911,6 @@ private:
 	/// 
 	void optimise_transfer_function_for_intensity(double normalized_intensity)
 	{
-		//colour_for_optimization = colour;
-
-		//// compute the distance between control point colour and selected colour
-		//pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
-		//std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
-		//std::cout << "picked colour (HSV) " << colour.hue() << " " << colour.saturation() << " " << colour.value() << std::endl;
-
 		compute_distance_and_weights_by_intensity(normalized_intensity);
 
 		// optimise the transfer function for the selected colour
@@ -3243,43 +2921,11 @@ private:
 		}
 		while (n-- > 0)
 		{
-			//balance_opacity_for_region();
 			balance_transfer_function_edge_for_region();
 		}
 		updateTFWidgetFromOpacityArrays();
 		updateOpacityArrayFromTFWidget();
 	}
-
-	//int get_closest_non_zero_control_point(int r0, int g0, int b0)
-	//{
-	//	double h0, s0, v0;
-	//	vtkMath::RGBToHSV(normalise_rgba(r0), normalise_rgba(g0), normalise_rgba(b0), &h0, &s0, &v0);
-
-	//	double dist = 1e6;
-	//	int index = -1;
-	//	for (unsigned int i = 0; i < colour_list_size(); i++)
-	//	{
-	//		double r = get_colour_r(i);
-	//		double g = get_colour_g(i);
-	//		double b = get_colour_b(i);
-	//		double a = get_opacity(i);
-	//		if (a > 0)
-	//		{
-	//			double h, s, v;
-	//			vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
-
-	//			// compute distance in hue without squaring
-	//			double distance = abs(h - h0);
-
-	//			if (index == -1 || distance < dist)
-	//			{
-	//				index = i;
-	//				dist = distance;
-	//			}
-	//		}
-	//	}
-	//	return index;
-	//}
 
 	void reset_transfer_function()
 	{
@@ -3339,7 +2985,6 @@ private:
 		for (int i = 0; i < list.size(); i++)
 		{
 			bool selected = list.at(i)->isSelected();
-			//std::cout << i << (selected ? " selected" : " not selected") << std::endl;
 			if (selected)
 			{
 				int index = list.at(i)->data(0).toInt();
@@ -3391,26 +3036,6 @@ private:
 	{
 		std::cout << "slot_GraphicsScene_sceneRectChanged " << "width=" << rect.width() << " height=" << rect.height() << std::endl;
 	}
-
-	//void slot_ListView_activated(const QModelIndex & index)
-	//{
-	//	std::cout << "slot_ListView_clicked row=" << index.row() << " column=" << index.column() << std::endl;
-
-	//	auto item = model_for_listview.itemFromIndex(index);
-	//	if (item != NULL)
-	//	{
-	//		auto filename = item->text();
-	//		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
-	//		QByteArray ba = filename.toLocal8Bit();
-	//		const char *filename_str = ba.data();
-	//		std::cout << "text=" << filename_str << std::endl;
-	//		open_volume(filename);
-	//	}
-	//	else
-	//	{
-	//		std::cout << "invalid index" << std::endl;
-	//	}
-	//}
 
 	void slot_region_selected(QString filename)
 	{
@@ -3512,7 +3137,6 @@ private:
 	void on_action_Auto_open_selected_region_triggered();
 	void on_checkBox_clicked();
 	void on_comboBox_currentIndexChanged(int index);
-	void on_action_VtkMyGPURayCastVolumeMapper_triggered();
 	void on_newtonButton_clicked();
 	void on_gradientDescentButton_clicked();
 	void on_fixedStepButton_clicked();

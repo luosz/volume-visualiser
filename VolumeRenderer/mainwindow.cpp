@@ -116,33 +116,26 @@ ui(new Ui::MainWindow)
 	volume_ptr = NULL;
 	batch_patch = "E:/_uchar/vortex/";
 
-	//generate_default_transfer_function();
-	//set_colour_number_in_spectrum(16);
+	// generate default transfer function
 	Number_of_colours_in_spectrum(16);
 	generate_spectrum_ramp_transfer_function_and_check_menu_item();
 	update_colour_palette();
 
 	opacity_function_1 = vtkSmartPointer<vtkPiecewiseFunction>::New();
 	opacity_function_1->DeepCopy(scalar_opacity);
-	//ctkVTKScalarsToColorsWidget1.view()->addColorTransferFunction(scalar_color);
 	ctkVTKScalarsToColorsWidget1.view()->addOpacityFunction(opacity_function_1);
 	opacity_function_2 = vtkSmartPointer<vtkPiecewiseFunction>::New();
 	opacity_function_2->DeepCopy(scalar_opacity);
-	//ctkVTKScalarsToColorsWidget2.view()->addColorTransferFunction(scalar_color);
 	ctkVTKScalarsToColorsWidget2.view()->addOpacityFunction(opacity_function_2);
-	//get_histogram_widget()->setEditColors(false);
+
+	// use Slicer's renderer by default
+	on_action_VtkSlicerGPURayCastVolumeMapper_triggered();
 
 	// use HSV without squaring distance
 	on_action_Compute_Distance_HSV_triggered();
 
-	// set up default volume mapper
-	on_action_VtkMyGPURayCastVolumeMapper_triggered();
-
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(selectionChanged()), this, SLOT(slot_GraphicsScene_selectionChanged()));
 	QObject::connect(get_GraphicsScene_for_spectrum(), SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(slot_GraphicsScene_sceneRectChanged(const QRectF &)));
-
-	//QObject::connect(ui->listView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
-	//QObject::connect(ui->listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(slot_ListView_activated(const QModelIndex &)));
 
 	QObject::connect(&screenshot_widget, SIGNAL(region_selected(QString)), this, SLOT(slot_region_selected(QString)));
 
@@ -151,8 +144,8 @@ ui(new Ui::MainWindow)
 
 	colour_for_optimization = Qt::blue;
 
-	//// maximize the window
-	//this->showMaximized();
+	// maximize the window
+	this->showMaximized();
 }
 
 MainWindow::~MainWindow()
@@ -224,16 +217,13 @@ void MainWindow::on_entropyButton_clicked()
 	if (frequency_list.size() > 0)
 	{
 		unsigned int index = -1;
-		//std::cout<<"entropy ";
 		for (unsigned int intensity = 0; intensity < frequency_list.size(); intensity++) // 0 to 255
 		{
 			double entropy = get_entropy(intensity);
-			//std::cout<<" "<<entropy;
 			auto line = scene->addLine(intensity, height, intensity + 1, (1 - entropy * 10)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
 
 		}
-		//std::cout<<std::endl;
 	}
 }
 
@@ -247,16 +237,13 @@ void MainWindow::on_entropyOpacityButton_clicked()
 	if (frequency_list.size() > 0)
 	{
 		unsigned int index = -1;
-		//std::cout<<"entropy ";
 		for (unsigned int intensity = 0; intensity < frequency_list.size(); intensity++) // 0 to 255
 		{
 			double entropy = get_entropy_opacity(intensity);
-			//std::cout<<" "<<entropy;
 			auto line = scene->addLine(intensity, height, intensity + 1, (1 - entropy * 16)*height);
 			line->setFlag(QGraphicsItem::ItemIsMovable);
 
 		}
-		//std::cout<<std::endl;
 	}
 }
 
@@ -337,7 +324,6 @@ void MainWindow::on_balanceEdgeButton_clicked()
 		out << iteration_count << "," << get_energy_function_edge() << std::endl;
 		iteration_count++;
 #endif
-		//balance_opacity();
 		balance_transfer_function_edge();
 	}
 
@@ -409,7 +395,6 @@ void MainWindow::on_balanceRegionButton_clicked()
 		out2 << iteration_count << "," << get_energy_function_edge_weighted_for_region() << std::endl;
 		iteration_count++;
 #endif
-		//balance_opacity_for_region();
 		balance_transfer_function_edge_for_region();
 	}
 #ifdef OUTPUT_TO_FILE
@@ -611,9 +596,6 @@ void MainWindow::on_action_Save_Transfer_Function_triggered()
 		return;
 	}
 
-	//// show filename on window title
-	//this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
-
 	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 	QByteArray ba = filename_backup.toLocal8Bit();
 	const char *filename_str = ba.data();
@@ -714,10 +696,8 @@ void MainWindow::on_action_Spectrum_Transfer_Function_triggered()
 	n = QInputDialog::getInt(this, tr("Spectrum Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
-		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_transfer_function(n);
 		updateTFWidgetFromOpacityArrays();
-		//set_colour_number_in_spectrum(n);
 		Number_of_colours_in_spectrum(n);
 		update_colour_palette();
 	}
@@ -733,10 +713,8 @@ void MainWindow::on_action_Spectrum_Ramp_Transfer_Function_triggered()
 	n = QInputDialog::getInt(this, tr("Spectrum Ramp Transfer Function"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
 	if (ok)
 	{
-		//std::cout << "QInputDialog::getInteger() " << n << std::endl;
 		generate_spectrum_ramp_transfer_function(n);
 		updateTFWidgetFromOpacityArrays();
-		//set_colour_number_in_spectrum(n);
 		Number_of_colours_in_spectrum(n);
 		update_colour_palette();
 	}
@@ -747,28 +725,12 @@ void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggere
 	QColor colour = QColorDialog::getColor(colour_for_optimization, this);
 	if (colour.isValid())
 	{
-		//pick_colour_and_compute_distance(colour.red(), colour.green(), colour.blue());
-		//std::cout << "picked colour (RGB) " << colour.red() << " " << colour.green() << " " << colour.blue() << std::endl;
 		// reset transfer function before optimizing it
 		reset_transfer_function();
 
 		// optimise for a specific colour
 		optimise_transfer_function_for_colour(colour);
 	}
-
-	//// optimise the transfer function for the selected colour
-	//updateTransferFunctionArraysFromWidgets();
-	//int n = ui->spinBox->value();
-	//if (n < 1 || n > max_iteration_count)
-	//{
-	//	n = 1;
-	//}
-	//while (n-- > 0)
-	//{
-	//	balance_opacity_for_region();
-	//}
-	//updateTransferFunctionWidgetsFromArrays();
-	//updateTransferFunctionArraysFromWidgets();
 }
 
 void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
@@ -791,11 +753,6 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 
 			char c_str2[_MAX_PATH];
 			sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
-			//char str0[_MAX_PATH];
-			//sprintf(str0, ".%03d.tfi", i);
-			//QString str1 = volume_filename + QString(str0);
-			//QByteArray ba = str1.toLocal8Bit();
-			//const char *c_str2 = ba.data();
 			saveTransferFunctionToVoreenXML(c_str2);
 			std::cout << "saved to file " << c_str2 << std::endl;
 		}
@@ -867,7 +824,6 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 
 			while (n-- > 0)
 			{
-				//balance_opacity();
 				balance_transfer_function_edge();
 			}
 
@@ -950,7 +906,6 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 		{
 			filename_list.append(new QStandardItem(QString(filepath + files[i])));
 
-			// load volume
 			open_volume_no_rendering(filepath + files[i]);
 
 			reset_transfer_function();
@@ -966,7 +921,6 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 
 			while (n-- > 0)
 			{
-				//balance_opacity_for_region();
 				balance_transfer_function_edge_for_region();
 			}
 
@@ -1090,61 +1044,6 @@ void MainWindow::on_resetButton_clicked()
 
 void MainWindow::on_action_Test_triggered()
 {
-	//QGraphicsScene *scene = getGraphicsScene_for_spectrum();
-	//std::cout << "width=" << scene->width() << " height=" << scene->height() << std::endl;
-
-	//QList<QStandardItem *> list1;
-	//auto i0 = new QStandardItem("D:\\_uchar\\vortex\\00.mhd");
-	//i0->setData(QVariant("D:\\_uchar\\vortex\\00.mhd"));
-	//list1.append(i0);
-	//auto i1 = new QStandardItem("D:/_uchar/vortex/01.mhd");
-	//i1->setData(QVariant("D:/_uchar/vortex/01.mhd"));
-	//list1.append(i1);
-	//auto i2 = new QStandardItem("D:\\_uchar\\vortex\\02.mhd");
-	//i2->setData(QVariant("D:\\_uchar\\vortex\\02.mhd"));
-	//list1.append(i2);
-	//model_for_listview.clear();
-	//model_for_listview.appendColumn(list1);
-
-	//////////////////////////////////////////////////////////////////////////
-
-	//std::cout << "weights" << std::endl;
-	//for (int i = 0; i < control_point_weight_list.size(); i++)
-	//{
-	//	std::cout << control_point_weight_list[i] << std::endl;
-	//}
-
-	//double a, b;
-	//for (int index = 0; index < intensity_list_size() - 1; index++)
-	//{
-	//	std::cout << "interpolation index=" << index << std::endl;
-	//	if (index == intensity_list_size() - 1)
-	//	{
-	//		a = get_intensity(index);
-	//		b = 1;
-	//	}
-	//	else
-	//	{
-	//		a = get_intensity(index);
-	//		b = get_intensity(index + 1);
-	//	}
-	//	a = denormalise_intensity(a);
-	//	b = denormalise_intensity(b);
-
-	//	for (int intensity = (int)a; intensity < b; intensity++)
-	//	{
-	//		if (intensity >= a)
-	//		{
-	//			double normalised = normalise_intensity(intensity);
-	//			std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
-	//		}
-	//	}
-	//}
-
-	//gaussian_kernel_1d();
-
-	//////////////////////////////////////////////////////////////////////////
-
 	renderer->ResetCamera();
 	auto camera = renderer->GetActiveCamera();
 	auto fp = camera->GetFocalPoint();
@@ -1157,6 +1056,7 @@ void MainWindow::on_action_Test_triggered()
 	p = camera->GetPosition();
 	std::cout << "focal point " << fp[0] << " " << fp[1] << " " << fp[2] << "\tposition " << p[0] << " " << p[1] << " " << p[2] << std::endl;
 	std::cout << "distance " << dist << std::endl;
+
 	// update vtk widget
 	vtk_widget.repaint();
 }
@@ -1192,8 +1092,6 @@ void MainWindow::on_drawWeightButton_clicked()
 				if (intensity >= a)
 				{
 					double normalised = normalise_intensity(intensity);
-					//std::cout << "intensity=" << intensity << " normalised=" << normalised << " weight=" << get_control_point_weight_by_interpolation(normalised, index) << std::endl;
-
 					auto line = scene->addLine(intensity, height, intensity + 1, (1 - 10 * get_control_point_weight_by_interpolation(normalised, index))*height);
 				}
 			}
@@ -1206,7 +1104,6 @@ void MainWindow::on_action_VtkSmartVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(true);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
-	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(0);
 }
 
@@ -1215,7 +1112,6 @@ void MainWindow::on_action_VtkSlicerGPURayCastVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(true);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
-	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(1);
 }
 
@@ -1224,17 +1120,7 @@ void MainWindow::on_action_VtkSlicerGPURayCastMultiVolumeMapper_triggered()
 	ui->action_VtkSmartVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
 	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(true);
-	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(false);
 	Volume_mapper_index(2);
-}
-
-void MainWindow::on_action_VtkMyGPURayCastVolumeMapper_triggered()
-{
-	ui->action_VtkSmartVolumeMapper->setChecked(false);
-	ui->action_VtkSlicerGPURayCastVolumeMapper->setChecked(false);
-	ui->action_VtkSlicerGPURayCastMultiVolumeMapper->setChecked(false);
-	ui->action_VtkMyGPURayCastVolumeMapper->setChecked(true);
-	Volume_mapper_index(3);
 }
 
 void MainWindow::on_reloadButton_clicked()
@@ -1344,11 +1230,6 @@ void MainWindow::on_action_Auto_open_selected_region_triggered()
 
 void MainWindow::on_checkBox_clicked()
 {
-	//ui->checkBox
-	//double planes[6] = { 0, 100, 0, 100, 0, 100 };
-	//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetCropping(1);
-	//((vtkSmartVolumeMapper *)volumeMapper.Get())->SetCroppingRegionPlanes(planes);
-
 	auto volume = Volume();
 	if (ui->checkBox->isChecked())
 	{
@@ -1617,7 +1498,6 @@ void MainWindow::on_action_Open_dynamically_optimized_vortex_triggered()
 
         // load volume
         open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
-        //open_volume(QString::fromStdString(time_varying_data.volume(i)));
 
         openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
 
@@ -1645,7 +1525,6 @@ void MainWindow::on_action_Open_vortex_triggered()
 	{
 		// load volume
 		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
-		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
 
 		openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
 
@@ -1673,7 +1552,6 @@ void MainWindow::on_action_Open_statically_optimized_vortex_triggered()
 	{
 		// load volume
 		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
-		//open_volume(QString::fromStdString(time_varying_data.volume(i)));
 
 		openTransferFunctionFromVoreenXML(tvdata.transferfunction(i).c_str());
 
