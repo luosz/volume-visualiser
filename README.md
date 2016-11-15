@@ -1,6 +1,6 @@
 # README #
 
-Volume Visualiser is an enhanced version of Volume Renderer (https://bitbucket.org/lsz/volume-renderer), which is a volume rendering program based on VTK and Qt.
+Volume Visualiser (https://bitbucket.org/lsz/volume-visualiser) is an enhanced version of Volume Renderer (https://bitbucket.org/lsz/volume-renderer), which is a volume rendering program based on VTK and Qt.
 Volume Visualiser can handle multiple volume data sets as well as time-varying volume data sets.
 It uses the vtkSlicerGPURayCastVolumeMapper from Slicer (https://www.slicer.org/) to render volume data and widgets from CTK (www.commontk.org) to display the properties of volume data.
 
