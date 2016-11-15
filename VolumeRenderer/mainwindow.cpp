@@ -61,50 +61,13 @@ ui(new Ui::MainWindow)
 	//scalar_color->AddRGBPoint(216.0, 1.0, 0.0, 1.0);
 	//scalar_color->AddRGBPoint(255.0, 1.0, 1.0, 1.0);
 
-	load_path_from_xml();
-	//volume_filename = "../../data/CT-Knee.mhd";
-	//transfer_function_filename = "../../transferfuncs/MITK/MR Generic.xml";
-	//transfer_function_filename_save = "../../transfer_function/save_as.tfi";
-	selected_region_filename = "../../images/region.png";
-
-	//std::cout<<"map to range test "<<map_to_range(0.5, 0, 1, 0, 255)<<" "<<map_to_range(192, 0, 255, 0, 1)<<" "<<map_to_range(0.6, 0.5, 1, 128, 255)<<std::endl;
-
-	////////////////////////////////////////////////////////////////////////////
-	//// colour test
-	//std::cout << "HSV and RGB colour conversion test" << std::endl;
-
-	//double h, s, v, r, g, b;
-	//QColor c;
-	//c = Qt::black;
-	//std::cout << "black rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
-
-	//r = c.red();
-	//g = c.green();
-	//b = c.blue();
-	//vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
-	//std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
-
-	//c = Qt::white;
-	//std::cout << "white rgb " << c.red() << " " << c.green() << " " << c.blue() << " hsv " << c.hue() << " " << c.saturation() << " " << c.value() << "\t";
-
-	//r = c.red();
-	//g = c.green();
-	//b = c.blue();
-	//vtkMath::RGBToHSV(normalise_rgba(r), normalise_rgba(g), normalise_rgba(b), &h, &s, &v);
-	//std::cout << "after vtkMath::RGBToHSV " << h << " " << s << " " << v << std::endl;
-
-	////////////////////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////////////////////
-	//// MITK XML test
-	//std::cout << "MITK transfer function XML test" << std::endl;
-	//openTransferFunctionFromMITKXML("../../transferfuncs/MITK/CT Generic.xml");
-	//
-	//// Slicer XML test
-	//std::cout << "Slicer transfer function XML test" << std::endl;
-	//openTransferFunctionFromSlicerXML("../../transferfuncs/Slicer/presets.xml");
-	////////////////////////////////////////////////////////////////////////////
-
+	std::cout << "path.volume_filename=" << path.volume_filename << std::endl;
+	volume_filename = QString::fromStdString(path.volume_filename);
+	transfer_function_filename = QString::fromStdString(path.transfer_function_filename);
+	transfer_function_filename_save = QString::fromStdString(path.transfer_function_filename_save);
+	selected_region_filename = QString::fromStdString(path.selected_region_filename);
+	batch_path = QString::fromStdString(path.batch_path);
+	
 	// there variables should not be used before initialization
 	Domain_x(0);
 	Domain_y(1);
@@ -114,7 +77,6 @@ ui(new Ui::MainWindow)
 	Range_y(255);
 	count_of_voxels = 0;
 	volume_ptr = NULL;
-	batch_patch = "E:/_uchar/vortex/";
 
 	// generate default transfer function
 	Number_of_colours_in_spectrum(16);
@@ -428,7 +390,7 @@ void MainWindow::on_action_Open_Volume_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		volume_filename = filename_backup;
-		save_path_to_xml();
+		path.save();
 	}
 	else
 	{
@@ -448,7 +410,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		volume_filename = filename_backup;
-		save_path_to_xml();
+		path.save();
 	}
 	else
 	{
@@ -525,7 +487,7 @@ void MainWindow::on_action_Open_Transfer_Function_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		transfer_function_filename = filename_backup;
-		save_path_to_xml();
+		path.save();
 	}
 	else
 	{
@@ -589,7 +551,7 @@ void MainWindow::on_action_Save_Transfer_Function_triggered()
 	if (!filename_backup.trimmed().isEmpty())
 	{
 		transfer_function_filename_save = filename_backup;
-		save_path_to_xml();
+		path.save();
 	}
 	else
 	{
@@ -762,7 +724,7 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 {
 	bool ok;
-	QString path = batch_patch;
+	QString path = batch_path;
 	path = QInputDialog::getText(this, tr("Global optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
 		path, &ok);
@@ -798,7 +760,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 		}
 
 		// save the path for next time
-		batch_patch = path;
+		batch_path = path;
 
 		// get filenames under the folder
 		QDir dir = QDir(filepath);
@@ -858,7 +820,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_triggered()
 void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_triggered()
 {
 	bool ok;
-	QString path = batch_patch;
+	QString path = batch_path;
 	path = QInputDialog::getText(this, tr("Region-based optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
 		path, &ok);
@@ -893,7 +855,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 		}
 
 		// save the path for next time
-		batch_patch = path;
+		batch_path = path;
 
 		// get filenames under the folder
 		QDir dir = QDir(filepath);
@@ -955,7 +917,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_region_
 void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_triggered()
 {
 	bool ok;
-	QString path = batch_patch;
+	QString path = batch_path;
 	path = QInputDialog::getText(this, tr("Colour-based optimization"),
 		tr("Path to open:"), QLineEdit::Normal,
 		path, &ok);
@@ -990,7 +952,7 @@ void MainWindow::on_action_Open_path_and_generate_transfer_functions_for_colour_
 		}
 
 		// save the path for next time
-		batch_patch = path;
+		batch_path = path;
 
 		// get filenames under the folder
 		QDir dir = QDir(filepath);
