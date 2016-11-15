@@ -13,7 +13,7 @@ set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")
 set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")  
 set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")  
 
-** Your title here... # CMake settings for building VTK **  
+** CMake settings for building VTK **  
 set(VTK_DIR "D:/VTK/VTK-7.1.0.rc2/build" CACHE PATH "VTK directory")  
 set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.7.0/5.7/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")  
 set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.7.0/5.7/msvc2015" CACHE PATH "Qt directory")  
