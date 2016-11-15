@@ -96,7 +96,7 @@
 #include "transfer_function_xml.h"
 #include "RayCastType.h"
 
-#include "TimeVaryingData.h"
+#include "serialization.h"
 
 //#ifndef OUTPUT_TO_FILE
 //#define OUTPUT_TO_FILE
@@ -159,6 +159,7 @@ private:
 	QString transfer_function_filename;
 	QString transfer_function_filename_save;
 	QString selected_region_filename;
+	Path path;
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor;
 	vtkSmartPointer<vtkRenderer> renderer;
 	vtkSmartPointer<vtkVolume> volume0;
@@ -182,7 +183,7 @@ private:
 	int number_of_colours_in_spectrum;
 	int Number_of_colours_in_spectrum() const { return number_of_colours_in_spectrum; }
 	void Number_of_colours_in_spectrum(int val) { number_of_colours_in_spectrum = val; }
-	QString batch_patch;
+	QString batch_path;
 	int enable_spectrum_ramp;
 	QStandardItemModel model_for_listview, model_for_listview2;
 	QColor colour_for_optimization;
@@ -3063,38 +3064,6 @@ private:
 		}
 
 		read_region_image_and_compute_distance(1);
-	}
-
-	void save_path_to_xml()
-	{
-		std::ofstream os("path.xml");
-		cereal::XMLOutputArchive archive(os);
-		std::string s1 = volume_filename.toLocal8Bit().constData();
-		std::string s2 = transfer_function_filename.toLocal8Bit().constData();
-		std::string s3 = transfer_function_filename_save.toLocal8Bit().constData();
-		archive(s1, s2, s3);
-	}
-
-	void load_path_from_xml()
-	{
-		std::ifstream is("path.xml");
-		if (is.is_open())
-		{
-			cereal::XMLInputArchive archive(is);
-			std::string s1, s2, s3;
-			archive(s1, s2, s3);
-			std::cout << "path.xml" << std::endl << s1 << std::endl << s2 << std::endl << s3 << std::endl;
-			volume_filename = QString::fromStdString(s1);
-			transfer_function_filename = QString::fromStdString(s2);
-			transfer_function_filename_save = QString::fromStdString(s3);
-		}
-		else
-		{
-			volume_filename = "D:/document/work/artivvis-development-repository/data/tooth.mhd";
-			transfer_function_filename = "D:/document/work/artivvis-development-repository/data/tooth.tfi";
-			transfer_function_filename_save = "D:/document/work/artivvis-development-repository/data/save_as.tfi";
-			save_path_to_xml();
-		}
 	}
 
 	void on_entropyButton_clicked();
