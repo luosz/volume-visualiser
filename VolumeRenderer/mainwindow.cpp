@@ -375,7 +375,7 @@ void MainWindow::on_balanceRegionButton_clicked()
 void MainWindow::on_action_About_triggered()
 {
 	QMessageBox msgBox;
-	msgBox.setText(QString::fromUtf8("GV2 Volume Visualiser \nCopyright (c) 2013-2016 by Shengzhou Luo at Trinity College Dublin. \nAll rights reserved."));
+	msgBox.setText(QString::fromUtf8("Volume Visualiser \nCopyright (c) 2013-2016 by Shengzhou Luo at Trinity College Dublin. \nAll rights reserved."));
 	msgBox.exec();
 }
 
@@ -421,7 +421,7 @@ void MainWindow::on_action_Append_Volume_triggered()
 	}
 
 	// show filename on window title
-	this->setWindowTitle(QString::fromUtf8("Volume Renderer - ") + volume_filename);
+	this->setWindowTitle(QString::fromUtf8("Volume Visualiser - ") + volume_filename);
 
 	// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 	QByteArray ba = volume_filename.toLocal8Bit();
