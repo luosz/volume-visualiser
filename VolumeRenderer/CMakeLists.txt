@@ -47,7 +47,7 @@ file(GLOB CTK_ui_files
     ${CTK_Libs_Visualization_VTK_Widgets_DIR}/Resources/UI/*.ui
 )
 
-project(VolumeVisualizer)
+project(VolumeVisualiser)
 
 find_package(OpenGL REQUIRED)
 message(STATUS "OPENGL_LIBRARIES=" ${OPENGL_LIBRARIES})
