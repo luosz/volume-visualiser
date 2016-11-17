@@ -1825,32 +1825,32 @@ private:
 		auto color = xml.Volume()->GetRGBTransferFunction();
 
 		gradient_opacity->RemoveAllPoints();
-		std::cout << "GetGradientOpacity size=" << gradient->GetSize() << std::endl;
+		//std::cout << "GetGradientOpacity size=" << gradient->GetSize() << std::endl;
 		for (int i = 0; i < gradient->GetSize(); i++)
 		{
 			double xa[4];
 			gradient->GetNodeValue(i, xa);
-			std::cout << xa[0] << " " << xa[1] << std::endl;
+			//std::cout << xa[0] << " " << xa[1] << std::endl;
 			gradient_opacity->AddPoint(xa[0], xa[1]);
 		}
 
 		scalar_opacity->RemoveAllPoints();
-		std::cout << "GetScalarOpacity size=" << scalar->GetSize() << std::endl;
+		//std::cout << "GetScalarOpacity size=" << scalar->GetSize() << std::endl;
 		for (int i = 0; i < scalar->GetSize(); i++)
 		{
 			double xa[4];
 			scalar->GetNodeValue(i, xa);
-			std::cout << xa[0] << " " << xa[1] << std::endl;
+			//std::cout << xa[0] << " " << xa[1] << std::endl;
 			scalar_opacity->AddPoint(xa[0], xa[1]);
 		}
 
 		scalar_color->RemoveAllPoints();
-		std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
+		//std::cout << "GetRGBTransferFunction size=" << color->GetSize() << std::endl;
 		for (int i = 0; i < color->GetSize(); i++)
 		{
 			double xrgb[6];
 			color->GetNodeValue(i, xrgb);
-			std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
+			//std::cout << xrgb[0] << " " << xrgb[1] << " " << xrgb[2] << " " << xrgb[3] << std::endl;
 			scalar_color->AddRGBPoint(xrgb[0], xrgb[1], xrgb[2], xrgb[3]);
 		}
 	}
@@ -1865,7 +1865,7 @@ private:
 
 		if (r != tinyxml2::XML_NO_ERROR)
 		{
-			std::cout << "failed to open file" << endl;
+			std::cout << "failed to open file " << filename << endl;
 			return;
 		}
 
@@ -1888,13 +1888,13 @@ private:
 		{
 			Domain_x(atof(domain->Attribute("x")));
 			Domain_y(atof(domain->Attribute("y")));
-			std::cout << "domain x=" << Domain_x() << " y=" << Domain_y() << std::endl;
+			//std::cout << "domain x=" << Domain_x() << " y=" << Domain_y() << std::endl;
 		}
 		else
 		{
 			Domain_x(0);
 			Domain_y(1);
-			std::cout << "domain doesn't exist. default: " << Domain_x() << " " << Domain_y() << std::endl;
+			//std::cout << "domain doesn't exist. default: " << Domain_x() << " " << Domain_y() << std::endl;
 		}
 
 		auto key = doc.FirstChildElement("VoreenData")->FirstChildElement("TransFuncIntensity")->FirstChildElement("Keys")->FirstChildElement("key");
@@ -1917,9 +1917,9 @@ private:
 			opacity_list_push_back(normalise_rgba(a));
 
 			bool split = (0 == strcmp("true", key->FirstChildElement("split")->Attribute("value")));
-			std::cout << "intensity=" << intensity;
-			std::cout << "\tsplit=" << (split ? "true" : "false");
-			std::cout << "\tcolorL r=" << r << " g=" << g << " b=" << b << " a=" << a;
+			//std::cout << "intensity=" << intensity;
+			//std::cout << "\tsplit=" << (split ? "true" : "false");
+			//std::cout << "\tcolorL r=" << r << " g=" << g << " b=" << b << " a=" << a;
 			const double epsilon = 1e-6;
 			if (split)
 			{
@@ -1933,12 +1933,11 @@ private:
 				colour2.push_back(normalise_rgba(r2));
 				colour2.push_back(normalise_rgba(g2));
 				colour2.push_back(normalise_rgba(b2));
-				//colour2.push_back(normalise_rgba(a2));
 				colour_list_push_back(colour2);
 				opacity_list_push_back(normalise_rgba(a2));
-				std::cout << "\tcolorR r=" << r2 << " g=" << g2 << " b=" << b2 << " a=" << a2;
+				//std::cout << "\tcolorR r=" << r2 << " g=" << g2 << " b=" << b2 << " a=" << a2;
 			}
-			std::cout << endl;
+			//std::cout << endl;
 
 			key = key->NextSiblingElement();
 		} while (key);
