@@ -2484,6 +2484,12 @@ private:
 		QByteArray ba = filename.toLocal8Bit();
 		const char *filename_str = ba.data();
 
+		if (!file_exist(filename_str))
+		{
+			std::cout << "failed to open file " << filename_str << endl;
+			return;
+		}
+
 		vtkSmartPointer<vtkImageReader2> reader;
 		std::cout << "volume file: " << filename_str << std::endl;
 		auto p1 = strstr(filename_str, ".mhd");
@@ -2600,6 +2606,12 @@ private:
 		// get local 8-bit representation of the string in locale encoding (in case the filename contains non-ASCII characters) 
 		QByteArray ba = filename.toLocal8Bit();
 		const char *filename_str = ba.data();
+
+		if (!file_exist(filename_str))
+		{
+			std::cout << "failed to open file " << filename_str << endl;
+			return;
+		}
 
 		// read Meta Image (.mhd or .mha) files
 		auto reader = vtkSmartPointer<vtkMetaImageReader>::New();

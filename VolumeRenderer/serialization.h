@@ -75,6 +75,8 @@ struct DynamicVortex
 	std::string mhd_suffix = ".mhd";
 	std::string tfi_prefix = "D:/document/work/time-varying-visualization/~plot/vorts";
 	std::string tfi_suffix = "_optimized_parallelsearch.tfi";
+	int min_index = 1;
+	int max_index = 99;
 
 	DynamicVortex(const char * xml = "DynamicVortex.xml")
 	{
@@ -87,37 +89,37 @@ struct DynamicVortex
 		{
 			std::ifstream is(xml);
 			cereal::XMLInputArchive archive(is);
-			archive(mhd_prefix, mhd_suffix, tfi_prefix, tfi_suffix);
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 		else
 		{
 			std::ofstream os(xml);
 			cereal::XMLOutputArchive archive(os);
-			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix));
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 	}
 
-	int min_index()
+	int index_min()
 	{
-		return 0;
+		return min_index;
 	}
 
-	int max_index()
+	int index_max()
 	{
-		return 98;
+		return max_index;
 	}
 
 	std::string transferfunction(int index)
 	{
 		std::stringstream ss;
-		ss << tfi_prefix << std::to_string(index+1) << tfi_suffix;
+		ss << tfi_prefix << std::to_string(index) << tfi_suffix;
 		return ss.str();
 	}
 
 	std::string volume(int index)
 	{
 		std::stringstream ss;
-		ss << mhd_prefix << std::to_string(index+1) << mhd_suffix;
+		ss << mhd_prefix << std::to_string(index) << mhd_suffix;
 		return ss.str();
 	}
 };
@@ -128,6 +130,8 @@ struct StaticVortex
 	std::string mhd_suffix = ".mhd";
 	std::string tfi_prefix = "D:/document/work/time-varying-visualization/feature_transfer_function/vortex_naive_proportional_optimized_linesearch.tfi";
 	std::string tfi_suffix = "";
+	int min_index = 1;
+	int max_index = 99;
 
 	StaticVortex(const char * xml = "StaticVortex.xml")
 	{
@@ -140,24 +144,24 @@ struct StaticVortex
 		{
 			std::ifstream is(xml);
 			cereal::XMLInputArchive archive(is);
-			archive(mhd_prefix, mhd_suffix, tfi_prefix, tfi_suffix);
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 		else
 		{
 			std::ofstream os(xml);
 			cereal::XMLOutputArchive archive(os);
-			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix));
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 	}
 
-	int min_index()
+	int index_min()
 	{
-		return 0;
+		return min_index;
 	}
 
-	int max_index()
+	int index_max()
 	{
-		return 98;
+		return max_index;
 	}
 
 	std::string transferfunction(int index)
@@ -168,7 +172,7 @@ struct StaticVortex
 	std::string volume(int index)
 	{
 		std::stringstream ss;
-		ss << mhd_prefix << std::to_string(index + 1) << mhd_suffix;
+		ss << mhd_prefix << std::to_string(index) << mhd_suffix;
 		return ss.str();
 	}
 };
@@ -179,6 +183,8 @@ struct NaiveVortex
 	std::string mhd_suffix = ".mhd";
 	std::string tfi_prefix = "D:/document/work/time-varying-visualization/feature_transfer_function/vortex_naive_proportional.tfi";
 	std::string tfi_suffix = "";
+	int min_index = 1;
+	int max_index = 99;
 
 	NaiveVortex(const char * xml = "NaiveVortex.xml")
 	{
@@ -191,24 +197,24 @@ struct NaiveVortex
 		{
 			std::ifstream is(xml);
 			cereal::XMLInputArchive archive(is);
-			archive(mhd_prefix, mhd_suffix, tfi_prefix, tfi_suffix);
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 		else
 		{
 			std::ofstream os(xml);
 			cereal::XMLOutputArchive archive(os);
-			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix));
+			archive(CEREAL_NVP(mhd_prefix), CEREAL_NVP(mhd_suffix), CEREAL_NVP(tfi_prefix), CEREAL_NVP(tfi_suffix), CEREAL_NVP(min_index), CEREAL_NVP(max_index));
 		}
 	}
 
-	int min_index()
+	int index_min()
 	{
-		return 0;
+		return min_index;
 	}
 
-	int max_index()
+	int index_max()
 	{
-		return 98;
+		return max_index;
 	}
 
 	std::string transferfunction(int index)
@@ -219,7 +225,7 @@ struct NaiveVortex
 	std::string volume(int index)
 	{
 		std::stringstream ss;
-		ss << mhd_prefix << std::to_string(index + 1) << mhd_suffix;
+		ss << mhd_prefix << std::to_string(index) << mhd_suffix;
 		return ss.str();
 	}
 };
