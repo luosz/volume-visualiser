@@ -243,6 +243,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="lhHistogramButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>&amp;LH Histogram</string>
          </property>
@@ -270,6 +273,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="balanceButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>&amp;Balance</string>
          </property>
@@ -328,6 +334,9 @@
        </property>
        <item>
         <widget class="QPushButton" name="fixedStepButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Fixed Step Size</string>
          </property>
@@ -335,6 +344,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="gradientDescentButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Gradient Descent</string>
          </property>
@@ -342,6 +354,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="newtonButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>&amp;Newton</string>
          </property>

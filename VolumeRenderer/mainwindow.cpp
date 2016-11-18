@@ -1456,7 +1456,7 @@ void MainWindow::on_action_Open_dynamically_optimized_vortex_triggered()
     QList<QStandardItem *> filename_list, tf_list;
     DynamicVortex tvdata;
 
-    for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+    for (auto i = tvdata.index_min(); i <= tvdata.index_max(); i++)
     {
         filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(i))));
         tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(i))));
@@ -1483,10 +1483,10 @@ void MainWindow::on_action_Open_vortex_triggered()
 	// a QList to be put in QStandardItemModel
 	QList<QStandardItem *> filename_list, tf_list;
 	NaiveVortex tvdata;
-	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.min_index()))));
-	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.min_index()))));
+	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.index_min()))));
+	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.index_min()))));
 
-	for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+	for (auto i = tvdata.index_min(); i <= tvdata.index_max(); i++)
 	{
 		// load volume
 		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
@@ -1510,10 +1510,10 @@ void MainWindow::on_action_Open_statically_optimized_vortex_triggered()
 	// a QList to be put in QStandardItemModel
 	QList<QStandardItem *> filename_list, tf_list;
 	StaticVortex tvdata;
-	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.min_index()))));
-	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.min_index()))));
+	filename_list.append(new QStandardItem(QString::fromStdString(tvdata.volume(tvdata.index_min()))));
+	tf_list.append(new QStandardItem(QString::fromStdString(tvdata.transferfunction(tvdata.index_min()))));
 
-	for (auto i = tvdata.min_index(); i <= tvdata.max_index(); i++)
+	for (auto i = tvdata.index_min(); i <= tvdata.index_max(); i++)
 	{
 		// load volume
 		open_volume_no_rendering(QString::fromStdString(tvdata.volume(i)));
