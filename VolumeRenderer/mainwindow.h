@@ -93,9 +93,8 @@
 #include "ui_mainwindow.h"
 #include "screenshotwidget.h"
 
-#include "transfer_function_xml.h"
 #include "RayCastType.h"
-
+#include "transfer_function_xml.h"
 #include "serialization.h"
 
 //#ifndef OUTPUT_TO_FILE
