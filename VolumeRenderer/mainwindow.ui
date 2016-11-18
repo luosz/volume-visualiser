@@ -822,6 +822,9 @@
    </property>
   </action>
   <action name="action_Append_Volume">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Append Volume...</string>
    </property>
@@ -925,6 +928,9 @@
    </property>
   </action>
   <action name="action_Test">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Test</string>
    </property>
