@@ -698,8 +698,20 @@ void MainWindow::on_action_Pick_a_colour_and_optimise_transfer_function_triggere
 	}
 }
 
+#include <windows.h>
+#include <stdio.h>
+void CreateFolder(const char * path)
+{
+	if (!CreateDirectory(path, NULL))
+	{
+		return;
+	}
+}
+
 void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 {
+	CreateFolder("_tf/");
+
 	bool ok;
 	int n = Number_of_colours_in_spectrum();
 	n = QInputDialog::getInt(this, tr("Number of Colours"), tr("Number of colours [1,256]:"), n, 1, 256, 1, &ok);
@@ -716,10 +728,22 @@ void MainWindow::on_action_Genearte_transfer_functions_for_spectrum_triggered()
 			// optimize for a specific colour
 			optimise_transfer_function_for_colour(colour);
 
-			//char c_str2[_MAX_PATH];
-			//sprintf(c_str2, "D:/output/_tf/%02d.tfi", i);
-			//saveTransferFunctionToVoreenXML(c_str2);
-			//std::cout << "saved to file " << c_str2 << std::endl;
+			// save transfer function to file
+			char c_str2[_MAX_PATH];
+			sprintf(c_str2, "_tf/%03d.tfi", i);
+			saveTransferFunctionToVoreenXML(c_str2);
+			std::cout << "saved to file " << c_str2 << std::endl;
+
+			for (int j = 1; j < 2; j++)
+			{
+				// smooth the transfer function
+				gaussian();
+
+				// save transfer function to file
+				sprintf(c_str2, "_tf/%03d.tfi", i + n * j);
+				saveTransferFunctionToVoreenXML(c_str2);
+				std::cout << "saved to file " << c_str2 << std::endl;
+			}
 		}
 	}
 }

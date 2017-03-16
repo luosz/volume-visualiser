@@ -12,9 +12,9 @@ if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW) # CMake 3.1
 endif()
 
-set(VTK_DIR "C:/VTK/VTK-6.3.0/build" CACHE PATH "VTK directory")
-set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.5.1/5.5/msvc2013/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/msvc2013" CACHE PATH "Qt directory")
+set(VTK_DIR "C:/VTK/VTK-7.1.0/build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.8.0/5.8/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.8.0/5.8/msvc2015" CACHE PATH "Qt directory")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")
@@ -52,22 +52,22 @@ project(VolumeVisualiser)
 find_package(OpenGL REQUIRED)
 message(STATUS "OPENGL_LIBRARIES=" ${OPENGL_LIBRARIES})
 
-# VTK 6.x is required
-find_package(VTK 6.0 REQUIRED NO_MODULE)
+## VTK 6.x is required
+#find_package(VTK 6.0 REQUIRED NO_MODULE)
 ## VTK 7.x is required
-#find_package(VTK REQUIRED)
-#vtk_module_config(VTK
-#  vtkCommonCore
-#  vtkChartsCore
-#  vtkImagingCore
-#  vtkImagingStatistics
-#  vtkViewsContext2D
-#  vtkInteractionWidgets
-#  vtkGUISupportQt
-#  vtkRenderingContext${VTK_RENDERING_BACKEND}
-#  vtkRendering${VTK_RENDERING_BACKEND}
-#  vtkRenderingVolume${VTK_RENDERING_BACKEND}
-#)
+find_package(VTK REQUIRED)
+vtk_module_config(VTK
+  vtkCommonCore
+  vtkChartsCore
+  vtkImagingCore
+  vtkImagingStatistics
+  vtkViewsContext2D
+  vtkInteractionWidgets
+  vtkGUISupportQt
+  vtkRenderingContext${VTK_RENDERING_BACKEND}
+  vtkRendering${VTK_RENDERING_BACKEND}
+  vtkRenderingVolume${VTK_RENDERING_BACKEND}
+)
 include(${VTK_USE_FILE})
 
 if("${VTK_QT_VERSION}" STREQUAL "")

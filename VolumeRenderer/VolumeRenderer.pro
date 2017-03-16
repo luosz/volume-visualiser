@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2013-06-05T23:40:35
+# Project created by QtCreator 2017-01-19T15:02:21
 #
 #-------------------------------------------------
 
@@ -14,13 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    widget.cpp \
     screenshotwidget.cpp
 
 HEADERS  += mainwindow.h \
-    widget.h \
     screenshotwidget.h
 
 FORMS    += mainwindow.ui \
-    widget.ui \
     screenshotwidget.ui

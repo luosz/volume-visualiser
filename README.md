@@ -4,7 +4,7 @@ Volume Visualiser (https://bitbucket.org/lsz/volume-visualiser) is an enhanced v
 Volume Visualiser can handle multiple volume data sets as well as time-varying volume data sets.
 It uses the vtkSlicerGPURayCastVolumeMapper from Slicer (https://www.slicer.org/) to render volume data and widgets from CTK (www.commontk.org) to display the properties of volume data.
 
-** 2016-11-13 Update: The project has been updated and successfully built with CMake 3.7, VTK 7.1, Qt 5.7 and Visual Studio 2015. **
+** 2017-03-16 Update: The project has been updated and successfully built with CMake 3.8, VTK 7.1, Qt 5.8 and Visual Studio 2015. **
 
 ** 2015-09-14 Update: The CTK widgets in this project are only a small subset of the CTK library downloaded on 14 September 2015 from https://github.com/commontk/CTK **
 

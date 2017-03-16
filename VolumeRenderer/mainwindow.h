@@ -2995,6 +2995,28 @@ private:
 		RenderingTechniqueComboBox()->addItem("IllustrativeContextPreservingExploration", vtkMRMLVolumeRenderingDisplayNode::IllustrativeContextPreservingExploration);
 	}
 
+	void gaussian(int n = 5, double sigma=1)
+	{
+		int half = n / 2;
+		auto kernel = gaussian_kernel_1d(n, sigma);
+		std::vector<double> opacity_new = opacity_list;
+		for (int i = half; i < opacity_new.size() - half; i++)
+		{
+			double sum = 0;
+			for (int j = 0; j < n; j++)
+			{
+				int offset = j - half;
+				int k = i + offset;
+				sum += kernel[j] * get_opacity(k);
+			}
+			opacity_new[i] = sum;
+		}
+		opacity_list = opacity_new;
+
+		updateTFWidgetFromOpacityArrays();
+		updateOpacityArrayFromTFWidget();
+	}
+
 	private slots:
 
 	void slot_GraphicsScene_selectionChanged()
