@@ -12,9 +12,9 @@ if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW) # CMake 3.1
 endif()
 
-set(VTK_DIR "D:/VTK/VTK-7.1.1/build" CACHE PATH "VTK directory")
-set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.8.0/5.8/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.8.0/5.8/msvc2015" CACHE PATH "Qt directory")
+set(VTK_DIR "C:/VTK/VTK-8.0.0/build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.9.0/5.9/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.0/5.9/msvc2015" CACHE PATH "Qt directory")
 
 # CTK paths
 set(CTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CTK" CACHE PATH "CTK directory")

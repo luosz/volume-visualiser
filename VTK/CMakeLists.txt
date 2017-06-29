@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 
-set(VTK_DIR "D:/VTK/VTK-7.1.1/build" CACHE PATH "VTK directory")
-set(QT_QMAKE_EXECUTABLE "D:/Qt/Qt5.8.0/5.8/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
-set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.8.0/5.8/msvc2015" CACHE PATH "Qt directory")
+# My VTK settings
+set(VTK_DIR "C:/VTK/VTK-8.0.0/build" CACHE PATH "VTK directory")
+set(QT_QMAKE_EXECUTABLE "C:/Qt/Qt5.9.0/5.9/msvc2015/bin/qmake.exe" CACHE PATH "Qt qmake.exe")
+set(CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.0/5.9/msvc2015" CACHE PATH "Qt directory")
 set(VTK_QT_VERSION 5 CACHE STRING "Qt version")
 set(VTK_NO_LIBRARY_VERSION ON CACHE BOOL "VTK_NO_LIBRARY_VERSION")
 set(VTK_Group_Qt ON CACHE BOOL "VTK_Group_Qt")
@@ -11,26 +12,6 @@ set(Module_vtkGUISupportQtOpenGL ON CACHE BOOL "Module_vtkGUISupportQtOpenGL")
 set(Module_vtkRenderingQt ON CACHE BOOL "Module_vtkRenderingQt")
 set(BUILD_TESTING OFF CACHE BOOL "BUILD_TESTING")
 set(VTK_RENDERING_BACKEND_DEFAULT "OpenGL")
-
-option(VTK_ENABLE_KITS "Build VTK using kits instead of modules." OFF)
-mark_as_advanced(VTK_ENABLE_KITS)
-if(VTK_ENABLE_KITS)
-  # Kits use INTERFACE libraries which were introduced in 3.0.
-  cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-endif()
-
-foreach(p
-    CMP0020 # CMake 2.8.11
-    CMP0022 # CMake 2.8.12
-    CMP0025 # CMake 3.0
-    CMP0053 # CMake 3.1
-    CMP0054 # CMake 3.1
-    CMP0063 # CMake 3.3
-    )
-  if(POLICY ${p})
-    cmake_policy(SET ${p} NEW)
-  endif()
-endforeach()
 
 # Set a consistent MACOSX_RPATH default across all CMake versions.
 # When CMake 2.8.12 is required, change this default to 1.
@@ -45,17 +26,51 @@ endif()
 
 project(VTK)
 
-if (NOT CMAKE_VERSION VERSION_LESS "3.1")
-  option(VTK_USE_CXX11_FEATURES "Build VTK using C++11 features (if available)"
-         OFF)
-else()
-  set(VTK_USE_CXX11_FEATURES OFF)
-endif()
-if (VTK_USE_CXX11_FEATURES)
+#-----------------------------------------------------------------------------
+# Minimum compiler version check: GCC >= 4.6
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.6)
+  message(FATAL_ERROR "GCC 4.6 or later is required.")
+endif ()
+
+#-----------------------------------------------------------------------------
+# Minimum compiler version check: LLVM Clang >= 3.0
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.0)
+  message(FATAL_ERROR "LLVM Clang 3.0 or later is required.")
+endif ()
+
+#-----------------------------------------------------------------------------
+# Minimum compiler version check: Apple Clang >= 3.0 (Xcode 4.2)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.0)
+  message(FATAL_ERROR "Apple Clang 3.0 or later is required.")
+endif ()
+
+#-----------------------------------------------------------------------------
+# Minimum compiler version check: Microsoft C/C++ >= 17.0 (aka VS 2012 aka VS 11.0)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 17.0)
+  message(FATAL_ERROR "Microsoft Visual Studio 2012 or later is required.")
+endif ()
+
+#-----------------------------------------------------------------------------
+# Minimum compiler version check: Intel C++ (ICC) >= 14
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.0)
+  message(FATAL_ERROR "Intel C++ (ICC) 14.0 or later is required.")
+endif ()
+
+# Make sure we have C++11 enabled.
+if(NOT VTK_IGNORE_CMAKE_CXX11_CHECKS)
+  # Needed to make sure libraries and executables not built by the
+  # vtkModuleMacros still have the C++11 compiler flags enabled
+  # Wrap this in an escape hatch for unknown compilers
   set(CMAKE_CXX_STANDARD 11)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
   set(CMAKE_CXX_EXTENSIONS False)
 endif()
+
 
 # Objective-C++ compile flags.
 # CMake has no equivalent of CMAKE_CXX_FLAGS for Objective-C++ (bug #4756)
@@ -167,25 +182,11 @@ if (ANDROID OR APPLE_IOS)
   SET( KWSYS_LFS_WORKS__TRYRUN_OUTPUT ""
      CACHE STRING "Output from TRY_RUN" FORCE)
 
-  # need int version for CPP
-  if (OPENGL_ES_VERSION STREQUAL "2.0")
-    set(OPENGL_ES_VERSION_INT 20)
-  endif()
-  if (OPENGL_ES_VERSION STREQUAL "3.0")
-    set(OPENGL_ES_VERSION_INT 30)
-  endif()
-
   if (APPLE_IOS)
     unset(OPENGL_INCLUDE_DIR CACHE)
-    if (OPENGL_ES_VERSION STREQUAL "2.0")
-      find_path(OPENGL_INCLUDE_DIR ES2/gl.h
-                ${CMAKE_OSX_SYSROOT}/System/Library/Frameworks/OpenGLES.framework/Headers
-                ${_OPENGL_INCLUDE_DIR})
-    elseif (OPENGL_ES_VERSION STREQUAL "3.0")
-      find_path(OPENGL_INCLUDE_DIR ES3/gl.h
-                ${CMAKE_OSX_SYSROOT}/System/Library/Frameworks/OpenGLES.framework/Headers
-                ${_OPENGL_INCLUDE_DIR})
-    endif()
+    find_path(OPENGL_INCLUDE_DIR ES3/gl.h
+              ${CMAKE_OSX_SYSROOT}/System/Library/Frameworks/OpenGLES.framework/Headers
+              ${_OPENGL_INCLUDE_DIR})
     find_library(OPENGL_gl_LIBRARY
        NAMES OpenGLES
        PATHS
@@ -197,13 +198,8 @@ if (ANDROID OR APPLE_IOS)
     unset(OPENGL_gl_LIBRARY CACHE)
     unset(OPENGL_egl_LIBRARY CACHE)
 
-    if (OPENGL_ES_VERSION STREQUAL "2.0")
-      find_path(OPENGL_INCLUDE_DIR GLES2/gl2.h)
-      find_library(OPENGL_gl_LIBRARY NAMES GLESv2)
-    elseif (OPENGL_ES_VERSION STREQUAL "3.0")
-      find_path(OPENGL_INCLUDE_DIR GLES3/gl3.h)
-      find_library(OPENGL_gl_LIBRARY NAMES GLESv3)
-    endif()
+    find_path(OPENGL_INCLUDE_DIR GLES3/gl3.h)
+    find_library(OPENGL_gl_LIBRARY NAMES GLESv3)
     find_library(OPENGL_egl_LIBRARY NAMES EGL)
   endif()
 else()
@@ -212,7 +208,7 @@ else()
 endif()
 
 # default to not using the system GLEW as ours has fixes in it right now
-set(VTK_USE_SYSTEM_GLEW OFF CACHE BOOL "do not use a system glew" FORCE)
+set(VTK_USE_SYSTEM_GLEW OFF CACHE BOOL "do not use a system glew")
 
 set(VTK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
@@ -265,10 +261,30 @@ if(NOT VTK_BUILD_PYTHON_MODULE_DIR)
        PATH "Directory where python modules will be put inside the build tree")
   mark_as_advanced(VTK_BUILD_PYTHON_MODULE_DIR)
 endif()
-if (CMAKE_CROSSCOMPILING AND NOT COMPILE_TOOLS_IMPORTED)
-  # if CMAKE_CROSSCOMPILING is true, we need to import build-tools targets.
+# Full functional CMAKE_CROSSCOMPILING_EMULATOR support for custom_command and
+# custom_target is available in CMake 3.8.0
+# It was first added in CMake 3.6.0 and later fixed in CMake 3.8.0 (commit e7480d67, CMake issue #16288)
+set(_crosscompiling_emulator_support_custom_target 1)
+if(CMAKE_VERSION VERSION_LESS 3.8.0)
+  set(_crosscompiling_emulator_support_custom_target 0)
+endif()
+# Maintain backward compatibility with user setting COMPILE_TOOLS_IMPORTED
+if(DEFINED COMPILE_TOOLS_IMPORTED AND NOT DEFINED VTK_COMPILE_TOOLS_IMPORTED)
+  set(VTK_COMPILE_TOOLS_IMPORTED ${COMPILE_TOOLS_IMPORTED})
+endif()
+# Variable VTK_COMPILE_TOOLS_IMPORTED is preferred
+if(NOT DEFINED VTK_COMPILE_TOOLS_IMPORTED)
+  set(VTK_COMPILE_TOOLS_IMPORTED FALSE)
+endif()
+if(CMAKE_CROSSCOMPILING
+    AND NOT VTK_COMPILE_TOOLS_IMPORTED
+    AND NOT DEFINED CMAKE_CROSSCOMPILING_EMULATOR
+    AND NOT _crosscompiling_emulator_support_custom_target
+  )
+  # if CMAKE_CROSSCOMPILING is true and crosscompiling emulator is not available, we need
+  # to import build-tools targets.
   find_package(VTKCompileTools REQUIRED)
-  set (COMPILE_TOOLS_IMPORTED TRUE)
+  set(VTK_COMPILE_TOOLS_IMPORTED TRUE)
 endif()
 
 #-----------------------------------------------------------------------------
@@ -297,45 +313,10 @@ if(APPLE)
     )
 
   if (CMAKE_OSX_DEPLOYMENT_TARGET AND
-      CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS 10.6)
-    message(FATAL_ERROR "Minimun OS X deployment target is 10.6, please update CMAKE_OSX_DEPLOYMENT_TARGET.")
+      CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS 10.7)
+    message(FATAL_ERROR "Minimun OS X deployment target is 10.7, please update CMAKE_OSX_DEPLOYMENT_TARGET.")
   endif ()
 endif()
-
-#-----------------------------------------------------------------------------
-# Minimum compiler version check: GCC >= 4.2
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
-    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.2)
-  message(FATAL_ERROR "GCC 4.2 or later is required.")
-endif ()
-
-#-----------------------------------------------------------------------------
-# Minimum compiler version check: LLVM Clang >= 3.0
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
-    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.0)
-  message(FATAL_ERROR "LLVM Clang 3.0 or later is required.")
-endif ()
-
-#-----------------------------------------------------------------------------
-# Minimum compiler version check: Apple Clang >= 3.0 (Xcode 4.2)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND
-    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.0)
-  message(FATAL_ERROR "Apple Clang 3.0 or later is required.")
-endif ()
-
-#-----------------------------------------------------------------------------
-# Minimum compiler version check: Microsoft C/C++ >= 15.0 (aka VS 2008 aka VS 9.0)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
-    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 15.0)
-  message(FATAL_ERROR "Microsoft Visual Studio 2008 or later is required.")
-endif ()
-
-#-----------------------------------------------------------------------------
-# Minimum compiler version check: Intel C++ (ICC) >= 10.0
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel" AND
-    CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0)
-  message(FATAL_ERROR "Intel C++ (ICC) 10.0 or later is required.")
-endif ()
 
 #-----------------------------------------------------------------------------
 # Does VTK require support for 64 bit file systems
@@ -533,6 +514,11 @@ endif()
 option(VTK_MAKE_INSTANTIATORS "Should all modules build instantiators" OFF)
 mark_as_advanced(VTK_MAKE_INSTANTIATORS)
 
+# Kits bundle multiple modules together into a single library, this
+# is used to dramatically reduce the number of generated libraries.
+option(VTK_ENABLE_KITS "Build VTK using kits instead of modules." OFF)
+mark_as_advanced(VTK_ENABLE_KITS)
+
 #----------------------------------------------------------------------
 # Load the module DAG, assess all modules etc.
 include(vtkModuleTop)
@@ -605,3 +591,7 @@ if(VTK_DATA_EXCLUDE_FROM_ALL)
       "without manually building the 'VTKData' target.")
   endif()
 endif()
+
+#-----------------------------------------------------------------------------
+# Install the license file
+install(FILES ${VTK_SOURCE_DIR}/Copyright.txt DESTINATION ${VTK_INSTALL_DOC_DIR})
