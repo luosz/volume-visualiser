@@ -2533,7 +2533,7 @@ private:
 		}
 
 		// generate histograms
-		generate_visibility_function(shiftScale);;
+		generate_visibility_function(shiftScale);
 		generate_LH_histogram(shiftScale);
 
 		// set up volume property
